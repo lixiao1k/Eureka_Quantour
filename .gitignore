@@ -1,0 +1,8 @@
+.DS_Store
+*.class
+.localized
+.metadata/
+.recommenders/
+.bin/
+.idea/
+.out/
