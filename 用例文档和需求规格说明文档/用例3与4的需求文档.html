@@ -1,0 +1,161 @@
+<!doctype html>
+<html>
+	<head>
+	<meta charset='UTF-8'>
+	<title>用例3与4的需求文档.html</title>
+	<style>
+		.tdl {width:100px;}
+		.tdr {width:150px;}
+		.kfont {font-family:"楷体";}
+	</style>
+	</head>
+	<body>
+	<div style="margin:0 auto;width:30%">
+		<h3>用例3	股票比较</h3>	
+		<table style="font-family:楷体" border="2" align="center" width="600px" cellspacing="0">
+			<tr>
+				<th class=tdl>ID</th>		<td>3</td>		<th class=tdr>名称</th>	<td>股票比较</td>
+			</tr>
+			<tr>
+				<th class=tdl>创建者</th>		<td>刘宇翔</td>		<th class=tdr>最后一次更新者</th>	<td>刘宇翔</td>
+			</tr>
+			<tr>
+				<th class=tdl>创建日期</th>		<td>2017年3月4日</td>		<th class=tdr>最后更新日期</th>		<td>2017年3月4日</td>
+			</tr>
+			<tr>
+					<th>参与者</th>		<td colspan='3'>用户，目标是查看两只股票的对比信息。</td>
+			</tr>
+			<tr>
+				<th>触发条件</th>		<td colspan='3'>用户想要对比两只股票的信息</td>
+			</tr>
+			<tr>
+				<th>前置条件</th> 		<td colspan='3'>用户知道股票的编号或名字</td>
+			</tr>
+			<tr>
+				<th>后置条件</th>		<td colspan='3'>展示相关股票信息</td>
+			</tr>
+			<tr>	
+				<th>优先级</th>			<td colspan='3'>高</td>
+			</tr>
+			<tr>
+				<th>正常流程</th>	
+				<td colspan='3'> 
+					<ol style="margin-top:5px;margin-bottom:5px">
+				     <li>用户选择股票比较</li>
+					 <li>系统给出股票名字或股票代号的输入框以及查询起始时间与终止时间的输入框。</li>
+					 <li> 用户输入需要对比的股票名字或股票代号以及查询的起始时间与终止时间。</li>
+					 <li>系统显示两只对比股票的所有从起始时间到终止时间的最低值、最高值、涨幅/跌幅、每天的收盘价和对数收益率、对数收益率方差</li>
+					 <li>用户选择返回。</li>
+					 <li>系统返回软件起始界面</li>
+					 </ol>
+				</td>
+			</tr>
+			<tr>
+				<th>扩展流程</th>
+				<td colspan='3'>
+					<pre style="margin-top:5px;margin-bottom:5px;font-family:楷体;margin-left:13px">
+3a. 用户输入错误的股票名字或股票代号
+	1.系统提示输入了错误的股票名字或股票代号
+	2.回到正常流程2
+3b. 用户输入错误的日期范围有误
+	1.系统提示错误的日期范围
+	2.回到正常流程2
+                    </pre>    						
+				</td>
+			</tr>
+			<tr>
+				<th>特殊需求</th>
+				<td colspan='3'>
+					<ol style="margin-top:5px;margin-bottom:5px;">
+						<li>日期范围是2005年2月到2014年4月。</li>
+					</ol>	
+				</td>
+			</tr>
+			</table>
+			<p></p>
+			<br>
+			
+			<h3>用例4	股票比较绘图</h3>	
+			<table style="font-family:楷体" border="2" align="center" width="600px" cellspacing="0">
+				<tr>
+					<th class=tdl>ID</th>		<td>4</td>		<th class=tdr>名称</th>	<td>股票比较绘图</td>
+				</tr>
+				<tr>
+					<th class=tdl>创建者</th>		<td>刘宇翔</td>		<th class=tdr>最后一次更新者</th>	<td>刘宇翔</td>
+				</tr>
+				<tr>
+					<th class=tdl>创建日期</th>		<td>2017年3月4日</td>		<th class=tdr>最后更新日期</th>		<td>2017年3月4日</td>
+				</tr>
+				<tr>
+					<th>参与者</th>		<td colspan='3'>用户，目标是查看两只股票的对比信息所绘制出的k线图与均线图。</td>
+				</tr>
+				<tr>
+					<th>触发条件</th>		<td colspan='3'>用户想要查看两只对比股票的k线图与均线图的比较</td>
+				</tr>
+				<tr>
+					<th>前置条件</th> 		<td colspan='3'>用户知道股票的编号或名字，且处于股票比较界面</td>
+				</tr>
+				<tr>
+					<th>后置条件</th>		<td colspan='3'>展示相关股票所绘制出的k线图与均线图</td>
+				</tr>
+				<tr>	
+					<th>优先级</th>			<td colspan='3'>高</td>
+				</tr>
+				<tr>
+					<th>正常流程</th>	
+					<td colspan='3'> 
+						<ol style="margin-top:5px;margin-bottom:5px">
+					     <li>用户选择查看对比股票的k线图/均线图</li>
+						 <li>系统给出根据对比股票的信息所绘制出的处于时间范围内的k线图与均线图</li>
+						 <li>用户选择返回。</li>
+						 <li>系统返回股票信息对比的界面</li>
+						 </ol>
+					</td>
+				</tr>
+				<tr>
+					<th>扩展流程</th>
+					<td colspan='3'>
+						无 						
+					</td>
+				</tr>
+				<tr>
+					<th>特殊需求</th>
+					<td colspan='3'>
+						<ol style="margin-top:5px;margin-bottom:5px;">
+							<li>日期范围是2005年2月到2014年4月。</li>
+						</ol>	
+					</td>
+				</tr>
+			</table>
+			</div>
+	</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
