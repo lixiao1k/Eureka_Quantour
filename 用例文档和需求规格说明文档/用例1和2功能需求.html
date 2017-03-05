@@ -16,36 +16,86 @@
 	<h3 class="kfont">3.2.1 查看某段日期单支股票数据和走势</h3>
 	
 	<h4 class="kfont">3.2.1.1 特性描述</h4>
-	<p class="kfont">用户有查看某支股票一段时间内的涨跌情况的意愿，并输入了开始结束时间、股票编号进行查询，系统应显示股票数据，在用户选择查看图表示进行相关图表显示。</p>
+	<p class="kfont">用户有查看某支股票一段时间内的涨跌情况的意愿，并输入了开始结束时间、股票代码进行查询，系统应显示股票数据，在用户选择查看图表时进行相关图表显示。</p>
 	<p class="kfont">优先级=中。</p>
 	
 	<h4 class="kfont">3.2.1.2 刺激/响应序列</h4>
 <pre class="kfont">
 刺激：客户输入的日期范围超出有效范围
-响应：系统提示日期无效，要求重新输入
+响应：系统提示日期无效，删除已输入日期，并要求重新输入
 </pre>
 
 <pre class="kfont">
-刺激：客户输入的股票编码不存在
-响应：系统提示股票编码不存在，要求重新输入
+刺激：客户输入的日期范围跨度过大
+响应：系统提示日期跨度过大，删除已输入日期，并要求重新输入
 </pre>
 
 <pre class="kfont">
-刺激：客户输入正确股票信息
+刺激：客户输入的股票代码不存在
+响应：系统提示股票代码不存在，删除已输入股票代码，并要求重新输入
+</pre>
+
+<pre class="kfont">
+刺激：客户输入正确股票信息并点击搜索
 响应：系统显示该段日期内该股票的数据
 </pre>
 
 <pre class="kfont">
-刺激：客户选择查看Ｋ线图或者均线图
-响应：系统显示该段日期内该股票的Ｋ线图或者均线图
-</pre>
-
-<pre class="kfont">
-刺激：客户点击返回
-响应：系统显示股票信息查询界面
+刺激：客户选择查看Ｋ线图（均线图）
+响应：系统显示该段日期内该股票的Ｋ线图（均线图）
 </pre>
 
 	<h4 class="kfont">3.2.1.3 相关功能需求</h4>
-
+	<table style="font-family:楷体;" border="2" width="600px" cellspacing="0">
+		<tr>
+			<td>Stock.Search.Input</td>
+			<td>系统应允许客户在搜索股票信息任务中进行键盘输入</td>
+		</tr>
+		<tr>
+			<td>Stock.Search.Input.Calendar</td>
+			<td>在用户输入日期范围时，系统显示日期日历</td>
+		</tr>
+		<tr>
+			<td>Stock.Search.Input.Info</td>
+			<td>在用户请求查看股票详细信息时，系统要查询相应股票信息并显示，
+			参见Stock.Search.Info</td>
+		</tr>
+		<tr>
+			<td>Stock.Search.Input.Invaild</td>
+			<td>用户输入日期超出范围、跨度过大或者股票代码不存在，系统提示对应错误，参见Stock.Search.Invaild</td>
+		</tr>
+		<tr>
+			<td>Stock.Search.Input.Del</td>
+			<td>用户输入无效时，系统删除已输入内容</td>
+		</tr>
+		<tr>
+			<td>Stock.Search.Info</td>
+			<td>系统显示该股票的数据</td>
+		</tr>
+		<tr>
+			<td>Stock.Search.Info.Data</td>
+			<td>用户请求查看该股票的数据，系统显示该股票的数据</td>
+		</tr>
+		<tr>
+			<td>Stock.Search.Info.KandEMA</td>
+			<td>用户请求查看该股票的K线图和均线图，系统显示该股票的K线图和均线图</td>
+		</tr>
+		<tr>
+			<td>Stock.Search.Invaild</td>
+			<td>系统提示输入无效</td>
+		</tr>
+		<tr>
+			<td>Stock.Search.Invaild.Calendar</td>
+			<td>系统提示输入日期不在有效范围内</td>
+		</tr>
+		<tr>
+			<td>Stock.Search.Invaild.Range</td>
+			<td>系统提示输入日期跨度过大</td>
+		</tr>
+		<tr>
+			<td>Stock.Search.Invaild.Code</td>
+			<td>系统提示输入股票代码不存在</td>
+		</tr>
+	</table>
 </body>
 </html>
