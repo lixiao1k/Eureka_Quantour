@@ -1,0 +1,159 @@
+<!doctype html>
+<html>
+	<head>
+	<meta charset='UTF-8'>
+	<title>用例3与4的需求规格说明文档.html</title>
+	<style>
+		.tdl {width:300px;}
+		.tdr {width:600px;}
+		.kfont {font-family:"楷体";}
+		table 
+		{ 
+			border-collapse: collapse; 
+			border: 1; 
+			width: 900px; 
+		} 
+		td 
+		{ 
+			border: solid #000 1px; 
+		}			
+	</style>
+	</head>
+	<body>
+		<div style="margin:0 auto;width:50%;">
+		<h3>3.2.3 股票比较</h3>
+		<h4>3.2.3.1 特性描述</h4>
+		<p style="text-indent:2em">
+			当用户希望去对比所选中的股票在用户选中的时间范围内的情况时，系统需要提供给用户所选的两只股票在用户选定时间范围内的所有数据信息，
+			并且显示两只对比股票的所有从起始时间到终止时间的最低值、最高值、涨幅/跌幅、每天的收盘价和对数收益率、对数收益率方差。
+		</p>
+		<p style="text-indent:2em">
+			优先级=高
+		</p>
+		<h4>3.2.3.2 刺激响应序列</h4>
+		<p style="text-indent:2em">刺激：用户输入正确的股票编号或是股票名字以及时间范围。</p>
+		<p style="text-indent:2em">响应：系统显示对应的股票的所有从起始时间到终止时间的最低值、最高值、涨幅/跌幅、每天的收盘价和对数收益率、对数收益率方差。</p>
+		<p style="text-indent:2em">刺激：用户选择退出股票对比功能。</p>
+		<p style="text-indent:2em">响应：系统显示股票软件初始界面。</p>
+		<p style="text-indent:2em">刺激：用户输入了错误的股票编号或名字。</p>
+		<p style="text-indent:2em">响应：系统提示输入的股票编号或名字有误。</p>
+		<p style="text-indent:2em">刺激：用户输入了错误的时间范围。</p>
+		<p style="text-indent:2em">响应：系统提示错误的时间范围。</p>
+		<h4>3.2.3.3 相关功能需求</h4>
+		<table border="1" width="900px">
+			<tr>
+				<td class=tdl>
+				Shares_Compare.Input<br>
+				Shares_Compare.Input.Shares<br>
+				Shares_Compare.Input.Date
+				</td>
+				<td class=tdr> 
+				系统应该允许用户在对比股票数据时进行键盘输入。<br>
+				系统需要接收用户输入的股票编号或股票名字。<br>
+				系统需要接收用户输入的时间。
+				</td>
+			</tr>
+			<tr>
+				<td> 
+				Shares_Compare.Judge<br>
+				Shares_Compare.Judge.Shares<br>
+				Shares_Compare.Judge.Date
+				</td>
+				<td> 
+				系统会对于用户的输入进行判断。<br>
+				系统判断所接收的股票编号或名字是否正确，如不正确，跳转到.Error.Shares。<br>
+				系统判断所接收的时间是否正确,如不正确，跳转到.Error.Shares。
+				</td>
+			</tr>
+			<tr>
+				<td> 
+				Shares_Compare.Error<br>
+				Shares_Compare.Error.Shares<br>
+				Shares_Compare.Error.Date
+				</td>
+				<td> 
+				系统对于错误的操作进行提示。<br>
+				系统提示输入的股票编号或名字有误。<br>
+				系统提示错误的时间范围。
+				</td>
+			</tr>
+			<tr>
+				<td> 
+				Shares_Compare.Compute<br>
+				Shares_Compare.Compute.Info
+				</td>
+				<td> 
+				系统需要对于获取的股票数据进行处理。<br>
+				系统根据获取的股票数据计算所有从起始时间到终止时间的最低值、最高值、涨幅/跌幅、每天的收盘价和对数收益率、对数收益率方差。
+				</td>
+			</tr>
+			<tr>
+				<td> 
+				Shares_Compare.Output
+				</td>
+				<td> 
+				系统显示两只股票的所有从起始时间到终止时间的最低值、最高值、涨幅/跌幅、每天的收盘价和对数收益率、对数收益率方差的数据。
+				</td>
+			</tr>
+			<tr>
+				<td> 
+				Shares_Compare.Exit
+				</td>
+				<td> 
+				系统显示股票软件初始界面。
+				</td>
+			</tr>
+		</table>
+		
+		
+		<br><br><br>
+		
+		
+		
+		<h3>3.2.4 查看股票比较图</h3>
+		<h4>3.2.3.1 特性描述</h4>
+		<p style="text-indent:2em">
+			当用户希望去对比所选中的股票的k线图与均线图的对比情况时，系统需要提供给用户所选的两只股票的k线图与均线图的绘制与对比。
+		</p>
+		<p style="text-indent:2em">
+			优先级=高
+		</p>
+		<h4>3.2.3.2 刺激响应序列</h4>
+		<p style="text-indent:2em">刺激：用户选择查看对比股票的k线图/均线图。</p>
+		<p style="text-indent:2em">响应：系统显示对应的股票的k线图与均线图。</p>
+		<p style="text-indent:2em">刺激：用户选择返回股票信息对比。</p>
+		<p style="text-indent:2em">响应：系统显示股票的信息数据对比界面。</p>
+		<h4>3.2.3.3 相关功能需求</h4>
+		<table border="1" width="900px">
+			<tr>
+				<td class=tdl>
+				Draw_Compare.GetData
+				</td>
+				<td class=tdr> 
+				系统获取两只对比股票的所有数据。
+				</td>
+			</tr>
+			<tr>
+				<td>
+				Draw_Compare.Output<br>
+				Draw_Compare.Output.kchat<br>
+				Draw_Compare.Output.avgchat
+				</td>
+				<td> 
+				系统绘制出两只对比股票的相关对比图。<br>
+				系统绘制出两只对比股票的k线图。<br>
+				系统绘制出两只对比股票的均线图。
+				</td>
+			</tr>
+			<tr>
+				<td class=tdl>
+				Draw_Compare.Exit
+				</td>
+				<td class=tdr> 
+				系统显示股票的信息数据对比界面。
+				</td>
+			</tr>
+		</table>
+		</div>
+	</body>
+</html>
