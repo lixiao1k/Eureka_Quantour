@@ -3,11 +3,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.Eureka.www</groupId>
-  <artifactId>Eureka_Quantour</artifactId>
+  <artifactId>Eureka_Quantour_Client</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>Eureka_Quantour</name>
+  <name>Eureka_Quantour_Client</name>
   <url>http://maven.apache.org</url>
 
   <properties>
