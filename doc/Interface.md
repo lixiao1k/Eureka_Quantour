@@ -1,7 +1,3 @@
-## 网址
-
-[StockChartsFX](https://github.com/rterp/StockChartsFX)
-
 ## 对象
 
 * singleStockInfo : date , code , open , close , high , low , volume
