@@ -35,7 +35,7 @@
     -fx-background-insets: -3 -3 -4 -3, -3, 0, 1, 2, 0;
 	-fx-font-family: "Arial";
     -fx-text-fill: white;
-    -fx-font-size: 10;
+    -fx-font-size: 13;
     -fx-text-fill: linear-gradient(white, #d0d0d0);
 }
 .button:focused, .button:hover {
@@ -56,7 +56,7 @@
         rgb(218, 226, 224);
     -fx-background-insets: 0 0 -1 0, 0, 1.5;
     -fx-background-radius: 6, 5, 4;
-    -fx-padding: 6 10 4 10;
+
     -fx-effect: innershadow( gaussian, rgb(0, 0, 0, 0.8), 5, 0, 0, 2 );
     -fx-font-family: "Arial";
 }
