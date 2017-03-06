@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="500.0" prefWidth="500.0" styleClass="background" stylesheets="@loginUi.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.loginUI.LoginController">
+   <children>
+      <AnchorPane layoutX="2.0" layoutY="7.0" prefHeight="276.0" prefWidth="500.0" styleClass="top-segment">
+         <children>
+            <VBox layoutX="18.0" prefHeight="278.0" prefWidth="465.0">
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+               <children>
+                  <AnchorPane prefHeight="300.0" prefWidth="300.0">
+                     <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </padding>
+                     <children>
+                        <Label layoutX="25.0" layoutY="106.0" text="Name" />
+                        <Label layoutX="25.0" layoutY="169.0" text="Password" />
+                        <TextField fx:id="nameTextField" layoutX="25.0" layoutY="131.0" prefHeight="32.0" prefWidth="373.0" />
+                        <TextField fx:id="passwordTextField" layoutX="25.0" layoutY="190.0" prefHeight="32.0" prefWidth="373.0" />
+                        <Label layoutX="158.0" layoutY="44.0" styleClass="label-title" text="Eureka" />
+                     </children>
+                  </AnchorPane>
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+      <Button layoutX="65.0" layoutY="383.0" mnemonicParsing="false" onAction="#login" prefHeight="53.0" prefWidth="373.0" text="Login" />
+      <Label fx:id="feedbackLabel" layoutX="66.0" layoutY="344.0" prefHeight="39.0" prefWidth="373.0" text="Label" />
+   </children>
+</AnchorPane>
