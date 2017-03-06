@@ -6,9 +6,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="loginUI.LoginController">
+
+<AnchorPane prefHeight="500.0" prefWidth="500.0" styleClass="background" stylesheets="@loginUi.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.loginUI.LoginController">
+
    <children>
-      <AnchorPane layoutX="2.0" layoutY="7.0" prefHeight="276.0" prefWidth="500.0">
+      <AnchorPane layoutX="2.0" layoutY="7.0" prefHeight="276.0" prefWidth="500.0" styleClass="top-segment">
          <children>
             <VBox layoutX="18.0" prefHeight="278.0" prefWidth="465.0">
                <padding>
@@ -24,7 +26,7 @@
                         <Label layoutX="25.0" layoutY="169.0" text="Password" />
                         <TextField layoutX="25.0" layoutY="131.0" prefHeight="32.0" prefWidth="373.0" />
                         <TextField layoutX="25.0" layoutY="190.0" prefHeight="32.0" prefWidth="373.0" />
-                        <Label layoutX="192.0" layoutY="42.0" text="Eureka" />
+                        <Label layoutX="158.0" layoutY="44.0" styleClass="label-title" text="Eureka" />
                      </children>
                   </AnchorPane>
                </children>
