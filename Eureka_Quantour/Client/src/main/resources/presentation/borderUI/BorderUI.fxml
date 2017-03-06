@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="650.0" prefWidth="1000.0" styleClass="background" stylesheets="@Border.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.borderUI.BorderController">
+   <children>
+      <AnchorPane prefHeight="651.0" prefWidth="144.0" styleClass="left-segment" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ImageView fitHeight="133.0" fitWidth="144.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true" styleClass="imageview" />
+            <Separator layoutX="1.0" layoutY="130.0" prefHeight="7.0" prefWidth="149.0" />
+            <Button layoutX="3.0" layoutY="137.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="68.0" text="Button" />
+            <Button layoutX="76.0" layoutY="137.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="68.0" text="Button" />
+            <Button layoutX="3.0" layoutY="168.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="68.0" text="Button" />
+            <Button layoutX="76.0" layoutY="168.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="68.0" text="Button" />
+            <Button layoutX="3.0" layoutY="198.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="68.0" text="gvshjkvjsdklbvjbdjb" />
+            <Button layoutX="76.0" layoutY="198.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="68.0" text="Button" />
+         </children>
+      </AnchorPane>
+      <Separator layoutX="149.0" orientation="VERTICAL" prefHeight="651.0" prefWidth="6.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <AnchorPane layoutX="149.0" prefHeight="650.0" prefWidth="852.0">
+         <children>
+            <Separator layoutY="131.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <DatePicker layoutX="78.0" layoutY="67.0" prefHeight="23.0" prefWidth="173.0" />
+            <DatePicker layoutX="324.0" layoutY="69.0" prefHeight="23.0" prefWidth="167.0" />
+            <Label layoutX="14.0" layoutY="74.0" text="起始日期：" />
+            <Label layoutX="259.0" layoutY="75.0" text="结束日期：" />
+            <TextField layoutX="558.0" layoutY="69.0" prefHeight="29.0" prefWidth="149.0" promptText="搜索股票" />
+            <Button layoutX="723.0" layoutY="75.0" mnemonicParsing="false" text="搜索" />
+            <Label layoutX="349.0" layoutY="14.0" prefHeight="39.0" prefWidth="118.0" styleClass="label-title" text="Eureka" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

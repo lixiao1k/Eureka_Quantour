@@ -1,30 +1,22 @@
+
 .background {
-    -fx-background-image: url("CoarseGrid.png");
+	-fx-background-image: url("CoarseGrid1.png");
     -fx-background-repeat: repeat;
 	-fx-background-color:
         linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
         linear-gradient(#20262b, #191d22),
         radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));
 }
-.top-segment {
+.left-segment {
 	-fx-background-color: rgba(255, 255, 255, 0.05);
 	-fx-border-color: 
 		transparent transparent rgb(255, 255, 255, 0.08) transparent,
 		transparent transparent rgb(0, 0, 0, 0.5) transparent;
 	-fx-border-width: 1, 1.5;
-	-fx-border-insets: -1, 0; 
+	-fx-border-insets: 0,-1; 
 }
-.label {
-	-fx-font-family: "Arial";
-    -fx-font-size: 14;
-    -fx-text-fill: rgb(255, 255, 255, 0.4);
-    -fx-effect: dropshadow( one-pass-box , rgb(0, 0, 0, 0.6), 0, 0.0 , 0 , 1 );
-}
-.label-title{
-    -fx-font-family:"Arial";
-    -fx-font-size:34;
-    -fx-text-fill:rgb(255,255,255,0.7);
-    -fx-effect:dropshadow(one-pass-box,rgb(0,0,0,0.6),0,0.0,0,1);
+.separator{
+	-fx-opacity:0.2;
 }
 .button .text {
     -fx-effect: dropshadow( one-pass-box , rgb(0, 0, 0, 0.8), 0, 0.0 , 0 , -1 );
@@ -43,9 +35,8 @@
     -fx-background-insets: -3 -3 -4 -3, -3, 0, 1, 2, 0;
 	-fx-font-family: "Arial";
     -fx-text-fill: white;
-    -fx-font-size: 26;
+    -fx-font-size: 10;
     -fx-text-fill: linear-gradient(white, #d0d0d0);
-    -fx-padding: 10 20 10 20;
 }
 .button:focused, .button:hover {
     -fx-background-color:
@@ -57,9 +48,27 @@
         radial-gradient(center 50% 0%, radius 100%, rgba(135,142,148,0.9),
         rgba(255,255,255,0));
 }
+.date-picker{
+	-fx-font-size: 10;
+    -fx-background-color:
+    	rgb(255, 255, 255, 0.3),
+    	linear-gradient(rgb(0, 0, 0, 0.5), rgb(0, 0, 0, 0.8) 50%),
+        rgb(218, 226, 224);
+    -fx-background-insets: 0 0 -1 0, 0, 1.5;
+    -fx-background-radius: 6, 5, 4;
+    -fx-padding: 6 10 4 10;
+    -fx-effect: innershadow( gaussian, rgb(0, 0, 0, 0.8), 5, 0, 0, 2 );
+    -fx-font-family: "Arial";
+}
 
+.label {
+	-fx-font-family: "Arial";
+    -fx-font-size: 13;
+    -fx-text-fill: rgb(255, 255, 255, 0.4);
+    -fx-effect: dropshadow( one-pass-box , rgb(0, 0, 0, 0.6), 0, 0.0 , 0 , 1 );
+}
 .text-field {
-	-fx-font-size: 18;
+
     -fx-background-color:
     	rgb(255, 255, 255, 0.3),
     	linear-gradient(rgb(0, 0, 0, 0.5), rgb(0, 0, 0, 0.8) 50%),
@@ -77,4 +86,10 @@
     	rgb(235, 235, 235, 0.5),
         rgb(0, 0, 0, 0.4),
         rgb(255, 255, 255);
+}
+.label-title{
+    -fx-font-family:"Arial";
+    -fx-font-size:34;
+    -fx-text-fill:rgb(255,255,255,0.7);
+    -fx-effect:dropshadow(one-pass-box,rgb(0,0,0,0.6),0,0.0,0,1);
 }
