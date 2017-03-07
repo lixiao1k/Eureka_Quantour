@@ -1,7 +1,7 @@
 ## 对象
 
-* singleStockInfo : date , code , open , close , high , low , volume
-* comparedInfo : A and B's processed info
+* singleStockInfo : name, date , code , open , close , high , low , volume, adjclose, market
+* comparedInfo : A and B's processed info : name, code, begin, end,  low, high, ROD, close, logYield, logYieldVariance
 * marketInfo : volume 、 涨（跌）停股票数、涨（跌）幅超过
    5% 的股票数、开盘‐收盘大（小）于 5%*上一个交易日收盘价的
    股票个数
