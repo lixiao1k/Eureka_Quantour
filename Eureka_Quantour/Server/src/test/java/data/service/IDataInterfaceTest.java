@@ -62,6 +62,6 @@ public class IDataInterfaceTest extends TestCase {
     	day3.set(2007, 5, 26);
     	day4.set(2010, 7, 3);
     	day5.set(2014, 4, 29);
-    	data.getSingleStockInfo(stockcode, begin, end)
+//    	data.getSingleStockInfo(stockcode, begin, end)
     }
 }
