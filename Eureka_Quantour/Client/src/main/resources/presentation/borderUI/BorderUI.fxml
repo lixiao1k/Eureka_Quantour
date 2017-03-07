@@ -9,29 +9,33 @@
 
 <AnchorPane prefHeight="650.0" prefWidth="1000.0" styleClass="background" stylesheets="@Border.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.borderUI.BorderController">
    <children>
-      <AnchorPane prefHeight="651.0" prefWidth="144.0" styleClass="left-segment" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <AnchorPane layoutX="-4.0" prefHeight="651.0" prefWidth="144.0" styleClass="left-segment" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <ImageView fitHeight="133.0" fitWidth="144.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true" styleClass="imageview" />
-            <Separator layoutX="1.0" layoutY="130.0" prefHeight="7.0" prefWidth="149.0" />
-            <Button layoutX="3.0" layoutY="137.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="68.0" text="Button" />
-            <Button layoutX="76.0" layoutY="137.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="68.0" text="Button" />
-            <Button layoutX="3.0" layoutY="168.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="68.0" text="Button" />
-            <Button layoutX="76.0" layoutY="168.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="68.0" text="Button" />
-            <Button layoutX="3.0" layoutY="198.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="68.0" text="gvshjkvjsdklbvjbdjb" />
-            <Button layoutX="76.0" layoutY="198.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="68.0" text="Button" />
+            <ImageView fx:id="imageView" fitHeight="70.0" fitWidth="75.0" layoutX="41.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true" styleClass="imageview">
+               <image>
+                  <Image url="@User.png" />
+               </image></ImageView>
+            <Separator layoutX="2.0" layoutY="124.0" prefHeight="7.0" prefWidth="149.0" />
+            <Button layoutX="6.0" layoutY="208.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="141.0" text="K线" />
+            <Button layoutX="6.0" layoutY="247.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="141.0" text="均线" />
+            <Button layoutX="6.0" layoutY="285.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="141.0" text="比较" />
+            <Button layoutX="6.0" layoutY="325.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="141.0" text="市场情况" />
          </children>
       </AnchorPane>
       <Separator layoutX="149.0" orientation="VERTICAL" prefHeight="651.0" prefWidth="6.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      <AnchorPane layoutX="149.0" prefHeight="650.0" prefWidth="852.0">
+      <AnchorPane layoutX="149.0" layoutY="-6.0" prefHeight="650.0" prefWidth="852.0" AnchorPane.leftAnchor="149.0" AnchorPane.rightAnchor="-1.0">
          <children>
             <Separator layoutY="131.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-            <DatePicker layoutX="78.0" layoutY="67.0" prefHeight="23.0" prefWidth="173.0" />
-            <DatePicker layoutX="324.0" layoutY="69.0" prefHeight="23.0" prefWidth="167.0" />
+            <DatePicker fx:id="beginDatePicker" layoutX="78.0" layoutY="67.0" prefHeight="23.0" prefWidth="112.0" />
+            <DatePicker fx:id="endDatePicker" layoutX="78.0" layoutY="97.0" prefHeight="23.0" prefWidth="112.0" />
             <Label layoutX="14.0" layoutY="74.0" text="起始日期：" />
-            <Label layoutX="259.0" layoutY="75.0" text="结束日期：" />
-            <TextField layoutX="558.0" layoutY="69.0" prefHeight="29.0" prefWidth="149.0" promptText="搜索股票" />
-            <Button layoutX="723.0" layoutY="75.0" mnemonicParsing="false" text="搜索" />
+            <Label layoutX="14.0" layoutY="100.0" text="结束日期：" />
+            <TextField fx:id="searchTextField" layoutX="204.0" layoutY="66.0" prefHeight="16.0" prefWidth="106.0" promptText="搜索股票" />
+            <Button fx:id="searchButton" layoutX="310.0" layoutY="69.0" mnemonicParsing="false" onAction="#goSearch" prefHeight="26.0" prefWidth="48.0" text="搜索" />
             <Label layoutX="349.0" layoutY="14.0" prefHeight="39.0" prefWidth="118.0" styleClass="label-title" text="Eureka" />
+            <AnchorPane layoutY="133.0" prefHeight="517.0" prefWidth="852.0" />
+            <TextField layoutX="204.0" layoutY="96.0" prefHeight="16.0" prefWidth="106.0" promptText="搜索股票" />
+            <Button layoutX="310.0" layoutY="99.0" mnemonicParsing="false" prefHeight="16.0" prefWidth="48.0" text="比较" />
          </children>
       </AnchorPane>
    </children>
