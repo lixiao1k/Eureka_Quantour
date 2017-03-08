@@ -1,11 +1,14 @@
 package vo;
+
+import java.io.Serializable;
+
 /**
  * 
  * @Description: gather the data of market in one day
  * @author: hzp
  * @time: 2017年3月6日
  */
-public class MarketInfoVO {
+public class MarketInfoVO implements Serializable{
 
 	/**
 	 * EFP: exceed five percent
@@ -52,22 +55,31 @@ public class MarketInfoVO {
 	public void setVolume(int volume){
 		this.volume = volume;
 	}
-	public void getNumOfRiseStop(int numOfRiseStop){
+	public void setNumOfRiseStop(int numOfRiseStop){
 		this.numOfRiseStop = numOfRiseStop;
 	}
-	public void getNumOfDropStop(int numOfDropStop){
+	public void setNumOfDropStop(int numOfDropStop){
 		this.numOfDropStop = numOfDropStop;
 	}
-	public void getNumOfRiseLTFP(int numOfRiseLTFP){
+	public void setNumOfRiseLTFP(int numOfRiseLTFP){
 		this.numOfRiseLTFP = numOfRiseLTFP;
 	}
-	public void getNumOfDropLTFP(int numOfDropLTFP){
+	public void setNumOfDropLTFP(int numOfDropLTFP){
 		this.numOfDropLTFP = numOfDropLTFP;
 	}
-	public void getNumOfOMCLTFP(int numOfOMCLTFP){
+	public void setNumOfOMCLTFP(int numOfOMCLTFP){
 		this.numOfOMCLTFP = numOfOMCLTFP;
 	}
-	public void getNumOfOMCSTFP(int numOfOMCSTFP){
+	public void setNumOfOMCSTFP(int numOfOMCSTFP){
 		this.numOfOMCSTFP = numOfOMCSTFP;
+	}
+	
+	public MarketInfoVO initObject(int volume, int numOfRiseStop, int numOfDropStop, int numOfRiseLTFP,
+			int numOfDropLTFP, int numOfOMCLTFP, int numOfOMCSTFP){
+		MarketInfoVO mi = new MarketInfoVO();
+		mi.setVolume(volume); mi.setNumOfRiseStop(numOfRiseStop); mi.setNumOfDropStop(numOfDropStop);
+		mi.setNumOfRiseLTFP(numOfRiseLTFP); mi.setNumOfDropLTFP(numOfDropLTFP);
+		mi.setNumOfOMCLTFP(numOfOMCLTFP); mi.setNumOfOMCSTFP(numOfOMCSTFP);
+		return mi;
 	}
 }
