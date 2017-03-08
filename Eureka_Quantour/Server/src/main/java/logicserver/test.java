@@ -31,7 +31,6 @@ public class test {
 			return false;
 		else{
 			for(int i=0;i<list1.size();i++){
-				System.out.println(list1.get(i)+"  "+list2.get(i));
 				if(!String.valueOf(list1.get(i)).equals(String.valueOf(list2.get(i))))
 					return false;
 			}
