@@ -27,7 +27,10 @@
       <AnchorPane layoutX="149.0" layoutY="-6.0" prefHeight="650.0" prefWidth="852.0" AnchorPane.leftAnchor="149.0" AnchorPane.rightAnchor="-1.0">
          <children>
             <Separator layoutY="131.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-            <AnchorPane layoutY="133.0" prefHeight="517.0" prefWidth="852.0" />
+            <AnchorPane layoutY="133.0" prefHeight="517.0" prefWidth="852.0">
+               <children>
+                  <BorderPane fx:id="borderPane" layoutX="14.0" layoutY="17.0" prefHeight="484.0" prefWidth="833.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0" />
+               </children></AnchorPane>
             <AnchorPane fx:id="setInfoAnchorPane" layoutX="2.0" layoutY="81.0" prefHeight="50.0" prefWidth="852.0" />
             <ImageView fx:id="logoImageView" fitHeight="50.0" fitWidth="372.0" layoutX="240.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="240.0" AnchorPane.rightAnchor="260.0" />
          </children>
