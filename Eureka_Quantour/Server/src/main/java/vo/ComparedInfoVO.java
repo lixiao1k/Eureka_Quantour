@@ -1,5 +1,6 @@
 package vo;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
 /**
@@ -8,7 +9,7 @@ import java.util.Calendar;
  * @author: hzp
  * @time: 2017.3.6
  */
-public class ComparedInfoVO {
+public class ComparedInfoVO implements Serializable{
 	/**
 	 * ROD: rise or drop percent
 	 * logYieldA: 对数收益率
@@ -157,6 +158,18 @@ public class ComparedInfoVO {
 		this.logYieldVarianceB = logYieldVarianceB;
 	}
 	
-	
+	public ComparedInfoVO initObject(String nameA, String codeA, Calendar beginA, Calendar endA, double lowA,
+			double highA, double RODA, double closeA, double logYieldA, double logYieldVarianceA,
+			String nameB, String codeB, Calendar beginB, Calendar endB, double lowB,
+			double highB, double RODB, double closeB, double logYieldB, double logYieldVarianceB){
+		ComparedInfoVO ci = new ComparedInfoVO();
+		ci.setNameA(nameA); ci.setCodeA(codeA); ci.setBeginA(beginA); ci.setCloseA(closeA);
+		ci.setEndA(endA); ci.setLowA(lowA); ci.setHighA(highA); ci.setRODA(RODA);
+		ci.setCloseA(closeA); ci.setLogYieldA(logYieldA); ci.setLogYieldVarianceA(logYieldVarianceA);
+		ci.setNameA(nameB); ci.setCodeA(codeB); ci.setBeginA(beginB); ci.setCloseA(closeB);
+		ci.setEndA(endB); ci.setLowA(lowB); ci.setHighA(highB); ci.setRODA(RODB);
+		ci.setCloseA(closeB); ci.setLogYieldA(logYieldB); ci.setLogYieldVarianceA(logYieldVarianceB);
+		return ci;
+	}
 	
 }

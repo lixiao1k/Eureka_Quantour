@@ -1,5 +1,6 @@
 package vo;
 
+import java.io.Serializable;
 import java.util.Calendar;
 /**
  * 
@@ -7,7 +8,7 @@ import java.util.Calendar;
  * @author: hzp
  * @time: 2017.3.6
  */
-public class SingleStockInfoVO {
+public class SingleStockInfoVO implements Serializable{
 	/**
 	 *@param: name: stock's name
 	 *@param: date: the time of these data
@@ -90,5 +91,21 @@ public class SingleStockInfoVO {
 	}
 	public void setMarket(String market){
 		this.market = market;
+	}
+	
+	public SingleStockInfoVO initObject(String name, Calendar date, String code, double open, double close,
+			double high, double low, int volume, double adjclose, String market){
+		SingleStockInfoVO ssi = new SingleStockInfoVO();
+		ssi.setName(name);
+		ssi.setDate(date);
+		ssi.setCode(code);
+		ssi.setOpen(open);
+		ssi.setClose(close);
+		ssi.setHigh(high);
+		ssi.setLow(low);
+		ssi.setVolume(volume);
+		ssi.setAdjclose(adjclose);
+		ssi.setMarket(market);
+		return ssi;
 	}
 }
