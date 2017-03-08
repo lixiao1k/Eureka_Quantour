@@ -10,8 +10,8 @@
 
 * 注册 public boolean signUp ( String username, String password )
 * 登录 public boolean signIn ( String username, String password )
-* 搜索 public Iterator< singleStockInfo > getSingleStockInfoByTime ( String stockCode, Calendar begin, Calendar end )
-* public Iterator< double > getEMAInfo ( String stockCode, Calendar begin, Calendar end, int method )
+* 搜索 public List< singleStockInfo > getSingleStockInfoByTime ( String stockCode, Calendar begin, Calendar end )
+* public List< double > getEMAInfo ( String stockCode, Calendar begin, Calendar end, int method )
 * public comparedInfo  getComparedInfo ( String stockCodeA, String stockCodeB, Calendar begin, Calendar end )
 * public marketInfo getMarketInfo ( Calendar date )
 
