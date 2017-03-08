@@ -5,7 +5,7 @@ import java.util.Calendar;
 
 /**
  * 
- * @Description: TODO
+ * @Description: save two stocks's information to compare
  * @author: hzp
  * @time: 2017.3.6
  */
@@ -17,25 +17,34 @@ public class ComparedInfoVO implements Serializable{
 	 */
 	private String nameA = "";
 	private String codeA = "";
-	private Calendar beginA ;
-	private Calendar endA ;
+	private Calendar[] dateA ;
 	private double lowA = 0;
 	private double highA = 0;
 	private double RODA = 0;
-	private double closeA = 0;
+	private double[] closeA ;
 	private double logYieldA = 0;
 	private double logYieldVarianceA = 0;
 	
 	private String nameB = "";
 	private String codeB = "";
-	private Calendar beginB ;
-	private Calendar endB ;
+	private Calendar[] dateB ;
 	private double lowB = 0;
 	private double highB = 0;
 	private double RODB = 0;
-	private double closeB = 0;
+	private double[] closeB ;
 	private double logYieldB = 0;
 	private double logYieldVarianceB = 0;
+	
+	public ComparedInfoVO(int n){
+		dateA = new Calendar[n];
+		dateB = new Calendar[n];
+		closeA = new double[n];
+		closeB = new double[n];
+		for(int i=0;i<n;i++){
+			closeA[i] = 0.0;
+			closeB[i] = 0.0;
+		}
+	}
 	
 	public String getNameA() {
 		return nameA;
@@ -49,17 +58,11 @@ public class ComparedInfoVO implements Serializable{
 	public void setCodeA(String codeA) {
 		this.codeA = codeA;
 	}
-	public Calendar getBeginA() {
-		return beginA;
+	public Calendar[] getDateA() {
+		return dateA;
 	}
-	public void setBeginA(Calendar beginA) {
-		this.beginA = beginA;
-	}
-	public Calendar getEndA() {
-		return endA;
-	}
-	public void setEndA(Calendar endA) {
-		this.endA = endA;
+	public void setDateA(Calendar[] dateA) {
+		this.dateA = dateA;
 	}
 	public double getLowA() {
 		return lowA;
@@ -79,10 +82,10 @@ public class ComparedInfoVO implements Serializable{
 	public void setRODA(double rODA) {
 		RODA = rODA;
 	}
-	public double getCloseA() {
+	public double[] getCloseA() {
 		return closeA;
 	}
-	public void setCloseA(double closeA) {
+	public void setCloseA(double[] closeA) {
 		this.closeA = closeA;
 	}
 	public double getLogYieldA() {
@@ -109,17 +112,11 @@ public class ComparedInfoVO implements Serializable{
 	public void setCodeB(String codeB) {
 		this.codeB = codeB;
 	}
-	public Calendar getBeginB() {
-		return beginB;
+	public Calendar[] getDateB() {
+		return dateB;
 	}
-	public void setBeginB(Calendar beginB) {
-		this.beginB = beginB;
-	}
-	public Calendar getEndB() {
-		return endB;
-	}
-	public void setEndB(Calendar endB) {
-		this.endB = endB;
+	public void setDateB(Calendar[] dateB) {
+		this.dateB = dateB;
 	}
 	public double getLowB() {
 		return lowB;
@@ -139,10 +136,10 @@ public class ComparedInfoVO implements Serializable{
 	public void setRODB(double rODB) {
 		RODB = rODB;
 	}
-	public double getCloseB() {
+	public double[] getCloseB() {
 		return closeB;
 	}
-	public void setCloseB(double closeB) {
+	public void setCloseB(double[] closeB) {
 		this.closeB = closeB;
 	}
 	public double getLogYieldB() {
@@ -158,17 +155,20 @@ public class ComparedInfoVO implements Serializable{
 		this.logYieldVarianceB = logYieldVarianceB;
 	}
 	
-	public ComparedInfoVO initObject(String nameA, String codeA, Calendar beginA, Calendar endA, double lowA,
-			double highA, double RODA, double closeA, double logYieldA, double logYieldVarianceA,
-			String nameB, String codeB, Calendar beginB, Calendar endB, double lowB,
-			double highB, double RODB, double closeB, double logYieldB, double logYieldVarianceB){
-		ComparedInfoVO ci = new ComparedInfoVO();
-		ci.setNameA(nameA); ci.setCodeA(codeA); ci.setBeginA(beginA); ci.setCloseA(closeA);
-		ci.setEndA(endA); ci.setLowA(lowA); ci.setHighA(highA); ci.setRODA(RODA);
-		ci.setCloseA(closeA); ci.setLogYieldA(logYieldA); ci.setLogYieldVarianceA(logYieldVarianceA);
-		ci.setNameA(nameB); ci.setCodeA(codeB); ci.setBeginA(beginB); ci.setCloseA(closeB);
-		ci.setEndA(endB); ci.setLowA(lowB); ci.setHighA(highB); ci.setRODA(RODB);
-		ci.setCloseA(closeB); ci.setLogYieldA(logYieldB); ci.setLogYieldVarianceA(logYieldVarianceB);
+	public ComparedInfoVO initObject(
+			String nameA, String codeA, Calendar[] dateA, double lowA, double highA, 
+			double RODA, double[] closeA, double logYieldA, double logYieldVarianceA,
+			String nameB, String codeB, Calendar[] dateB, double lowB, double highB, 
+			double RODB, double[] closeB, double logYieldB, double logYieldVarianceB, int n)
+	{
+		ComparedInfoVO ci = new ComparedInfoVO(n);
+		ci.setNameA(nameA); ci.setCodeA(codeA); ci.setDateA(dateA); ci.setLowA(lowA); 
+		ci.setHighA(highA); ci.setRODA(RODA); ci.setCloseA(closeA); 
+		ci.setLogYieldA(logYieldA); ci.setLogYieldVarianceA(logYieldVarianceA);
+		
+		ci.setNameB(nameB); ci.setCodeB(codeB); ci.setDateB(dateB); ci.setLowB(lowB); 
+		ci.setHighB(highB); ci.setRODB(RODB); ci.setCloseB(closeB); 
+		ci.setLogYieldB(logYieldB); ci.setLogYieldVarianceB(logYieldVarianceB);
 		return ci;
 	}
 	

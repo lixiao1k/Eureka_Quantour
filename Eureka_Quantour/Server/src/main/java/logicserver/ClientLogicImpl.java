@@ -1,5 +1,10 @@
 package logicserver;
-
+/**
+ * 
+ * @Description: TODO
+ * @author: hzp
+ * @time: 2017年3月6日
+ */
 public class ClientLogicImpl implements ClientLogicInterface{
 
 	@Override
