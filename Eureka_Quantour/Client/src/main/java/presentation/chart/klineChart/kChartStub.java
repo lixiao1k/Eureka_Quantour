@@ -16,32 +16,39 @@ limitations under the License.
  */
 
 
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.ResourceBundle;
+
 import javafx.application.Application;
+import javafx.fxml.Initializable;
+
 import static javafx.application.Application.launch;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 
-public class MainApp extends Application {
+public class kChartStub implements Initializable {
+	
 
-    @Override
-    public void start(Stage stage) throws Exception {
+    public CandleStickChart getKChart() {
         CandleStickChart candleStickChart = new CandleStickChart("S&P 500 Index", buildBars());
-        Scene scene = new Scene(candleStickChart);
-        scene.getStylesheets().add("/styles/CandleStickChartStyles.css");
+        candleStickChart.getStylesheets().add("/styles/CandleStickChartStyles.css");
+//        Scene scene = new Scene(candleStickChart);
+//        scene.getStylesheets().add("/styles/CandleStickChartStyles.css");
         
-        stage.setTitle("JavaFX and Maven");
-        stage.setScene(scene);
-        stage.show();
-        
+//        stage.setTitle("JavaFX and Maven");
+//        stage.setScene(scene);
+//        stage.show();
+//        
         candleStickChart.setYAxisFormatter(new DecimalAxisFormatter("#000.00"));
+        return candleStickChart;
     }
-    
+//    
     
     public List<BarData> buildBars() {
         double previousClose = 1850;
@@ -81,16 +88,23 @@ public class MainApp extends Application {
         return newValue;
     }
 
-    /**
-     * The main() method is ignored in correctly deployed JavaFX application.
-     * main() serves only as fallback in case the application can not be
-     * launched through deployment artifacts, e.g., in IDEs with limited FX
-     * support. NetBeans ignores main().
-     *
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        launch(args);
-    }
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		// TODO Auto-generated method stub
+		
+	}
+
+//    /**
+//     * The main() method is ignored in correctly deployed JavaFX application.
+//     * main() serves only as fallback in case the application can not be
+//     * launched through deployment artifacts, e.g., in IDEs with limited FX
+//     * support. NetBeans ignores main().
+//     *
+//     * @param args the command line arguments
+//     */
+//    public static void main(String[] args) {
+//        launch(args);
+//    }
 
 }

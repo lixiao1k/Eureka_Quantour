@@ -1,6 +1,7 @@
 package presentation.borderUI;
 
 import java.net.URL;
+import java.util.Calendar;
 import java.util.Observable;
 import java.util.ResourceBundle;
 
@@ -17,10 +18,20 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import presentation.chart.klineChart.CandleStickChart;
+import presentation.chart.klineChart.kChartStub;
 
 public class BorderController implements Initializable {
+	
+	private Calendar beginDate;
+	private Calendar endDate;
+	private String stockA;
+	private String stockB;
+	private CandleStickChart candleStickChart;
+	
 	@FXML
 	ImageView imageView;
 	
@@ -29,6 +40,9 @@ public class BorderController implements Initializable {
 	
 	@FXML
 	AnchorPane setInfoAnchorPane;
+	
+	@FXML
+	BorderPane borderPane;
 	
 	private Image logo = new Image(getClass().getResourceAsStream("Title.png"));
 	
@@ -89,6 +103,13 @@ public class BorderController implements Initializable {
 		stockName.setPrefSize(100,5);
 		stockName.setPromptText("股票名称");
 		Button searchButton = new Button("搜索");
+		
+		
+		searchButton.setOnAction((ActionEvent e)->{
+			kChartStub kchart = new kChartStub();
+			candleStickChart = kchart.getKChart();
+			borderPane.setCenter(candleStickChart);
+		});
 		
 		hb.getChildren().addAll(beginLabel,beginDatePicker,endLabel,endDatePicker,blank,stockName,searchButton);
 		hb.getProperties().put("Name","searchSingleStockHBox");
