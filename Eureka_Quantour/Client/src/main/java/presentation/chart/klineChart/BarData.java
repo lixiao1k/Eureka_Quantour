@@ -8,7 +8,7 @@ import java.util.Calendar;
  *
  * @author RobTerpilowski
  */
-class BarData  {
+public class BarData  {
         
 
 

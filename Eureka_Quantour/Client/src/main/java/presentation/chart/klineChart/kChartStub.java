@@ -45,7 +45,7 @@ public class kChartStub implements Initializable {
 //        stage.setScene(scene);
 //        stage.show();
 //        
-        candleStickChart.setYAxisFormatter(new DecimalAxisFormatter("#000.00"));
+//        candleStickChart.setYAxisFormatter(new DecimalAxisFormatter("#000.00"));
         return candleStickChart;
     }
 //    

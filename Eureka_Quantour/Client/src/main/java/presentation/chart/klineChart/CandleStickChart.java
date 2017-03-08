@@ -32,9 +32,9 @@ import javafx.util.Duration;
  * 
  * 
  */
-class CandleStickChart extends XYChart<String, Number> {
+public class CandleStickChart extends XYChart<String, Number> {
 
-    SimpleDateFormat sdf = new SimpleDateFormat("yy/MM/dd");
+    SimpleDateFormat sdf = new SimpleDateFormat("yy:MM:dd");
     protected int maxBarsToDisplay;
     protected ObservableList<XYChart.Series<String, Number>> dataSeries;
     protected BarData lastBar;
@@ -90,7 +90,9 @@ class CandleStickChart extends XYChart<String, Number> {
         List<BarData> sublist = getSubList(bars, maxBarsToDisplay);
         for (BarData bar : sublist) {
             String label = "";
+
             label = sdf.format(bar.getDateTime().getTime());
+            System.out.println(label);
             series.getData().add(new XYChart.Data<>(label, bar.getOpen(), bar));
         }
 
@@ -211,22 +213,22 @@ class CandleStickChart extends XYChart<String, Number> {
     @Override
     protected void dataItemAdded(Series<String, Number> series, int itemIndex, Data<String, Number> item) {
 
-//        System.out.println("aefsg");
-//        Node candle = createCandle(getData().indexOf(series), item, itemIndex);
-//        if (shouldAnimate()) {
-//            candle.setOpacity(0);
-//            getPlotChildren().add(candle);
-//            // fade in new candle
-//            FadeTransition ft = new FadeTransition(Duration.millis(500), candle);
-//            ft.setToValue(1);
-//            ft.play();
-//        } else {
-//            getPlotChildren().add(candle);
-//        }
-//        // always draw average line on top
-//        if (series.getNode() != null) {
-//            series.getNode().toFront();
-//        }
+        System.out.println("aefsg");
+        Node candle = createCandle(getData().indexOf(series), item, itemIndex);
+        if (shouldAnimate()) {
+            candle.setOpacity(0);
+            getPlotChildren().add(candle);
+            // fade in new candle
+            FadeTransition ft = new FadeTransition(Duration.millis(500), candle);
+            ft.setToValue(1);
+            ft.play();
+        } else {
+            getPlotChildren().add(candle);
+        }
+        // always draw average line on top
+        if (series.getNode() != null) {
+            series.getNode().toFront();
+        }
     }
 
     @Override
@@ -275,20 +277,20 @@ class CandleStickChart extends XYChart<String, Number> {
     protected void seriesRemoved(Series<String, Number> series) {
 
         // remove all candle nodes
-//        for (XYChart.Data<String, Number> d : series.getData()) {
-//            final Node candle = d.getNode();
-//            if (shouldAnimate()) {
-//                // fade out old candle
-//                FadeTransition ft = new FadeTransition(Duration.millis(500), candle);
-//                ft.setToValue(0);
-//                ft.setOnFinished((ActionEvent actionEvent) -> {
-//                    getPlotChildren().remove(candle);
-//                });
-//                ft.play();
-//            } else {
-//                getPlotChildren().remove(candle);
-//            }
-//        }
+        for (XYChart.Data<String, Number> d : series.getData()) {
+            final Node candle = d.getNode();
+            if (shouldAnimate()) {
+                // fade out old candle
+                FadeTransition ft = new FadeTransition(Duration.millis(500), candle);
+                ft.setToValue(0);
+                ft.setOnFinished((ActionEvent actionEvent) -> {
+                    getPlotChildren().remove(candle);
+                });
+                ft.play();
+            } else {
+                getPlotChildren().remove(candle);
+            }
+        }
     }
 
     /**
