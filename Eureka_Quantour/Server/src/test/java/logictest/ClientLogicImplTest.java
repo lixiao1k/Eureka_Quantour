@@ -9,24 +9,10 @@ import logicserver.ClientLogicInterface;
 public class ClientLogicImplTest extends TestCase {
 	private ClientLogicInterface CLI;
 	
-	public void setUp() throws Exception {
+	protected void setUp() throws Exception {
+		super.setUp();
 		CLI = new ClientLogicImpl();
 	}
-	
-//	/**
-//     * Create the test case
-//     * @param testName name of the test case
-//     */
-//	public ClientLogicImplTest(String testName){
-//        super(testName);
-//    }
-//	
-//	/**
-//     * @return the suite of tests being tested
-//     */
-//    public static Test suite(){
-//        return new TestSuite( ClientLogicImplTest.class );
-//    }
     
     public void testsignUp(){
 //        assertTrue();
