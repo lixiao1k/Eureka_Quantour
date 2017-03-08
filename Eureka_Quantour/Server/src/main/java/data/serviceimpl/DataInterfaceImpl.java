@@ -1,8 +1,9 @@
-package data.service;
+package data.serviceimpl;
 
 import java.util.Calendar;
 import java.util.List;
 
+import data.service.IDataInterface;
 import po.SingleStockInfoPO;
 
 public class DataInterfaceImpl implements IDataInterface
