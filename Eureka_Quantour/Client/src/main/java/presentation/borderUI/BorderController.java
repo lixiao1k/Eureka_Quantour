@@ -29,13 +29,8 @@ public class BorderController implements Initializable {
 	private Image logo = new Image(getClass().getResourceAsStream("Title.png"));
 	
 	@FXML
-	protected void goSearch(ActionEvent e){
-		
-	}
-	
-	@FXML
 	protected void browseKLine(ActionEvent e){
-		
+		setInfoAnchorPane.getChildren().add(searchSingleStockHBox());
 	}
 	
 	@FXML
@@ -45,7 +40,7 @@ public class BorderController implements Initializable {
 	
 	@FXML
 	protected void goCompare(ActionEvent e){
-		
+		setInfoAnchorPane.getChildren().add(compareHBox());
 	}
 	
 	@FXML
@@ -53,7 +48,7 @@ public class BorderController implements Initializable {
 		
 	}
 	
-	private HBox searchSingleStock (){
+	private HBox searchSingleStockHBox (){
 		HBox hb = new HBox();
 		hb.setPadding(new Insets(25, 5, 5, 25));
 		hb.setSpacing(5);
@@ -72,12 +67,36 @@ public class BorderController implements Initializable {
 		hb.getChildren().addAll(beginLabel,beginDatePicker,endLabel,endDatePicker,blank,stockName,searchButton);
 		return hb;
 	}
+	
+	private HBox compareHBox(){
+		HBox hb = new HBox();
+		hb.setPadding(new Insets(25, 5, 5, 25));
+		hb.setSpacing(5);
+		
+		Label beginLabel = new Label("起始时间：");
+		DatePicker beginDatePicker = new DatePicker();
+		Label endLabel = new Label("结束时间：");
+		DatePicker endDatePicker = new DatePicker();
+		Label blank = new Label();
+		blank.setPrefSize(40, 10);
+		TextField stockNameA = new TextField();
+		stockNameA.setPrefSize(100, 5);
+		stockNameA.setPromptText("股票A");
+		TextField stockNameB = new TextField();
+		stockNameB.setPrefSize(100, 5);
+		stockNameB.setPromptText("股票B");
+		Button compareButton = new Button("比较");
+		
+		hb.getChildren().addAll(beginLabel,beginDatePicker,endLabel,endDatePicker,blank,stockNameA,stockNameB,compareButton);
+		
+		return hb;
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
 		
 		logoImageView.setImage(logo);
-		setInfoAnchorPane.getChildren().add(searchSingleStock());
+		setInfoAnchorPane.getChildren().add(searchSingleStockHBox());
 	}
 }
