@@ -2,7 +2,6 @@ package logictest;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Iterator;
 import java.util.List;
 
 import junit.framework.TestCase;
@@ -18,10 +17,7 @@ public class StockLogicImplTest extends TestCase {
 	}
 	
 	public void testGetEMAInfo(){
-		Iterator<Double> templist = SLI.getEMAInfo("1", Calendar.getInstance(), Calendar.getInstance(), 5); 
-		List<Double> list1 = new ArrayList<Double>();
-		while(templist.hasNext())
-			list1.add(templist.next());
+		List<Double> list1 = SLI.getEMAInfo("1", Calendar.getInstance(), Calendar.getInstance(), 5); 
 		List<Double> list2 = new ArrayList<Double>();
 		this.assertTrue(ifListEqual(list1, list2));
 	}

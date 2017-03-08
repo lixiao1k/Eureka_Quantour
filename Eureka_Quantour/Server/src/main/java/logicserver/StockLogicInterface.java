@@ -1,7 +1,8 @@
 package logicserver;
 
 import java.util.Calendar;
-import java.util.Iterator;
+import java.util.List;
+
 import vo.ComparedInfoVO;
 import vo.MarketInfoVO;
 import vo.SingleStockInfoVO;
@@ -16,13 +17,13 @@ public interface StockLogicInterface {
 	 *               invoke getSingleStockInfo() in data layer
 	 * @return: Iterator<SingleStockInfoVO>
 	 */
-	public Iterator<SingleStockInfoVO> getSingleStockInfoByTime ( String stockCode, Calendar begin, Calendar end );
+	public List<SingleStockInfoVO> getSingleStockInfoByTime ( String stockCode, Calendar begin, Calendar end );
 	/**
 	 * @Description: to get all stocks' EMA between "begin" and "end",
 	 *               invoke getSingleStockInfo() in data layer
 	 * @return: Iterator<Double>
 	 */
-	public Iterator<Double> getEMAInfo ( String stockCode, Calendar begin, Calendar end, int method );
+	public List<Double> getEMAInfo ( String stockCode, Calendar begin, Calendar end, int method );
 	/**
 	 * @Description: to get stock A and B's compared information between "begin" and "end",
 	 *               invoke getSingleStockInfo() in data layer
