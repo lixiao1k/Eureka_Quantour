@@ -14,7 +14,7 @@ import vo.SingleStockInfoVO;
 
 
 
-public class MainApp
+public class MainAp
     extends Application
         implements chartService {
 
