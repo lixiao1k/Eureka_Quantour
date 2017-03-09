@@ -52,4 +52,10 @@ public class StockLogicImplStub {
 		}
 		return lssi;
 	}
+	
+	protected List<SingleStockInfoVO> getMarketInfo( Calendar date){
+		SingleStockInfoVOs.init();
+		List<SingleStockInfoVO> lssi = new ArrayList<SingleStockInfoVO>();
+		return lssi;
+	}
 }

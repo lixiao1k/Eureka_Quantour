@@ -17,7 +17,7 @@ public class test {
 	private static StockLogicInterface SLI = new StockLogicImpl();
 
 	public static void main(String args[]){
-		List<EMAInfoVO> list1 = SLI.getEMAInfo("1", Calendar.getInstance(), Calendar.getInstance(), 5);
+		List<EMAInfoVO> list1 = SLI.getEMAInfo("1", Calendar.getInstance(), Calendar.getInstance()).get(0);
 		List<Double> list2 = new ArrayList<Double>();
 		for(int i=0;i<list1.size();i++)
 			list2.add(list1.get(i).getEMA());

@@ -27,38 +27,49 @@ public class StockLogicImpl implements StockLogicInterface{
 	}
 
 	@Override
-	public List<EMAInfoVO> getEMAInfo(String stockCode, Calendar begin, Calendar end, int method) {
+	public List<List<EMAInfoVO>> getEMAInfo(String stockCode, Calendar begin, Calendar end ) {
 		// TODO Auto-generated method stub
+		int methods[] = { 5, 10, 20, 30, 60 };
 		// invoke stub to get data
-		List<SingleStockInfoVO> lsti1 = slis.getSingleStockInfo(stockCode, begin, end, method);
-		List<EMAInfoVO> lemai = new ArrayList<EMAInfoVO>();
+		List<SingleStockInfoVO> lsti1 = slis.getSingleStockInfo(stockCode, begin, end);
+		List<List<EMAInfoVO>> llemai = new ArrayList<List<EMAInfoVO>>();
 		SingleStockInfoVO ssi = new SingleStockInfoVO();
-		if(lsti1.size()<method){
-			for(int i=0;i<lsti1.size();i++){
-				ssi = lsti1.get(i);
-				lemai.add( new EMAInfoVO(ssi.getDate(), ssi.getClose()) );
+		
+		for( int j=0; j<methods.length; j++){
+			int method = methods[j];
+			List<EMAInfoVO> lemai = new ArrayList<EMAInfoVO>();
+			// 如果数据不足以加权平均，则不处理数据
+			if(lsti1.size()<method){
+				for(int i=0;i<lsti1.size();i++){
+					ssi = lsti1.get(i);
+					lemai.add( new EMAInfoVO(ssi.getDate(), ssi.getClose()) );
+				}
 			}
+			else{
+				double tempDouble = 0.0;
+				// 先处理不需要加权平均的数据
+				for(int i=0;i<method-1;i++){
+					ssi = lsti1.get(i);
+					lemai.add( new EMAInfoVO(ssi.getDate(), ssi.getClose()) );
+					tempDouble += lemai.get(i).getEMA();
+				}
+				// 处理需要加权平均的数据
+				for(int i=method-1;i<lsti1.size();i++){
+					ssi = lsti1.get(i);
+					tempDouble += ssi.getClose();
+					lemai.add( new EMAInfoVO(ssi.getDate(), formatDouble(tempDouble/method)) );
+					tempDouble -= lemai.get(i-method+1).getEMA();
+				}
+			}
+			llemai.add(lemai);
 		}
-		else{
-			double tempDouble = 0.0;
-			for(int i=0;i<method-1;i++){
-				ssi = lsti1.get(i);
-				lemai.add( new EMAInfoVO(ssi.getDate(), ssi.getClose()) );
-				tempDouble += lemai.get(i).getEMA();
-			}
-			for(int i=method-1;i<lsti1.size();i++){
-				ssi = lsti1.get(i);
-				tempDouble += ssi.getClose();
-				lemai.add( new EMAInfoVO(ssi.getDate(), formatDouble(tempDouble/method)) );
-				tempDouble -= lemai.get(i-method+1).getEMA();
-			}
-		}
-		return lemai;
+		return llemai;
 	}
 
 	@Override
 	public ComparedInfoVO getComparedInfo(String stockCodeA, String stockCodeB, Calendar begin, Calendar end) {
 		// TODO Auto-generated method stub
+		// invoke stub to get data
 		List<SingleStockInfoVO> lstiA = slis.getSingleStockInfo(stockCodeA, begin, end);
 		List<SingleStockInfoVO> lstiB = slis.getSingleStockInfo(stockCodeB, begin, end);
 		int tempInt = lstiA.size();
@@ -120,8 +131,50 @@ public class StockLogicImpl implements StockLogicInterface{
 	@Override
 	public MarketInfoVO getMarketInfo(Calendar date) {
 		// TODO Auto-generated method stub
+		MarketInfoVO mi = new MarketInfoVO();
+		List<SingleStockInfoVO> lsti = slis.getMarketInfo(date);
+		SingleStockInfoVO ssi = new SingleStockInfoVO();
 		
-		return null;
+		// 用来存储上一个交易日的数据
+		SingleStockInfoVO ssiTemp = lsti.get(0);
+		int volume = 0;
+		int riseStop = 0, dropStop = 0, riseEFP = 0, stopEFP = 0;
+		int OMCEFP = 0, OMCLTFP = 0;
+		for( int i=1; i<lsti.size(); i++ ){
+			ssi = lsti.get(i);
+			double close = ssi.getClose();
+			double open = ssi.getOpen();
+			
+			volume += ssi.getVolume();
+			if(open>0){
+				if( ifDoubleEqual((ssi.getHigh()-open)/open,  0.1) )
+					riseStop++;
+				if( ifDoubleEqual((open-ssi.getLow())/open,  0.1) )
+					dropStop++;
+				if( (close-open)/open > 0.05 )
+					riseEFP++;
+				if( (open-close)/open > 0.05 )
+					stopEFP++;
+			}
+			if( (open-close) > 0 ){
+				if( (open-close) > (0.05*ssiTemp.getClose()) )
+					OMCEFP++;
+			}
+			else{
+				if( (open-close) < (-0.05*ssiTemp.getClose()) )
+					OMCLTFP++;
+			}
+		}
+		
+		mi.setVolume(volume);
+		mi.setNumOfRiseStop(riseStop);
+		mi.setNumOfDropStop(dropStop);
+		mi.setNumOfRiseEFP(riseEFP);
+		mi.setNumOfDropEFP(stopEFP);
+		mi.setNumOfOMCEFP(OMCEFP);
+		mi.setNumOfOMCLTFP(OMCLTFP);
+		
+		return mi;
 	}
 
 	private double formatDouble(double d){
@@ -141,5 +194,11 @@ public class StockLogicImpl implements StockLogicInterface{
 		tempD2 = Math.pow(tempD2, 2);
 		result = (tempD1-tempD2/length)/length;
 		return result;
+	}
+	
+	private boolean ifDoubleEqual(double d1, double d2){
+		String s1 = String.valueOf(formatDouble(d1));
+		String s2 = String.valueOf(formatDouble(d2));
+		return s1.equals(s2);
 	}
 }
