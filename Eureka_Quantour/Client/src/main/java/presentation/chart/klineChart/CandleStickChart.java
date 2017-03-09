@@ -33,7 +33,6 @@ import javafx.util.Duration;
  * 
  */
 public class CandleStickChart extends XYChart<String, Number> {
-
     SimpleDateFormat sdf = new SimpleDateFormat("yy:MM:dd");
     protected int maxBarsToDisplay;
     protected ObservableList<XYChart.Series<String, Number>> dataSeries;
