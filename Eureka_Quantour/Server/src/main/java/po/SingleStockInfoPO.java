@@ -1,5 +1,7 @@
 package po;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 /**
  * SingleStockInfo的PO类，用来维护SingleStock的持久对象
@@ -45,7 +47,27 @@ public class SingleStockInfoPO
 		setAdjclose(_adjclose);
 		setMarket(_market);
 	}
-	
+	public SingleStockInfoPO(String stockinfo){
+		String[] info=stockinfo.split("\\s+");
+		setName(info[9]);
+		SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yy");
+		Calendar cal=Calendar.getInstance();
+		try {
+			cal.setTime(sdf.parse(info[1]));
+		} catch (ParseException e) {
+			e.printStackTrace();
+			System.out.println("日期格式有错");
+		}
+		setDate(cal);
+		setCode(info[8]);
+		setOpen(Double.parseDouble(info[2]));
+		setClose(Double.parseDouble(info[5]));
+		setHigh(Double.parseDouble(info[3]));
+		setLow(Double.parseDouble(info[4]));
+		setVolume(Integer.parseInt(info[6]));
+		setAdjclose(Double.parseDouble(info[7]));
+		setMarket(info[10]);
+	}
 	/**
 	 * 获得SingleStockInfoPO中的股票名字
 	 * @return the name
