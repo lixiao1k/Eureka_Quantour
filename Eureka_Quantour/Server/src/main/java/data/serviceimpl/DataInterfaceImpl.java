@@ -5,32 +5,39 @@ import java.util.List;
 
 import data.service.IDataInterface;
 import po.SingleStockInfoPO;
-
+/**
+ * 数据层接口的实现
+ * @author 刘宇翔
+ *
+ */
 public class DataInterfaceImpl implements IDataInterface
 {
-
+	private UserDataController user;
+	private StockDataController stock;
+	public DataInterfaceImpl(){
+		user=UserDataController.getInstance();
+		stock=StockDataController.getInstance();
+	}
 	@Override
 	public boolean signUpCheck(String username, String password) {
-		// TODO Auto-generated method stub
-		return false;
+		return user.signUpCheck(username, password);
 	}
 
 	@Override
 	public boolean signInCheck(String username, String password) {
-		// TODO Auto-generated method stub
-		return false;
+		return user.signInCheck(username, password);
 	}
 
 	@Override
 	public List<SingleStockInfoPO> getSingleStockInfo(String stockcode, Calendar begin, Calendar end) {
 		// TODO Auto-generated method stub
-		return null;
+		return stock.getSingleStockInfo(stockcode, begin, end);
 	}
 
 	@Override
 	public List<SingleStockInfoPO> getMarketByDate(Calendar date) {
 		// TODO Auto-generated method stub
-		return null;
+		return stock.getMarketByDate(date);
 	}
 
 }

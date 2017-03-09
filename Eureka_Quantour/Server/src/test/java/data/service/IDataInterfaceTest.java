@@ -58,7 +58,6 @@ public class IDataInterfaceTest extends TestCase {
     	Calendar day3=Calendar.getInstance();
     	Calendar day4=Calendar.getInstance();
     	Calendar day5=Calendar.getInstance();
-<<<<<<< HEAD
     	day1.set(2005, 1, 1,0,0,0);
     	day2.set(2006, 3, 2,0,0,0);
     	day3.set(2007, 5, 26,0,0,0);
@@ -81,13 +80,11 @@ public class IDataInterfaceTest extends TestCase {
     	day5.set(2014, 4, 29,0,0,0);
     	assertEquals(10,data.getMarketByDate(day4).size());
     	assertEquals(10,data.getMarketByDate(day5).size());
-=======
     	day1.set(2005, 1, 1);
     	day2.set(2006, 3, 2);
     	day3.set(2007, 5, 26);
     	day4.set(2010, 7, 3);
     	day5.set(2014, 4, 29);
 //    	data.getSingleStockInfo(stockcode, begin, end)
->>>>>>> 6fda4eadae916e2f819c7079c4a058a0b4538412
     }
 }
