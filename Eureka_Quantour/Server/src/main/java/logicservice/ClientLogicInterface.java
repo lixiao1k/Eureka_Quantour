@@ -1,4 +1,4 @@
-package logicserviceimpl;
+package logicservice;
 
 /**
  * @Description: TODO

@@ -5,8 +5,8 @@ import java.util.Calendar;
 import java.util.List;
 
 import junit.framework.TestCase;
-import logicservice.StockLogicImpl;
-import logicserviceimpl.StockLogicInterface;
+import logicservice.StockLogicInterface;
+import logicserviceimpl.StockLogicImpl;
 import vo.EMAInfoVO;
 
 public class StockLogicImplTest extends TestCase {

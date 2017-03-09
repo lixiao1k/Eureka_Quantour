@@ -1,6 +1,6 @@
-package logicservice;
+package logicserviceimpl;
 
-import logicserviceimpl.ClientLogicInterface;
+import logicservice.ClientLogicInterface;
 
 /**
  * 

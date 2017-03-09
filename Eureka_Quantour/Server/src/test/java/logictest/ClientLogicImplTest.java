@@ -2,8 +2,8 @@ package logictest;
 
 //import junit.framework.Test;
 import junit.framework.TestCase;
-import logicservice.ClientLogicImpl;
-import logicserviceimpl.ClientLogicInterface;
+import logicservice.ClientLogicInterface;
+import logicserviceimpl.ClientLogicImpl;
 
 public class ClientLogicImplTest extends TestCase {
 	private ClientLogicInterface CLI;

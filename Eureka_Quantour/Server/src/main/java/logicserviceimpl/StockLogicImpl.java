@@ -1,11 +1,11 @@
-package logicservice;
+package logicserviceimpl;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import logicserviceimpl.StockLogicInterface;
+import logicservice.StockLogicInterface;
 import vo.ComparedInfoVO;
 import vo.EMAInfoVO;
 import vo.MarketInfoVO;
