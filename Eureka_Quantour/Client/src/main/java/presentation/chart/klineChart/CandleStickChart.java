@@ -92,7 +92,6 @@ public class CandleStickChart extends XYChart<String, Number> {
             String label = "";
 
             label = sdf.format(bar.getDateTime().getTime());
-            System.out.println(label);
             series.getData().add(new XYChart.Data<>(label, bar.getOpen(), bar));
         }
 
@@ -213,7 +212,6 @@ public class CandleStickChart extends XYChart<String, Number> {
     @Override
     protected void dataItemAdded(Series<String, Number> series, int itemIndex, Data<String, Number> item) {
 
-        System.out.println("aefsg");
         Node candle = createCandle(getData().indexOf(series), item, itemIndex);
         if (shouldAnimate()) {
             candle.setOpacity(0);
