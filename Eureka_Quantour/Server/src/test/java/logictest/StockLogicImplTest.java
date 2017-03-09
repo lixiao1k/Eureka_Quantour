@@ -5,8 +5,8 @@ import java.util.Calendar;
 import java.util.List;
 
 import junit.framework.TestCase;
-import logicserver.StockLogicImpl;
-import logicserver.StockLogicInterface;
+import logicservice.StockLogicImpl;
+import logicserviceimpl.StockLogicInterface;
 import vo.EMAInfoVO;
 
 public class StockLogicImplTest extends TestCase {
@@ -26,6 +26,10 @@ public class StockLogicImplTest extends TestCase {
 		list3.add(11.16); list3.add(11.03); list3.add(11.25);
 		list3.add(11.23); list3.add(11.19); 
 		this.assertTrue( ifListEqual(list2, list3) );
+	}
+	
+	public void testGetComparedInfo(){
+		
 	}
 	
 	/**
