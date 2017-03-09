@@ -40,9 +40,13 @@ public class ComparedInfoVO implements Serializable{
 		dateB = new Calendar[n];
 		closeA = new double[n];
 		closeB = new double[n];
+		logYieldA = new double[n];
+		logYieldB = new double[n];
 		for(int i=0;i<n;i++){
 			closeA[i] = 0.0;
 			closeB[i] = 0.0;
+			logYieldA[i] = 0.0;
+			logYieldB[i] = 0.0;
 		}
 	}
 	
