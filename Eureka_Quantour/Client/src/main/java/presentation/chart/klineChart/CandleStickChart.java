@@ -1,26 +1,9 @@
 package presentation.chart.klineChart;
-/*
- Copyright 2014 Zoi Capital, LLC
-
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
- */
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.animation.FadeTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -51,8 +34,7 @@ import javafx.util.Duration;
  */
 public class CandleStickChart extends XYChart<String, Number> {
 
-    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-    protected static final Logger logger = Logger.getLogger(CandleStickChart.class.getName());
+    SimpleDateFormat sdf = new SimpleDateFormat("yy:MM:dd");
     protected int maxBarsToDisplay;
     protected ObservableList<XYChart.Series<String, Number>> dataSeries;
     protected BarData lastBar;
@@ -108,10 +90,13 @@ public class CandleStickChart extends XYChart<String, Number> {
         List<BarData> sublist = getSubList(bars, maxBarsToDisplay);
         for (BarData bar : sublist) {
             String label = "";
+
             label = sdf.format(bar.getDateTime().getTime());
+<<<<<<< HEAD
+            System.out.println(label);
+=======
+>>>>>>> ba3514983e2dd69f921c53e425e144e0ca8acc14
             series.getData().add(new XYChart.Data<>(label, bar.getOpen(), bar));
-            logger.log(Level.INFO, "Adding bar with date/time: {0}", bar.getDateTime().getTime());
-            logger.log(Level.INFO, "Adding bar with price: {0}", bar.getOpen());
         }
 
         dataSeries = FXCollections.observableArrayList(series);
@@ -120,58 +105,50 @@ public class CandleStickChart extends XYChart<String, Number> {
         lastBar = sublist.get(sublist.size() - 1);
     }
 
-    
-    /**
-     * Defines a formatter to use when formatting the y-axis values.
-     * @param formatter The formatter to use when formatting the y-axis values.
-     */
-    public void setYAxisFormatter(DecimalAxisFormatter formatter) {
-        yAxis.setTickLabelFormatter(formatter);
-    }
 
     
     /**
      * Appends a new bar on to the end of the chart.
      * @param bar The bar to append to the chart
      */
-    public void addBar(BarData bar) {
-
-        if (dataSeries.get(0).getData().size() >= maxBarsToDisplay) {
-            dataSeries.get(0).getData().remove(0);
-        }
-
-        int datalength = dataSeries.get(0).getData().size();
-        dataSeries.get(0).getData().get(datalength - 1).setYValue(bar.getOpen());
-        dataSeries.get(0).getData().get(datalength - 1).setExtraValue(bar);
-        String label = sdf.format(bar.getDateTime().getTime());
-        logger.log(Level.INFO, "Adding bar with actual time:  {0}", bar.getDateTime().getTime());
-        logger.log(Level.INFO, "Adding bar with formated time: {0}", label);
-
-        lastBar = new BarData(bar.getDateTime(), bar.getClose(), bar.getClose(), bar.getClose(), bar.getClose(), 0);
-        Data<String, Number> data = new XYChart.Data<>(label, lastBar.getOpen(), lastBar);
-        dataSeries.get(0).getData().add(data);
-        
-        
-        
-    }
+//    public void addBar(BarData bar) {
+//
+//        if (dataSeries.get(0).getData().size() >= maxBarsToDisplay) {
+//            dataSeries.get(0).getData().remove(0);
+//        }
+//
+//        int datalength = dataSeries.get(0).getData().size();
+//        dataSeries.get(0).getData().get(datalength - 1).setYValue(bar.getOpen());
+//        dataSeries.get(0).getData().get(datalength - 1).setExtraValue(bar);
+//        String label = sdf.format(bar.getDateTime().getTime());
+//        logger.log(Level.INFO, "Adding bar with actual time:  {0}", bar.getDateTime().getTime());
+//        logger.log(Level.INFO, "Adding bar with formated time: {0}", label);
+//
+//        lastBar = new BarData(bar.getDateTime(), bar.getClose(), bar.getClose(), bar.getClose(), bar.getClose(), 0);
+//        Data<String, Number> data = new XYChart.Data<>(label, lastBar.getOpen(), lastBar);
+//        dataSeries.get(0).getData().add(data);
+//
+//
+//
+//    }
 
     
     /**
      * Update the "Last" price of the most recent bar
      * @param price The Last price of the most recent bar.
      */
-    public void updateLast(double price) {
-        if (lastBar != null) {
-            lastBar.update(price);
-            logger.log(Level.INFO, "Updating last bar with date/time: {0}", lastBar.getDateTime().getTime());
-
-            int datalength = dataSeries.get(0).getData().size();
-            dataSeries.get(0).getData().get(datalength - 1).setYValue(lastBar.getOpen());
-
-            dataSeries.get(0).getData().get(datalength - 1).setExtraValue(lastBar);
-            logger.log(Level.INFO, "Updating last bar with formatteddate/time: {0}", dataSeries.get(0).getData().get(datalength - 1).getXValue());
-        }
-    }
+//    public void updateLast(double price) {
+//        if (lastBar != null) {
+//            lastBar.update(price);
+//            logger.log(Level.INFO, "Updating last bar with date/time: {0}", lastBar.getDateTime().getTime());
+//
+//            int datalength = dataSeries.get(0).getData().size();
+//            dataSeries.get(0).getData().get(datalength - 1).setYValue(lastBar.getOpen());
+//
+//            dataSeries.get(0).getData().get(datalength - 1).setExtraValue(lastBar);
+//            logger.log(Level.INFO, "Updating last bar with formatteddate/time: {0}", dataSeries.get(0).getData().get(datalength - 1).getXValue());
+//        }
+//    }
 
     
     
@@ -190,6 +167,7 @@ public class CandleStickChart extends XYChart<String, Number> {
      */
     @Override
     protected void layoutPlotChildren() {
+
         // we have nothing to layout if no data is present
         if (getData() == null) {
             return;
@@ -237,6 +215,11 @@ public class CandleStickChart extends XYChart<String, Number> {
 
     @Override
     protected void dataItemAdded(Series<String, Number> series, int itemIndex, Data<String, Number> item) {
+
+<<<<<<< HEAD
+        System.out.println("aefsg");
+=======
+>>>>>>> ba3514983e2dd69f921c53e425e144e0ca8acc14
         Node candle = createCandle(getData().indexOf(series), item, itemIndex);
         if (shouldAnimate()) {
             candle.setOpacity(0);
@@ -256,22 +239,24 @@ public class CandleStickChart extends XYChart<String, Number> {
 
     @Override
     protected void dataItemRemoved(Data<String, Number> item, Series<String, Number> series) {
-        final Node candle = item.getNode();
-        if (shouldAnimate()) {
-            // fade out old candle
-            FadeTransition ft = new FadeTransition(Duration.millis(500), candle);
-            ft.setToValue(0);
-            ft.setOnFinished((ActionEvent actionEvent) -> {
-                getPlotChildren().remove(candle);
-            });
-            ft.play();
-        } else {
-            getPlotChildren().remove(candle);
-        }
+
+//        final Node candle = item.getNode();
+//        if (shouldAnimate()) {
+//            // fade out old candle
+//            FadeTransition ft = new FadeTransition(Duration.millis(500), candle);
+//            ft.setToValue(0);
+//            ft.setOnFinished((ActionEvent actionEvent) -> {
+//                getPlotChildren().remove(candle);
+//            });
+//            ft.play();
+//        } else {
+//            getPlotChildren().remove(candle);
+//        }
     }
 
     @Override
     protected void seriesAdded(Series<String, Number> series, int seriesIndex) {
+
         // handle any data already in series
         for (int j = 0; j < series.getData().size(); j++) {
             Data item = series.getData().get(j);
@@ -296,6 +281,7 @@ public class CandleStickChart extends XYChart<String, Number> {
 
     @Override
     protected void seriesRemoved(Series<String, Number> series) {
+
         // remove all candle nodes
         for (XYChart.Data<String, Number> d : series.getData()) {
             final Node candle = d.getNode();

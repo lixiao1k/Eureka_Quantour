@@ -25,10 +25,10 @@ public class MarketInfoVO implements Serializable{
 	private int volume = 0;
 	private int numOfRiseStop = 0;
 	private int numOfDropStop = 0;
-	private int numOfRiseEFP =0;
-	private int numOfDropEFP =0;
-	private int numOfOMCEFP = 0;
+	private int numOfRiseLTFP =0;
+	private int numOfDropLTFP =0;
 	private int numOfOMCLTFP = 0;
+	private int numOfOMCSTFP = 0;
 	
 	public int getVolume(){
 		return this.volume;
@@ -39,17 +39,17 @@ public class MarketInfoVO implements Serializable{
 	public int getNumOfDropStop(){
 		return this.numOfDropStop;
 	}
-	public int getNumOfRiseEFP(){
-		return this.numOfRiseEFP;
+	public int getNumOfRiseLTFP(){
+		return this.numOfRiseLTFP;
 	}
-	public int getNumOfDropEFP(){
-		return this.numOfDropEFP;
-	}
-	public int getNumOfOMCEFP(){
-		return this.numOfOMCEFP;
+	public int getNumOfDropLTFP(){
+		return this.numOfDropLTFP;
 	}
 	public int getNumOfOMCLTFP(){
 		return this.numOfOMCLTFP;
+	}
+	public int getNumOfOMCSTFP(){
+		return this.numOfOMCSTFP;
 	}
 	
 	public void setVolume(int volume){
@@ -61,26 +61,25 @@ public class MarketInfoVO implements Serializable{
 	public void setNumOfDropStop(int numOfDropStop){
 		this.numOfDropStop = numOfDropStop;
 	}
-	public void setNumOfRiseEFP(int numOfRiseEFP){
-		this.numOfRiseEFP = numOfRiseEFP;
+	public void setNumOfRiseLTFP(int numOfRiseLTFP){
+		this.numOfRiseLTFP = numOfRiseLTFP;
 	}
-	public void setNumOfDropEFP(int numOfDropEFP){
-		this.numOfDropEFP = numOfDropEFP;
-	}
-	public void setNumOfOMCEFP(int numOfOMCEFP){
-		this.numOfOMCEFP = numOfOMCEFP;
+	public void setNumOfDropLTFP(int numOfDropLTFP){
+		this.numOfDropLTFP = numOfDropLTFP;
 	}
 	public void setNumOfOMCLTFP(int numOfOMCLTFP){
 		this.numOfOMCLTFP = numOfOMCLTFP;
 	}
+	public void setNumOfOMCSTFP(int numOfOMCSTFP){
+		this.numOfOMCSTFP = numOfOMCSTFP;
+	}
 	
-	public MarketInfoVO initObject(int volume, int numOfRiseStop, int numOfDropStop, 
-			int numOfRiseEFP, int numOfDropEFP, int numOfOMCEFP, int numOfOMCLTFP){
+	public MarketInfoVO initObject(int volume, int numOfRiseStop, int numOfDropStop, int numOfRiseLTFP,
+			int numOfDropLTFP, int numOfOMCLTFP, int numOfOMCSTFP){
 		MarketInfoVO mi = new MarketInfoVO();
-		mi.setVolume(volume); 
-		mi.setNumOfRiseStop(numOfRiseStop); mi.setNumOfDropStop(numOfDropStop);
-		mi.setNumOfRiseEFP(numOfRiseEFP); mi.setNumOfDropEFP(numOfDropEFP);
-		mi.setNumOfOMCEFP(numOfOMCEFP); mi.setNumOfOMCLTFP(numOfOMCLTFP);
+		mi.setVolume(volume); mi.setNumOfRiseStop(numOfRiseStop); mi.setNumOfDropStop(numOfDropStop);
+		mi.setNumOfRiseLTFP(numOfRiseLTFP); mi.setNumOfDropLTFP(numOfDropLTFP);
+		mi.setNumOfOMCLTFP(numOfOMCLTFP); mi.setNumOfOMCSTFP(numOfOMCSTFP);
 		return mi;
 	}
 }

@@ -1,4 +1,7 @@
-package logicserver;
+package logicserviceimpl;
+
+import logicservice.ClientLogicInterface;
+
 /**
  * 
  * @Description: TODO

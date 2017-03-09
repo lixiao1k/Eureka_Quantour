@@ -1,95 +1,49 @@
-/*
-Copyright 2014 Zoi Capital, LLC
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
- */
 package presentation.chart.klineChart;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.GregorianCalendar;
+import vo.SingleStockInfoVO;
+
+import java.util.Calendar;
 
 /**
  *
  * @author RobTerpilowski
  */
-public class BarData implements Serializable {
+public class BarData  {
         
-    public static long serialVersionUID = 1L;
 
-    public static final double NULL = -9D;
-    public static final int OPEN = 1;
-    public static final int HIGH = 2;
-    public static final int LOW = 3;
-    public static final int CLOSE = 4;
-
-    public enum LENGTH_UNIT {
-
-        TICK, SECOND, MINUTE, HOUR, DAY, WEEK, MONTH, YEAR
-    };
 
     protected double open;
-    protected BigDecimal formattedOpen;
     protected double high;
-    protected BigDecimal formattedHigh;
     protected double low;
-    protected BigDecimal formattedLow;
     protected double close;
-    protected BigDecimal formattedClose;
     protected long volume = 0;
-    protected long openInterest = 0;
-    protected int barLength = 1;
-    protected GregorianCalendar dateTime;
-    //protected Logger logger = Logger.getLogger( Bar.class );
+    protected Calendar dateTime;
 
-    public BarData() {
+    public BarData(SingleStockInfoVO stock) {
+        this.dateTime=stock.getDate();
+        this.open=stock.getOpen();
+        this.close=stock.getClose();
+        this.low=stock.getLow();
+        this.high=stock.getHigh();
+        this.volume=stock.getVolume();
+
     }
 
-    public BarData( GregorianCalendar dateTime, double open, double high, double low, double close, long volume) {
+    public BarData(Calendar dateTime, double open, double high, double low, double close, long volume) {
         this.dateTime = dateTime;
         this.open = open;
-        this.formattedOpen = format(open);
         this.close = close;
-        this.formattedClose = format(close);
         this.low = low;
-        this.formattedLow = format(low);
         this.high = high;
-        this.formattedHigh = format(high);
         this.volume = volume;
     }
 
-    
-    /**
-     * Creates a new instance of a Bar
-     *
-     * @param date The date of this bar.
-     * @param open The open price.
-     * @param high The high price.
-     * @param low The low price.
-     * @param close The closing price.
-     * @param volume The volume for the bar.
-     * @param openInterest The open interest for the bar.
-     */
-    public BarData(GregorianCalendar dateTime, double open, double high, double low, double close, long volume, long openInterest) {
-        this(dateTime, open, high, low, close, volume);
-        this.openInterest = openInterest;
-    }//constructor()
 
-    public GregorianCalendar getDateTime() {
+    public Calendar getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(GregorianCalendar dateTime) {
+    public void setDateTime(Calendar dateTime) {
         this.dateTime = dateTime;
     }
 
@@ -131,9 +85,7 @@ public class BarData implements Serializable {
     /**
      * @return the open interest for this bar.
      */
-    public long getOpenInterest() {
-        return openInterest;
-    }
+
 
     /**
      * Sets the open price for this bar.
@@ -197,19 +149,9 @@ public class BarData implements Serializable {
     }
     
 
-    /**
-     * Sets the open interest for this bar.
-     *
-     * @param openInterest The open interest for this bar.
-     */
-    public void setOpenInterest(long openInterest) {
-        this.openInterest = openInterest;
-    }
-    
-    protected BigDecimal format( double price ) {
-        return BigDecimal.ZERO;
-    }
-    
+
+
+
 
     @Override
     public String toString() {
@@ -220,8 +162,6 @@ public class BarData implements Serializable {
         sb.append(" Low: ").append(low);
         sb.append(" Close: ").append(close);
         sb.append(" Volume: ").append(volume);
-        sb.append(" Open Int ").append(openInterest);
-
         return sb.toString();
     }//toString()
 
@@ -238,7 +178,6 @@ public class BarData implements Serializable {
         result = PRIME * result + (int) (temp ^ (temp >>> 32));
         temp = Double.doubleToLongBits(open);
         result = PRIME * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(openInterest);
         result = PRIME * result + (int) (temp ^ (temp >>> 32));
         result = PRIME * result + ((dateTime == null) ? 0 : dateTime.hashCode());
         result = PRIME * result + (int) (volume ^ (volume >>> 32));
@@ -269,9 +208,7 @@ public class BarData implements Serializable {
         if (Double.doubleToLongBits(open) != Double.doubleToLongBits(other.open)) {
             return false;
         }
-        if (Double.doubleToLongBits(openInterest) != Double.doubleToLongBits(other.openInterest)) {
-            return false;
-        }
+
         if (dateTime == null) {
             if (other.dateTime != null) {
                 return false;

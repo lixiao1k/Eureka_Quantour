@@ -1,16 +1,23 @@
 package logicserver;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import vo.ComparedInfoVO;
+import vo.EMAInfoVO;
 import vo.MarketInfoVO;
 import vo.SingleStockInfoVO;
-
+/**
+ * 
+ * @Description: TODO
+ * @author: hzp
+ * @time: 2017年3月8日
+ */
 public class StockLogicImpl implements StockLogicInterface{
 
-	private StockLogicImplStub slis = new StockLogicImplStub();
+	private StockLogicImplStub slis = new StockLogicImplStub();   
 	
 	@Override
 	public List<SingleStockInfoVO> getSingleStockInfoByTime(String stockCode, Calendar begin, Calendar end) {
@@ -19,28 +26,33 @@ public class StockLogicImpl implements StockLogicInterface{
 	}
 
 	@Override
-	public List<Double> getEMAInfo(String stockCode, Calendar begin, Calendar end, int method) {
+	public List<EMAInfoVO> getEMAInfo(String stockCode, Calendar begin, Calendar end, int method) {
 		// TODO Auto-generated method stub
+		// invoke stub to get data
 		List<SingleStockInfoVO> lsti1 = slis.getSingleStockInfo(stockCode, begin, end, method);
-		List<Double> ldb = new ArrayList<Double>();
+		List<EMAInfoVO> lemai = new ArrayList<EMAInfoVO>();
+		SingleStockInfoVO ssi = new SingleStockInfoVO();
 		if(lsti1.size()<method){
 			for(int i=0;i<lsti1.size();i++){
-				ldb.add(lsti1.get(i).getClose());
+				ssi = lsti1.get(i);
+				lemai.add( new EMAInfoVO(ssi.getDate(), ssi.getClose()) );
 			}
 		}
 		else{
 			double tempDouble = 0.0;
 			for(int i=0;i<method-1;i++){
-				ldb.add(lsti1.get(i).getClose());
-				tempDouble += ldb.get(i);
+				ssi = lsti1.get(i);
+				lemai.add( new EMAInfoVO(ssi.getDate(), ssi.getClose()) );
+				tempDouble += lemai.get(i).getEMA();
 			}
 			for(int i=method-1;i<lsti1.size();i++){
-				tempDouble += lsti1.get(i).getClose();
-				ldb.add(tempDouble/method);
-				tempDouble -= ldb.get(i-method+1);
+				ssi = lsti1.get(i);
+				tempDouble += ssi.getClose();
+				lemai.add( new EMAInfoVO(ssi.getDate(), formatDouble(tempDouble/method)) );
+				tempDouble -= lemai.get(i-method+1).getEMA();
 			}
 		}
-		return ldb;
+		return lemai;
 	}
 
 	@Override
@@ -55,4 +67,8 @@ public class StockLogicImpl implements StockLogicInterface{
 		return null;
 	}
 
+	private double formatDouble(double d){
+		DecimalFormat df = new DecimalFormat("#0.00");
+		return Double.parseDouble(df.format(d));
+	}
 }

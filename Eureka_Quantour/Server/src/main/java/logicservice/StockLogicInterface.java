@@ -1,4 +1,4 @@
-package logicserver;
+package logicservice;
 
 import java.util.Calendar;
 import java.util.List;
@@ -24,7 +24,7 @@ public interface StockLogicInterface {
 	 *               invoke getSingleStockInfo() in data layer
 	 * @return: Iterator<Double>
 	 */
-	public List<EMAInfoVO> getEMAInfo ( String stockCode, Calendar begin, Calendar end, int method );
+	public List<List<EMAInfoVO>> getEMAInfo ( String stockCode, Calendar begin, Calendar end );
 	/**
 	 * @Description: to get stock A and B's compared information between "begin" and "end",
 	 *               invoke getSingleStockInfo() in data layer
