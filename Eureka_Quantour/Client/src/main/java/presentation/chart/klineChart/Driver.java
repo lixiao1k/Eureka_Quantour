@@ -5,8 +5,10 @@ import java.util.*;
 import javafx.application.Application;
 
 import javafx.scene.Scene;
+import javafx.scene.chart.XYChart;
 import javafx.stage.Stage;
 import presentation.chart.barChart.VolumeChart;
+import presentation.chart.chartService;
 import vo.SingleStockInfoVO;
 
 
@@ -58,10 +60,10 @@ public class Driver extends Application {
         x.add(ssi4);
 
 
-        VolumeChart s=new VolumeChart(x);
+        chartService s=new KLineChart(x);
 
         Scene scene = new Scene(s.getchart());
-//        scene.getStylesheets().add("/styles/CandleStickChartStyles.css");
+        scene.getStylesheets().add("/styles/CandleStickChartStyles.css");
 
 
         stage.setTitle("JavaFX and Maven");

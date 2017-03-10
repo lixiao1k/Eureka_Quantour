@@ -89,9 +89,7 @@ public class  CandleStickChart extends XYChart<String, Number> {
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         List<BarData> sublist = getSubList(bars, maxBarsToDisplay);
         for (BarData bar : sublist) {
-            String label = "";
-
-            label = sdf.format(bar.getDateTime().getTime());
+            String label = sdf.format(bar.getDateTime().getTime());
             series.getData().add(new XYChart.Data<>(label, bar.getOpen(), bar));
         }
 
@@ -102,11 +100,7 @@ public class  CandleStickChart extends XYChart<String, Number> {
     }
 
 
-    
-    /**
-     * Appends a new bar on to the end of the chart.
-     * @param bar The bar to append to the chart
-     */
+
 //    public void addBar(BarData bar) {
 //
 //        if (dataSeries.get(0).getData().size() >= maxBarsToDisplay) {
@@ -128,11 +122,6 @@ public class  CandleStickChart extends XYChart<String, Number> {
 //
 //    }
 
-    
-    /**
-     * Update the "Last" price of the most recent bar
-     * @param price The Last price of the most recent bar.
-     */
 //    public void updateLast(double price) {
 //        if (lastBar != null) {
 //            lastBar.update(price);
@@ -232,18 +221,18 @@ public class  CandleStickChart extends XYChart<String, Number> {
     @Override
     protected void dataItemRemoved(Data<String, Number> item, Series<String, Number> series) {
 
-//        final Node candle = item.getNode();
-//        if (shouldAnimate()) {
-//            // fade out old candle
-//            FadeTransition ft = new FadeTransition(Duration.millis(500), candle);
-//            ft.setToValue(0);
-//            ft.setOnFinished((ActionEvent actionEvent) -> {
-//                getPlotChildren().remove(candle);
-//            });
-//            ft.play();
-//        } else {
-//            getPlotChildren().remove(candle);
-//        }
+        final Node candle = item.getNode();
+        if (shouldAnimate()) {
+            // fade out old candle
+            FadeTransition ft = new FadeTransition(Duration.millis(500), candle);
+            ft.setToValue(0);
+            ft.setOnFinished((ActionEvent actionEvent) -> {
+                getPlotChildren().remove(candle);
+            });
+            ft.play();
+        } else {
+            getPlotChildren().remove(candle);
+        }
     }
 
     @Override

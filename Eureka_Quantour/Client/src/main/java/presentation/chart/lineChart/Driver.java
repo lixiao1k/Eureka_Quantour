@@ -4,9 +4,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import presentation.chart.chartService;
-import presentation.chart.klineChart.KLineChart;
 import vo.EMAInfoVO;
-import vo.SingleStockInfoVO;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
