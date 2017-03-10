@@ -1,31 +1,12 @@
 package presentation.chart.klineChart;
-/*
-Copyright 2014 Zoi Capital, LLC
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
- */
-
-
-import java.text.DecimalFormat;
 import java.util.*;
 
 import javafx.application.Application;
-<<<<<<< HEAD
-import static javafx.application.Application.launch;
-=======
->>>>>>> ba3514983e2dd69f921c53e425e144e0ca8acc14
+
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import presentation.chart.barChart.VolumeChart;
 import vo.SingleStockInfoVO;
 
 
@@ -75,13 +56,12 @@ public class Driver extends Application {
         x.add(ssi2);
         x.add(ssi3);
         x.add(ssi4);
-        x.add(ssi5);
 
 
-        KLineChart s=new KLineChart(x);
+        VolumeChart s=new VolumeChart(x);
 
         Scene scene = new Scene(s.getchart());
-        scene.getStylesheets().add("/styles/CandleStickChartStyles.css");
+//        scene.getStylesheets().add("/styles/CandleStickChartStyles.css");
 
 
         stage.setTitle("JavaFX and Maven");

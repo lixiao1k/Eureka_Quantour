@@ -21,10 +21,7 @@ public class KLineChart implements chartService {
 
     public KLineChart(List<SingleStockInfoVO> stocklist){
         this.barlist=convertdata(stocklist);
-<<<<<<< HEAD
-        System.out.println(barlist.size());
-=======
->>>>>>> ba3514983e2dd69f921c53e425e144e0ca8acc14
+
     }
 
     private static List<BarData> convertdata(List<SingleStockInfoVO> stocklist){
