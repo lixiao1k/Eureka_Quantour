@@ -1,7 +1,5 @@
 package data.datahelperservice;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 
 /**
@@ -11,5 +9,4 @@ import java.util.HashMap;
  */
 public interface IStockDataHelper {
 	public HashMap<String,HashMap<String,String>> getAllStock();
-	public ArrayList<String> find(HashMap<String,HashMap<String,String>> map,String code,Calendar start,Calendar end);
 }

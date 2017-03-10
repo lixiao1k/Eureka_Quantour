@@ -6,13 +6,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Properties;
 
 import data.datahelperservice.IStockDataHelper;
@@ -27,16 +22,13 @@ public class StockDataHelperImp implements IStockDataHelper {
 	private File filelog;
 	private Properties prop_file;
 	private OutputStream out_file;
-	private File calendarlog;
-	private Properties prop_cal;
-	private OutputStream out_cal;
 	private File stockranklog;
 	private Properties prop_rank;
 	private OutputStream out_rank;
 	private File filepath;
 	private Boolean need_init;
 	private StockDataHelperImp(){
-		stockdata=new File("F://date.csv");
+		stockdata=new File("date.csv");
 		filepath=new File("data/stock");
 		if(!filepath.exists()&&!filepath.isDirectory())
 		{
@@ -56,15 +48,8 @@ public class StockDataHelperImp implements IStockDataHelper {
 			else{
 				need_init=false;
 			}
-			calendarlog=new File("data/stock/calendarlog.properties");
-			prop_cal=new Properties();
-			
-			if(!calendarlog.exists()){
-				calendarlog.createNewFile();
-			}
 			stockranklog=new File("data/stock/stockranklog.properties");
-			prop_rank=new Properties();
-			
+			prop_rank=new Properties();		
 			if(!stockranklog.exists()){
 				stockranklog.createNewFile();
 			}
@@ -88,7 +73,6 @@ public class StockDataHelperImp implements IStockDataHelper {
 		try
 		{
 			out_file = new FileOutputStream("data/stock/filelog.properties");
-			out_cal = new FileOutputStream("data/stock/calendarlog.properties");
 			out_rank = new FileOutputStream("data/stock/stockranklog.properties");
 			FileReader fr=new FileReader(stockdata);
 			BufferedReader br=new BufferedReader(fr);
@@ -96,8 +80,8 @@ public class StockDataHelperImp implements IStockDataHelper {
 					new HashMap<String,HashMap<String,String>>();
 			br.readLine();
 			String printnumber="1";
-			int i=0;
-			int j=0;
+			int i=2;
+			int j=2;
 			int now=1;
 			while(br.ready()){
 				String out=br.readLine();
@@ -107,14 +91,13 @@ public class StockDataHelperImp implements IStockDataHelper {
 					j++;
 				}
 				else{
-					prop_file.setProperty(printnumber,i+","+j);
+					prop_file.setProperty(printnumber,i+","+(j-1));
 					prop_rank.setProperty(String.valueOf(now), printnumber);
 					printnumber=output[8];
-					j++;
 					i=j;
+					j++;
 					now++;
 				}
-				prop_cal.setProperty(String.valueOf(j), output[1]);
 				if(result.containsKey(cal)){
 					result.get(cal).put(output[8], out);
 				}
@@ -124,12 +107,10 @@ public class StockDataHelperImp implements IStockDataHelper {
 					result.put(cal, map);
 				}
 			}
-			j++;
-			prop_file.setProperty(printnumber,i+","+j);
+			prop_file.setProperty(printnumber,i+","+(j-1));
 			prop_file.store(out_file, "date汇总");
 			prop_rank.setProperty(String.valueOf(now), printnumber);
 			prop_rank.store(out_rank, "abcd");
-			prop_cal.store(out_cal, "cal汇总");
 			br.close();
 			fr.close();
 			return result;
@@ -140,70 +121,69 @@ public class StockDataHelperImp implements IStockDataHelper {
 		}
 	}
 	private HashMap<String,HashMap<String,String>> initData_Byproperties(){
-		int now_row=1;
 		try{
-			File stockdata=new File("F://date.csv");
+			HashMap<String,HashMap<String,String>> result=new HashMap<String,HashMap<String,String>>();
 			FileReader fr=new FileReader(stockdata);
 			BufferedReader br=new BufferedReader(fr);
 			Properties prop=new Properties();
 			BufferedInputStream inputStream = new BufferedInputStream(
-					new FileInputStream("data/stock/calendarlog.properties"));
+					new FileInputStream("data/stock/filelog.properties"));
 			prop.load(inputStream);
 			inputStream.close();
 			Properties prop1=new Properties();
-			InputStream inputStream1 = new BufferedInputStream( 
+			BufferedInputStream inputStream1 = new BufferedInputStream(
 					new FileInputStream("data/stock/stockranklog.properties"));
 			prop1.load(inputStream1);
 			inputStream1.close();
 			br.readLine();
-			HashMap<String,HashMap<String,String>> result=
-					new HashMap<String,HashMap<String,String>>();
-			int old_code=-1;
-			int rownumber=1;
-			String row_code="1";
+			int now_row=2;
+			String now_rank="1";
+			Boolean flag=true;
+			String[] range=new String[2];
+			range[0]="2";
+			range[1]="2";
+			int rank=1;
 			while(br.ready()){
-				String cal=prop.getProperty(String.valueOf(now_row));
 				String str=br.readLine();
-				if(now_code(str)==(old_code+1)){
-					old_code++;
+				if(now_row>Integer.parseInt(range[1])||now_row==2){
+					flag=true;
+					now_rank=prop1.getProperty(String.valueOf(rank));
+					rank++;
 				}
-				else{
-					old_code=0;
-					rownumber=rownumber+1;
-					row_code=prop1.getProperty(String.valueOf(rownumber));
+				if(flag){
+					range=prop.getProperty(now_rank).split(",");
+					flag=false;
+				}
+				int code=now_row-Integer.parseInt(range[0]);
+				int i=String.valueOf(code).length()+1;
+				String cal="";
+				char now;
+				while(true){
+					now=str.charAt(i);
+					i++;
+					if(now!='\t'){
+						cal=cal+now;
+					}
+					else{
+						break;
+					}
 				}
 				if(result.containsKey(cal)){
-					result.get(cal).put(row_code, str);
+					result.get(cal).put(String.valueOf(now_rank), str);
 				}
 				else{
 					HashMap<String,String> map=new HashMap<String,String>();
-					map.put(row_code, str);
+					map.put(String.valueOf(now_rank),str);
 					result.put(cal, map);
 				}
 				now_row++;
-			}	
+			}
 			br.close();
 			return result;
 		}catch(Exception e){
 			e.printStackTrace();
 			return null;
-		}
-	}
-	private int now_code(String str){
-		int i=0;
-		String code="";
-		char now;
-		while(true){
-			now=str.charAt(i);
-			i++;
-			if(now>='0'&&now<='9'){
-				code=code+now;
-			}
-			else{
-				break;
-			}
-		}
-		return Integer.parseInt(code);
+		}	
 	}
 	
 //	public ArrayList<String> find(HashMap<String,HashMap<String,String>> map,String code,Calendar start,Calendar end){
@@ -250,29 +230,4 @@ public class StockDataHelperImp implements IStockDataHelper {
 //			return null;
 //		}
 //	}
-	public ArrayList<String> find(HashMap<String,HashMap<String,String>> map,String code,Calendar start,Calendar end){
-		Calendar i=start;
-		ArrayList<String> list=new ArrayList<String>();
-		while(i.compareTo(end)<=0){
-			SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yy");
-			if(map.containsKey(tostring(sdf.format(i.getTime())))){
-				list.add(map.get(tostring(sdf.format(i.getTime()))).get(code));
-			}
-			else{
-				i.set(Calendar.DATE, i.get(Calendar.DATE)+1);
-			}
-			i.set(Calendar.DATE, i.get(Calendar.DATE)+1);
-		}
-		return list;
-	}
-	private String tostring(String str){
-		String[] out=str.split("/");
-		if(out[0].length()==2&&out[0].charAt(0)=='0'){
-			out[0]=out[0].substring(1);
-		}
-		if(out[1].length()==2&&out[1].charAt(0)=='0'){
-			out[1]=out[1].substring(1);
-		}
-		return out[0]+"/"+out[1]+"/"+out[2];
-	}
 }
