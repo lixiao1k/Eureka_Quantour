@@ -20,6 +20,10 @@ import java.text.DecimalFormat;
 import java.util.*;
 
 import javafx.application.Application;
+<<<<<<< HEAD
+import static javafx.application.Application.launch;
+=======
+>>>>>>> ba3514983e2dd69f921c53e425e144e0ca8acc14
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import presentation.chart.barChart.VolumeChart;

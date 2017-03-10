@@ -5,8 +5,8 @@ import java.util.Calendar;
 import java.util.List;
 
 import junit.framework.TestCase;
-import logicserver.StockLogicImpl;
-import logicserver.StockLogicInterface;
+import logicservice.StockLogicInterface;
+import logicserviceimpl.StockLogicImpl;
 import vo.EMAInfoVO;
 
 public class StockLogicImplTest extends TestCase {
@@ -18,7 +18,7 @@ public class StockLogicImplTest extends TestCase {
 	}
 	
 	public void testGetEMAInfo(){
-		List<EMAInfoVO> list1 = SLI.getEMAInfo("1", Calendar.getInstance(), Calendar.getInstance(), 5);
+		List<EMAInfoVO> list1 = SLI.getEMAInfo("1", Calendar.getInstance(), Calendar.getInstance()).get(0);
 		List<Double> list2 = new ArrayList<Double>();
 		for(int i=0;i<list1.size();i++)
 			list2.add(list1.get(i).getEMA());
@@ -26,6 +26,10 @@ public class StockLogicImplTest extends TestCase {
 		list3.add(11.16); list3.add(11.03); list3.add(11.25);
 		list3.add(11.23); list3.add(11.19); 
 		this.assertTrue( ifListEqual(list2, list3) );
+	}
+	
+	public void testGetComparedInfo(){
+		
 	}
 	
 	/**
