@@ -3,6 +3,7 @@ package presentation.chart.lineChart;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import presentation.chart.chartService;
 import presentation.chart.klineChart.KLineChart;
 import vo.EMAInfoVO;
 import vo.SingleStockInfoVO;
@@ -52,8 +53,7 @@ public class Driver extends Application {
         x.add(ssi5);
 
 
-    EMAChart s=new EMAChart(x);
-
+    chartService s=new EMAChart(x);
     Scene scene = new Scene(s.getchart());
 
 

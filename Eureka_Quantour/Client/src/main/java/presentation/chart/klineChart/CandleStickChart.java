@@ -32,7 +32,7 @@ import javafx.util.Duration;
  * 
  * 
  */
-public class CandleStickChart extends XYChart<String, Number> {
+public class  CandleStickChart extends XYChart<String, Number> {
 
     SimpleDateFormat sdf = new SimpleDateFormat("yy:MM:dd");
     protected int maxBarsToDisplay;

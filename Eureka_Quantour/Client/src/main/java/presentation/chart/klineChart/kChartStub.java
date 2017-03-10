@@ -17,19 +17,12 @@ limitations under the License.
 
 
 import java.net.URL;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.ResourceBundle;
-
-import javafx.application.Application;
 import javafx.fxml.Initializable;
-
-import static javafx.application.Application.launch;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 
 
 public class kChartStub implements Initializable {
@@ -64,7 +57,7 @@ public class kChartStub implements Initializable {
             previousClose = close;
             
             BarData bar = new BarData((GregorianCalendar) now.clone(), open, high, low, close, 1);
-            now.add(Calendar.MINUTE, 5);
+            now.add(Calendar.MONTH,1);
             bars.add(bar);
         }
         return bars;
