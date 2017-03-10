@@ -22,6 +22,7 @@ import java.util.*;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import presentation.chart.barChart.VolumeChart;
 import vo.SingleStockInfoVO;
 
 
@@ -71,13 +72,12 @@ public class Driver extends Application {
         x.add(ssi2);
         x.add(ssi3);
         x.add(ssi4);
-        x.add(ssi5);
 
 
-        KLineChart s=new KLineChart(x);
+        VolumeChart s=new VolumeChart(x);
 
         Scene scene = new Scene(s.getchart());
-        scene.getStylesheets().add("/styles/CandleStickChartStyles.css");
+//        scene.getStylesheets().add("/styles/CandleStickChartStyles.css");
 
 
         stage.setTitle("JavaFX and Maven");

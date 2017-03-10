@@ -1,12 +1,10 @@
-package presentation.chart.lineChart;
+package presentation.chart.barChart;
 
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
+import javafx.scene.chart.*;
 import javafx.scene.control.Tooltip;
 import presentation.chart.chartService;
 import vo.EMAInfoVO;
+import vo.SingleStockInfoVO;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -14,33 +12,33 @@ import java.util.List;
 /**
  * Created by huihantao on 2017/3/9.
  */
-public class EMAChart implements chartService {
+public class VolumeChart implements chartService {
+
     protected NumberAxis yAxis;
     protected CategoryAxis xAxis;
     SimpleDateFormat sdf = new SimpleDateFormat("yy:MM:dd");
 
-    private LineChart<String, Number> lineChart ;
+    private BarChart<String, Number> volumechart ;
 
-    public EMAChart(List<EMAInfoVO> list){
+    public VolumeChart(List<SingleStockInfoVO> list){
         xAxis=new CategoryAxis();
         yAxis=new NumberAxis();
         yAxis.autoRangingProperty().set(true);
         yAxis.forceZeroInRangeProperty().setValue(Boolean.FALSE);
 
-        lineChart=new LineChart<>(xAxis,yAxis);
+        volumechart=new BarChart<>(xAxis,yAxis);
 
         XYChart.Series<String,Number> series =new XYChart.Series<>();
 
-        for (EMAInfoVO info:list){
+        for (SingleStockInfoVO info:list){
             String label =sdf.format(info.getDate().getTime());
-            series.getData().add(new XYChart.Data<>(label,info.getEMA()));
+            series.getData().add(new XYChart.Data<>(label,info.getVolume()));
         }
         series.setName("");
+        volumechart.getData().add(series);
+        volumechart.setTitle("均线图");
 
-        lineChart.getData().add(series);
-        lineChart.setTitle("均线图");
-
-        for (XYChart.Series<String, Number> s : lineChart.getData()) {
+        for (XYChart.Series<String, Number> s : volumechart.getData()) {
             for (XYChart.Data<String, Number> d : s.getData()) {
                 Tooltip.install(d.getNode(), new Tooltip(
                         d.getXValue().toString() + "\n" +
@@ -53,6 +51,7 @@ public class EMAChart implements chartService {
 
     @Override
     public XYChart<String, Number> getchart() {
-        return lineChart;
+        return volumechart;
     }
+
 }
