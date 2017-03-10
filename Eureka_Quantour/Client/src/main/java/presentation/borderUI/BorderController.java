@@ -66,11 +66,6 @@ public class BorderController implements Initializable {
 	}
 	
 	@FXML
-	protected void browseAverageLine(ActionEvent e){
-		
-	}
-	
-	@FXML
 	protected void goCompare(ActionEvent e){
 		ObservableList<Node> nodeList = setInfoAnchorPane.getChildren();
 		for(Node node:nodeList){
@@ -85,7 +80,15 @@ public class BorderController implements Initializable {
 	
 	@FXML
 	protected void browseMarket(ActionEvent e){
-		
+		ObservableList<Node> nodeList = setInfoAnchorPane.getChildren();
+		for(Node node:nodeList){
+			String name = (String)node.getProperties().get("Name");
+			if(name!=null&&name.contains("HBox")){
+				nodeList.remove(node);
+				break;
+			}
+		}
+		setInfoAnchorPane.getChildren().add(marketHBox());
 	}
 	
 	@FXML
@@ -153,6 +156,27 @@ public class BorderController implements Initializable {
 		return hb;
 	}
 	
+	private HBox marketHBox(){
+		HBox hb = new HBox();
+		hb.setPadding(new Insets(25,5,5,25));
+		hb.setSpacing(5);
+		Label timeLabel = new Label("查询时间: ");
+		DatePicker timeDatePicker = new DatePicker();
+		Label blank = new Label();
+		blank.setPrefSize(40, 10);
+		TextField stockName = new TextField();
+		stockName.setPrefSize(100, 5);
+		stockName.setPromptText("股票名");
+		Button marketThermometer = new Button("市场温度计");
+		marketThermometer.setOnAction((ActionEvent e)->{
+			ObservableList<Node> nodeList = borderPane.getChildren();
+			nodeList.clear();
+			borderPane.setTop(getMarketThermometerResultVBox(20, 20, 20, 20, 20, 20, 20));
+		});
+		hb.getChildren().addAll(timeLabel,timeDatePicker,blank,stockName,marketThermometer);
+		hb.getProperties().put("Name","marketHBox");
+		return hb;
+	}
 	
 	private FlowPane getCompareResultFlowPane(){
 		FlowPane fp = new FlowPane();
@@ -167,10 +191,35 @@ public class BorderController implements Initializable {
 		return fp;
 	}
 	/*
+	 * @param A  A指数，开盘‐收盘大于5%*上一个交易日收盘价的股票个数
+	 * @param B  B指数，开盘‐收盘小于-5%*上一个交易日收盘价的股票个数
+	 */
+	private VBox getMarketThermometerResultVBox(int sumOfVolume,int numOfUp,int numOfDown,int numOfRateIncrease,int numOfRateDecrease,
+			int A,int B){
+		VBox result = new VBox();
+		result.setPadding(new Insets(4,4,4,4));
+		result.setSpacing(5);
+		HBox hb1 = setHBoxStyle(new Insets(4,4,4,4),10);
+		HBox hb2 = setHBoxStyle(new Insets(4,4,4,4),10);
+		Label sumOfVolumeLabel = new Label("当日总交易量: "+Integer.toString(sumOfVolume));
+		Label numOfUpLabel = new Label("涨停股票数: "+Integer.toString(numOfUp));
+		Label numOfDownLabel = new Label("跌停股票数: "+Integer.toString(numOfDown));
+		Label numOfRateIncreaseLabel = new Label("涨幅超5%股票数: "+Integer.toString(numOfRateIncrease));
+		Label numOfRateDecreaseLabel = new Label("跌幅超5%股票数: "+Integer.toString(numOfRateDecrease));
+		Label aLabel = new Label("A指数: "+Integer.toString(A));
+		Label bLabel = new Label("B指数: "+Integer.toString(B));
+		hb1.getChildren().addAll(sumOfVolumeLabel,numOfUpLabel,numOfDownLabel);
+		hb2.getChildren().addAll(numOfRateIncreaseLabel,numOfRateDecreaseLabel,aLabel,bLabel);
+		result.getChildren().addAll(hb1,hb2);
+		return result;
+	}
+	
+	
+	/*
 	 * @param variance 对数收益率方差
 	 * @param change 涨/跌幅
 	 */
-	public VBox getCompareResultVBox (String stockName,double high,double low,double change,double variance,
+	private VBox getCompareResultVBox (String stockName,double high,double low,double change,double variance,
 			String timeRange){
 		VBox result = new VBox();
 		result.setPadding(new Insets(4,4,4,4));

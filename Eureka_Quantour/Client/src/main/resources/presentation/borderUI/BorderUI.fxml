@@ -16,10 +16,9 @@
                   <Image url="@User.png" />
                </image></ImageView>
             <Separator layoutX="2.0" layoutY="124.0" prefHeight="7.0" prefWidth="149.0" />
-            <Button layoutX="6.0" layoutY="208.0" mnemonicParsing="false" onAction="#browseKLine" prefHeight="23.0" prefWidth="141.0" text="K线" />
-            <Button layoutX="6.0" layoutY="247.0" mnemonicParsing="false" onAction="#browseAverageLine" prefHeight="23.0" prefWidth="141.0" text="均线" />
-            <Button layoutX="6.0" layoutY="285.0" mnemonicParsing="false" onAction="#goCompare" prefHeight="23.0" prefWidth="141.0" text="比较" />
-            <Button layoutX="6.0" layoutY="325.0" mnemonicParsing="false" onAction="#browseMarket" prefHeight="23.0" prefWidth="141.0" text="市场情况" />
+            <Button layoutX="6.0" layoutY="208.0" mnemonicParsing="false" onAction="#browseKLine" prefHeight="23.0" prefWidth="141.0" text="K线均线" />
+            <Button layoutX="6.0" layoutY="247.0" mnemonicParsing="false" onAction="#goCompare" prefHeight="23.0" prefWidth="141.0" text="比较" />
+            <Button layoutX="6.0" layoutY="285.0" mnemonicParsing="false" onAction="#browseMarket" prefHeight="23.0" prefWidth="141.0" text="市场情况" />
             <Button layoutX="6.0" layoutY="584.0" mnemonicParsing="false" onAction="#exit" prefHeight="26.0" prefWidth="141.0" text="登出" />
          </children>
       </AnchorPane>
