@@ -81,6 +81,7 @@ public class  CandleStickChart extends XYChart<String, Number> {
         this.maxBarsToDisplay = maxBarsToDisplay;
 
         yAxis.autoRangingProperty().set(true);
+
         yAxis.forceZeroInRangeProperty().setValue(Boolean.FALSE);
         setTitle(title);
         setAnimated(true);
@@ -92,7 +93,7 @@ public class  CandleStickChart extends XYChart<String, Number> {
         List<BarData> sublist = getSubList(bars, maxBarsToDisplay);
         for (BarData bar : sublist) {
             String label = sdf.format(bar.getDateTime().getTime());
-            series.getData().add(new XYChart.Data<>(label, bar.getOpen(), bar));
+            series.getData().add(new XYChart.Data<>(label, bar.getOpen(),bar));
         }
 
         dataSeries = FXCollections.observableArrayList(series);
@@ -190,14 +191,6 @@ public class  CandleStickChart extends XYChart<String, Number> {
                     // position the candle
                     candle.setLayoutX(x);
                     candle.setLayoutY(y);
-                }
-
-                if (seriesPath != null) {
-                    if (seriesPath.getElements().isEmpty()) {
-                        seriesPath.getElements().add(new MoveTo(x, getYAxis().getDisplayPosition(bar.getHigh())));
-                    } else {
-                        seriesPath.getElements().add(new LineTo(x, getYAxis().getDisplayPosition(bar.getHigh())));
-                    }
                 }
 
             }
