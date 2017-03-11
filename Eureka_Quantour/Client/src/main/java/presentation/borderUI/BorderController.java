@@ -30,7 +30,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
-import presentation.chart.barChart.ComparedChart;
+import presentation.chart.barChart.ExtremeValueComparedChart;
 import presentation.chart.klineChart.CandleStickChart;
 import presentation.chart.klineChart.kChartStub;
 import vo.ComparedInfoVO;

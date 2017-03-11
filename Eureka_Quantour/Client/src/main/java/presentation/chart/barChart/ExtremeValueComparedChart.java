@@ -22,6 +22,10 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.chart.XYChart.Data;
+import javafx.scene.chart.XYChart.Series;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 
 /**
  *
@@ -32,7 +36,7 @@ import javafx.scene.chart.XYChart;
  * @see javafx.scene.chart.NumberAxis
  * @see javafx.scene.chart.XYChart
  */
-public class ComparedChart implements Initializable {
+public class ExtremeValueComparedChart implements Initializable {
 
 //    private void init(Stage primaryStage) {
 //        Group root = new Group();
@@ -55,10 +59,17 @@ public class ComparedChart implements Initializable {
         series1.getData().add(new XYChart.Data<String,Number>(years[0], highA));
         series1.getData().add(new XYChart.Data<String,Number>(years[1], lowA));
         series2.getData().add(new XYChart.Data<String,Number>(years[0], highB));
-        series2.getData().add(new XYChart.Data<String,Number>(years[1], lowB));
-//        series1.getNode().getStyleClass().add(e)
+        series2.getData().add(new XYChart.Data<String,Number>(years[1], lowB));  
+
         bc.getData().add(series1);
         bc.getData().add(series2);
+        for(XYChart.Series<String, Number> s:bc.getData()){
+        	for(XYChart.Data<String, Number> data:s.getData()){
+        	    StackPane bar = (StackPane)data.getNode();
+        	    final Text dataText = new Text(data.getYValue()+"");
+        	    bar.getChildren().add(dataText);
+        	}
+        }        
         bc.setCategoryGap(50);
         bc.getStylesheets().add(getClass().getResource("/styles/ComparedChart.css").toExternalForm());
         bc.setPrefSize(277, 238);
