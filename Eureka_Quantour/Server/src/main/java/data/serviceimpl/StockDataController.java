@@ -41,6 +41,8 @@ public class StockDataController {
 			if(hascalendar){
 				hascode=stockinfo_StringType.get(tostring(sdf.format(i.getTime()))).containsKey(stockcode);
 				if(hascode){
+					System.out.println(stockinfo_StringType.get(
+									tostring(sdf.format(i.getTime()))).get(stockcode));
 					list.add(new SingleStockInfoPO
 							(stockinfo_StringType.get(
 									tostring(sdf.format(i.getTime()))).get(stockcode)));
@@ -70,6 +72,7 @@ public class StockDataController {
 		ArrayList<SingleStockInfoPO> list=new ArrayList<SingleStockInfoPO>();
 		while(it.hasNext()){
 			String info=it.next().getValue();
+			System.out.println(info);
 			list.add(new SingleStockInfoPO(info));
 		}
 		return list;
