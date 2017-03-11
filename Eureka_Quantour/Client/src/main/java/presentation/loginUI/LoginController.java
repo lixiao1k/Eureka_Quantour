@@ -34,7 +34,7 @@ public class LoginController implements Initializable{
 			Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("presentation/borderUI/BorderUI.fxml"));
 			Scene scene = new Scene(root);
 			Stage stageNew = new Stage();
-			stageNew.initStyle(StageStyle.TRANSPARENT);
+//			stageNew.initStyle(StageStyle.TRANSPARENT);
 			stageNew.setScene(scene);
 			stageNew.show();
 		}

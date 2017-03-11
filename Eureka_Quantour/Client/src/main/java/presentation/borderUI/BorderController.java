@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.chart.BarChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -27,6 +28,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
+import presentation.chart.barChart.ComparedChart;
 import presentation.chart.klineChart.CandleStickChart;
 import presentation.chart.klineChart.kChartStub;
 import vo.ComparedInfoVO;
@@ -152,6 +154,7 @@ public class BorderController implements Initializable {
 			
 		});
 		
+
 		hb.getChildren().addAll(beginLabel,beginDatePicker,endLabel,endDatePicker,blank,stockNameA,stockNameB,compareButton);
 		hb.getProperties().put("Name","compareHBox");
 		return hb;
@@ -188,8 +191,18 @@ public class BorderController implements Initializable {
 				,vo.getLogYieldA(),vo.getLogYieldVarianceA(),"2017/11/19~2017/11/20");
 		VBox vb2 = getCompareResultVBox(vo.getNameB(),vo.getHighB(),vo.getLowB()
 				,vo.getLogYieldB(),vo.getLogYieldVarianceB(),"2017/11/19~2017/11/20");
+		VBox buttonVBox = new VBox();
+		buttonVBox.setSpacing(5);
+		buttonVBox.setPadding(new Insets(4,4,4,4));
+		
 		fp.getChildren().addAll(vb1,vb2);
 		return fp;
+	}
+	
+	private ComparedChart getCompareResultChart(){
+		ComparedChart comparedChart = new ComparedChart();
+		BarChart<String, Number> barChart = comparedChart.createChart("股票A", "股票B", 50, 60, 40, 40);
+		return comparedChart;
 	}
 	/*
 	 * @param A  A指数，开盘‐收盘大于5%*上一个交易日收盘价的股票个数
