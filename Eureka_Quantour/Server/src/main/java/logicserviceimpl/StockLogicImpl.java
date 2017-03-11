@@ -101,10 +101,10 @@ public class StockLogicImpl implements StockLogicInterface{
 		ci.setCodeA(lstiA.get(0).getCode());
 		ci.setCodeB(lstiB.get(0).getCode());
 		// 涨幅为正，跌幅为负
-		ci.setRODA( (lstiA.get(tempInt-1).getClose()-lstiA.get(0).getOpen()) 
-				/ lstiA.get(0).getOpen());
-		ci.setRODB( (lstiB.get(tempInt-1).getClose()-lstiB.get(0).getOpen()) 
-				/ lstiB.get(0).getOpen());
+		ci.setRODA( formatDouble( (lstiA.get(tempInt-1).getClose()-lstiA.get(0).getOpen()) 
+				/ lstiA.get(0).getOpen() ) );
+		ci.setRODB( formatDouble( (lstiB.get(tempInt-1).getClose()-lstiB.get(0).getOpen()) 
+				/ lstiB.get(0).getOpen() ) );
 		
 		double maxA = 0, minA = 0, maxB = 0, minB = 0;
 		double closeA2 = 0.0, closeB2 = 0.0;
@@ -135,10 +135,10 @@ public class StockLogicImpl implements StockLogicInterface{
 				minB = ssiB.getLow();
 			
 			closeA2 = ssiA.getClose();
-			logYieldA[i] = Math.log(closeA2/closeA1);
+			logYieldA[i] = formatDouble( Math.log(closeA2/closeA1) );
 			closeA1 = closeA2;
 			closeB2 = ssiB.getClose();
-			logYieldB[i] = Math.log(closeB2/closeB1);
+			logYieldB[i] = formatDouble( Math.log(closeB2/closeB1) );
 			closeB1 = closeB2;
 		}
 		
