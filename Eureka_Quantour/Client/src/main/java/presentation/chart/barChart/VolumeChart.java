@@ -2,6 +2,7 @@ package presentation.chart.barChart;
 
 import javafx.scene.chart.*;
 import javafx.scene.control.Tooltip;
+import javafx.scene.layout.StackPane;
 import presentation.chart.chartService;
 import vo.EMAInfoVO;
 import vo.SingleStockInfoVO;
@@ -23,8 +24,22 @@ public class VolumeChart implements chartService {
     public VolumeChart(List<SingleStockInfoVO> list){
         xAxis=new CategoryAxis();
         yAxis=new NumberAxis();
+        yAxis.setPrefWidth(18);
+
         yAxis.autoRangingProperty().set(true);
         yAxis.forceZeroInRangeProperty().setValue(Boolean.FALSE);
+
+//        NumberAxis axis = new NumberAxis(0, 21, 1);
+//        axis.setPrefWidth(35);
+//        axis.setMinorTickCount(10);
+//
+//        axis.setTickLabelFormatter(new NumberAxis.DefaultFormatter(axis) {
+//            @Override public String toString(Number object) {
+//                return String.format("%7.2f", object.floatValue());
+//            }
+//        });
+//
+//        yAxis=axis;
 
         volumechart=new BarChart<>(xAxis,yAxis);
 
@@ -52,6 +67,11 @@ public class VolumeChart implements chartService {
     @Override
     public XYChart<String, Number> getchart() {
         return volumechart;
+    }
+
+    @Override
+    public StackPane overlay(XYChart<String, Number> chart) {
+        return null;
     }
 
 }

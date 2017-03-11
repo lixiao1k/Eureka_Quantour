@@ -58,12 +58,13 @@ public class Driver extends Application {
         x.add(ssi2);
         x.add(ssi3);
         x.add(ssi4);
+        x.add(ssi5);
 
 
         chartService s=new KLineChart(x);
 
         Scene scene = new Scene(s.getchart());
-        scene.getStylesheets().add("/styles/CandleStickChartStyles.css");
+//        scene.getStylesheets().add("/styles/CandleStickChartStyles.css");
 
 
         stage.setTitle("JavaFX and Maven");

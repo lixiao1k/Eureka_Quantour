@@ -19,6 +19,8 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.util.Duration;
 
@@ -188,6 +190,14 @@ public class  CandleStickChart extends XYChart<String, Number> {
                     // position the candle
                     candle.setLayoutX(x);
                     candle.setLayoutY(y);
+                }
+
+                if (seriesPath != null) {
+                    if (seriesPath.getElements().isEmpty()) {
+                        seriesPath.getElements().add(new MoveTo(x, getYAxis().getDisplayPosition(bar.getHigh())));
+                    } else {
+                        seriesPath.getElements().add(new LineTo(x, getYAxis().getDisplayPosition(bar.getHigh())));
+                    }
                 }
 
             }

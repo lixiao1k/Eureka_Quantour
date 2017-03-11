@@ -8,6 +8,7 @@ import java.util.List;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.chart.XYChart;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import presentation.chart.chartService;
 import vo.SingleStockInfoVO;
@@ -40,6 +41,11 @@ public class KLineChart implements chartService {
     @Override
     public XYChart<String, Number> getchart() {
         return new CandleStickChart("K-Line Chart", barlist);
+    }
+
+    @Override
+    public StackPane overlay(XYChart<String, Number> chart) {
+        return null;
     }
 
 
