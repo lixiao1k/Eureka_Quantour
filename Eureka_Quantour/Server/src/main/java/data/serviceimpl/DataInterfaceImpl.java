@@ -39,5 +39,9 @@ public class DataInterfaceImpl implements IDataInterface
 		// TODO Auto-generated method stub
 		return stock.getMarketByDate(date);
 	}
+	@Override
+	public void logout(String username) {
+		user.logout(username);
+	}
 
 }

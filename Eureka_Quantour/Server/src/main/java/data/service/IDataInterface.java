@@ -43,4 +43,10 @@ public interface IDataInterface
 	 * @return 一个股票信息的对象的列表
 	 */
 	public List<SingleStockInfoPO> getMarketByDate(Calendar date);
+	/**
+	 * 登出账号。
+	 * @param username String,用户的登录名
+	 * @return 一个boolean值，登录成功返回true，否则返回false
+	 */
+	public void logout(String username);
 }

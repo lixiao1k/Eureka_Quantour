@@ -72,6 +72,7 @@ public class StockDataHelperImp implements IStockDataHelper {
 	private HashMap<String,HashMap<String,String>> initData_Byrow(){
 		try
 		{
+			System.out.println("initData_Byproperties");
 			out_file = new FileOutputStream("data/stock/filelog.properties");
 			out_rank = new FileOutputStream("data/stock/stockranklog.properties");
 			FileReader fr=new FileReader(stockdata);
@@ -85,7 +86,7 @@ public class StockDataHelperImp implements IStockDataHelper {
 			int now=1;
 			while(br.ready()){
 				String out=br.readLine();
-				String[] output=out.split("\\s+");
+				String[] output=out.split("\t");
 				String cal=output[1];
 				if(printnumber.equals(output[8])){
 					j++;
@@ -143,37 +144,34 @@ public class StockDataHelperImp implements IStockDataHelper {
 			range[0]="2";
 			range[1]="2";
 			int rank=1;
+			int code=0;
+			int i=0;
+			String str="";
+			String cal="";
+			int big_number=2;
+			int small_number=2;
 			while(br.ready()){
-				String str=br.readLine();
-				if(now_row>Integer.parseInt(range[1])||now_row==2){
+				str=br.readLine();
+				if(now_row>big_number||now_row==2){
 					flag=true;
 					now_rank=prop1.getProperty(String.valueOf(rank));
 					rank++;
 				}
 				if(flag){
 					range=prop.getProperty(now_rank).split(",");
+					small_number=Integer.parseInt(range[0]);
+					big_number=Integer.parseInt(range[1]);
 					flag=false;
 				}
-				int code=now_row-Integer.parseInt(range[0]);
-				int i=String.valueOf(code).length()+1;
-				String cal="";
-				char now;
-				while(true){
-					now=str.charAt(i);
-					i++;
-					if(now!='\t'){
-						cal=cal+now;
-					}
-					else{
-						break;
-					}
-				}
+				code=now_row-small_number;
+				i=String.valueOf(code).length()+1;
+				cal=str.substring(i, str.indexOf("\t", i));
 				if(result.containsKey(cal)){
-					result.get(cal).put(String.valueOf(now_rank), str);
+					result.get(cal).put(now_rank, str);
 				}
 				else{
 					HashMap<String,String> map=new HashMap<String,String>();
-					map.put(String.valueOf(now_rank),str);
+					map.put(now_rank,str);
 					result.put(cal, map);
 				}
 				now_row++;
