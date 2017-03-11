@@ -12,10 +12,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.chart.BarChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -26,6 +28,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
+import presentation.chart.barChart.ComparedChart;
 import presentation.chart.klineChart.CandleStickChart;
 import presentation.chart.klineChart.kChartStub;
 import vo.ComparedInfoVO;
@@ -66,11 +69,6 @@ public class BorderController implements Initializable {
 	}
 	
 	@FXML
-	protected void browseAverageLine(ActionEvent e){
-		
-	}
-	
-	@FXML
 	protected void goCompare(ActionEvent e){
 		ObservableList<Node> nodeList = setInfoAnchorPane.getChildren();
 		for(Node node:nodeList){
@@ -85,7 +83,15 @@ public class BorderController implements Initializable {
 	
 	@FXML
 	protected void browseMarket(ActionEvent e){
-		
+		ObservableList<Node> nodeList = setInfoAnchorPane.getChildren();
+		for(Node node:nodeList){
+			String name = (String)node.getProperties().get("Name");
+			if(name!=null&&name.contains("HBox")){
+				nodeList.remove(node);
+				break;
+			}
+		}
+		setInfoAnchorPane.getChildren().add(marketHBox());
 	}
 	
 	@FXML
@@ -148,11 +154,33 @@ public class BorderController implements Initializable {
 			
 		});
 		
+
 		hb.getChildren().addAll(beginLabel,beginDatePicker,endLabel,endDatePicker,blank,stockNameA,stockNameB,compareButton);
 		hb.getProperties().put("Name","compareHBox");
 		return hb;
 	}
 	
+	private HBox marketHBox(){
+		HBox hb = new HBox();
+		hb.setPadding(new Insets(25,5,5,25));
+		hb.setSpacing(5);
+		Label timeLabel = new Label("查询时间: ");
+		DatePicker timeDatePicker = new DatePicker();
+		Label blank = new Label();
+		blank.setPrefSize(40, 10);
+		TextField stockName = new TextField();
+		stockName.setPrefSize(100, 5);
+		stockName.setPromptText("股票名");
+		Button marketThermometer = new Button("市场温度计");
+		marketThermometer.setOnAction((ActionEvent e)->{
+			ObservableList<Node> nodeList = borderPane.getChildren();
+			nodeList.clear();
+			borderPane.setTop(getMarketThermometerResultVBox(20, 20, 20, 20, 20, 20, 20));
+		});
+		hb.getChildren().addAll(timeLabel,timeDatePicker,blank,stockName,marketThermometer);
+		hb.getProperties().put("Name","marketHBox");
+		return hb;
+	}
 	
 	private FlowPane getCompareResultFlowPane(){
 		FlowPane fp = new FlowPane();
@@ -163,14 +191,53 @@ public class BorderController implements Initializable {
 				,vo.getLogYieldA(),vo.getLogYieldVarianceA(),"2017/11/19~2017/11/20");
 		VBox vb2 = getCompareResultVBox(vo.getNameB(),vo.getHighB(),vo.getLowB()
 				,vo.getLogYieldB(),vo.getLogYieldVarianceB(),"2017/11/19~2017/11/20");
+		VBox buttonVBox = new VBox();
+		buttonVBox.setSpacing(5);
+		buttonVBox.setPadding(new Insets(4,4,4,4));
+		
 		fp.getChildren().addAll(vb1,vb2);
 		return fp;
 	}
+	
+	private ComparedChart getCompareResultChart(){
+		ComparedChart comparedChart = new ComparedChart();
+		BarChart<String, Number> barChart = comparedChart.createChart("股票A", "股票B", 50, 60, 40, 40);
+		return comparedChart;
+	}
+	/*
+	 * @param A  A指数，开盘‐收盘大于5%*上一个交易日收盘价的股票个数
+	 * @param B  B指数，开盘‐收盘小于-5%*上一个交易日收盘价的股票个数
+	 */
+	private VBox getMarketThermometerResultVBox(int sumOfVolume,int numOfUp,int numOfDown,int numOfRateIncrease,int numOfRateDecrease,
+			int A,int B){
+		VBox result = new VBox();
+		result.setPadding(new Insets(4,4,4,4));
+		result.setSpacing(5);
+		HBox hb1 = setHBoxStyle(new Insets(4,4,4,4),10);
+		HBox hb2 = setHBoxStyle(new Insets(4,4,4,4),10);
+		Label sumOfVolumeLabel = new Label("当日总交易量: "+Integer.toString(sumOfVolume));
+		Label numOfUpLabel = new Label("涨停股票数: "+Integer.toString(numOfUp));
+		Label numOfDownLabel = new Label("跌停股票数: "+Integer.toString(numOfDown));
+		Label numOfRateIncreaseLabel = new Label("涨幅超5%股票数: "+Integer.toString(numOfRateIncrease));
+		Label numOfRateDecreaseLabel = new Label("跌幅超5%股票数: "+Integer.toString(numOfRateDecrease));
+		Label aLabel = new Label("A指数: "+Integer.toString(A));
+		Tooltip aTooltip = new Tooltip("开盘‐收盘大于5%*上一个交易日收盘价的股票个数");
+		aLabel.setTooltip(aTooltip);
+		Label bLabel = new Label("B指数: "+Integer.toString(B));
+		Tooltip bTooltip = new Tooltip("开盘‐收盘小于-5%*上一个交易日收盘价的股票个数");
+		bLabel.setTooltip(bTooltip);
+		hb1.getChildren().addAll(sumOfVolumeLabel,numOfUpLabel,numOfDownLabel);
+		hb2.getChildren().addAll(numOfRateIncreaseLabel,numOfRateDecreaseLabel,aLabel,bLabel);
+		result.getChildren().addAll(hb1,hb2);
+		return result;
+	}
+	
+	
 	/*
 	 * @param variance 对数收益率方差
 	 * @param change 涨/跌幅
 	 */
-	public VBox getCompareResultVBox (String stockName,double high,double low,double change,double variance,
+	private VBox getCompareResultVBox (String stockName,double high,double low,double change,double variance,
 			String timeRange){
 		VBox result = new VBox();
 		result.setPadding(new Insets(4,4,4,4));

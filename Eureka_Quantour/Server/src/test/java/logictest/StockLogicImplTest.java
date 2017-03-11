@@ -1,7 +1,9 @@
 package logictest;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import junit.framework.TestCase;
@@ -11,6 +13,7 @@ import vo.EMAInfoVO;
 
 public class StockLogicImplTest extends TestCase {
 	private StockLogicInterface SLI;
+	private StockLogicImpl SLIm = new StockLogicImpl();
 
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -32,6 +35,33 @@ public class StockLogicImplTest extends TestCase {
 		
 	}
 	
+	public void testGetMarketInfo(){
+		
+	}
+	
+	public void testCalendarAdvance(){
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		Calendar cal = Calendar.getInstance(), tempCal = Calendar.getInstance();
+		Date date = new Date(), tempDate = new Date();
+		
+		cal.set(2017, 2, 10); tempCal.set(2017, 2, 9);
+		date = SLIm.calendarAdvance(cal).getTime(); tempDate = tempCal.getTime();
+		this.assertEquals( format.format(date), format.format(tempDate));
+		
+		cal.set(2017, 2, 1); tempCal.set(2017, 1, 28);
+		date = SLIm.calendarAdvance(cal).getTime(); tempDate = tempCal.getTime();
+		this.assertEquals( format.format(date), format.format(tempDate));
+		
+		cal.set(2017, 0, 1); tempCal.set(2016, 11, 30);
+		date = SLIm.calendarAdvance(cal).getTime(); tempDate = tempCal.getTime();
+		this.assertEquals( format.format(date), format.format(tempDate));
+	}
+	
+	public void testIfDoubleEqual(){
+		this.assertEquals( SLIm.ifDoubleEqual(2.30, 2.3), true);
+		this.assertEquals( SLIm.ifDoubleEqual(2.34, 2.3), false);
+		this.assertEquals( SLIm.ifDoubleEqual(2.34, 2.34), true);
+	}
 	/**
 	 * 
 	 * @Description: to compare if two lists like List<Double> are same
