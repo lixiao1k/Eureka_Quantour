@@ -1,5 +1,6 @@
 package presentation.borderUI;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.Observable;
@@ -9,9 +10,11 @@ import stub.CompareInfoVOStub;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.chart.BarChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -27,6 +30,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
+import presentation.chart.barChart.ComparedChart;
 import presentation.chart.klineChart.CandleStickChart;
 import presentation.chart.klineChart.kChartStub;
 import vo.ComparedInfoVO;
@@ -149,6 +153,7 @@ public class BorderController implements Initializable {
 			ObservableList<Node> nodelist = borderPane.getChildren();
 			nodelist.clear();
 			borderPane.setRight(getCompareResultFlowPane());
+			borderPane.setCenter(getCompareResultChart());
 			
 		});
 		
@@ -188,8 +193,23 @@ public class BorderController implements Initializable {
 				,vo.getLogYieldA(),vo.getLogYieldVarianceA(),"2017/11/19~2017/11/20");
 		VBox vb2 = getCompareResultVBox(vo.getNameB(),vo.getHighB(),vo.getLowB()
 				,vo.getLogYieldB(),vo.getLogYieldVarianceB(),"2017/11/19~2017/11/20");
+		VBox buttonVBox = new VBox();
+		buttonVBox.setSpacing(5);
+		buttonVBox.setPadding(new Insets(4,4,4,4));
+		
 		fp.getChildren().addAll(vb1,vb2);
 		return fp;
+	}
+	
+	private AnchorPane getCompareResultChart(){
+		AnchorPane resultAnchorPane=null;
+		try {
+             resultAnchorPane = FXMLLoader.load(getClass().getResource("CompareChartPane.fxml"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return resultAnchorPane;
 	}
 	/*
 	 * @param A  A指数，开盘‐收盘大于5%*上一个交易日收盘价的股票个数

@@ -1,38 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
-<?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="650.0" prefWidth="1000.0" styleClass="background" stylesheets="@Border.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.borderUI.BorderController">
-   <children>
-      <AnchorPane layoutX="-4.0" prefHeight="651.0" prefWidth="144.0" styleClass="left-segment" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <ImageView fx:id="imageView" fitHeight="70.0" fitWidth="75.0" layoutX="41.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true" styleClass="imageview">
-               <image>
-                  <Image url="@User.png" />
-               </image></ImageView>
-            <Separator layoutX="2.0" layoutY="124.0" prefHeight="7.0" prefWidth="149.0" />
-            <Button layoutX="6.0" layoutY="208.0" mnemonicParsing="false" onAction="#browseKLine" prefHeight="23.0" prefWidth="141.0" text="K线均线" />
-            <Button layoutX="6.0" layoutY="247.0" mnemonicParsing="false" onAction="#goCompare" prefHeight="23.0" prefWidth="141.0" text="比较" />
-            <Button layoutX="6.0" layoutY="285.0" mnemonicParsing="false" onAction="#browseMarket" prefHeight="23.0" prefWidth="141.0" text="市场情况" />
-            <Button layoutX="6.0" layoutY="584.0" mnemonicParsing="false" onAction="#exit" prefHeight="26.0" prefWidth="141.0" text="登出" />
-         </children>
-      </AnchorPane>
-      <Separator layoutX="149.0" orientation="VERTICAL" prefHeight="651.0" prefWidth="6.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      <AnchorPane layoutX="149.0" layoutY="-6.0" prefHeight="650.0" prefWidth="852.0" AnchorPane.leftAnchor="149.0" AnchorPane.rightAnchor="-1.0">
-         <children>
-            <Separator layoutY="131.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-            <AnchorPane layoutY="133.0" prefHeight="517.0" prefWidth="852.0">
-               <children>
-                  <BorderPane fx:id="borderPane" layoutX="14.0" layoutY="17.0" prefHeight="484.0" prefWidth="833.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0" />
-               </children></AnchorPane>
-            <AnchorPane fx:id="setInfoAnchorPane" layoutX="2.0" layoutY="81.0" prefHeight="50.0" prefWidth="852.0" />
-            <ImageView fx:id="logoImageView" fitHeight="50.0" fitWidth="372.0" layoutX="240.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="240.0" AnchorPane.rightAnchor="260.0" />
-         </children>
-      </AnchorPane>
-   </children>
+<AnchorPane prefHeight="650.0" prefWidth="1000.0" styleClass="background" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="presentation.borderUI.BorderController">
+  <children>
+    <AnchorPane layoutX="-4.0" prefHeight="651.0" prefWidth="144.0" styleClass="left-segment" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <children>
+        <ImageView fx:id="imageView" fitHeight="70.0" fitWidth="75.0" layoutX="41.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true" styleClass="imageview">
+          <image>
+            <Image url="@User.png" />
+          </image>
+        </ImageView>
+        <Separator layoutX="2.0" layoutY="124.0" prefHeight="7.0" prefWidth="149.0" />
+        <Button layoutX="6.0" layoutY="208.0" mnemonicParsing="false" onAction="#browseKLine" prefHeight="23.0" prefWidth="141.0" text="K线均线" />
+        <Button layoutX="6.0" layoutY="247.0" mnemonicParsing="false" onAction="#goCompare" prefHeight="23.0" prefWidth="141.0" text="比较" />
+        <Button layoutX="6.0" layoutY="285.0" mnemonicParsing="false" onAction="#browseMarket" prefHeight="23.0" prefWidth="141.0" text="市场情况" />
+        <Button layoutX="6.0" layoutY="584.0" mnemonicParsing="false" onAction="#exit" prefHeight="26.0" prefWidth="141.0" text="登出" />
+      </children>
+    </AnchorPane>
+    <Separator layoutX="149.0" orientation="VERTICAL" prefHeight="651.0" prefWidth="6.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" />
+    <AnchorPane layoutY="-6.0" prefHeight="650.0" prefWidth="852.0" AnchorPane.leftAnchor="149.0" AnchorPane.rightAnchor="-1.0">
+      <children>
+        <Separator layoutY="131.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+        <AnchorPane layoutY="133.0" prefHeight="517.0" prefWidth="852.0">
+          <children>
+            <BorderPane fx:id="borderPane" prefHeight="484.0" prefWidth="833.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0" />
+          </children>
+        </AnchorPane>
+        <AnchorPane fx:id="setInfoAnchorPane" layoutX="2.0" layoutY="81.0" prefHeight="50.0" prefWidth="852.0" />
+        <ImageView fx:id="logoImageView" fitHeight="50.0" fitWidth="372.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="240.0" AnchorPane.rightAnchor="260.0" />
+      </children>
+    </AnchorPane>
+  </children>
+  <stylesheets>
+    <URL value="@Border.css" />
+  </stylesheets>
 </AnchorPane>
