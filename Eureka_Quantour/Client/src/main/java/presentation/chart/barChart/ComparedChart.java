@@ -56,6 +56,7 @@ public class ComparedChart implements Initializable {
         series1.getData().add(new XYChart.Data<String,Number>(years[1], lowA));
         series2.getData().add(new XYChart.Data<String,Number>(years[0], highB));
         series2.getData().add(new XYChart.Data<String,Number>(years[1], lowB));
+//        series1.getNode().getStyleClass().add(e)
         bc.getData().add(series1);
         bc.getData().add(series2);
         bc.setCategoryGap(50);

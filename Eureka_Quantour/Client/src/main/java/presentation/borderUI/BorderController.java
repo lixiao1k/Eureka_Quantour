@@ -1,5 +1,6 @@
 package presentation.borderUI;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.Observable;
@@ -9,6 +10,7 @@ import stub.CompareInfoVOStub;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -151,10 +153,10 @@ public class BorderController implements Initializable {
 			ObservableList<Node> nodelist = borderPane.getChildren();
 			nodelist.clear();
 			borderPane.setRight(getCompareResultFlowPane());
+			borderPane.setCenter(getCompareResultChart());
 			
 		});
 		
-
 		hb.getChildren().addAll(beginLabel,beginDatePicker,endLabel,endDatePicker,blank,stockNameA,stockNameB,compareButton);
 		hb.getProperties().put("Name","compareHBox");
 		return hb;
@@ -199,10 +201,15 @@ public class BorderController implements Initializable {
 		return fp;
 	}
 	
-	private ComparedChart getCompareResultChart(){
-		ComparedChart comparedChart = new ComparedChart();
-		BarChart<String, Number> barChart = comparedChart.createChart("股票A", "股票B", 50, 60, 40, 40);
-		return comparedChart;
+	private AnchorPane getCompareResultChart(){
+		AnchorPane resultAnchorPane=null;
+		try {
+             resultAnchorPane = FXMLLoader.load(getClass().getResource("CompareChartPane.fxml"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return resultAnchorPane;
 	}
 	/*
 	 * @param A  A指数，开盘‐收盘大于5%*上一个交易日收盘价的股票个数
