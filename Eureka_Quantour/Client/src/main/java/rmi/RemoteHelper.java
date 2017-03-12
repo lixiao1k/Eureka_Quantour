@@ -5,7 +5,8 @@ package rmi;
  */
 import java.rmi.Remote;
 
-import logic.service.ServiceFactory;
+import logic.service.ClientLogicInterface;
+import logic.service.StockLogicInterface;
 
 public class RemoteHelper {
     private Remote remote;
@@ -19,7 +20,10 @@ public class RemoteHelper {
     public void setRemote(Remote remote){
     	this.remote = remote;
     }
-    public ServiceFactory getServiceFactory(){
-    	return (ServiceFactory)remote;
+    public ClientLogicInterface getClientLogic(){
+    	return (ClientLogicInterface)remote;
+    }
+    public StockLogicInterface getStockLogic(){
+    	return (StockLogicInterface)remote;
     }
 }

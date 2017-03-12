@@ -74,40 +74,54 @@ public class StockLogicImpl implements StockLogicInterface{
 		// invoke stub to get data
 		List<SingleStockInfoVO> lstiA = slis.getSingleStockInfo(stockCodeA, begin, end);
 		List<SingleStockInfoVO> lstiB = slis.getSingleStockInfo(stockCodeB, begin, end);
+		SingleStockInfoVO ssiA = new SingleStockInfoVO();
+		SingleStockInfoVO ssiB = new SingleStockInfoVO();
 		int tempInt = lstiA.size();
+		ComparedInfoVO ci = new ComparedInfoVO(tempInt);
 		
 		// 获取前一天的数据
 		double closeA1 = 0.0, closeB1 = 0.0;
-		SingleStockInfoVO ssi = new SingleStockInfoVO();
 		Calendar tempCal = begin;
-		
-		for( int i=0; i<7; i++ ){
+		int getCount = 5;
+		for( int i=0; i<getCount; i++ ){
 			tempCal = calendarAdvance(tempCal);
-			ssi = getSingleStockInfoByTime(stockCodeA, tempCal, tempCal).get(0);
-			if( !ssi.getCode().equals("") )
+			if( ssiA.getCode().equals("") )
+				ssiA = getSingleStockInfoByTime(stockCodeA, tempCal, tempCal).get(0);
+			if( ssiB.getCode().equals("") )
+				ssiB = getSingleStockInfoByTime(stockCodeB, tempCal, tempCal).get(0);
+			if( !ssiA.getCode().equals("") && !ssiB.getCode().equals(""))
 				break;
 		}
-		closeA1 = ssi.getClose();
-		ssi = new SingleStockInfoVO();
-		tempCal = begin;
-		for( int i=0; i<7; i++ ){
-			tempCal = calendarAdvance(tempCal);
-			ssi = getSingleStockInfoByTime(stockCodeA, tempCal, tempCal).get(0);
-			if( !ssi.getCode().equals("") )
-				break;
-		}
-		closeB1 = ssi.getClose();
+		closeA1 = ssiA.getClose();
+		closeB1 = ssiB.getClose();
 		
-		ComparedInfoVO ci = new ComparedInfoVO(lstiA.size());
 		ci.setNameA(lstiA.get(0).getName());
 		ci.setNameB(lstiB.get(0).getName());
-		ci.setCodeA(lstiA.get(0).getCode());
-		ci.setCodeB(lstiB.get(0).getCode());
+		ci.setCodeA(stockCodeA);
+		ci.setCodeB(stockCodeB);
 		// 涨幅为正，跌幅为负
-		ci.setRODA( formatDouble( (lstiA.get(tempInt-1).getClose()-lstiA.get(0).getOpen()) 
-				/ lstiA.get(0).getOpen() ) );
-		ci.setRODB( formatDouble( (lstiB.get(tempInt-1).getClose()-lstiB.get(0).getOpen()) 
-				/ lstiB.get(0).getOpen() ) );
+		int iOpen = 0, iClose = tempInt-1;
+		double dOpen =0.0, dClose = 0.0;
+		while( lstiA.get(iOpen).getOpen()==0 && iOpen<(tempInt-1) )
+			iOpen++;
+		dOpen = lstiA.get(iOpen).getOpen();
+		if( dOpen!=0 ){
+			while( lstiA.get(iClose).getClose()==0 && iClose>-1 )
+				iClose--;
+			dClose = lstiA.get(iClose).getClose();
+			ci.setRODA( formatDouble( dClose-dOpen ) / dOpen );
+		}
+		iOpen = 0; iClose = tempInt-1;
+		dOpen =0.0; dClose = 0.0;
+		while( lstiB.get(iOpen).getOpen()==0 && iOpen<(tempInt-1) )
+			iOpen++;
+		dOpen = lstiB.get(iOpen).getOpen();
+		if( dOpen!=0 ){
+			while( lstiB.get(iClose).getClose()==0 && iClose>-1 )
+				iClose--;
+			dClose = lstiB.get(iClose).getClose();
+			ci.setRODB( formatDouble( dClose-dOpen ) / dOpen );
+		}
 		
 		double maxA = 0, minA = 0, maxB = 0, minB = 0;
 		double closeA2 = 0.0, closeB2 = 0.0;
@@ -115,18 +129,15 @@ public class StockLogicImpl implements StockLogicInterface{
 		double[] logYieldB = new double[tempInt];
 		double[] closeA = new double[tempInt];
 		double[] closeB = new double[tempInt];
-		Calendar[] dateA = new Calendar[tempInt];
-		Calendar[] dateB = new Calendar[tempInt];
-		SingleStockInfoVO ssiA = new SingleStockInfoVO();
-		SingleStockInfoVO ssiB = new SingleStockInfoVO();	
+		Calendar[] date = new Calendar[tempInt];
+		ssiA = new SingleStockInfoVO();
+		ssiB = new SingleStockInfoVO();	
 		for( int i=0 ; i<tempInt ; i++ ){
 			ssiA = lstiA.get(i);
 			ssiB = lstiB.get(i);
-			dateA[i] = ssiA.getDate();
-			dateB[i] = ssiB.getDate();
 			closeA[i] = ssiA.getClose();
 			closeB[i] = ssiB.getClose();
-					
+			date[i] = ssiA.getDate();
 			// 获取最高（低）值
 			if( lstiA.get(i).getHigh()>maxA )
 				maxA = ssiA.getHigh();
@@ -138,10 +149,12 @@ public class StockLogicImpl implements StockLogicInterface{
 				minB = ssiB.getLow();
 			
 			closeA2 = ssiA.getClose();
-			logYieldA[i] = formatDouble( Math.log(closeA2/closeA1) );
+			if( closeA1!=0 )
+				logYieldA[i] = formatDouble( Math.log(closeA2/closeA1) );
 			closeA1 = closeA2;
 			closeB2 = ssiB.getClose();
-			logYieldB[i] = formatDouble( Math.log(closeB2/closeB1) );
+			if( closeB1!=0 )
+				logYieldB[i] = formatDouble( Math.log(closeB2/closeB1) );
 			closeB1 = closeB2;
 		}
 		
@@ -151,8 +164,8 @@ public class StockLogicImpl implements StockLogicInterface{
 		ci.setLogYieldB(logYieldB);
 		ci.setLogYieldVarianceA(calVariance(logYieldA));
 		ci.setLogYieldVarianceB(calVariance(logYieldB));
-		
-		return null;
+		ci.setDate(date);
+		return ci;
 	}
 
 	@Override
@@ -165,7 +178,7 @@ public class StockLogicImpl implements StockLogicInterface{
 		// 用来存储上一个交易日的数据
 		Calendar begin = date;
 		SingleStockInfoVO ssiTemp = new SingleStockInfoVO();
-		for( int i=0; i<7; i++ ){
+		for( int i=0; i<5; i++ ){
 			begin = calendarAdvance(begin);
 			ssiTemp = new SingleStockInfoVO();
 			if( !ssiTemp.getCode().equals("") )
@@ -182,23 +195,19 @@ public class StockLogicImpl implements StockLogicInterface{
 			
 			volume += ssi.getVolume();
 			if(open>0){
-				if( ifDoubleEqual((ssi.getHigh()-open)/open,  0.1) )
+				if( ifDoubleEqual((ssi.getHigh()-open)/open,  0.10) )
 					riseStop++;
-				if( ifDoubleEqual((open-ssi.getLow())/open,  0.1) )
+				if( ifDoubleEqual((open-ssi.getLow())/open,  0.10) )
 					dropStop++;
 				if( (close-open)/open > 0.05 )
 					riseEFP++;
 				if( (open-close)/open > 0.05 )
 					stopEFP++;
 			}
-			if( (open-close) > 0 ){
-				if( (open-close) > (0.05*ssiTemp.getClose()) )
-					OMCEFP++;
-			}
-			else{
-				if( (open-close) < (-0.05*ssiTemp.getClose()) )
-					OMCLTFP++;
-			}
+			if( (open-close) > (0.05*ssiTemp.getClose()) )
+				OMCEFP++;
+			else if( (open-close) < (-0.05*ssiTemp.getClose()) )
+				OMCLTFP++;
 		}
 		
 		mi.setVolume(volume);
