@@ -2,7 +2,6 @@ package data.serviceimpl;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
 import data.datahelperimpl.UserDataHelperImpl;
 import data.datahelperservice.IUserDataHelper;
 
@@ -15,12 +14,8 @@ public class UserDataController
 {
 	private IUserDataHelper userdatahelper;
 	public static UserDataController userdata;
-	private HashMap<String,String> userinfo;
-	private HashMap<String,Boolean> userstatus;
 	private UserDataController(){
 		userdatahelper=UserDataHelperImpl.getInstance();
-		userinfo=userdatahelper.getAllUser();
-		userstatus=userdatahelper.getAllUserStatus();
 	}
 	public static UserDataController getInstance(){
 		if(userdata==null) userdata=new UserDataController();
@@ -34,11 +29,12 @@ public class UserDataController
 	 */
 	public boolean signUpCheck(String username, String password) {
 		password=EncoderByMd5(password);
-		if(userinfo.containsKey(username)){
+		if(userdatahelper.containName(username)){
+			System.out.println("---------------------注册失败-----------------------");
 			return false;
 		}
 		else{
-			userinfo.put(username, password);
+			System.out.println("---------------------注册成功-----------------------\n  username:" +username+"    password:"+password);
 			userdatahelper.insertUser(username, password);
 			return true;
 		}
@@ -51,19 +47,22 @@ public class UserDataController
 	 */
 	public boolean signInCheck(String username,String password){
 		password=EncoderByMd5(password);
-		boolean judge_info=userinfo.containsKey(username)
-				&&userinfo.get(username).equals(password);
-		if(judge_info){
-			if(!userstatus.get(username)){
-				return true;
-			}
-			else{
-				return false;
-			}
+		if(userdatahelper.login(username, password)){
+			System.out.println("---------------------登录成功-----------------------\n  username:" +username+"    password:"+password);
+			return true;
 		}
 		else{
+			System.out.println("---------------------登录失败-----------------------");
 			return false;
 		}
+	}
+	/**
+	 * 登出账号。
+	 * @param username String,用户的登录名
+	 * @return 一个boolean值，登录成功返回true，否则返回false
+	 */
+	public void logout(String username){
+		userdatahelper.logout(username);
 	}
 	public String EncoderByMd5(String str){
 		 MessageDigest md;

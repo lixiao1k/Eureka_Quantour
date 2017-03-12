@@ -43,7 +43,7 @@ public class StockLogicImpl implements StockLogicInterface{
 			if(lsti1.size()<method){
 				for(int i=0;i<lsti1.size();i++){
 					ssi = lsti1.get(i);
-					lemai.add( new EMAInfoVO(ssi.getDate(), ssi.getClose()) );
+					lemai.add( new EMAInfoVO( ssi.getDate(), ssi.getClose()) );
 				}
 			}
 			else{
@@ -51,7 +51,7 @@ public class StockLogicImpl implements StockLogicInterface{
 				// 先处理不需要加权平均的数据
 				for(int i=0;i<method-1;i++){
 					ssi = lsti1.get(i);
-					lemai.add( new EMAInfoVO(ssi.getDate(), ssi.getClose()) );
+					lemai.add( new EMAInfoVO( ssi.getDate(), ssi.getClose()) );
 					tempDouble += lemai.get(i).getEMA();
 				}
 				// 处理需要加权平均的数据

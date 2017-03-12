@@ -13,26 +13,6 @@ import vo.SingleStockInfoVO;
  */
 public class StockLogicImplStub {
 	
-	protected List<SingleStockInfoVO> getSingleStockInfo(String stockCode, Calendar begin, Calendar end, int method){
-		SingleStockInfoVOs.init();
-		List<SingleStockInfoVO> lssi = new ArrayList<SingleStockInfoVO>();
-		if(stockCode.equals("1")){
-			lssi.add(SingleStockInfoVOs.ssi1);
-			lssi.add(SingleStockInfoVOs.ssi2);
-			lssi.add(SingleStockInfoVOs.ssi3);
-			lssi.add(SingleStockInfoVOs.ssi4);
-			lssi.add(SingleStockInfoVOs.ssi5);
-		}
-		else if(stockCode.equals("151")){
-			lssi.add(SingleStockInfoVOs.ssi6);
-			lssi.add(SingleStockInfoVOs.ssi7);
-			lssi.add(SingleStockInfoVOs.ssi8);
-			lssi.add(SingleStockInfoVOs.ssi9);
-			lssi.add(SingleStockInfoVOs.ssi10);
-		}
-		return lssi;
-	}
-	
 	protected List<SingleStockInfoVO> getSingleStockInfo(String stockCode, Calendar begin, Calendar end){
 		SingleStockInfoVOs.init();
 		List<SingleStockInfoVO> lssi = new ArrayList<SingleStockInfoVO>();
@@ -42,6 +22,11 @@ public class StockLogicImplStub {
 			lssi.add(SingleStockInfoVOs.ssi3);
 			lssi.add(SingleStockInfoVOs.ssi4);
 			lssi.add(SingleStockInfoVOs.ssi5);
+			lssi.add(SingleStockInfoVOs.ssi11);
+			lssi.add(SingleStockInfoVOs.ssi12);
+			lssi.add(SingleStockInfoVOs.ssi13);
+			lssi.add(SingleStockInfoVOs.ssi14);
+			lssi.add(SingleStockInfoVOs.ssi15);
 		}
 		else if(stockCode.equals("151")){
 			lssi.add(SingleStockInfoVOs.ssi6);
@@ -49,6 +34,11 @@ public class StockLogicImplStub {
 			lssi.add(SingleStockInfoVOs.ssi8);
 			lssi.add(SingleStockInfoVOs.ssi9);
 			lssi.add(SingleStockInfoVOs.ssi10);
+			lssi.add(SingleStockInfoVOs.ssi16);
+			lssi.add(SingleStockInfoVOs.ssi17);
+			lssi.add(SingleStockInfoVOs.ssi18);
+			lssi.add(SingleStockInfoVOs.ssi19);
+			lssi.add(SingleStockInfoVOs.ssi20);
 		}
 		return lssi;
 	}

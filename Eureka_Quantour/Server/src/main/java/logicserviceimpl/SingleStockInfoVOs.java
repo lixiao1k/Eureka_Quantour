@@ -56,24 +56,25 @@ public class SingleStockInfoVOs {
 		ssi5 = new SingleStockInfoVO().initObject("深发展A", (Calendar)time.clone(), "1", 11.08, 11.3, 11.45, 11.08, 119102800, 11.3, "SZ");
 		ssi10 = new SingleStockInfoVO().initObject("中成股份", (Calendar)time.clone(), "151", 7.71, 7.74, 7.77, 7.63, 1074200, 7.74, "SZ");
 	
+		
 		time.set(2014, 3, 22);
 		ssi11 = new SingleStockInfoVO().initObject("深发展A", (Calendar)time.clone(), "1", 10.71, 11.06, 11.18, 10.68, 52328100, 11.06, "SZ");
-		ssi16 = new SingleStockInfoVO().initObject("中成股份", (Calendar)time.clone(), "151", 7.29, 7.38, 7.4, 7.29, 927600, 7.38, "SZ");
+		ssi16 = new SingleStockInfoVO().initObject("中成股份", (Calendar)time.clone(), "151", 7.74, 7.8, 7.58, 7.69, 1797900, 7.69, "SZ");
 
 		time.set(2014, 3, 21);
 		ssi12 = new SingleStockInfoVO().initObject("深发展A", (Calendar)time.clone(), "1", 10.75, 10.69, 10.9, 10.67, 29815600, 10.69, "SZ");
-		ssi17 = new SingleStockInfoVO().initObject("中成股份", (Calendar)time.clone(), "151",7.53, 7.29, 7.53, 7.23, 1581700, 7.29, "SZ");
+		ssi17 = new SingleStockInfoVO().initObject("中成股份", (Calendar)time.clone(), "151", 7.98, 8.02, 7.71, 7.74, 3540700, 7.74, "SZ");
 
 		time.set(2014, 3, 18);
 		ssi13 = new SingleStockInfoVO().initObject("深发展A", (Calendar)time.clone(), "1", 10.85, 10.8, 10.88, 10.72, 32354400, 10.8, "SZ");
-		ssi18 = new SingleStockInfoVO().initObject("中成股份", (Calendar)time.clone(), "151", 7.55, 7.47, 7.62, 7.45, 1153400, 7.47, "SZ");
+		ssi18 = new SingleStockInfoVO().initObject("中成股份", (Calendar)time.clone(), "151", 7.96, 8.07, 7.94, 8.03, 1374700, 8.03, "SZ");
 		
 		time.set(2014, 3, 17);
 		ssi14 = new SingleStockInfoVO().initObject("深发展A", (Calendar)time.clone(), "1", 11.02, 10.9, 11.08, 10.83, 30488500, 10.9, "SZ");
-		ssi19 = new SingleStockInfoVO().initObject("中成股份", (Calendar)time.clone(), "151", 7.74, 7.54, 7.74, 7.52, 1402300, 7.54, "SZ");
+		ssi19 = new SingleStockInfoVO().initObject("中成股份", (Calendar)time.clone(), "151", 8.03, 8.07, 7.99, 8.02, 1138000, 8.02, "SZ");
 		
 		time.set(2014, 3, 16);
 		ssi15 = new SingleStockInfoVO().initObject("深发展A", (Calendar)time.clone(), "1", 10.93, 10.99, 11.13, 10.86, 37664600, 10.99, "SZ");
-		ssi20 = new SingleStockInfoVO().initObject("中成股份", (Calendar)time.clone(), "151", 7.71, 7.74, 7.77, 7.63, 1074200, 7.74, "SZ");
+		ssi20 = new SingleStockInfoVO().initObject("中成股份", (Calendar)time.clone(), "151", 7.98, 8.05, 7.89, 8.03, 1987600, 8.03, "SZ");
 	}
 }
