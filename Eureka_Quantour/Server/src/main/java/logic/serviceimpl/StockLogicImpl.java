@@ -1,9 +1,9 @@
 package logic.serviceimpl;
 
+import java.rmi.RemoteException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import logic.service.StockLogicInterface;
@@ -22,13 +22,13 @@ public class StockLogicImpl implements StockLogicInterface{
 	private StockLogicImplStub slis = new StockLogicImplStub();   
 	
 	@Override
-	public List<SingleStockInfoVO> getSingleStockInfoByTime( String stockCode, Calendar begin, Calendar end ) {
+	public List<SingleStockInfoVO> getSingleStockInfoByTime( String stockCode, Calendar begin, Calendar end )throws RemoteException{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<List<EMAInfoVO>> getEMAInfo( String stockCode, Calendar begin, Calendar end ){
+	public List<List<EMAInfoVO>> getEMAInfo( String stockCode, Calendar begin, Calendar end )throws RemoteException {
 		// TODO Auto-generated method stub
 		int methods[] = { 5, 10, 20, 30, 60 };
 		// invoke stub to get data
@@ -68,7 +68,7 @@ public class StockLogicImpl implements StockLogicInterface{
 	}
 
 	@Override
-	public ComparedInfoVO getComparedInfo(String stockCodeA, String stockCodeB, Calendar begin, Calendar end) {
+	public ComparedInfoVO getComparedInfo(String stockCodeA, String stockCodeB, Calendar begin, Calendar end)throws RemoteException {
 		// TODO Auto-generated method stub
 		// invoke stub to get data
 		List<SingleStockInfoVO> lstiA = slis.getSingleStockInfo(stockCodeA, begin, end);
@@ -153,7 +153,7 @@ public class StockLogicImpl implements StockLogicInterface{
 	}
 
 	@Override
-	public MarketInfoVO getMarketInfo(Calendar date) {
+	public MarketInfoVO getMarketInfo(Calendar date)throws RemoteException {
 		// TODO Auto-generated method stub
 		MarketInfoVO mi = new MarketInfoVO();
 		List<SingleStockInfoVO> lsti = slis.getMarketInfo(date);

@@ -9,6 +9,8 @@ import java.io.Serializable;
  * @time: 2017年3月6日
  */
 public class MarketInfoVO implements Serializable{
+	
+	private static final long serialVersionUID = -8022819757439228511L;
 
 	/**
 	 * EFP: exceed five percent

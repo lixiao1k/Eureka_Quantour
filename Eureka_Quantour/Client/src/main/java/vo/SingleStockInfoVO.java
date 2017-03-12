@@ -9,6 +9,9 @@ import java.util.Calendar;
  * @time: 2017.3.6
  */
 public class SingleStockInfoVO implements Serializable{
+	
+	private static final long serialVersionUID = -185701255295387970L;
+	
 	/**
 	 *@param: name: stock's name
 	 *@param: date: the time of these data
