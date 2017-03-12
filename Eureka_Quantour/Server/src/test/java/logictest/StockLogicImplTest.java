@@ -1,5 +1,6 @@
 package logictest;
 
+import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -20,7 +21,7 @@ public class StockLogicImplTest extends TestCase {
 		SLI = new StockLogicImpl();
 	}
 	
-	public void testGetEMAInfo(){
+	public void testGetEMAInfo() throws RemoteException{
 		List<EMAInfoVO> list1 = SLI.getEMAInfo("1", Calendar.getInstance(), Calendar.getInstance()).get(0);
 		List<Double> list2 = new ArrayList<Double>();
 		for(int i=0;i<list1.size();i++)

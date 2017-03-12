@@ -1,12 +1,12 @@
-package logicservice;
+package logic.service;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 /**
  * @Description: TODO
- * @author: hzp
- * @time: 2017年3月6日
+ * @author: hzp lxd
+ * @time: 2017年3月12日
  */
 public interface ClientLogicInterface extends Remote{
 	/**
