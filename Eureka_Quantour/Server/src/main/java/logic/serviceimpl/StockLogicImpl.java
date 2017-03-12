@@ -38,26 +38,27 @@ public class StockLogicImpl implements StockLogicInterface{
 		
 		for( int j=0; j<methods.length; j++){
 			int method = methods[j];
+			int methodTemp = method;
+			double close = 0.0;
 			List<EMAInfoVO> lemai = new ArrayList<EMAInfoVO>();
-			// 如果数据不足以加权平均，则不处理数据
-			if(lsti1.size()<method){
-				for(int i=0;i<lsti1.size();i++){
-					ssi = lsti1.get(i);
-					lemai.add( new EMAInfoVO( ssi.getDate(), ssi.getClose()) );
+
+			double tempDouble = 0.0;
+			for( int i=0; i<lsti1.size(); i++){
+				ssi = lsti1.get(i);
+				close = ssi.getClose();
+				// 数据丢失
+				if( close==0 ){
+					methodTemp++;
+					continue;
 				}
-			}
-			else{
-				double tempDouble = 0.0;
 				// 先处理不需要加权平均的数据
-				for(int i=0;i<method-1;i++){
-					ssi = lsti1.get(i);
-					lemai.add( new EMAInfoVO( ssi.getDate(), ssi.getClose()) );
-					tempDouble += lemai.get(i).getEMA();
+				if( i<(methodTemp-1) ){
+					lemai.add( new EMAInfoVO( ssi.getDate(), close) );
+					tempDouble += close;			
 				}
 				// 处理需要加权平均的数据
-				for(int i=method-1;i<lsti1.size();i++){
-					ssi = lsti1.get(i);
-					tempDouble += ssi.getClose();
+				else{
+					tempDouble += close;
 					lemai.add( new EMAInfoVO(ssi.getDate(), formatDouble(tempDouble/method)) );
 					tempDouble -= lemai.get(i-method+1).getEMA();
 				}
@@ -74,10 +75,12 @@ public class StockLogicImpl implements StockLogicInterface{
 		List<SingleStockInfoVO> lstiA = slis.getSingleStockInfo(stockCodeA, begin, end);
 		List<SingleStockInfoVO> lstiB = slis.getSingleStockInfo(stockCodeB, begin, end);
 		int tempInt = lstiA.size();
+		
 		// 获取前一天的数据
 		double closeA1 = 0.0, closeB1 = 0.0;
 		SingleStockInfoVO ssi = new SingleStockInfoVO();
 		Calendar tempCal = begin;
+		
 		for( int i=0; i<7; i++ ){
 			tempCal = calendarAdvance(tempCal);
 			ssi = getSingleStockInfoByTime(stockCodeA, tempCal, tempCal).get(0);
