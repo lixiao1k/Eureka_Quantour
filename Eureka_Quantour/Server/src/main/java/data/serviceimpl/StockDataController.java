@@ -1,11 +1,17 @@
 package data.serviceimpl;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.Map.Entry;
 
 import data.datahelperimpl.StockDataHelperImp;
@@ -21,17 +27,37 @@ public class StockDataController {
 	private IStockDataHelper stockdatahelper;
 	private static StockDataController stockdata;
 	private HashMap<String,HashMap<String,String>> stockinfo_StringType;
+	private HashMap<Calendar,List<SingleStockInfoPO>> processmap;
 	private SimpleDateFormat sdf;
+	private boolean process_data;
+	private HashMap<String,HashMap<Calendar,String>> singlestockmap;
+	private boolean single_data;
+	private HashMap<String,List<String>> singlesortmap;
+	private HashMap<String,HashMap<Calendar,Integer>> sortmap;
+	private boolean sort_data;
 	private StockDataController(){
 		stockdatahelper=StockDataHelperImp.getInstance();
 		stockinfo_StringType=stockdatahelper.getAllStock();
+		processmap=new HashMap<Calendar,List<SingleStockInfoPO>>();
+		singlestockmap=new HashMap<String,HashMap<Calendar,String>>();
+		process_data=false;
+		single_data=false;
+		sort_data=false;
+		singlesortmap=new HashMap<String,List<String>>();
+		sortmap=new HashMap<String,HashMap<Calendar,Integer>>();
 		sdf=new SimpleDateFormat("MM/dd/yy");
+		process_thread tt=new process_thread();
+		Thread t=new Thread(tt);
+		t.start();
+		single_thread tt1=new single_thread();
+		Thread t1=new Thread(tt1);
+		t1.start();
 	}
 	public static StockDataController getInstance(){
 		if(stockdata==null) stockdata=new StockDataController();
 		return stockdata;
 	}
-	public List<SingleStockInfoPO> getSingleStockInfo(String stockcode, Calendar begin, Calendar end) {
+	public List<SingleStockInfoPO> getSingleStockInfo_unprocess(String stockcode, Calendar begin, Calendar end) {
 		Calendar i=begin;
 		List<SingleStockInfoPO> list=new ArrayList<SingleStockInfoPO>();
 		Boolean hascalendar=false;
@@ -41,8 +67,6 @@ public class StockDataController {
 			if(hascalendar){
 				hascode=stockinfo_StringType.get(tostring(sdf.format(i.getTime()))).containsKey(stockcode);
 				if(hascode){
-					System.out.println(stockinfo_StringType.get(
-									tostring(sdf.format(i.getTime()))).get(stockcode));
 					list.add(new SingleStockInfoPO
 							(stockinfo_StringType.get(
 									tostring(sdf.format(i.getTime()))).get(stockcode)));
@@ -62,7 +86,90 @@ public class StockDataController {
 		}
 		return out[0]+"/"+out[1]+"/"+out[2];
 	}
-	public List<SingleStockInfoPO> getMarketByDate(Calendar date) {
+	public List<SingleStockInfoPO> getMarketByDate(Calendar date){
+		if(process_data){
+			if(!processmap.containsKey(date)){
+				return null;
+			}
+			return processmap.get(date);
+		}
+		else{
+			return processMarketByDate(date);
+		}
+	}
+	public List<SingleStockInfoPO> getSingleStockInfo(String stockcode, Calendar begin, Calendar end){
+		if(sort_data){
+			return getSingleAftersort(stockcode, begin, end);
+		}
+		else if(single_data){
+			return getSingle(stockcode, begin, end);
+		}
+		else{
+			return getSingleStockInfo_unprocess(stockcode, begin, end);
+		}
+	}
+	private List<SingleStockInfoPO> getSingle(String stockcode, Calendar begin, Calendar end) {
+		if(!singlestockmap.containsKey(stockcode)){
+			return null;
+		}
+		HashMap<Calendar,String> map=singlestockmap.get(stockcode);
+		Calendar i=begin;
+		List<SingleStockInfoPO> list=new ArrayList<SingleStockInfoPO>();
+		while(i.compareTo(end)<=0){
+			if(map.containsKey(i)){
+				list.add(new SingleStockInfoPO(map.get(i)));
+			}
+			i.set(Calendar.DATE, i.get(Calendar.DATE)+1);
+		}
+		return list;
+	}
+	private List<SingleStockInfoPO> getSingleAftersort(String code, Calendar begin, Calendar end) {
+		if(!sortmap.containsKey(code)){
+			return null;
+		}
+		List<String> list=singlesortmap.get(code);
+		HashMap<Calendar,Integer> map=sortmap.get(code);
+		int count=0;
+		while(count<2000){
+			if(map.containsKey(begin)){
+				break;
+			}
+			else{
+				begin.set(Calendar.DATE, begin.get(Calendar.DATE)+1);
+			}
+			count++;
+		}
+		int i=0;
+		int j=0;
+		if(map.containsKey(begin)){
+			i=sortmap.get(code).get(begin);
+		}
+		else{
+			return null;
+		}
+		count=0;
+		while(count<2000){
+			if(map.containsKey(end)){
+				break;
+			}
+			else{
+				end.set(Calendar.DATE, end.get(Calendar.DATE)-1);
+			}
+			count++;
+		}
+		if(map.containsKey(end)){
+			j=sortmap.get(code).get(end);
+		}
+		else{
+			return null;
+		}
+		List<SingleStockInfoPO> list1=new ArrayList<SingleStockInfoPO>();
+		for(int k=i;k<=j;k++){
+			list1.add(new SingleStockInfoPO(list.get(k)));
+		}
+		return list1;
+	}
+	private List<SingleStockInfoPO> processMarketByDate(Calendar date) {
 		String string_date=tostring(sdf.format(date.getTime()));
 		if(!stockinfo_StringType.containsKey(string_date)){
 			return null;
@@ -72,10 +179,112 @@ public class StockDataController {
 		ArrayList<SingleStockInfoPO> list=new ArrayList<SingleStockInfoPO>();
 		while(it.hasNext()){
 			String info=it.next().getValue();
-			System.out.println(info);
 			list.add(new SingleStockInfoPO(info));
 		}
 		return list;
 	}
-	
+	class process_thread implements Runnable{
+		@Override
+		public void run() {
+			go();
+		}
+		private void go(){
+			Iterator<String> it=stockinfo_StringType.keySet().iterator();
+			SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yy");
+			Calendar cal=Calendar.getInstance();
+			while(it.hasNext()){
+				String entry=it.next();
+				try {
+					cal.setTime(sdf.parse(entry));
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				processmap.put(cal, processMarketByDate(cal));
+			}
+			process_data=true;
+			System.out.println("处理完成");
+		}
+	}
+	class single_thread implements Runnable{
+		@Override
+		public void run() {
+			System.out.println("开始整理按单支股票获得数据");
+			long start_time=System.currentTimeMillis();
+			go();
+			long end_time=System.currentTimeMillis();
+			System.out.println("花费在整理单支股票上的时间为: "+(-start_time+end_time)+" ms");
+			sort_thread tt1=new sort_thread();
+			Thread t1=new Thread(tt1);
+			t1.start();
+		}
+		private void go(){
+			Iterator<Entry<String, HashMap<String, String>>> it1=stockinfo_StringType.entrySet().iterator();
+			while(it1.hasNext()){
+				Entry<String, HashMap<String, String>> entry=it1.next();
+				Iterator<Entry<String, String>> it=entry.getValue().entrySet().iterator();
+				SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yy");
+				Calendar cal=Calendar.getInstance();
+				try {
+					cal.setTime(sdf.parse(entry.getKey()));
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				String code="";
+				String str="";
+				while(it.hasNext()){
+					Entry<String, String> e=it.next();
+					code=e.getKey();
+					str=e.getValue();
+					if(singlestockmap.containsKey(code)){
+						singlestockmap.get(code).put(cal, str);
+					}
+					else{
+						HashMap<Calendar,String> m=new HashMap<Calendar,String>();
+						m.put(cal, str);
+						singlestockmap.put(code, m);
+					}
+				}
+			}
+			single_data=true;
+		}
+	}
+	class sort_thread implements Runnable{
+		@Override
+		public void run() {
+			System.out.println("开始对股票数据进行排序");
+			long start_time=System.currentTimeMillis();
+			go();
+			long end_time=System.currentTimeMillis();
+			System.out.println("花费在排序股票上的时间为: "+(-start_time+end_time)+" ms");
+		}
+		private void go(){
+			Iterator<Entry<String, HashMap<Calendar, String>>> it1=singlestockmap.entrySet().iterator();
+			while(it1.hasNext()){
+				Entry<String, HashMap<Calendar, String>> e=it1.next();
+				HashMap<Calendar, String> stock_i=e.getValue();	
+				Set<Entry<Calendar,String>> set=stock_i.entrySet();
+				List<Entry<Calendar,String>> aList = new LinkedList<Entry<Calendar,String>>(set);     
+		        Collections.sort(aList, new Comparator<Entry<Calendar,String>>(){  
+		            @Override   
+		            public int compare(Entry<Calendar,String> ele1,Entry<Calendar,String> ele2){  
+		            	return ele1.getKey().compareTo(ele2.getKey());   
+		           }  
+		        });   
+//		        HashMap<Calendar,String> aMap2 = new LinkedHashMap<Calendar,String>();  
+		        List<String> list=new ArrayList<String>();
+		        HashMap<Calendar,Integer> aMap1 = new LinkedHashMap<Calendar,Integer>();
+		        int i=0;
+		        for(Entry<Calendar,String> entry: aList){  
+		            list.add(entry.getValue());
+		            aMap1.put(entry.getKey(), i);
+		            i++;
+		        }
+				singlesortmap.put(e.getKey(), list);
+				sortmap.put(e.getKey(), aMap1);
+			}
+			sort_data=true;
+			System.out.println(single_data);
+		}
+	}
 }
