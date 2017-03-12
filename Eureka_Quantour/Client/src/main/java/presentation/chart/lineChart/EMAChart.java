@@ -1,12 +1,10 @@
 package presentation.chart.lineChart;
 
-import javafx.geometry.Side;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Tooltip;
-import javafx.scene.layout.StackPane;
 import presentation.chart.chartService;
 import vo.EMAInfoVO;
 
@@ -22,37 +20,38 @@ public class EMAChart implements chartService {
     protected CategoryAxis xAxis;
     SimpleDateFormat sdf = new SimpleDateFormat("yy:MM:dd");
 
-    private LineChart<String, Number> lineChart ;
+    private LineChart<String, Number> lineChart;
 
-    public EMAChart(List<List<EMAInfoVO>> lists){
-        xAxis=new CategoryAxis();
-        yAxis=new NumberAxis();
+    public EMAChart(List<List<EMAInfoVO>> lists) {
+        xAxis = new CategoryAxis();
+        yAxis = new NumberAxis();
         yAxis.autoRangingProperty().set(true);
-        yAxis.setPrefWidth(28);
-//        xAxis.setStartMargin(20);
-
-        yAxis.forceZeroInRangeProperty().setValue(Boolean.FALSE);
-
-        lineChart=new LineChart<>(xAxis,yAxis);
-
-        List<XYChart.Series<String,Number>> series =new ArrayList<>();
-        series.add(new XYChart.Series<>());
-        series.add(new XYChart.Series<>());
-//        series.add(new XYChart.Series<>());
-//        series.add(new XYChart.Series<>());
-//        series.add(new XYChart.Series<>());
+        yAxis.setAnimated(true);
 
 
 
-        for (List<EMAInfoVO> list:lists) {
-            int index=lists.indexOf(list);
-            XYChart.Series<String,Number> serie=series.get(index);
+
+
+        yAxis.setPrefWidth(35);
+
+        yAxis.forceZeroInRangeProperty().setValue(false);
+
+        lineChart = new LineChart<>(xAxis, yAxis);
+
+        List<XYChart.Series<String, Number>> series = new ArrayList<>();
+
+
+
+        for (List<EMAInfoVO> list : lists) {
+            int index = lists.indexOf(list);
+            XYChart.Series<String, Number> serie = new XYChart.Series<>();
 
             for (EMAInfoVO info : list) {
                 String label = sdf.format(info.getDate().getTime());
                 serie.getData().add(new XYChart.Data<>(label, info.getEMA()));
             }
-            serie.setName(1+index+"");
+            serie.setName(1 + index + "");
+            series.add(serie);
 
 
         }
@@ -69,9 +68,6 @@ public class EMAChart implements chartService {
             }
         }
 
-        lineChart.setLegendVisible(false);
-        lineChart.setAnimated(false);
-
 
     }
 
@@ -80,26 +76,4 @@ public class EMAChart implements chartService {
         return lineChart;
     }
 
-    @Override
-    public StackPane overlay(XYChart<String, Number> chart) {
-        StackPane stackpane = new StackPane();
-
-        chart.setAlternativeRowFillVisible(false);
-        chart.setAlternativeColumnFillVisible(false);
-        chart.setHorizontalGridLinesVisible(false);
-        chart.setVerticalGridLinesVisible(false);
-        chart.getXAxis().setVisible(false);
-
-        chart.setLegendVisible(false);
-        chart.setAnimated(false);
-        chart.getYAxis().setSide(Side.RIGHT);
-//        chart.getYAxis().setOpacity(0);
-
-        ((NumberAxis)chart.getYAxis()).setUpperBound(yAxis.getUpperBound());
-        lineChart.getStylesheets().addAll(getClass().getResource("/overlay-chart.css").toExternalForm());
-
-        stackpane.getChildren().addAll(chart,lineChart);
-
-        return stackpane;
-    }
 }

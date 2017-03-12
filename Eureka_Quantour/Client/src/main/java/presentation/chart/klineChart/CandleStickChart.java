@@ -79,10 +79,10 @@ public class  CandleStickChart extends XYChart<String, Number> {
         this.xAxis = xAxis;
         this.yAxis = yAxis;
         this.maxBarsToDisplay = maxBarsToDisplay;
-
-        yAxis.autoRangingProperty().set(true);
+//        yAxis.autoRangingProperty().set(false);
 
         yAxis.forceZeroInRangeProperty().setValue(Boolean.FALSE);
+        yAxis.setPrefWidth(35);
         setTitle(title);
         setAnimated(true);
         getStylesheets().add(getClass().getResource("/styles/CandleStickChartStyles.css").toExternalForm());
@@ -324,6 +324,7 @@ public class  CandleStickChart extends XYChart<String, Number> {
             yData = new ArrayList<>();
         }
         if (xData != null || yData != null) {
+            System.out.println("1");
             for (Series<String, Number> series : getData()) {
                 for (Data<String, Number> data : series.getData()) {
                     if (xData != null) {

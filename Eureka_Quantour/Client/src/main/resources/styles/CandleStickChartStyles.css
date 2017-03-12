@@ -86,10 +86,7 @@ limitations under the License.
 }
 */
 .chart {
-
-    -fx-background-color:
-  transparent transparent rgb(255, 255, 255, 0.08) transparent,
-  transparent transparent rgb(0, 0, 0, 0.5) transparent;
+    -fx-background-color: #657F92;
 }
 .fx-background-color {
   -fx-background-color: red;

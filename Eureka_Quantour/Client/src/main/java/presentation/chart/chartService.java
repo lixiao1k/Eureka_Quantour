@@ -10,6 +10,5 @@ public interface chartService {
 
     XYChart<String, Number> getchart();
 
-    StackPane overlay(XYChart<String, Number>  chart) ;
 
 }

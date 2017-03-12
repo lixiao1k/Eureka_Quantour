@@ -9,10 +9,23 @@ import javafx.scene.chart.XYChart;
 import javafx.stage.Stage;
 import presentation.chart.barChart.VolumeChart;
 import presentation.chart.chartService;
+import presentation.chart.lineChart.EMAChart;
+import vo.EMAInfoVO;
 import vo.SingleStockInfoVO;
 
 
 public class Driver extends Application {
+
+    protected static EMAInfoVO ss1 ;
+    protected static EMAInfoVO ss2 ;
+    protected static EMAInfoVO ss3 ;
+    protected static EMAInfoVO ss4 ;
+    protected static EMAInfoVO ss5 ;
+    protected static EMAInfoVO ss6 ;
+    protected static EMAInfoVO ss7 ;
+    protected static EMAInfoVO ss8 ;
+    protected static EMAInfoVO ss9 ;
+    protected static EMAInfoVO ss10 ;
 
     protected static SingleStockInfoVO ssi1 ;
     protected static SingleStockInfoVO ssi2 ;
@@ -53,19 +66,61 @@ public class Driver extends Application {
         time.set(2014, 03, 23);
         ssi5 = new SingleStockInfoVO().initObject("深发展A", (Calendar) time.clone(), "1", 11.08, 11.3, 11.45, 11.08, 119102800, 11.3, "SZ");
         ssi10 = new SingleStockInfoVO().initObject("中成股份", (Calendar) time.clone(), "151", 7.71, 7.74, 7.77, 7.63, 1074200, 7.74, "SZ");
-        List<SingleStockInfoVO> x=new LinkedList<>();
-        x.add(ssi1);
-        x.add(ssi2);
-        x.add(ssi3);
-        x.add(ssi4);
-        x.add(ssi5);
+        List<SingleStockInfoVO> c=new LinkedList<>();
+        c.add(ssi1);
+        c.add(ssi2);
+        c.add(ssi3);
+        c.add(ssi4);
+        c.add(ssi5);
 
 
-        chartService s=new KLineChart(x);
+        KLineChart s=new KLineChart(c);
 
-        Scene scene = new Scene(s.getchart());
-//        scene.getStylesheets().add("/styles/CandleStickChartStyles.css");
 
+
+        time = new GregorianCalendar();
+        time.set(2014, 3, 29);
+        ss1 = new EMAInfoVO((Calendar) time.clone(),20);
+        ss6 = new EMAInfoVO((Calendar) time.clone(),11);
+
+
+
+        time.set(2014, 03, 28);
+        ss2 = new EMAInfoVO((Calendar) time.clone(),11);
+        ss7 = new EMAInfoVO((Calendar) time.clone(),21);
+
+
+        time.set(2014, 03, 25);
+        ss3 = new EMAInfoVO((Calendar) time.clone(),18);
+        ss8 = new EMAInfoVO((Calendar) time.clone(),23);
+
+        time.set(2014, 03, 24);
+        ss4 = new EMAInfoVO((Calendar) time.clone(),35);
+        ss9 = new EMAInfoVO((Calendar) time.clone(),20);
+
+        time.set(2014, 03, 23);
+        ss5 = new EMAInfoVO((Calendar) time.clone(),38);
+        ss10 = new EMAInfoVO((Calendar) time.clone(),10);
+        List<EMAInfoVO> x=new LinkedList<>();
+        List<EMAInfoVO> y=new LinkedList<>();
+        x.add(ss1);
+        x.add(ss2);
+        x.add(ss3);
+        x.add(ss4);
+        x.add(ss5);
+        y.add(ss6);
+        y.add(ss7);
+        y.add(ss8);
+        y.add(ss9);
+        y.add(ss10);
+
+        List<List<EMAInfoVO> > z=new ArrayList<>();
+        z.add(x);
+        z.add(y);
+
+        chartService q=new EMAChart(z);
+
+        Scene scene = new Scene(s.overlay(q.getchart()));
 
         stage.setTitle("JavaFX and Maven");
         stage.setScene(scene);

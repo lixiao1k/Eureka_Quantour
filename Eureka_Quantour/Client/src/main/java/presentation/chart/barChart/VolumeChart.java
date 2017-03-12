@@ -24,32 +24,23 @@ public class VolumeChart implements chartService {
     public VolumeChart(List<SingleStockInfoVO> list){
         xAxis=new CategoryAxis();
         yAxis=new NumberAxis();
-        yAxis.setPrefWidth(18);
+        yAxis.setPrefWidth(35);
+//        xAxis.setOpacity(0);
+//        yAxis.setOpacity(0);
 
         yAxis.autoRangingProperty().set(true);
         yAxis.forceZeroInRangeProperty().setValue(Boolean.FALSE);
 
-//        NumberAxis axis = new NumberAxis(0, 21, 1);
-//        axis.setPrefWidth(35);
-//        axis.setMinorTickCount(10);
-//
-//        axis.setTickLabelFormatter(new NumberAxis.DefaultFormatter(axis) {
-//            @Override public String toString(Number object) {
-//                return String.format("%7.2f", object.floatValue());
-//            }
-//        });
-//
-//        yAxis=axis;
 
         volumechart=new BarChart<>(xAxis,yAxis);
 
         XYChart.Series<String,Number> series =new XYChart.Series<>();
 
-        for (SingleStockInfoVO info:list){
+        for (SingleStockInfoVO info:list){ 
             String label =sdf.format(info.getDate().getTime());
             series.getData().add(new XYChart.Data<>(label,info.getVolume()));
         }
-        series.setName("");
+        series.setName("aegsh");
         volumechart.getData().add(series);
         volumechart.setTitle("均线图");
 
@@ -69,9 +60,5 @@ public class VolumeChart implements chartService {
         return volumechart;
     }
 
-    @Override
-    public StackPane overlay(XYChart<String, Number> chart) {
-        return null;
-    }
 
 }

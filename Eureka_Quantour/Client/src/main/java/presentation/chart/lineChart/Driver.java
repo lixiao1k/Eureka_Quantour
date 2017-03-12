@@ -117,8 +117,7 @@ public class Driver extends Application {
         z.add(y);
 
     chartService q=new EMAChart(z);
-    Scene scene = new Scene(s.getchart());
-    System.out.println(s.getchart().getYAxis().getOpacity());
+    Scene scene = new Scene(q.getchart());
 
 
         stage.setTitle("JavaFX and Maven");
