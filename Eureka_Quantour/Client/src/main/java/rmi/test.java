@@ -7,7 +7,12 @@ import java.util.Calendar;
 import java.util.List;
 
 import vo.EMAInfoVO;
-
+/**
+ * 
+ * @Description: TODO
+ * @author: hzp
+ * @time: 2017年3月13日
+ */
 public class test {
 	private static RemoteHelper rmic;
 	

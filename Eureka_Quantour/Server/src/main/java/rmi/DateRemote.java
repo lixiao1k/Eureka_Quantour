@@ -13,7 +13,12 @@ import vo.ComparedInfoVO;
 import vo.EMAInfoVO;
 import vo.MarketInfoVO;
 import vo.SingleStockInfoVO;
-
+/**
+ * 
+ * @Description: TODO
+ * @author: hzp
+ * @time: 2017年3月13日
+ */
 public class DateRemote extends UnicastRemoteObject implements ClientLogicInterface, StockLogicInterface{
 
 	private static final long serialVersionUID = 6589478936265429621L;
