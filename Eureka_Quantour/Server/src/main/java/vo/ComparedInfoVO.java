@@ -10,6 +10,9 @@ import java.util.Calendar;
  * @time: 2017.3.6
  */
 public class ComparedInfoVO implements Serializable{
+	
+	private static final long serialVersionUID = -2038667932682090329L;
+	
 	/**
 	 * ROD: rise or drop percent
 	 * logYieldA: 对数收益率

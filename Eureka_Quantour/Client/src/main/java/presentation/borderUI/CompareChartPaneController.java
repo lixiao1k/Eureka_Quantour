@@ -8,7 +8,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
-import presentation.chart.barChart.ComparedChart;
+import presentation.chart.barChart.ExtremeValueComparedChart;
+import presentation.chart.barChart.ExtremeValueComparedChart;
 
 public class CompareChartPaneController implements Initializable{
 	@FXML
@@ -23,7 +24,7 @@ public class CompareChartPaneController implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
-		ComparedChart chart = new ComparedChart();
+		ExtremeValueComparedChart chart = new ExtremeValueComparedChart();
 		BarChart<String, Number> barChart = chart.createChart("A", "B", 50, 60, 50, 40);
 		compareChartPane1.getChildren().add(barChart);
 		

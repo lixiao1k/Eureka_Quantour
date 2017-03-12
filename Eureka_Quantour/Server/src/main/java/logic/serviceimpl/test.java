@@ -1,12 +1,13 @@
-package logicserviceimpl;
+package logic.serviceimpl;
 
+import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import logicservice.StockLogicInterface;
+import logic.service.StockLogicInterface;
 import vo.EMAInfoVO;
 /**
  * 
@@ -53,7 +54,7 @@ public class test {
 		System.out.println(format.format(date)+" "+ format.format(tempDate));
 	}
 	
-	private void testGetEMAInfo(){
+	private void testGetEMAInfo() throws RemoteException{
 		List<EMAInfoVO> list1 = SLI.getEMAInfo("1", Calendar.getInstance(), Calendar.getInstance()).get(0);
 		List<Double> list2 = new ArrayList<Double>();
 		for(int i=0;i<list1.size();i++)
