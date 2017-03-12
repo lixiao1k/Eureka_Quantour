@@ -10,8 +10,8 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.util.jar.Attributes.Name;
 
-import logicservice.ServiceFactory;
-import logicserviceimpl.ServiceFactoryImpl;
+import logic.service.ServiceFactory;
+import logic.serviceimpl.ServiceFactoryImpl;
 
 public class RemoteHelper {
 	public RemoteHelper(){

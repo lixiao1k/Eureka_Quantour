@@ -1,4 +1,4 @@
-package logicserviceimpl;
+package logic.serviceimpl;
 
 import java.util.Calendar;
 
@@ -21,6 +21,7 @@ public class SingleStockInfoVOs {
 	protected static SingleStockInfoVO ssi8 ;
 	protected static SingleStockInfoVO ssi9 ;
 	protected static SingleStockInfoVO ssi10 ;
+	protected static SingleStockInfoVO ssiA1 ;
 	
 	protected static SingleStockInfoVO ssi11 ;
 	protected static SingleStockInfoVO ssi12 ;

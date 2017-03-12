@@ -1,6 +1,7 @@
-package logictest;
+package logic.service;
 
 import java.rmi.RemoteException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -9,8 +10,9 @@ import java.util.List;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
-import logicservice.StockLogicInterface;
-import logicserviceimpl.StockLogicImpl;
+import logic.service.StockLogicInterface;
+import logic.serviceimpl.StockLogicImpl;
+import vo.ComparedInfoVO;
 import vo.EMAInfoVO;
 
 public class StockLogicImplTest extends TestCase {
@@ -111,5 +113,52 @@ public class StockLogicImplTest extends TestCase {
 			}
 		}
 		return true;
+	}
+	/**
+	 * 
+	 * @Description: to compare if two ComparedInfoVOs are same
+	 * @author: hzp
+	 * @time: 2017年3月12日
+	 * @return: boolean
+	 */
+	private boolean ifComparedInfoVOEqual(ComparedInfoVO ciA, ComparedInfoVO ciB){
+		if( !ciA.getNameA().equals( ciB.getNameA() ) 
+				|| !ciA.getNameB().equals( ciB.getNameB() )
+				|| !ciA.getCodeA().equals( ciB.getCodeA() ) 
+				|| !ciA.getCodeB().equals( ciB.getCodeB() )
+				|| !ifDoubleEqual( ciA.getLowA(), ciB.getLowA() )
+				|| !ifDoubleEqual( ciA.getLowB(), ciB.getLowB() )
+				|| !ifDoubleEqual( ciA.getHighA(), ciB.getHighA() )
+				|| !ifDoubleEqual( ciA.getHighB(), ciB.getHighB() )
+				|| !ifDoubleEqual( ciA.getRODA(), ciB.getRODA() )
+				|| !ifDoubleEqual( ciA.getRODB(), ciB.getRODB() )
+				|| !ifDoubleEqual( ciA.getLogYieldVarianceA(), ciB.getLogYieldVarianceA() )
+				|| !ifDoubleEqual( ciA.getLogYieldVarianceB(), ciB.getLogYieldVarianceB() )
+				)
+			return false;
+		else{
+			double ACloseA[] = ciA.getCloseA();
+			double ACloseB[] = ciA.getCloseB();
+			double BCloseA[] = ciB.getCloseA();
+			double BCloseB[] = ciB.getCloseB();
+			for(int i=0; i<ACloseA.length; i++){
+				if( !ifDoubleEqual( ACloseA[i], BCloseA[i] ) 
+						|| !ifDoubleEqual( ACloseB[i], BCloseB[i] )
+						)
+					return false;
+			}
+			return true;
+		}
+	}
+	
+	private boolean ifDoubleEqual(double d1, double d2){
+		String s1 = String.valueOf(formatDouble(d1));
+		String s2 = String.valueOf(formatDouble(d2));
+		return s1.equals(s2);
+	}
+	
+	private double formatDouble(double d){
+		DecimalFormat df = new DecimalFormat("#0.00");
+		return Double.parseDouble(df.format(d));
 	}
 }

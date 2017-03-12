@@ -1,11 +1,11 @@
-package logicserviceimpl;
+package logic.serviceimpl;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
-import logicservice.ClientLogicInterface;
-import logicservice.ServiceFactory;
-import logicservice.StockLogicInterface;
+import logic.service.ClientLogicInterface;
+import logic.service.ServiceFactory;
+import logic.service.StockLogicInterface;
 
 public class ServiceFactoryImpl extends UnicastRemoteObject implements ServiceFactory{
 	/**

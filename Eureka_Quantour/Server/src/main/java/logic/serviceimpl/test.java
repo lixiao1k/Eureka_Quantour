@@ -1,4 +1,4 @@
-package logicserviceimpl;
+package logic.serviceimpl;
 
 import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
@@ -7,7 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import logicservice.StockLogicInterface;
+import logic.service.StockLogicInterface;
 import vo.EMAInfoVO;
 /**
  * 
