@@ -1,4 +1,4 @@
-package logicserviceimpl;
+package logic.serviceimpl;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -6,7 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import logicservice.StockLogicInterface;
+import logic.service.StockLogicInterface;
 import vo.ComparedInfoVO;
 import vo.EMAInfoVO;
 import vo.MarketInfoVO;
@@ -224,8 +224,8 @@ public class StockLogicImpl implements StockLogicInterface{
 			tempD2 += num[i];
 		}
 		tempD2 = Math.pow(tempD2, 2);
-		result = (tempD1-tempD2/length)/length;
-		return result;
+		result = (tempD1 - tempD2/length) / length;
+		return formatDouble( result );
 	}
 	
 	public boolean ifDoubleEqual(double d1, double d2){

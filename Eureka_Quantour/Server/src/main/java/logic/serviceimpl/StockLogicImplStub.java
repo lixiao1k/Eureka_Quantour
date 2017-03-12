@@ -1,4 +1,4 @@
-package logicserviceimpl;
+package logic.serviceimpl;
 
 import java.util.ArrayList;
 import java.util.Calendar;
