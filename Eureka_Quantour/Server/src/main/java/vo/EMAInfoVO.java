@@ -12,7 +12,6 @@ public class EMAInfoVO implements Serializable{
 
 	private static final long serialVersionUID = -3607793986868403023L;
 
-//	private static final long serialVersionUID = ;
 	private Calendar date;
 	private double EMA;
 	
