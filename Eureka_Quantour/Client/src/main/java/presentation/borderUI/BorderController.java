@@ -2,11 +2,12 @@ package presentation.borderUI;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Observable;
 import java.util.ResourceBundle;
 
-import stub.CompareInfoVOStub;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,6 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.chart.BarChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -30,10 +32,15 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
+import logic.service.StockLogicInterface;
+import presentation.chart.chartService;
 import presentation.chart.barChart.ExtremeValueComparedChart;
 import presentation.chart.klineChart.CandleStickChart;
+import presentation.chart.klineChart.KLineChart;
 import presentation.chart.klineChart.kChartStub;
+import rmi.RemoteHelper;
 import vo.ComparedInfoVO;
+import vo.SingleStockInfoVO;
 
 public class BorderController implements Initializable {
 	
@@ -56,7 +63,9 @@ public class BorderController implements Initializable {
 	BorderPane borderPane;
 	
 	private Image logo = new Image(getClass().getResourceAsStream("Title.png"));
-	
+	/*
+	 * 点击左侧K线均线按钮，出现相应搜索栏
+	 */
 	@FXML
 	protected void browseKLine(ActionEvent e){
 		ObservableList<Node> nodeList = setInfoAnchorPane.getChildren();
@@ -119,11 +128,31 @@ public class BorderController implements Initializable {
 		
 		
 		searchButton.setOnAction((ActionEvent e)->{
+			List<SingleStockInfoVO> stockInfoList=null;
+			String stockCode = stockName.getText();
+			Calendar beginTime = localDate2Calendar(beginDatePicker.getValue());
+			Calendar endTime = localDate2Calendar(endDatePicker.getValue());
+			RemoteHelper remote = RemoteHelper.getInstance();
+			StockLogicInterface slinterface = remote.getStockLogic();
+			System.out.println(stockCode);
+			System.out.println(beginTime);
+			System.out.println(endTime);
+			try {
+				System.out.println(slinterface);
+				System.out.println(slinterface.getSingleStockInfoByTime(stockCode, beginTime, endTime));
+			    stockInfoList = slinterface.getSingleStockInfoByTime(stockCode, beginTime, endTime);
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			chartService service = new KLineChart(stockInfoList);
+			XYChart<String, Number> klchart = service.getchart();
 			ObservableList<Node> nodelist = borderPane.getChildren();
 			nodelist.clear();
-			kChartStub kchart = new kChartStub();
-			candleStickChart = kchart.getKChart();
-			borderPane.setCenter(candleStickChart);
+			
+//			kChartStub kchart = new kChartStub();
+//			candleStickChart = kchart.getKChart();
+			borderPane.setCenter(klchart);
 		});
 		
 		hb.getChildren().addAll(beginLabel,beginDatePicker,endLabel,endDatePicker,blank,stockName,searchButton);
@@ -186,18 +215,18 @@ public class BorderController implements Initializable {
 	
 	private FlowPane getCompareResultFlowPane(){
 		FlowPane fp = new FlowPane();
-		fp.setPrefWidth(200);
-		fp.setVgap(20);
-		ComparedInfoVO vo = new CompareInfoVOStub();
-		VBox vb1 = getCompareResultVBox(vo.getNameA(),vo.getHighA(),vo.getLowA()
-				,vo.getLogYieldA(),vo.getLogYieldVarianceA(),"2017/11/19~2017/11/20");
-		VBox vb2 = getCompareResultVBox(vo.getNameB(),vo.getHighB(),vo.getLowB()
-				,vo.getLogYieldB(),vo.getLogYieldVarianceB(),"2017/11/19~2017/11/20");
-		VBox buttonVBox = new VBox();
-		buttonVBox.setSpacing(5);
-		buttonVBox.setPadding(new Insets(4,4,4,4));
-		
-		fp.getChildren().addAll(vb1,vb2);
+//		fp.setPrefWidth(200);
+//		fp.setVgap(20);
+//		ComparedInfoVO vo = new CompareInfoVOStub();
+//		VBox vb1 = getCompareResultVBox(vo.getNameA(),vo.getHighA(),vo.getLowA()
+//				,vo.getLogYieldA(),vo.getLogYieldVarianceA(),"2017/11/19~2017/11/20");
+//		VBox vb2 = getCompareResultVBox(vo.getNameB(),vo.getHighB(),vo.getLowB()
+//				,vo.getLogYieldB(),vo.getLogYieldVarianceB(),"2017/11/19~2017/11/20");
+//		VBox buttonVBox = new VBox();
+//		buttonVBox.setSpacing(5);
+//		buttonVBox.setPadding(new Insets(4,4,4,4));
+//		
+//		fp.getChildren().addAll(vb1,vb2);
 		return fp;
 	}
 	
@@ -285,6 +314,14 @@ public class BorderController implements Initializable {
 		return hb;
 	}
 	
+	/*
+	 * 将LocalDate转换为Calendar
+	 */
+	private Calendar localDate2Calendar(LocalDate date){
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(date.getYear(), date.getMonthValue(), date.getDayOfMonth());
+		return calendar;
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
