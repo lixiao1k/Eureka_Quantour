@@ -134,6 +134,9 @@ public class BorderController implements Initializable {
 			Calendar endTime = localDate2Calendar(endDatePicker.getValue());
 			RemoteHelper remote = RemoteHelper.getInstance();
 			StockLogicInterface slinterface = remote.getStockLogic();
+//			if(beginTime.after(endTime)){
+//				Notification
+//			}
 			System.out.println(stockCode);
 			System.out.println(beginTime);
 			System.out.println(endTime);
