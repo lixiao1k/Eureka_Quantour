@@ -7,21 +7,26 @@ import java.util.Calendar;
 import java.util.List;
 
 import vo.EMAInfoVO;
-
+/**
+ * 
+ * @Description: TODO
+ * @author: hzp
+ * @time: 2017年3月13日
+ */
 public class test {
 	private static RemoteHelper rmic;
 	
 	public static void main(String args[]){
 		try{
 			rmic = RemoteHelper.getInstance();
-			rmic.setRemote(Naming.lookup("rmi://localhost:8888/ServiceFactory"));
+			rmic.setRemote(Naming.lookup("rmi://localhost:8888/DateRemote"));
 			System.out.println("连接服务器");
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 		List<EMAInfoVO> listA = new ArrayList<EMAInfoVO>();
 		try{
-			listA = RemoteHelper.getInstance().getServiceFactory().getStockLogicInterface().getEMAInfo("1", Calendar.getInstance(), Calendar.getInstance()).get(0);
+			listA = RemoteHelper.getInstance().getStockLogic().getEMAInfo("1", Calendar.getInstance(), Calendar.getInstance()).get(0);
 		}catch(RemoteException e){
 			e.printStackTrace();
 		}
