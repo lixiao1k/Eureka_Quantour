@@ -118,9 +118,8 @@ public class Driver extends Application {
         z.add(x);
         z.add(y);
 
-        chartService q=new EMAChart(z);
 
-        Scene scene = new Scene(s.overlay(q.getchart()));
+        Scene scene = new Scene(s.getchart());
 
         stage.setTitle("JavaFX and Maven");
         stage.setScene(scene);

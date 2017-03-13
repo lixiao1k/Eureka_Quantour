@@ -24,9 +24,6 @@ public class VolumeChart implements chartService {
     public VolumeChart(List<SingleStockInfoVO> list){
         xAxis=new CategoryAxis();
         yAxis=new NumberAxis();
-        yAxis.setPrefWidth(35);
-//        xAxis.setOpacity(0);
-//        yAxis.setOpacity(0);
 
         yAxis.autoRangingProperty().set(true);
         yAxis.forceZeroInRangeProperty().setValue(Boolean.FALSE);
@@ -40,15 +37,15 @@ public class VolumeChart implements chartService {
             String label =sdf.format(info.getDate().getTime());
             series.getData().add(new XYChart.Data<>(label,info.getVolume()));
         }
-        series.setName("aegsh");
+
         volumechart.getData().add(series);
-        volumechart.setTitle("均线图");
+        volumechart.setTitle("成交量图");
+        volumechart.setLegendVisible(false);
 
         for (XYChart.Series<String, Number> s : volumechart.getData()) {
             for (XYChart.Data<String, Number> d : s.getData()) {
                 Tooltip.install(d.getNode(), new Tooltip(
-                        d.getXValue().toString() + "\n" +
-                                "Number Of Events : " + d.getYValue()));
+                        d.getXValue().toString() + "   " +d.getYValue()));
 
             }
         }
