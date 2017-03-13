@@ -198,21 +198,22 @@ public class StockLogicImpl implements StockLogicInterface{
 			double close = ssi.getClose();
 			double open = ssi.getOpen();
 			
-			volume += ssi.getVolume();
-			if(open>0){
+			if( ssi.getVolume() > 0 )
+				volume += ssi.getVolume();
+			if( open>0 && close>0 ){
 				if( ifDoubleEqual((ssi.getHigh()-open)/open,  0.10) )
 					riseStop++;
 				if( ifDoubleEqual((open-ssi.getLow())/open,  0.10) )
 					dropStop++;
-				if( (close-open)/open > 0.05 )
+				if( (close-open)/open > 0.05 && close!=0 && open!=0 )
 					riseEFP++;
-				if( (open-close)/open > 0.05 )
+				if( (open-close)/open > 0.05 && close!=0 && open!=0 )
 					stopEFP++;
+				if( (open-close) > (0.05*ssiTemp.getClose()) )
+					OMCEFP++;
+				else if( (open-close) < (-0.05*ssiTemp.getClose()) )
+					OMCLTFP++;
 			}
-			if( (open-close) > (0.05*ssiTemp.getClose()) )
-				OMCEFP++;
-			else if( (open-close) < (-0.05*ssiTemp.getClose()) )
-				OMCLTFP++;
 		}
 		
 		mi.setVolume(volume);
