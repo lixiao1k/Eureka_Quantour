@@ -63,11 +63,29 @@ public class StockLogicImplTest extends TestCase {
 		Assert.assertTrue( ifListEqual(listSave, listRight) );
 	}
 	
-	public void testGetComparedInfo(){
-		
+	public void testGetComparedInfo()throws RemoteException{
+		ComparedInfoVO ci = SLI.getComparedInfo("1", "151", Calendar.getInstance(), Calendar.getInstance());
+		Assert.assertEquals( ci.getNameA(), "深发展A" );
+		Assert.assertEquals( ci.getNameB(), "中成股份" );
+		Assert.assertEquals( ci.getCodeA(), "1" );
+		Assert.assertEquals( ci.getCodeB(), "151" );
+		Assert.assertEquals( ci.getLowA(), 10.67 );
+		Assert.assertEquals( ci.getLowB(), 7.23 );
+		Assert.assertEquals( ci.getHighA(), 11.52 );
+		Assert.assertEquals( ci.getHighB(), 8.07 );
+		Assert.assertEquals( ci.getRODA(), -0.00272 );
+		Assert.assertEquals( ci.getRODB(), 0.10151 );
+		double[] dCloseA = { 11.16, 11.03, 11.25, 11.23, 11.3, 11.06, 10.69, 10.8, 10.9, 10.99};
+		double[] dCloseB = { 7.38, 7.29, 7.47, 7.54, 7.74, 7.69, 7.74, 8.03, 8.02, 8.03};
+		Assert.assertTrue( ifDoubleEqual(ci.getCloseA(), dCloseA) );
+		Assert.assertTrue( ifDoubleEqual(ci.getCloseB(), dCloseB) );
+		double[] dLogYieldA = { 0, -0.01171, 0.01975, -0.00178, 0.00621, -0.02147, -0.03402, 0.01023, 0.00922, 0.00822};
+		double[] dLogYieldB = { 0, -0.01227, 0.02439, 0.00933, 0.02618, -0.00648, 0.00648, 0.03678, -0.00125, 0.00125};
+		Assert.assertTrue( ifDoubleEqual(ci.getLogYieldA(), dLogYieldA) );
+		Assert.assertTrue( ifDoubleEqual(ci.getLogYieldB(), dLogYieldB) );
 	}
 	
-	public void testGetMarketInfo(){
+	public void testGetMarketInfo()throws RemoteException{
 		
 	}
 	
@@ -160,5 +178,17 @@ public class StockLogicImplTest extends TestCase {
 	private double formatDouble(double d){
 		DecimalFormat df = new DecimalFormat("#0.00");
 		return Double.parseDouble(df.format(d));
+	}
+	
+	private boolean ifDoubleEqual(double[] d1, double[] d2){
+		String s1 = "";
+		String s2 = "";
+		for( int i=0; i<d1.length; i++){
+			s1 = String.valueOf( formatDouble(d1[i]) );
+			s2 = String.valueOf( formatDouble(d2[i]) );
+			if( !s1.equals(s2) )
+				return false;
+		}
+		return true;
 	}
 }
