@@ -23,7 +23,7 @@ import vo.SingleStockInfoVO;
 public class StockLogicImpl implements StockLogicInterface{
 
 	private StockLogicImplStub slis = new StockLogicImplStub();   
-	private IDataInterface idi = new DataInterfaceImpl();
+//	private IDataInterface idi = new DataInterfaceImpl();
 	
 	@Override
 	public List<SingleStockInfoVO> getSingleStockInfoByTime( String stockCode, Calendar begin, Calendar end )throws RemoteException{
@@ -185,7 +185,8 @@ public class StockLogicImpl implements StockLogicInterface{
 	public MarketInfoVO getMarketInfo(Calendar date)throws RemoteException {
 		// TODO Auto-generated method stub
 		MarketInfoVO mi = new MarketInfoVO();
-		List<SingleStockInfoVO> lsti = new SingleStockInfoVO().POToVO( idi.getMarketByDate(date) );
+//		List<SingleStockInfoVO> lsti = new SingleStockInfoVO().POToVO( idi.getMarketByDate(date) );
+		List<SingleStockInfoVO> lsti = slis.getSingleStockInfo("1", date, date);
 		SingleStockInfoVO ssi = new SingleStockInfoVO();
 		
 		// 用来存储上一个交易日的数据
