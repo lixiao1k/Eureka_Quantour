@@ -20,6 +20,7 @@ public class SingleStockInfoPO
 	private int volume;//这支股票当天的交易量
 	private double adjclose;//这支股票的复权收盘指数
 	private String market;//这支股票所处的市场
+	private String str;
 	/**
 	 * 
 	 * @param _name String类型，这支股票的名字
@@ -46,6 +47,7 @@ public class SingleStockInfoPO
 		setVolume(_volume);
 		setAdjclose(_adjclose);
 		setMarket(_market);
+		setStr(null);
 	}
 	public SingleStockInfoPO(String stockinfo){
 		String[] info=stockinfo.split("\\s+");
@@ -67,6 +69,7 @@ public class SingleStockInfoPO
 		setVolume(Integer.parseInt(info[6]));
 		setAdjclose(Double.parseDouble(info[7]));
 		setMarket(info[10]);
+		setStr(stockinfo);
 	}
 	/**
 	 * 获得SingleStockInfoPO中的股票名字
@@ -225,5 +228,25 @@ public class SingleStockInfoPO
 	 */
 	private void setMarket(String _market) {
 		market = _market;
+	}
+	/**
+	 * @return the str
+	 */
+	public String getStr() {
+		return str;
+	}
+	/**
+	 * @param str the str to set
+	 */
+	public void setStr(String str) {
+		this.str = str;
+	}
+	public String toString(){
+		SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yy");
+		return "股票名字为: "+name+
+				"   所处的市场为: "+market+
+				"   该条记录时间为: "+sdf.format(date.getTime())+
+				"   该股票编号为: "+code+
+				"\n开盘价为: "+open+"   收盘价为: "+close+"   最高价为: "+high+"   最低价为: "+low+"   交易量为: "+volume+"   复权价为: "+adjclose;
 	}
 }

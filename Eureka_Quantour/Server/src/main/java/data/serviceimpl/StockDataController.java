@@ -26,14 +26,14 @@ import po.SingleStockInfoPO;
 public class StockDataController {
 	private IStockDataHelper stockdatahelper;
 	private static StockDataController stockdata;
-	private HashMap<String,HashMap<String,String>> stockinfo_StringType;
-	private HashMap<Calendar,List<SingleStockInfoPO>> processmap;
+	public HashMap<String,HashMap<String,String>> stockinfo_StringType;
+	public HashMap<Calendar,List<SingleStockInfoPO>> processmap;
 	private SimpleDateFormat sdf;
 	private boolean process_data;
-	private HashMap<String,HashMap<Calendar,String>> singlestockmap;
+	public HashMap<String,HashMap<Calendar,String>> singlestockmap;
 	private boolean single_data;
-	private HashMap<String,List<String>> singlesortmap;
-	private HashMap<String,HashMap<Calendar,Integer>> sortmap;
+	public HashMap<String,List<String>> singlesortmap;
+	public HashMap<String,HashMap<Calendar,Integer>> sortmap;
 	private boolean sort_data;
 	private StockDataController(){
 		stockdatahelper=StockDataHelperImp.getInstance();
@@ -87,10 +87,16 @@ public class StockDataController {
 		return out[0]+"/"+out[1]+"/"+out[2];
 	}
 	public List<SingleStockInfoPO> getMarketByDate(Calendar date){
+		Iterator<Entry<Calendar, List<SingleStockInfoPO>>> it=processmap.entrySet().iterator();
+		while(it.hasNext()){
+			System.out.println(sdf.format(it.next().getKey().getTime()));
+		}
 		if(process_data){
 			if(!processmap.containsKey(date)){
+				System.out.println("error");
 				return null;
 			}
+			for(SingleStockInfoPO po:processmap.get(date)) System.out.println(po.toString());
 			return processmap.get(date);
 		}
 		else{
@@ -98,6 +104,7 @@ public class StockDataController {
 		}
 	}
 	public List<SingleStockInfoPO> getSingleStockInfo(String stockcode, Calendar begin, Calendar end){
+		System.out.println(processmap.size());
 		if(sort_data){
 			return getSingleAftersort(stockcode, begin, end);
 		}
@@ -108,7 +115,7 @@ public class StockDataController {
 			return getSingleStockInfo_unprocess(stockcode, begin, end);
 		}
 	}
-	private List<SingleStockInfoPO> getSingle(String stockcode, Calendar begin, Calendar end) {
+	public List<SingleStockInfoPO> getSingle(String stockcode, Calendar begin, Calendar end) {
 		if(!singlestockmap.containsKey(stockcode)){
 			return null;
 		}
@@ -123,21 +130,38 @@ public class StockDataController {
 		}
 		return list;
 	}
-	private List<SingleStockInfoPO> getSingleAftersort(String code, Calendar begin, Calendar end) {
+	public List<SingleStockInfoPO> getSingleAftersort(String code, Calendar begin, Calendar end) {
 		if(!sortmap.containsKey(code)){
+			return null;
+		}
+		try {
+			Calendar head=Calendar.getInstance();
+			head.setTime(sdf.parse("2/1/05"));
+			Calendar tail=Calendar.getInstance();
+			tail.setTime(sdf.parse("4/29/14"));
+			if(begin.compareTo(head)<0){
+				begin.setTime(head.getTime());
+			}
+			
+			if(end.compareTo(tail)>0){
+				end.setTime(tail.getTime());
+			}
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(begin.compareTo(end)>0){
 			return null;
 		}
 		List<String> list=singlesortmap.get(code);
 		HashMap<Calendar,Integer> map=sortmap.get(code);
-		int count=0;
-		while(count<2000){
+		while(begin.compareTo(end)<=0){
 			if(map.containsKey(begin)){
 				break;
 			}
 			else{
 				begin.set(Calendar.DATE, begin.get(Calendar.DATE)+1);
 			}
-			count++;
 		}
 		int i=0;
 		int j=0;
@@ -147,15 +171,13 @@ public class StockDataController {
 		else{
 			return null;
 		}
-		count=0;
-		while(count<2000){
+		while(end.compareTo(begin)>=0){
 			if(map.containsKey(end)){
 				break;
 			}
 			else{
 				end.set(Calendar.DATE, end.get(Calendar.DATE)-1);
 			}
-			count++;
 		}
 		if(map.containsKey(end)){
 			j=sortmap.get(code).get(end);
@@ -169,7 +191,7 @@ public class StockDataController {
 		}
 		return list1;
 	}
-	private List<SingleStockInfoPO> processMarketByDate(Calendar date) {
+	public List<SingleStockInfoPO> processMarketByDate(Calendar date) {
 		String string_date=tostring(sdf.format(date.getTime()));
 		if(!stockinfo_StringType.containsKey(string_date)){
 			return null;
@@ -191,9 +213,9 @@ public class StockDataController {
 		private void go(){
 			Iterator<String> it=stockinfo_StringType.keySet().iterator();
 			SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yy");
-			Calendar cal=Calendar.getInstance();
 			while(it.hasNext()){
 				String entry=it.next();
+				Calendar cal=Calendar.getInstance();
 				try {
 					cal.setTime(sdf.parse(entry));
 				} catch (ParseException e) {
