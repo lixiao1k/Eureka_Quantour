@@ -62,7 +62,12 @@ public class StockLogicImplTest extends TestCase {
 		listRight.add(10.99); 
 		Assert.assertTrue( ifListEqual(listSave, listRight) );
 	}
-	
+	/**
+	 * 
+	 * @Description: TODO
+	 * @author: hzp
+	 * @time: 2017年3月13日
+	 */
 	public void testGetComparedInfo()throws RemoteException{
 		ComparedInfoVO ci = SLI.getComparedInfo("1", "151", Calendar.getInstance(), Calendar.getInstance());
 		Assert.assertEquals( ci.getNameA(), "深发展A" );
