@@ -23,6 +23,7 @@ public class test {
 	public static void main(String args[]){
 //		new test().testGetEMAInfo();
 //		new test().testCalendarAdvance();
+//		System.out.println( Math.log(10.69/11.16) );
 	}
 	
 	private static boolean ifListEqual(List<Double> list1, List<Double> list2){

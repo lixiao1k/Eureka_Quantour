@@ -8,21 +8,17 @@ import java.rmi.AlreadyBoundException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
-import java.util.jar.Attributes.Name;
-
-import logic.service.ServiceFactory;
-import logic.serviceimpl.ServiceFactoryImpl;
 
 public class RemoteHelper {
 	public RemoteHelper(){
 		initService();
 	}
     private void initService(){
-    	ServiceFactory serviceFactory;
+    	DateRemote dateRemote;
     	try{
-    		serviceFactory = ServiceFactoryImpl.getInstance();
+    		dateRemote = new DateRemote();
     		LocateRegistry.createRegistry(8888);
-    		Naming.bind("rmi://localhost:8888/ServiceFactory",serviceFactory);
+    		Naming.bind("rmi://localhost:8888/DateRemote",dateRemote);
     		System.out.println("Success");
     	}catch(RemoteException e){
     		e.printStackTrace();

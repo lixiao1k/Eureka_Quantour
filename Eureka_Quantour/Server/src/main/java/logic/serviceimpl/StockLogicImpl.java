@@ -38,27 +38,28 @@ public class StockLogicImpl implements StockLogicInterface{
 		
 		for( int j=0; j<methods.length; j++){
 			int method = methods[j];
+			int methodTemp = method;
+			double close = 0.0;
 			List<EMAInfoVO> lemai = new ArrayList<EMAInfoVO>();
-			// 如果数据不足以加权平均，则不处理数据
-			if(lsti1.size()<method){
-				for(int i=0;i<lsti1.size();i++){
-					ssi = lsti1.get(i);
-					lemai.add( new EMAInfoVO( ssi.getDate(), ssi.getClose()) );
+
+			double tempDouble = 0.0;
+			for( int i=0; i<lsti1.size(); i++){
+				ssi = lsti1.get(i);
+				close = ssi.getClose();
+				// 数据丢失
+				if( close==0 ){
+					methodTemp++;
+					continue;
 				}
-			}
-			else{
-				double tempDouble = 0.0;
 				// 先处理不需要加权平均的数据
-				for(int i=0;i<method-1;i++){
-					ssi = lsti1.get(i);
-					lemai.add( new EMAInfoVO( ssi.getDate(), ssi.getClose()) );
-					tempDouble += lemai.get(i).getEMA();
+				if( i<(methodTemp-1) ){
+					lemai.add( new EMAInfoVO( ssi.getDate(), close) );
+					tempDouble += close;			
 				}
 				// 处理需要加权平均的数据
-				for(int i=method-1;i<lsti1.size();i++){
-					ssi = lsti1.get(i);
-					tempDouble += ssi.getClose();
-					lemai.add( new EMAInfoVO(ssi.getDate(), formatDouble(tempDouble/method)) );
+				else{
+					tempDouble += close;
+					lemai.add( new EMAInfoVO(ssi.getDate(), formatDoubleSaveTwo(tempDouble/method)) );
 					tempDouble -= lemai.get(i-method+1).getEMA();
 				}
 			}
@@ -73,57 +74,74 @@ public class StockLogicImpl implements StockLogicInterface{
 		// invoke stub to get data
 		List<SingleStockInfoVO> lstiA = slis.getSingleStockInfo(stockCodeA, begin, end);
 		List<SingleStockInfoVO> lstiB = slis.getSingleStockInfo(stockCodeB, begin, end);
+		SingleStockInfoVO ssiA = new SingleStockInfoVO();
+		SingleStockInfoVO ssiB = new SingleStockInfoVO();
 		int tempInt = lstiA.size();
+		ComparedInfoVO ci = new ComparedInfoVO(tempInt);
+		
 		// 获取前一天的数据
 		double closeA1 = 0.0, closeB1 = 0.0;
-		SingleStockInfoVO ssi = new SingleStockInfoVO();
-		Calendar tempCal = begin;
-		for( int i=0; i<7; i++ ){
-			tempCal = calendarAdvance(tempCal);
-			ssi = getSingleStockInfoByTime(stockCodeA, tempCal, tempCal).get(0);
-			if( !ssi.getCode().equals("") )
-				break;
-		}
-		closeA1 = ssi.getClose();
-		ssi = new SingleStockInfoVO();
-		tempCal = begin;
-		for( int i=0; i<7; i++ ){
-			tempCal = calendarAdvance(tempCal);
-			ssi = getSingleStockInfoByTime(stockCodeA, tempCal, tempCal).get(0);
-			if( !ssi.getCode().equals("") )
-				break;
-		}
-		closeB1 = ssi.getClose();
+//		Calendar tempCal = begin;
+//		int getCount = 5;
+//		for( int i=0; i<getCount; i++ ){
+//			tempCal = calendarAdvance(tempCal);
+//			if( ssiA.getCode().equals("") )
+//				ssiA = getSingleStockInfoByTime(stockCodeA, tempCal, tempCal).get(0);
+//			if( ssiB.getCode().equals("") )
+//				ssiB = getSingleStockInfoByTime(stockCodeB, tempCal, tempCal).get(0);
+//			if( !ssiA.getCode().equals("") && !ssiB.getCode().equals(""))
+//				break;
+//		}
+		ssiA = slis.getSingleStockInfo(stockCodeA, begin);
+		ssiB = slis.getSingleStockInfo(stockCodeB, begin);
+		closeA1 = ssiA.getClose();
+		closeB1 = ssiB.getClose();
 		
-		ComparedInfoVO ci = new ComparedInfoVO(lstiA.size());
 		ci.setNameA(lstiA.get(0).getName());
 		ci.setNameB(lstiB.get(0).getName());
-		ci.setCodeA(lstiA.get(0).getCode());
-		ci.setCodeB(lstiB.get(0).getCode());
+		ci.setCodeA(stockCodeA);
+		ci.setCodeB(stockCodeB);
 		// 涨幅为正，跌幅为负
-		ci.setRODA( formatDouble( (lstiA.get(tempInt-1).getClose()-lstiA.get(0).getOpen()) 
-				/ lstiA.get(0).getOpen() ) );
-		ci.setRODB( formatDouble( (lstiB.get(tempInt-1).getClose()-lstiB.get(0).getOpen()) 
-				/ lstiB.get(0).getOpen() ) );
+		int iOpen = 0, iClose = tempInt-1;
+		double dOpen =0.0, dClose = 0.0;
+		while( lstiA.get(iOpen).getOpen()==0 && iOpen<(tempInt-1) )
+			iOpen++;
+		dOpen = lstiA.get(iOpen).getOpen();
+		if( dOpen!=0 ){
+			while( lstiA.get(iClose).getClose()==0 && iClose>-1 )
+				iClose--;
+			dClose = lstiA.get(iClose).getClose();
+			double result = ( dClose-dOpen ) / dOpen;
+			ci.setRODA( formatDoubleSaveFive( result ) );
+		}
+		iOpen = 0; iClose = tempInt-1;
+		dOpen =0.0; dClose = 0.0;
+		while( lstiB.get(iOpen).getOpen()==0 && iOpen<(tempInt-1) )
+			iOpen++;
+		dOpen = lstiB.get(iOpen).getOpen();
+		if( dOpen!=0 ){
+			while( lstiB.get(iClose).getClose()==0 && iClose>-1 )
+				iClose--;
+			dClose = lstiB.get(iClose).getClose();
+			double result = ( dClose-dOpen ) / dOpen;
+			ci.setRODB( formatDoubleSaveFive( result ) );
+		}
 		
-		double maxA = 0, minA = 0, maxB = 0, minB = 0;
+		double maxA = 0, minA = 1000000.0, maxB = 0, minB = 1000000.0;
 		double closeA2 = 0.0, closeB2 = 0.0;
 		double[] logYieldA = new double[tempInt];
 		double[] logYieldB = new double[tempInt];
 		double[] closeA = new double[tempInt];
 		double[] closeB = new double[tempInt];
-		Calendar[] dateA = new Calendar[tempInt];
-		Calendar[] dateB = new Calendar[tempInt];
-		SingleStockInfoVO ssiA = new SingleStockInfoVO();
-		SingleStockInfoVO ssiB = new SingleStockInfoVO();	
+		Calendar[] date = new Calendar[tempInt];
+		ssiA = new SingleStockInfoVO();
+		ssiB = new SingleStockInfoVO();	
 		for( int i=0 ; i<tempInt ; i++ ){
 			ssiA = lstiA.get(i);
 			ssiB = lstiB.get(i);
-			dateA[i] = ssiA.getDate();
-			dateB[i] = ssiB.getDate();
 			closeA[i] = ssiA.getClose();
 			closeB[i] = ssiB.getClose();
-					
+			date[i] = ssiA.getDate();
 			// 获取最高（低）值
 			if( lstiA.get(i).getHigh()>maxA )
 				maxA = ssiA.getHigh();
@@ -135,21 +153,24 @@ public class StockLogicImpl implements StockLogicInterface{
 				minB = ssiB.getLow();
 			
 			closeA2 = ssiA.getClose();
-			logYieldA[i] = formatDouble( Math.log(closeA2/closeA1) );
+			if( closeA1!=0 )
+				logYieldA[i] = formatDoubleSaveFive( Math.log(closeA2/closeA1) );
 			closeA1 = closeA2;
 			closeB2 = ssiB.getClose();
-			logYieldB[i] = formatDouble( Math.log(closeB2/closeB1) );
+			if( closeB1!=0 )
+				logYieldB[i] = formatDoubleSaveFive( Math.log(closeB2/closeB1) );
 			closeB1 = closeB2;
 		}
 		
-		ci.setCloseA(closeA);
-		ci.setCloseB(closeB);
+		ci.setLowA(minA); ci.setLowB(minB);
+		ci.setHighA(maxA); ci.setHighB(maxB);
+		ci.setCloseA(closeA); ci.setCloseB(closeB);
 		ci.setLogYieldA(logYieldA);
 		ci.setLogYieldB(logYieldB);
 		ci.setLogYieldVarianceA(calVariance(logYieldA));
 		ci.setLogYieldVarianceB(calVariance(logYieldB));
-		
-		return null;
+		ci.setDate(date);
+		return ci;
 	}
 
 	@Override
@@ -162,7 +183,7 @@ public class StockLogicImpl implements StockLogicInterface{
 		// 用来存储上一个交易日的数据
 		Calendar begin = date;
 		SingleStockInfoVO ssiTemp = new SingleStockInfoVO();
-		for( int i=0; i<7; i++ ){
+		for( int i=0; i<5; i++ ){
 			begin = calendarAdvance(begin);
 			ssiTemp = new SingleStockInfoVO();
 			if( !ssiTemp.getCode().equals("") )
@@ -177,23 +198,20 @@ public class StockLogicImpl implements StockLogicInterface{
 			double close = ssi.getClose();
 			double open = ssi.getOpen();
 			
-			volume += ssi.getVolume();
-			if(open>0){
-				if( ifDoubleEqual((ssi.getHigh()-open)/open,  0.1) )
+			if( ssi.getVolume() > 0 )
+				volume += ssi.getVolume();
+			if( open>0 && close>0 ){
+				if( ifDoubleEqual((ssi.getHigh()-open)/open,  0.10) )
 					riseStop++;
-				if( ifDoubleEqual((open-ssi.getLow())/open,  0.1) )
+				if( ifDoubleEqual((open-ssi.getLow())/open,  0.10) )
 					dropStop++;
-				if( (close-open)/open > 0.05 )
+				if( (close-open)/open > 0.05 && close!=0 && open!=0 )
 					riseEFP++;
-				if( (open-close)/open > 0.05 )
+				if( (open-close)/open > 0.05 && close!=0 && open!=0 )
 					stopEFP++;
-			}
-			if( (open-close) > 0 ){
 				if( (open-close) > (0.05*ssiTemp.getClose()) )
 					OMCEFP++;
-			}
-			else{
-				if( (open-close) < (-0.05*ssiTemp.getClose()) )
+				else if( (open-close) < (-0.05*ssiTemp.getClose()) )
 					OMCLTFP++;
 			}
 		}
@@ -209,9 +227,14 @@ public class StockLogicImpl implements StockLogicInterface{
 		return mi;
 	}
 
-	private double formatDouble(double d){
+	private double formatDoubleSaveTwo(double d){
 		DecimalFormat df = new DecimalFormat("#0.00");
-		return Double.parseDouble(df.format(d));
+		return Double.parseDouble( df.format(d) );
+	}
+	
+	private double formatDoubleSaveFive(double d){
+		DecimalFormat df = new DecimalFormat("#0.00000");
+		return Double.parseDouble( df.format(d) );
 	}
 	
 	private double calVariance(double[] num){
@@ -225,12 +248,12 @@ public class StockLogicImpl implements StockLogicInterface{
 		}
 		tempD2 = Math.pow(tempD2, 2);
 		result = (tempD1 - tempD2/length) / length;
-		return formatDouble( result );
+		return formatDoubleSaveFive( result );
 	}
 	
 	public boolean ifDoubleEqual(double d1, double d2){
-		String s1 = String.valueOf(formatDouble(d1));
-		String s2 = String.valueOf(formatDouble(d2));
+		String s1 = String.valueOf(formatDoubleSaveTwo(d1));
+		String s2 = String.valueOf(formatDoubleSaveTwo(d2));
 		return s1.equals(s2);
 	}
 	

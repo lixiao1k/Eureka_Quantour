@@ -43,6 +43,16 @@ public class StockLogicImplStub {
 		return lssi;
 	}
 	
+	protected SingleStockInfoVO getSingleStockInfo(String stockCode, Calendar date){
+		SingleStockInfoVOs.init();
+		SingleStockInfoVO ssi = new SingleStockInfoVO();
+		if( stockCode.equals("1") )
+			ssi = SingleStockInfoVOs.ssiA1;
+		else if( stockCode.equals("151") )
+			ssi = SingleStockInfoVOs.ssiB1;
+		return ssi;
+	}
+	
 	protected List<SingleStockInfoVO> getMarketInfo( Calendar date){
 		SingleStockInfoVOs.init();
 		List<SingleStockInfoVO> lssi = new ArrayList<SingleStockInfoVO>();
