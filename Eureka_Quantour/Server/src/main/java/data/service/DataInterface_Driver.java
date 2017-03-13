@@ -98,6 +98,7 @@ public class DataInterface_Driver {
 //    	checkmap1(map1,list);
     	HashMap<String, List<String>> map2=c.singlesortmap;
     	HashMap<String, HashMap<Calendar, Integer>> map3=c.sortmap;
+    	checkmap2_3(map2,map3,list);
 //    	HashMap<String, HashMap<Calendar, String>> map4=c.singlestockmap;
 //    	checkmap4(map4,list);
 //    	HashMap<String, HashMap<String, String>> map5=c.stockinfo_StringType;
@@ -129,31 +130,47 @@ public class DataInterface_Driver {
 		}
 		System.out.println(count);
 	}
-	private void checkmap3(HashMap<String, HashMap<Calendar, Integer>> map,HashMap<String,Integer> list){
-		Iterator<Entry<String, HashMap<Calendar, Integer>>> it=map.entrySet().iterator();
+	private void checkmap2_3(HashMap<String, List<String>> map1,HashMap<String, HashMap<Calendar, Integer>> map2,HashMap<String,Integer> list){
+		Iterator<Entry<String, List<String>>> it=map1.entrySet().iterator();
 		int i=0;
 		int count=0;
 		int count1=0;
-		String cal="";
 		String str="";
 		String code="";
+		SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yy");
+		Calendar cal1=Calendar.getInstance();
 		while(it.hasNext()){
 			i++;
-			Entry<String, HashMap<Calendar, Integer>> entry=it.next();
-			cal=entry.getKey();
-			Iterator<Entry<Calendar, Integer>> iti=entry.getValue().entrySet().iterator();
-			while(iti.hasNext()){
+			Entry<String,List<String>> entry=it.next();
+			code=entry.getKey();
+			count1=0;
+			for(String k:entry.getValue()){
 				count++;
-				Entry<Calendar, Integer> e=iti.next();
-//				str=e.getValue();
-//				code=e.getKey();
-				String[] out=str.split("\t");
-				if((!code.equals(out[8]))||(!cal.equals(out[1]))){
+				Calendar cal=Calendar.getInstance();
+				String[] out=k.split("\t");
+				try {
+					cal.setTime(sdf.parse(out[1]));
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if(count1==0){
+					cal1.setTime(cal.getTime());
+				}
+				if(!list.containsKey(k)){
+					count1++;
+					System.out.println("表中数据与原数据的项不符");
+				}
+				if(!out[8].equals(code)){
 					System.out.println("error");
 				}
-				if(!list.containsKey(str)){
-					System.out.println("error!!!!!");
+				if(count1!=map2.get(code).get(cal)){
+					System.out.println("error!!!!");
 				}
+				if(cal.compareTo(cal1)<0){
+					System.out.println("时间错误!!!!");
+				}
+				count1++;
 			}
 		}
 		System.out.println(i);
@@ -167,6 +184,7 @@ public class DataInterface_Driver {
 		String cal="";
 		String str="";
 		String code="";
+		SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yy");
 		while(it.hasNext()){
 			i++;
 			Entry<String, HashMap<String, String>> entry=it.next();
