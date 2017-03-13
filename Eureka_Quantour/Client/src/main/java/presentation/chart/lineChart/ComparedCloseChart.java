@@ -6,23 +6,27 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Tooltip;
 import presentation.chart.chartService;
+import vo.ComparedInfoVO;
 import vo.EMAInfoVO;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
- * Created by huihantao on 2017/3/9.
+ * Created by huihantao on 2017/3/13.
  */
-public class EMAChart implements chartService {
+public class ComparedCloseChart implements chartService {
+
+
     protected NumberAxis yAxis;
     protected CategoryAxis xAxis;
     SimpleDateFormat sdf = new SimpleDateFormat("yy:MM:dd");
 
     private LineChart<String, Number> lineChart;
 
-    public EMAChart(List<List<EMAInfoVO>> lists) {
+    public ComparedCloseChart(Calendar[] date,double[] data1, double[] data2,String s1,String s2) {
         xAxis = new CategoryAxis();
         yAxis = new NumberAxis();
         yAxis.autoRangingProperty().set(true);
@@ -37,27 +41,27 @@ public class EMAChart implements chartService {
         yAxis.forceZeroInRangeProperty().setValue(false);
 
         lineChart = new LineChart<>(xAxis, yAxis);
+        XYChart.Series<String, Number> serie1 = new XYChart.Series<>();
+        serie1.setName(s1);
+        XYChart.Series<String, Number> serie2 = new XYChart.Series<>();
+        serie2.setName(s2);
 
-        List<XYChart.Series<String, Number>> series = new ArrayList<>();
+        for (int i=0;i<date.length;i++){
+            String label = sdf.format(date[i].getTime());
+            if (data1[i]!=0)
+            serie1.getData().add(new XYChart.Data<>(label, data1[i]));
 
-
-
-        for (List<EMAInfoVO> list : lists) {
-            int index = lists.indexOf(list);
-            XYChart.Series<String, Number> serie = new XYChart.Series<>();
-
-            for (EMAInfoVO info : list) {
-                String label = sdf.format(info.getDate().getTime());
-                serie.getData().add(new XYChart.Data<>(label, info.getEMA()));
-            }
-            serie.setName(1 + index + "");
-            series.add(serie);
-
-
+            if(data2[i]!=0)
+            serie2.getData().add(new XYChart.Data<>(label, data2[i]));
         }
-        lineChart.getData().addAll(series);
 
-        lineChart.setTitle("均线图");
+
+
+
+
+        lineChart.getData().addAll(serie1,serie2);
+
+        lineChart.setTitle("对比图");
 
         for (XYChart.Series<String, Number> s : lineChart.getData()) {
             for (XYChart.Data<String, Number> d : s.getData()) {
@@ -74,5 +78,4 @@ public class EMAChart implements chartService {
     public XYChart<String, Number> getchart() {
         return lineChart;
     }
-
 }

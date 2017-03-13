@@ -29,14 +29,7 @@ public class BarData  {
 
     }
 
-    public BarData(Calendar dateTime, double open, double high, double low, double close, long volume) {
-        this.dateTime = dateTime;
-        this.open = open;
-        this.close = close;
-        this.low = low;
-        this.high = high;
-        this.volume = volume;
-    }
+
 
 
     public Calendar getDateTime() {
@@ -146,80 +139,6 @@ public class BarData  {
             low = close;
         }
         this.close = close;
-    }
-    
-
-
-
-
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Date: ").append(dateTime.getTime());
-        sb.append(" Open: ").append(open);
-        sb.append(" High: ").append(high);
-        sb.append(" Low: ").append(low);
-        sb.append(" Close: ").append(close);
-        sb.append(" Volume: ").append(volume);
-        return sb.toString();
-    }//toString()
-
-    @Override
-    public int hashCode() {
-        final int PRIME = 31;
-        int result = 1;
-        long temp;
-        temp = Double.doubleToLongBits(close);
-        result = PRIME * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(high);
-        result = PRIME * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(low);
-        result = PRIME * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(open);
-        result = PRIME * result + (int) (temp ^ (temp >>> 32));
-        result = PRIME * result + (int) (temp ^ (temp >>> 32));
-        result = PRIME * result + ((dateTime == null) ? 0 : dateTime.hashCode());
-        result = PRIME * result + (int) (volume ^ (volume >>> 32));
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final BarData other = (BarData) obj;
-        if (Double.doubleToLongBits(close) != Double.doubleToLongBits(other.close)) {
-            return false;
-        }
-        if (Double.doubleToLongBits(high) != Double.doubleToLongBits(other.high)) {
-            return false;
-        }
-        if (Double.doubleToLongBits(low) != Double.doubleToLongBits(other.low)) {
-            return false;
-        }
-        if (Double.doubleToLongBits(open) != Double.doubleToLongBits(other.open)) {
-            return false;
-        }
-
-        if (dateTime == null) {
-            if (other.dateTime != null) {
-                return false;
-            }
-        } else if (!dateTime.equals(other.dateTime)) {
-            return false;
-        }
-        if (volume != other.volume) {
-            return false;
-        }
-        return true;
     }
     
 }

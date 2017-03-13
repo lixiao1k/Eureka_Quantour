@@ -32,7 +32,7 @@ import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import presentation.chart.barChart.ExtremeValueComparedChart;
 import presentation.chart.klineChart.CandleStickChart;
-import presentation.chart.klineChart.kChartStub;
+//import presentation.chart.klineChart.kChartStub;
 import vo.ComparedInfoVO;
 
 public class BorderController implements Initializable {
@@ -121,9 +121,9 @@ public class BorderController implements Initializable {
 		searchButton.setOnAction((ActionEvent e)->{
 			ObservableList<Node> nodelist = borderPane.getChildren();
 			nodelist.clear();
-			kChartStub kchart = new kChartStub();
-			candleStickChart = kchart.getKChart();
-			borderPane.setCenter(candleStickChart);
+//			kChartStub kchart = new kChartStub();
+//			candleStickChart = kchart.getKChart();
+//			borderPane.setCenter(candleStickChart);
 		});
 		
 		hb.getChildren().addAll(beginLabel,beginDatePicker,endLabel,endDatePicker,blank,stockName,searchButton);
