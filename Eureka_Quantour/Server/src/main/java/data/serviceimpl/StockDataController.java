@@ -87,16 +87,11 @@ public class StockDataController {
 		return out[0]+"/"+out[1]+"/"+out[2];
 	}
 	public List<SingleStockInfoPO> getMarketByDate(Calendar date){
-		Iterator<Entry<Calendar, List<SingleStockInfoPO>>> it=processmap.entrySet().iterator();
-		while(it.hasNext()){
-			System.out.println(sdf.format(it.next().getKey().getTime()));
-		}
 		if(process_data){
 			if(!processmap.containsKey(date)){
 				System.out.println("error");
 				return null;
 			}
-			for(SingleStockInfoPO po:processmap.get(date)) System.out.println(po.toString());
 			return processmap.get(date);
 		}
 		else{
@@ -104,7 +99,6 @@ public class StockDataController {
 		}
 	}
 	public List<SingleStockInfoPO> getSingleStockInfo(String stockcode, Calendar begin, Calendar end){
-		System.out.println(processmap.size());
 		if(sort_data){
 			return getSingleAftersort(stockcode, begin, end);
 		}
@@ -187,6 +181,7 @@ public class StockDataController {
 		}
 		List<SingleStockInfoPO> list1=new ArrayList<SingleStockInfoPO>();
 		for(int k=i;k<=j;k++){
+			System.out.println(list.get(k));
 			list1.add(new SingleStockInfoPO(list.get(k)));
 		}
 		return list1;
