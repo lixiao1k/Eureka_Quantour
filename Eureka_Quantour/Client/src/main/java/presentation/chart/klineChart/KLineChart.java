@@ -19,7 +19,6 @@ import vo.SingleStockInfoVO;
 public class KLineChart implements chartService {
 
 
-    private List<BarData> barlist;
     private CandleStickChart candlestickchart;
 
     public KLineChart(List<SingleStockInfoVO> stocklist){
