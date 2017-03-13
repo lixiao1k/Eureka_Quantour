@@ -37,7 +37,11 @@ public class StockDataController {
 	private boolean sort_data;
 	private StockDataController(){
 		stockdatahelper=StockDataHelperImp.getInstance();
+		System.out.println("开始取数据");
+		long start_time=System.currentTimeMillis();
 		stockinfo_StringType=stockdatahelper.getAllStock();
+		long end_time=System.currentTimeMillis();
+		System.out.println("花费在取数据上的时间为: "+(-start_time+end_time)+" ms");
 		processmap=new HashMap<Calendar,List<SingleStockInfoPO>>();
 		singlestockmap=new HashMap<String,HashMap<Calendar,String>>();
 		process_data=false;
@@ -203,7 +207,11 @@ public class StockDataController {
 	class process_thread implements Runnable{
 		@Override
 		public void run() {
+			System.out.println("开始整理按天数获得市场数据");
+			long start_time=System.currentTimeMillis();
 			go();
+			long end_time=System.currentTimeMillis();
+			System.out.println("花费在整理按天数获得市场股票上的时间为: "+(-start_time+end_time)+" ms");
 		}
 		private void go(){
 			Iterator<String> it=stockinfo_StringType.keySet().iterator();

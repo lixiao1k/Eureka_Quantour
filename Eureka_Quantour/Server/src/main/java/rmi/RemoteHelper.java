@@ -9,6 +9,10 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 
+import data.service.DataThread;
+import data.service.IDataInterface;
+import data.serviceimpl.DataInterfaceImpl;
+
 public class RemoteHelper {
 	public RemoteHelper(){
 		initService();
@@ -16,6 +20,7 @@ public class RemoteHelper {
     private void initService(){
     	DateRemote dateRemote;
     	try{
+    		IDataInterface data=new DataInterfaceImpl();
     		dateRemote = new DateRemote();
     		LocateRegistry.createRegistry(8888);
     		Naming.bind("rmi://localhost:8888/DateRemote",dateRemote);
