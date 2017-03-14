@@ -50,7 +50,7 @@ public class SingleStockInfoPO
 		setStr(null);
 	}
 	public SingleStockInfoPO(String stockinfo){
-		String[] info=stockinfo.split("\\s+");
+		String[] info=stockinfo.split("\t");
 		setName(info[9]);
 		SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yy");
 		Calendar cal=Calendar.getInstance();

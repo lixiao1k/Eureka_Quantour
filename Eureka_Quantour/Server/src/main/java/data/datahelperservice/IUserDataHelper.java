@@ -6,7 +6,18 @@ package data.datahelperservice;
  *
  */
 public interface IUserDataHelper {
+	/**
+	 * 判断是否存在该用户
+	 * @param String username,用户名字
+	 * @return boolean,含有该用户则返回true，没有则返回false。
+	 */
 	public boolean containName(String username);
+	/**
+	 * 判断密码是否正确
+	 * @param String username,用户名称
+	 * @param String password,用户密码
+	 * @return boolean,密码正确则返回true，不正确则返回false。
+	 */
 	public boolean login(String username, String password);
 	/**
 	 * 添加一位用户
@@ -15,5 +26,9 @@ public interface IUserDataHelper {
 	 * @return
 	 */
 	public void insertUser(String username,String password);
+	/**
+	 * 当用户登出后，将用户状态设置为未登录
+	 * @param username 用户名
+	 */
 	public void logout(String username);
 }

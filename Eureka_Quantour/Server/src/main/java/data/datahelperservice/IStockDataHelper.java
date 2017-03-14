@@ -8,5 +8,9 @@ import java.util.HashMap;
  *
  */
 public interface IStockDataHelper {
+	/**
+	 * 获得所有股票的信息
+	 * @return	HashMap<String,HashMap<String,String>>股票信息
+	 */
 	public HashMap<String,HashMap<String,String>> getAllStock();
 }

@@ -64,6 +64,11 @@ public class UserDataController
 	public void logout(String username){
 		userdatahelper.logout(username);
 	}
+	/**
+	 * 将输入的字符串加密返回
+	 * @param str 待加密的字符串
+	 * @return String 完成加密的字符串
+	 */
 	public String EncoderByMd5(String str){
 		 MessageDigest md;
 	     StringBuffer sb = new StringBuffer();

@@ -43,7 +43,17 @@ public class DataInterface_Driver {
 					e.printStackTrace();
 				}
 				long start_time1=System.currentTimeMillis();
-				data.getSingleStockInfo(three[0],cal1,cal2);
+				int i=0;
+				if(data.getSingleStockInfo(three[0],cal1,cal2)==null){
+					System.out.println("bucunzai");
+				}
+				else{
+				for(SingleStockInfoPO po:data.getSingleStockInfo(three[0],cal1,cal2)){
+					i++;
+					System.out.println(po.toString());
+				}
+				}
+				System.out.println(i);
 				long end_time1=System.currentTimeMillis();
 				System.out.println(end_time1);
 				System.out.println("runtime: "+(-start_time1+end_time1)+" ms");
