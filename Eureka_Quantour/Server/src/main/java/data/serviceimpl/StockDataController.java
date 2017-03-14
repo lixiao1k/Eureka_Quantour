@@ -30,7 +30,7 @@ public class StockDataController {
 	private SimpleDateFormat sdf;//日期的转化格式
 	
 	private HashMap<String,HashMap<String,String>> stockinfo_StringType;//服务器初始启动时提供的map表
-	private HashMap<Calendar,List<SingleStockInfoPO>> processmap;//经过处理后为getMarket方法提供的map表
+	private HashMap<Calendar,List<String>> processmap;//经过处理后为getMarket方法提供的map表
 	private HashMap<String,HashMap<Calendar,String>> singlestockmap;//数据初次处理后为getSingleStock方法提供的map表
 	private HashMap<String,List<String>> singlesortmap;//数据二次处理后为getSingleStock方法提供的map表
 	private HashMap<String,HashMap<Calendar,Integer>> sortmap;//数据二次处理后为getSingleStock方法提供的顺序表
@@ -52,7 +52,7 @@ public class StockDataController {
 		System.out.println("花费在取数据上的时间为: "+(-start_time+end_time)+" ms");
 		
 		//初始化相关变量
-		processmap=new HashMap<Calendar,List<SingleStockInfoPO>>();
+		processmap=new HashMap<Calendar,List<String>>();
 		singlestockmap=new HashMap<String,HashMap<Calendar,String>>();
 		process_data=false;
 		single_data=false;
@@ -289,10 +289,11 @@ public class StockDataController {
 				System.out.println("error");
 				return null;
 			}
-			return processmap.get(date);
+//			return processmap.get(date);
+			return null;
 		}
 		else{
-			return processMarketByDate(date);
+			return null;
 		}
 	}
 	/**
@@ -300,17 +301,17 @@ public class StockDataController {
 	 * @param date，所选的时间
 	 * @return List<SingleStockInfoPO>一系列股票对象
 	 */
-	private List<SingleStockInfoPO> processMarketByDate(Calendar date) {
+	private List<String> processMarketByDate(Calendar date) {
 		String string_date=tostring(sdf.format(date.getTime()));
 		if(!stockinfo_StringType.containsKey(string_date)){
 			return null;
 		}
 		HashMap<String,String> datamap=stockinfo_StringType.get(string_date);
 		Iterator<Entry<String, String>> it=datamap.entrySet().iterator();
-		ArrayList<SingleStockInfoPO> list=new ArrayList<SingleStockInfoPO>();
+		ArrayList<String> list=new ArrayList<String>();
 		while(it.hasNext()){
 			String info=it.next().getValue();
-			list.add(new SingleStockInfoPO(info));
+			list.add(info);
 		}
 		return list;
 	}
