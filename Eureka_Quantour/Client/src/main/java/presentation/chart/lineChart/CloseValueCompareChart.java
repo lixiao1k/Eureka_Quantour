@@ -1,9 +1,5 @@
 package presentation.chart.lineChart;
 
-/*
- * Copyright (c) 2008, 2012 Oracle and/or its affiliates.
- * All rights reserved. Use is subject to license terms.
- */
 import java.net.URL;
 import java.util.ResourceBundle;
 

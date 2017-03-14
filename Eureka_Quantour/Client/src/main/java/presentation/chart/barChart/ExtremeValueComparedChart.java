@@ -44,7 +44,7 @@ public class ExtremeValueComparedChart implements Initializable {
 //        root.getChildren().add(createChart("A","B",50,60,30,40));
 //    }
 
-    public BarChart<String, Number> createChart(String stockA,String stockB,int highA,int highB,int lowA,int lowB) {
+    public BarChart<String, Number> createChart(String stockA,String stockB,double highA,double highB,double lowA,double lowB) {
         final String[] years = {"最高值", "最低值"};
         final CategoryAxis xAxis = new CategoryAxis();
         final NumberAxis yAxis = new NumberAxis();

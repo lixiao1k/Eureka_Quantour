@@ -2,6 +2,7 @@ package presentation.borderUI;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.List;
@@ -41,6 +42,7 @@ import presentation.chart.klineChart.CandleStickChart;
 import presentation.chart.klineChart.KLineChart;
 import presentation.chart.klineChart.kChartStub;
 import presentation.chart.lineChart.EMAChart;
+import dataController.DataContorller;
 import rmi.RemoteHelper;
 import vo.ComparedInfoVO;
 import vo.EMAInfoVO;
@@ -54,6 +56,8 @@ public class BorderController implements Initializable {
 //	private String stockB;
 //	private CandleStickChart candleStickChart;
 //	
+	public DataContorller dataController = DataContorller.getInstance();
+	
 	@FXML
 	ImageView imageView;
 	
@@ -82,7 +86,9 @@ public class BorderController implements Initializable {
 		}
 		setInfoAnchorPane.getChildren().add(searchSingleStockHBox());
 	}
-	
+	/*
+	 * 点击左侧比较按钮，出现相应比较搜索栏
+	 */
 	@FXML
 	protected void goCompare(ActionEvent e){
 		ObservableList<Node> nodeList = setInfoAnchorPane.getChildren();
@@ -95,7 +101,9 @@ public class BorderController implements Initializable {
 		}
 		setInfoAnchorPane.getChildren().add(compareHBox());
 	}
-	
+	/*
+	 * 点击左侧市场情况按钮，出现相应搜索栏
+	 */
 	@FXML
 	protected void browseMarket(ActionEvent e){
 		ObservableList<Node> nodeList = setInfoAnchorPane.getChildren();
@@ -108,13 +116,17 @@ public class BorderController implements Initializable {
 		}
 		setInfoAnchorPane.getChildren().add(marketHBox());
 	}
-	
+	/*
+	 * 登出按钮
+	 */
 	@FXML
 	protected void exit(ActionEvent e){
 		Stage stage = (Stage)imageView.getScene().getWindow();
 		stage.close();
 	}
-	
+	/*
+	 * k线均线搜索栏
+	 */
 	private HBox searchSingleStockHBox (){
 		HBox hb = new HBox();
 		hb.setPadding(new Insets(25, 5, 5, 25));
@@ -129,7 +141,7 @@ public class BorderController implements Initializable {
 		stockName.setPrefSize(100,5);
 		stockName.setPromptText("股票名称");
 		Button searchKButton = new Button("K线");
-		
+		//K线浏览的监听
 		searchKButton.setOnAction((ActionEvent e)->{
 			List<SingleStockInfoVO> stockInfoList=null;
 			String stockCode = stockName.getText();
@@ -137,7 +149,8 @@ public class BorderController implements Initializable {
 			Calendar endTime = localDate2Calendar(endDatePicker.getValue());
 			RemoteHelper remote = RemoteHelper.getInstance();
 			StockLogicInterface slinterface = remote.getStockLogic();
-			if(beginTime.after(endTime)){
+			//开始时间必须小于结束时间
+			if(beginTime.after(endTime)||stockCode.isEmpty()){
 				java.awt.Toolkit.getDefaultToolkit().beep(); 
 			}else{
 				try {
@@ -157,7 +170,7 @@ public class BorderController implements Initializable {
 		});
 		
 		Button searchEMAButton = new Button("均线");
-		
+		//均线浏览的监听
 		searchEMAButton.setOnAction((ActionEvent e)->{
 			List<List<EMAInfoVO>> emaInfo = null;
 			String stockCode = stockName.getText();
@@ -165,7 +178,7 @@ public class BorderController implements Initializable {
 			Calendar endTime = localDate2Calendar(endDatePicker.getValue());
 			RemoteHelper remote = RemoteHelper.getInstance();
 			StockLogicInterface slinterface = remote.getStockLogic();
-			if(beginTime.after(endTime)){
+			if(beginTime.after(endTime)||stockCode.isEmpty()){
 				java.awt.Toolkit.getDefaultToolkit().beep(); 
 			}else{
 				try {
@@ -175,6 +188,10 @@ public class BorderController implements Initializable {
 					e1.printStackTrace();
 				}
 //				chartService service = new EMAChart(emaInfo);
+//				XYChart<String, Number> EMAchart = service.getchart();
+//				ObservableList<Node> nodelist = borderPane.getChildren();
+//				nodelist.clear();
+//				borderPane.setCenter(EMAchart);
 			}
 			
 		});
@@ -186,7 +203,9 @@ public class BorderController implements Initializable {
 	
 	
 	
-	
+	/*
+	 * 股票比较的搜索栏
+	 */
 	private HBox compareHBox(){
 		HBox hb = new HBox();
 		hb.setPadding(new Insets(25, 5, 5, 25));
@@ -206,10 +225,34 @@ public class BorderController implements Initializable {
 		stockNameB.setPromptText("股票B");
 		Button compareButton = new Button("比较");
 		compareButton.setOnAction((ActionEvent e)->{
-			ObservableList<Node> nodelist = borderPane.getChildren();
-			nodelist.clear();
-			borderPane.setRight(getCompareResultFlowPane());
-			borderPane.setCenter(getCompareResultChart());
+			ComparedInfoVO comparedInfoVO = null;
+			Calendar beginTime = localDate2Calendar(beginDatePicker.getValue());
+			Calendar endTime = localDate2Calendar(endDatePicker.getValue());
+			String stockA = stockNameA.getText();
+			String stockB = stockNameB.getText();
+			RemoteHelper remote = RemoteHelper.getInstance();
+			StockLogicInterface slinterface = remote.getStockLogic();
+			if(beginTime.after(endTime)||stockA.isEmpty()||stockB.isEmpty()){
+				java.awt.Toolkit.getDefaultToolkit().beep(); 
+			}else{
+				try {
+					comparedInfoVO = slinterface.getComparedInfo(stockA, stockB, beginTime, endTime);
+					System.out.println(comparedInfoVO);
+					dataController.upDate("COMPAREDINFO", comparedInfoVO);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				
+				ObservableList<Node> nodelist = borderPane.getChildren();
+				nodelist.clear();
+				borderPane.setRight(getCompareResultFlowPane());
+				borderPane.setCenter(getCompareResultChart());
+			}
+			
+			
+			
 			
 		});
 		
@@ -242,18 +285,20 @@ public class BorderController implements Initializable {
 	
 	private FlowPane getCompareResultFlowPane(){
 		FlowPane fp = new FlowPane();
-//		fp.setPrefWidth(200);
-//		fp.setVgap(20);
-//		ComparedInfoVO vo = new CompareInfoVOStub();
-//		VBox vb1 = getCompareResultVBox(vo.getNameA(),vo.getHighA(),vo.getLowA()
-//				,vo.getLogYieldA(),vo.getLogYieldVarianceA(),"2017/11/19~2017/11/20");
-//		VBox vb2 = getCompareResultVBox(vo.getNameB(),vo.getHighB(),vo.getLowB()
-//				,vo.getLogYieldB(),vo.getLogYieldVarianceB(),"2017/11/19~2017/11/20");
-//		VBox buttonVBox = new VBox();
-//		buttonVBox.setSpacing(5);
-//		buttonVBox.setPadding(new Insets(4,4,4,4));
-//		
-//		fp.getChildren().addAll(vb1,vb2);
+		fp.setPrefWidth(200);
+		fp.setVgap(20);
+		ComparedInfoVO vo = (ComparedInfoVO) dataController.get("COMPAREDINFO");
+		int dateLength =vo.getDate().length;
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		String timeRange = df.format(vo.getDate()[0].getTime())+"~"+df.format(vo.getDate()[dateLength-1].getTime());
+		VBox vb1 = getCompareResultVBox(vo.getNameA(), vo.getHighA(), vo.getLowA(),
+				vo.getRODA(), vo.getLogYieldVarianceA(), timeRange);
+		VBox vb2 = getCompareResultVBox(vo.getNameB(), vo.getHighB(), vo.getLowB(), 
+				vo.getRODB(), vo.getLogYieldVarianceB(), timeRange);
+		VBox buttonVBox = new VBox();//拓展
+		buttonVBox.setSpacing(5);
+		buttonVBox.setPadding(new Insets(4,4,4,4));
+		fp.getChildren().addAll(vb1,vb2);
 		return fp;
 	}
 	

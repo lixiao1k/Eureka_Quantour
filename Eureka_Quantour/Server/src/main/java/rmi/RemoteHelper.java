@@ -9,7 +9,7 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 
-import data.service.DataThread;
+//import data.service.DataThread;
 import data.service.IDataInterface;
 import data.serviceimpl.DataInterfaceImpl;
 
