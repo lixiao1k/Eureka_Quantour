@@ -17,16 +17,19 @@ import data.datahelperservice.IStockDataHelper;
  *
  */
 public class StockDataHelperImp implements IStockDataHelper {
-	private static IStockDataHelper datahelper;
-	private File stockdata;
-	private File filelog;
-	private Properties prop_file;
-	private OutputStream out_file;
-	private File stockranklog;
-	private Properties prop_rank;
-	private OutputStream out_rank;
-	private File filepath;
-	private Boolean need_init;
+	private static IStockDataHelper datahelper;//datahelper层的单例对象
+	private File stockdata;//数据源文件
+	private File filelog;//数据中每支股票的配置文件
+	private Properties prop_file;//股票配置文件的properties对象
+	private OutputStream out_file;//股票配置文件的outputstream对象
+	private File stockranklog;//数据中股票顺序文件的配置文件
+	private Properties prop_rank;//股票顺序配置文件的properties对象
+	private OutputStream out_rank;//股票顺序配置文件的outputstream对象
+	private File filepath;//所有stockdata相关数据的存储路径
+	private Boolean need_init;//判断程序的配置文件是否生成的boolean变量
+	/**
+	 * stockdatahelper的初始化
+	 */
 	private StockDataHelperImp(){
 		stockdata=new File("date.csv");
 		filepath=new File("data/stock");
@@ -36,6 +39,9 @@ public class StockDataHelperImp implements IStockDataHelper {
 		}
 		init();
 	}
+	/**
+	 * stockdatahelper的初始化
+	 */
 	private void init(){
     	try{
     		filelog=new File("data/stock/filelog.properties");
@@ -57,10 +63,16 @@ public class StockDataHelperImp implements IStockDataHelper {
     		e.printStackTrace();
     	}
     }
+	
 	public static IStockDataHelper getInstance(){
 		if(datahelper==null) datahelper=new StockDataHelperImp();
 		return datahelper;
 	}
+	
+	/**
+	 * 获得所有股票信息
+	 * @return HashMap<String,HashMap<String,String>> 股票信息的哈希表
+	 */
 	public HashMap<String,HashMap<String,String>> getAllStock(){
 		if(need_init){
 			return initData_Byrow();
@@ -69,10 +81,17 @@ public class StockDataHelperImp implements IStockDataHelper {
 			return initData_Byproperties();
 		}
 	}
+	
+	/**
+	 * 软件初次启动时，读取数据的同时生成配置文件
+	 * @return HashMap<String,HashMap<String,String>> 股票信息的哈希表
+	 */
 	private HashMap<String,HashMap<String,String>> initData_Byrow(){
 		try
 		{
 			System.out.println("initData_Byproperties");
+			
+			//创建变量
 			out_file = new FileOutputStream("data/stock/filelog.properties");
 			out_rank = new FileOutputStream("data/stock/stockranklog.properties");
 			FileReader fr=new FileReader(stockdata);
@@ -84,6 +103,8 @@ public class StockDataHelperImp implements IStockDataHelper {
 			int i=2;
 			int j=2;
 			int now=1;
+			
+			//开始读取数据以及生成配置文件
 			while(br.ready()){
 				String out=br.readLine();
 				String[] output=out.split("\t");
@@ -108,6 +129,8 @@ public class StockDataHelperImp implements IStockDataHelper {
 					result.put(cal, map);
 				}
 			}
+			
+			//导出配置文件
 			prop_file.setProperty(printnumber,i+","+(j-1));
 			prop_file.store(out_file, "date汇总");
 			prop_rank.setProperty(String.valueOf(now), printnumber);
@@ -121,11 +144,19 @@ public class StockDataHelperImp implements IStockDataHelper {
 			return null;
 		}
 	}
+	
+	/**
+	 * 软件不是初次启动时，根据配置文件读取数据
+	 * @return HashMap<String,HashMap<String,String>> 股票信息的哈希表
+	 */
 	private HashMap<String,HashMap<String,String>> initData_Byproperties(){
 		try{
+			//创建变量
 			HashMap<String,HashMap<String,String>> result=new HashMap<String,HashMap<String,String>>();
 			FileReader fr=new FileReader(stockdata);
 			BufferedReader br=new BufferedReader(fr);
+			
+			//导入配置文件
 			Properties prop=new Properties();
 			BufferedInputStream inputStream = new BufferedInputStream(
 					new FileInputStream("data/stock/filelog.properties"));
@@ -136,6 +167,8 @@ public class StockDataHelperImp implements IStockDataHelper {
 					new FileInputStream("data/stock/stockranklog.properties"));
 			prop1.load(inputStream1);
 			inputStream1.close();
+			
+			//读取数据的准备工作
 			br.readLine();
 			int now_row=2;
 			String now_rank="1";
@@ -150,6 +183,8 @@ public class StockDataHelperImp implements IStockDataHelper {
 			String cal="";
 			int big_number=2;
 			int small_number=2;
+			
+			//开始根据配置文件读取数据
 			while(br.ready()){
 				str=br.readLine();
 				if(now_row>big_number||now_row==2){

@@ -1,16 +1,25 @@
 package data.service;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.Scanner;
 
 import data.serviceimpl.DataInterfaceImpl;
+import data.serviceimpl.StockDataController;
+import po.SingleStockInfoPO;
 
 public class DataInterface_Driver {
 	public static void main(String[] args){
-		
-		
 		Scanner in=new Scanner(System.in);
 		long start_time=System.currentTimeMillis();
 		System.out.println(start_time);	
@@ -34,7 +43,17 @@ public class DataInterface_Driver {
 					e.printStackTrace();
 				}
 				long start_time1=System.currentTimeMillis();
-				data.getSingleStockInfo(three[0],cal1,cal2);
+				int i=0;
+				if(data.getSingleStockInfo(three[0],cal1,cal2)==null){
+					System.out.println("bucunzai");
+				}
+				else{
+				for(SingleStockInfoPO po:data.getSingleStockInfo(three[0],cal1,cal2)){
+					i++;
+					System.out.println(po.toString());
+				}
+				}
+				System.out.println(i);
 				long end_time1=System.currentTimeMillis();
 				System.out.println(end_time1);
 				System.out.println("runtime: "+(-start_time1+end_time1)+" ms");
@@ -48,6 +67,7 @@ public class DataInterface_Driver {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				System.out.println(sdf.format(cal.getTime()));
 				long start_time1=System.currentTimeMillis();
 				data.getMarketByDate(cal);
 				long end_time1=System.currentTimeMillis();

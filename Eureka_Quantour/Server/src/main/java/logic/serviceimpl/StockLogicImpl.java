@@ -6,7 +6,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import data.service.IDataInterface;
+import data.serviceimpl.DataInterfaceImpl;
 import logic.service.StockLogicInterface;
+import po.SingleStockInfoPO;
 import vo.ComparedInfoVO;
 import vo.EMAInfoVO;
 import vo.MarketInfoVO;
@@ -20,11 +23,13 @@ import vo.SingleStockInfoVO;
 public class StockLogicImpl implements StockLogicInterface{
 
 	private StockLogicImplStub slis = new StockLogicImplStub();   
+//	private IDataInterface idi = new DataInterfaceImpl();
 	
 	@Override
 	public List<SingleStockInfoVO> getSingleStockInfoByTime( String stockCode, Calendar begin, Calendar end )throws RemoteException{
 		// TODO Auto-generated method stub
-		return null;
+//		return new SingleStockInfoVO().POToVO( idi.getSingleStockInfo(stockCode, begin, end) );
+		return slis.getSingleStockInfo("1", begin, end);
 	}
 
 	@Override
@@ -32,7 +37,8 @@ public class StockLogicImpl implements StockLogicInterface{
 		// TODO Auto-generated method stub
 		int methods[] = { 5, 10, 20, 30, 60 };
 		// invoke stub to get data
-		List<SingleStockInfoVO> lsti1 = slis.getSingleStockInfo(stockCode, begin, end);
+//		List<SingleStockInfoVO> lssi = new SingleStockInfoVO().POToVO( idi.getSingleStockInfo(stockCode, begin, end) );
+		List<SingleStockInfoVO> lssi = slis.getSingleStockInfo("1", begin, end);
 		List<List<EMAInfoVO>> llemai = new ArrayList<List<EMAInfoVO>>();
 		SingleStockInfoVO ssi = new SingleStockInfoVO();
 		
@@ -43,8 +49,8 @@ public class StockLogicImpl implements StockLogicInterface{
 			List<EMAInfoVO> lemai = new ArrayList<EMAInfoVO>();
 
 			double tempDouble = 0.0;
-			for( int i=0; i<lsti1.size(); i++){
-				ssi = lsti1.get(i);
+			for( int i=0; i<lssi.size(); i++){
+				ssi = lssi.get(i);
 				close = ssi.getClose();
 				// 数据丢失
 				if( close==0 ){
@@ -59,7 +65,7 @@ public class StockLogicImpl implements StockLogicInterface{
 				// 处理需要加权平均的数据
 				else{
 					tempDouble += close;
-					lemai.add( new EMAInfoVO(ssi.getDate(), formatDouble(tempDouble/method)) );
+					lemai.add( new EMAInfoVO(ssi.getDate(), formatDoubleSaveTwo(tempDouble/method)) );
 					tempDouble -= lemai.get(i-method+1).getEMA();
 				}
 			}
@@ -72,8 +78,10 @@ public class StockLogicImpl implements StockLogicInterface{
 	public ComparedInfoVO getComparedInfo(String stockCodeA, String stockCodeB, Calendar begin, Calendar end)throws RemoteException {
 		// TODO Auto-generated method stub
 		// invoke stub to get data
-		List<SingleStockInfoVO> lstiA = slis.getSingleStockInfo(stockCodeA, begin, end);
-		List<SingleStockInfoVO> lstiB = slis.getSingleStockInfo(stockCodeB, begin, end);
+//		List<SingleStockInfoVO> lstiA = new SingleStockInfoVO().POToVO( idi.getSingleStockInfo(stockCodeA, begin, end) );
+//		List<SingleStockInfoVO> lstiB = new SingleStockInfoVO().POToVO( idi.getSingleStockInfo(stockCodeB, begin, end) );
+		List<SingleStockInfoVO> lstiA = slis.getSingleStockInfo("1", begin, end);
+		List<SingleStockInfoVO> lstiB = slis.getSingleStockInfo("151", begin, end);
 		SingleStockInfoVO ssiA = new SingleStockInfoVO();
 		SingleStockInfoVO ssiB = new SingleStockInfoVO();
 		int tempInt = lstiA.size();
@@ -82,16 +90,18 @@ public class StockLogicImpl implements StockLogicInterface{
 		// 获取前一天的数据
 		double closeA1 = 0.0, closeB1 = 0.0;
 		Calendar tempCal = begin;
-		int getCount = 5;
-		for( int i=0; i<getCount; i++ ){
-			tempCal = calendarAdvance(tempCal);
-			if( ssiA.getCode().equals("") )
-				ssiA = getSingleStockInfoByTime(stockCodeA, tempCal, tempCal).get(0);
-			if( ssiB.getCode().equals("") )
-				ssiB = getSingleStockInfoByTime(stockCodeB, tempCal, tempCal).get(0);
-			if( !ssiA.getCode().equals("") && !ssiB.getCode().equals(""))
-				break;
-		}
+//		int getCount = 5;
+//		for( int i=0; i<getCount; i++ ){
+//			tempCal = calendarAdvance(tempCal);
+//			if( ssiA.getCode().equals("") )
+//				ssiA = getSingleStockInfoByTime(stockCodeA, tempCal, tempCal).get(0);
+//			if( ssiB.getCode().equals("") )
+//				ssiB = getSingleStockInfoByTime(stockCodeB, tempCal, tempCal).get(0);
+//			if( !ssiA.getCode().equals("") && !ssiB.getCode().equals(""))
+//				break;
+//		}
+		ssiA = slis.getSingleStockInfo("1", tempCal);
+		ssiB = slis.getSingleStockInfo("151", tempCal);
 		closeA1 = ssiA.getClose();
 		closeB1 = ssiB.getClose();
 		
@@ -109,7 +119,8 @@ public class StockLogicImpl implements StockLogicInterface{
 			while( lstiA.get(iClose).getClose()==0 && iClose>-1 )
 				iClose--;
 			dClose = lstiA.get(iClose).getClose();
-			ci.setRODA( formatDouble( dClose-dOpen ) / dOpen );
+			double result = ( dClose-dOpen ) / dOpen;
+			ci.setRODA( formatDoubleSaveFive( result ) );
 		}
 		iOpen = 0; iClose = tempInt-1;
 		dOpen =0.0; dClose = 0.0;
@@ -120,10 +131,11 @@ public class StockLogicImpl implements StockLogicInterface{
 			while( lstiB.get(iClose).getClose()==0 && iClose>-1 )
 				iClose--;
 			dClose = lstiB.get(iClose).getClose();
-			ci.setRODB( formatDouble( dClose-dOpen ) / dOpen );
+			double result = ( dClose-dOpen ) / dOpen;
+			ci.setRODB( formatDoubleSaveFive( result ) );
 		}
 		
-		double maxA = 0, minA = 0, maxB = 0, minB = 0;
+		double maxA = 0, minA = 1000000.0, maxB = 0, minB = 1000000.0;
 		double closeA2 = 0.0, closeB2 = 0.0;
 		double[] logYieldA = new double[tempInt];
 		double[] logYieldB = new double[tempInt];
@@ -150,16 +162,17 @@ public class StockLogicImpl implements StockLogicInterface{
 			
 			closeA2 = ssiA.getClose();
 			if( closeA1!=0 )
-				logYieldA[i] = formatDouble( Math.log(closeA2/closeA1) );
+				logYieldA[i] = formatDoubleSaveFive( Math.log(closeA2/closeA1) );
 			closeA1 = closeA2;
 			closeB2 = ssiB.getClose();
 			if( closeB1!=0 )
-				logYieldB[i] = formatDouble( Math.log(closeB2/closeB1) );
+				logYieldB[i] = formatDoubleSaveFive( Math.log(closeB2/closeB1) );
 			closeB1 = closeB2;
 		}
 		
-		ci.setCloseA(closeA);
-		ci.setCloseB(closeB);
+		ci.setLowA(minA); ci.setLowB(minB);
+		ci.setHighA(maxA); ci.setHighB(maxB);
+		ci.setCloseA(closeA); ci.setCloseB(closeB);
 		ci.setLogYieldA(logYieldA);
 		ci.setLogYieldB(logYieldB);
 		ci.setLogYieldVarianceA(calVariance(logYieldA));
@@ -172,7 +185,8 @@ public class StockLogicImpl implements StockLogicInterface{
 	public MarketInfoVO getMarketInfo(Calendar date)throws RemoteException {
 		// TODO Auto-generated method stub
 		MarketInfoVO mi = new MarketInfoVO();
-		List<SingleStockInfoVO> lsti = slis.getMarketInfo(date);
+//		List<SingleStockInfoVO> lsti = new SingleStockInfoVO().POToVO( idi.getMarketByDate(date) );
+		List<SingleStockInfoVO> lsti = slis.getSingleStockInfo("1", date, date);
 		SingleStockInfoVO ssi = new SingleStockInfoVO();
 		
 		// 用来存储上一个交易日的数据
@@ -193,21 +207,22 @@ public class StockLogicImpl implements StockLogicInterface{
 			double close = ssi.getClose();
 			double open = ssi.getOpen();
 			
-			volume += ssi.getVolume();
-			if(open>0){
+			if( ssi.getVolume() > 0 )
+				volume += ssi.getVolume();
+			if( open>0 && close>0 ){
 				if( ifDoubleEqual((ssi.getHigh()-open)/open,  0.10) )
 					riseStop++;
 				if( ifDoubleEqual((open-ssi.getLow())/open,  0.10) )
 					dropStop++;
-				if( (close-open)/open > 0.05 )
+				if( (close-open)/open > 0.05 && close!=0 && open!=0 )
 					riseEFP++;
-				if( (open-close)/open > 0.05 )
+				if( (open-close)/open > 0.05 && close!=0 && open!=0 )
 					stopEFP++;
+				if( (open-close) > (0.05*ssiTemp.getClose()) )
+					OMCEFP++;
+				else if( (open-close) < (-0.05*ssiTemp.getClose()) )
+					OMCLTFP++;
 			}
-			if( (open-close) > (0.05*ssiTemp.getClose()) )
-				OMCEFP++;
-			else if( (open-close) < (-0.05*ssiTemp.getClose()) )
-				OMCLTFP++;
 		}
 		
 		mi.setVolume(volume);
@@ -221,9 +236,14 @@ public class StockLogicImpl implements StockLogicInterface{
 		return mi;
 	}
 
-	private double formatDouble(double d){
+	private double formatDoubleSaveTwo(double d){
 		DecimalFormat df = new DecimalFormat("#0.00");
-		return Double.parseDouble(df.format(d));
+		return Double.parseDouble( df.format(d) );
+	}
+	
+	private double formatDoubleSaveFive(double d){
+		DecimalFormat df = new DecimalFormat("#0.00000");
+		return Double.parseDouble( df.format(d) );
 	}
 	
 	private double calVariance(double[] num){
@@ -237,12 +257,12 @@ public class StockLogicImpl implements StockLogicInterface{
 		}
 		tempD2 = Math.pow(tempD2, 2);
 		result = (tempD1 - tempD2/length) / length;
-		return formatDouble( result );
+		return formatDoubleSaveFive( result );
 	}
 	
 	public boolean ifDoubleEqual(double d1, double d2){
-		String s1 = String.valueOf(formatDouble(d1));
-		String s2 = String.valueOf(formatDouble(d2));
+		String s1 = String.valueOf(formatDoubleSaveTwo(d1));
+		String s2 = String.valueOf(formatDoubleSaveTwo(d2));
 		return s1.equals(s2);
 	}
 	

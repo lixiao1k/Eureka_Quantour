@@ -1,16 +1,10 @@
 package data.datahelperimpl;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
@@ -143,18 +137,23 @@ public class UserDataHelperImpl implements IUserDataHelper {
 		}
 		String pw=prop_userinfo.getProperty(username);
 		if(password.equals(pw)){
-			if(judge_status(username)){
+//			if(judge_status(username)){
 				change_status(username);
 				return true;
-			}
-			else{
-				return false;
-			}
+//			}
+//			else{
+//				return false;
+//			}
 		}
 		else{
 			return false;
 		}
 	} 
+	
+	/**
+	 * 当用户登录后，将用户状态设置为已登录
+	 * @param username
+	 */
 	private void change_status(String username){
 		try {
 			FileOutputStream out_status = new FileOutputStream("data/user/userStatus.properties");
@@ -170,15 +169,20 @@ public class UserDataHelperImpl implements IUserDataHelper {
 	 * @param String username,用户名称
 	 * @return boolean,密码正确则返回true，不正确则返回false。
 	 */
-	private boolean judge_status(String username) {
-		String pw=prop_userstatus.getProperty(username, null);
-		if(pw.equals("0")){
-			return true;
-		}
-		else{
-			return false;
-		}
-	}
+//	private boolean judge_status(String username) {
+//		String pw=prop_userstatus.getProperty(username, null);
+//		if(pw.equals("0")){
+//			return true;
+//		}
+//		else{
+//			return false;
+//		}
+//	}
+	
+	/**
+	 * 当用户登出后，将用户状态设置为未登录
+	 * @param username 用户名
+	 */
 	public void logout(String username){
 		try {
 			FileOutputStream out_status = new FileOutputStream("data/user/userStatus.properties");
@@ -194,6 +198,10 @@ public class UserDataHelperImpl implements IUserDataHelper {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * 当启动服务器时，将所有用户状态更新为未登录
+	 */
 	public void init_status() {
 		try {
 			userstatus_in = new BufferedInputStream(
