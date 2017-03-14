@@ -25,9 +25,13 @@ public class StockLogicImplTest extends TestCase {
 	}
 	
 	public void testGetEMAInfo() throws RemoteException{
-		List<EMAInfoVO> listA = SLI.getEMAInfo("1", Calendar.getInstance(), Calendar.getInstance()).get(0);
-		List<EMAInfoVO> listB = SLI.getEMAInfo("1", Calendar.getInstance(), Calendar.getInstance()).get(1);
-		List<EMAInfoVO> listC = SLI.getEMAInfo("1", Calendar.getInstance(), Calendar.getInstance()).get(2);
+		Calendar begin = Calendar.getInstance();
+		Calendar end = Calendar.getInstance();
+		begin.set(2014, 3, 16);
+		end.set(2014, 3, 29);
+		List<EMAInfoVO> listA = SLI.getEMAInfo("1", begin, end).get(0);
+		List<EMAInfoVO> listB = SLI.getEMAInfo("1", begin, end).get(1);
+		List<EMAInfoVO> listC = SLI.getEMAInfo("1", begin, end).get(2);
 		
 		List<Double> listSave = new ArrayList<Double>();
 		List<Double> listRight = new ArrayList<Double>();
@@ -69,7 +73,11 @@ public class StockLogicImplTest extends TestCase {
 	 * @time: 2017年3月13日
 	 */
 	public void testGetComparedInfo()throws RemoteException{
-		ComparedInfoVO ci = SLI.getComparedInfo("1", "151", Calendar.getInstance(), Calendar.getInstance());
+		Calendar begin = Calendar.getInstance();
+		Calendar end = Calendar.getInstance();
+		begin.set(2014, 3, 16);
+		end.set(2014, 3, 29);
+		ComparedInfoVO ci = SLI.getComparedInfo("1", "151", begin, end);
 		Assert.assertEquals( ci.getNameA(), "深发展A" );
 		Assert.assertEquals( ci.getNameB(), "中成股份" );
 		Assert.assertEquals( ci.getCodeA(), "1" );
@@ -90,9 +98,9 @@ public class StockLogicImplTest extends TestCase {
 		Assert.assertTrue( ifDoubleEqual(ci.getLogYieldB(), dLogYieldB) );
 	}
 	
-	public void testGetMarketInfo()throws RemoteException{
-		
-	}
+//	public void testGetMarketInfo()throws RemoteException{
+//		
+//	}
 	
 	public void testCalendarAdvance(){
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -137,51 +145,56 @@ public class StockLogicImplTest extends TestCase {
 		}
 		return true;
 	}
-	/**
-	 * 
-	 * @Description: to compare if two ComparedInfoVOs are same
-	 * @author: hzp
-	 * @time: 2017年3月12日
-	 * @return: boolean
-	 */
-	private boolean ifComparedInfoVOEqual(ComparedInfoVO ciA, ComparedInfoVO ciB){
-		if( !ciA.getNameA().equals( ciB.getNameA() ) 
-				|| !ciA.getNameB().equals( ciB.getNameB() )
-				|| !ciA.getCodeA().equals( ciB.getCodeA() ) 
-				|| !ciA.getCodeB().equals( ciB.getCodeB() )
-				|| !ifDoubleEqual( ciA.getLowA(), ciB.getLowA() )
-				|| !ifDoubleEqual( ciA.getLowB(), ciB.getLowB() )
-				|| !ifDoubleEqual( ciA.getHighA(), ciB.getHighA() )
-				|| !ifDoubleEqual( ciA.getHighB(), ciB.getHighB() )
-				|| !ifDoubleEqual( ciA.getRODA(), ciB.getRODA() )
-				|| !ifDoubleEqual( ciA.getRODB(), ciB.getRODB() )
-				|| !ifDoubleEqual( ciA.getLogYieldVarianceA(), ciB.getLogYieldVarianceA() )
-				|| !ifDoubleEqual( ciA.getLogYieldVarianceB(), ciB.getLogYieldVarianceB() )
-				)
-			return false;
-		else{
-			double ACloseA[] = ciA.getCloseA();
-			double ACloseB[] = ciA.getCloseB();
-			double BCloseA[] = ciB.getCloseA();
-			double BCloseB[] = ciB.getCloseB();
-			for(int i=0; i<ACloseA.length; i++){
-				if( !ifDoubleEqual( ACloseA[i], BCloseA[i] ) 
-						|| !ifDoubleEqual( ACloseB[i], BCloseB[i] )
-						)
-					return false;
-			}
-			return true;
-		}
-	}
+//	/**
+//	 * 
+//	 * @Description: to compare if two ComparedInfoVOs are same
+//	 * @author: hzp
+//	 * @time: 2017年3月12日
+//	 * @return: boolean
+//	 */
+//	private boolean ifComparedInfoVOEqual(ComparedInfoVO ciA, ComparedInfoVO ciB){
+//		if( !ciA.getNameA().equals( ciB.getNameA() ) 
+//				|| !ciA.getNameB().equals( ciB.getNameB() )
+//				|| !ciA.getCodeA().equals( ciB.getCodeA() ) 
+//				|| !ciA.getCodeB().equals( ciB.getCodeB() )
+//				|| !ifDoubleEqual( ciA.getLowA(), ciB.getLowA() )
+//				|| !ifDoubleEqual( ciA.getLowB(), ciB.getLowB() )
+//				|| !ifDoubleEqual( ciA.getHighA(), ciB.getHighA() )
+//				|| !ifDoubleEqual( ciA.getHighB(), ciB.getHighB() )
+//				|| !ifDoubleEqual( ciA.getRODA(), ciB.getRODA() )
+//				|| !ifDoubleEqual( ciA.getRODB(), ciB.getRODB() )
+//				|| !ifDoubleEqual( ciA.getLogYieldVarianceA(), ciB.getLogYieldVarianceA() )
+//				|| !ifDoubleEqual( ciA.getLogYieldVarianceB(), ciB.getLogYieldVarianceB() )
+//				)
+//			return false;
+//		else{
+//			double ACloseA[] = ciA.getCloseA();
+//			double ACloseB[] = ciA.getCloseB();
+//			double BCloseA[] = ciB.getCloseA();
+//			double BCloseB[] = ciB.getCloseB();
+//			for(int i=0; i<ACloseA.length; i++){
+//				if( !ifDoubleEqual( ACloseA[i], BCloseA[i] ) 
+//						|| !ifDoubleEqual( ACloseB[i], BCloseB[i] )
+//						)
+//					return false;
+//			}
+//			return true;
+//		}
+//	}
 	
 	private boolean ifDoubleEqual(double d1, double d2){
-		String s1 = String.valueOf(formatDouble(d1));
-		String s2 = String.valueOf(formatDouble(d2));
+		String s1 = String.valueOf(formatDoubleTwo(d1));
+		String s2 = String.valueOf(formatDoubleTwo(d2));
 		return s1.equals(s2);
 	}
 	
-	private double formatDouble(double d){
+	private double formatDoubleTwo(double d){
 		DecimalFormat df = new DecimalFormat("#0.00");
+		return Double.parseDouble(df.format(d));
+	}
+	
+	private double formatDoubleFive(double d){
+		DecimalFormat df = new DecimalFormat("#0.00000");
 		return Double.parseDouble(df.format(d));
 	}
 	
@@ -189,8 +202,8 @@ public class StockLogicImplTest extends TestCase {
 		String s1 = "";
 		String s2 = "";
 		for( int i=0; i<d1.length; i++){
-			s1 = String.valueOf( formatDouble(d1[i]) );
-			s2 = String.valueOf( formatDouble(d2[i]) );
+			s1 = String.valueOf( formatDoubleTwo(d1[i]) );
+			s2 = String.valueOf( formatDoubleTwo(d2[i]) );
 			if( !s1.equals(s2) )
 				return false;
 		}

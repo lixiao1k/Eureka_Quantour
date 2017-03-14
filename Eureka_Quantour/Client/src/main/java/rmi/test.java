@@ -29,28 +29,33 @@ public class test {
 			e.printStackTrace();
 		}
 //		List<EMAInfoVO> listA = new ArrayList<EMAInfoVO>();
-//		List<SingleStockInfoVO> listA = new ArrayList<SingleStockInfoVO>();
-		MarketInfoVO listA = new MarketInfoVO();
-//		Calendar begin = Calendar.getInstance();
-//		Calendar end = Calendar.getInstance();
-		Calendar begin1 = Calendar.getInstance();
-		Calendar end1 = Calendar.getInstance();
+		List<SingleStockInfoVO> listA = new ArrayList<SingleStockInfoVO>();
+		MarketInfoVO listB = new MarketInfoVO();
+		Calendar begin = Calendar.getInstance();
+		Calendar end = Calendar.getInstance();
+//		Calendar begin1 = Calendar.getInstance();
+//		Calendar end1 = Calendar.getInstance();
 		SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yy");
-//		SimpleDateFormat sdf1=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		try {
-			begin1.setTime(sdf.parse("4/1/14"));
-			end1.setTime(sdf.parse("4/29/14"));
-		} catch (ParseException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		SimpleDateFormat sdf1=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+//		try {
+//			begin1.setTime(sdf.parse("4/1/14"));
+//			end1.setTime(sdf.parse("4/29/14"));
+//		} catch (ParseException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
+		
+		begin.set(2014, 3, 1, 0, 0, 0);
+		end.set(2014, 3, 29, 0, 0, 0);
+		
 		try{
-			listA = RemoteHelper.getInstance().getStockLogic().getMarketInfo(end1);
+//			listA = RemoteHelper.getInstance().getStockLogic().getSingleStockInfoByTime("1", begin, end);
+			listB = RemoteHelper.getInstance().getStockLogic().getMarketInfo(begin);
 		}catch(RemoteException e){
 			e.printStackTrace();
 		}
-		System.out.println(listA.getVolume()+" "+listA.getNumOfDropEFP()+" "+
-				listA.getNumOfDropStop()+" "+listA.getNumOfOMCEFP());
+		System.out.println(listB.getVolume()+" "+listB.getNumOfDropEFP()+" "+
+				listB.getNumOfDropStop()+" "+listB.getNumOfOMCEFP());
 //		if(	listA!=null	)
 //			for(int i=0;i<listA.size();i++){
 //				System.out.println(sdf.format(listA.get(i).getDate().getTime())+" "+listA.get(i).getHigh()+" "+listA.get(i).getVolume());
@@ -58,8 +63,7 @@ public class test {
 //		else{
 //			System.out.println("listA is null");
 //		}
-//		begin.set(2014, 3, 1, 0, 0, 0);
-//		end.set(2014, 3, 29, 0, 0, 0);
+		
 //		System.out.println(sdf1.format(begin.getTime())+" "+sdf1.format(end.getTime()));
 //		System.out.println(begin);
 //		System.out.println(begin1);

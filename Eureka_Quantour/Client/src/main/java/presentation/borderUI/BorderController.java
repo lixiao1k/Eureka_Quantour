@@ -291,8 +291,8 @@ public class BorderController implements Initializable {
 					ObservableList<Node> nodeList = borderPane.getChildren();
 					nodeList.clear();
 					borderPane.setTop(getMarketThermometerResultVBox(marketInfoVO.getVolume(), marketInfoVO.getNumOfRiseStop()
-							,marketInfoVO.getNumOfDropStop(),marketInfoVO.getNumOfRiseLTFP(),marketInfoVO.getNumOfDropLTFP(), 
-							marketInfoVO.getNumOfOMCLTFP(), marketInfoVO.getNumOfOMCSTFP()));
+							,marketInfoVO.getNumOfDropStop(),marketInfoVO.getNumOfRiseEFP(),marketInfoVO.getNumOfDropEFP(), 
+							marketInfoVO.getNumOfOMCEFP(), marketInfoVO.getNumOfOMCLTFP()));
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -338,7 +338,7 @@ public class BorderController implements Initializable {
 	 * @param A  A指数，开盘‐收盘大于5%*上一个交易日收盘价的股票个数
 	 * @param B  B指数，开盘‐收盘小于-5%*上一个交易日收盘价的股票个数
 	 */
-	private VBox getMarketThermometerResultVBox(int sumOfVolume,int numOfUp,int numOfDown,int numOfRateIncrease,int numOfRateDecrease,
+	private VBox getMarketThermometerResultVBox(Long sumOfVolume,int numOfUp,int numOfDown,int numOfRateIncrease,int numOfRateDecrease,
 			int A,int B){
 		
 		VBox result = new VBox();
@@ -346,7 +346,7 @@ public class BorderController implements Initializable {
 		result.setSpacing(5);
 		HBox hb1 = setHBoxStyle(new Insets(4,4,4,4),10);
 		HBox hb2 = setHBoxStyle(new Insets(4,4,4,4),10);
-		Label sumOfVolumeLabel = new Label("当日总交易量: "+Integer.toString(sumOfVolume));
+		Label sumOfVolumeLabel = new Label("当日总交易量: "+Long.toString(sumOfVolume));
 		Label numOfUpLabel = new Label("涨停股票数: "+Integer.toString(numOfUp));
 		Label numOfDownLabel = new Label("跌停股票数: "+Integer.toString(numOfDown));
 		Label numOfRateIncreaseLabel = new Label("涨幅超5%股票数: "+Integer.toString(numOfRateIncrease));

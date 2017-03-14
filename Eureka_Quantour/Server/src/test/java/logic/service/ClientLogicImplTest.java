@@ -13,7 +13,7 @@ public class ClientLogicImplTest extends TestCase {
 		CLI = new ClientLogicImpl();
 	}
     
-    public void testsignUp(){
+//    public void testsignUp(){
 //        assertTrue();
-    }
+//    }
 }

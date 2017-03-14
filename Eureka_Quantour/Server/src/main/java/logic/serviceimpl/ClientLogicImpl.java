@@ -1,5 +1,7 @@
 package logic.serviceimpl;
 
+import data.service.IDataInterface;
+import data.serviceimpl.DataInterfaceImpl;
 import logic.service.ClientLogicInterface;
 
 /**
@@ -10,16 +12,17 @@ import logic.service.ClientLogicInterface;
  */
 public class ClientLogicImpl implements ClientLogicInterface{
 
+	private IDataInterface cli = new DataInterfaceImpl();
 	@Override
 	public boolean signUp(String username, String password) {
 		// TODO Auto-generated method stub
-		return false;
+		return cli.signUpCheck(username, password);
 	}
 
 	@Override
 	public boolean signIn(String username, String password) {
 		// TODO Auto-generated method stub
-		return false;
+		return cli.signInCheck(username, password);
 	}
 
 }
