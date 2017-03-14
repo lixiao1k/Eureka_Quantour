@@ -2,6 +2,7 @@ package logic.serviceimpl;
 
 import java.rmi.RemoteException;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -24,10 +25,12 @@ public class StockLogicImpl implements StockLogicInterface{
 
 //	private StockLogicImplStub slis = new StockLogicImplStub();   
 	private IDataInterface idi = new DataInterfaceImpl();
+	private SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yy");
 	
 	@Override
 	public List<SingleStockInfoVO> getSingleStockInfoByTime( String stockCode, Calendar begin, Calendar end )throws RemoteException{
 		// TODO Auto-generated method stub
+		Calendar beginTemp = Calendar.getInstance();
 		return new SingleStockInfoPO().POToVO( idi.getSingleStockInfo(stockCode, begin, end) );
 //		return slis.getSingleStockInfo("1", begin, end);
 	}
@@ -199,7 +202,7 @@ public class StockLogicImpl implements StockLogicInterface{
 				break;
 		}
 		
-		int volume = 0;
+		long volume = 0;
 		int riseStop = 0, dropStop = 0, riseEFP = 0, stopEFP = 0;
 		int OMCEFP = 0, OMCLTFP = 0;
 		for( int i=0; i<lsti.size(); i++ ){

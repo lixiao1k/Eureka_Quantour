@@ -21,7 +21,7 @@ public class SingleStockInfoPO
 	private double close;//这支股票当天的收盘指数
 	private double high;//这支股票当天的最高价格
 	private double low;//这支股票当天的最低价格	
-	private int volume;//这支股票当天的交易量
+	private long volume;//这支股票当天的交易量
 	private double adjclose;//这支股票的复权收盘指数
 	private String market;//这支股票所处的市场
 	private String str;
@@ -71,7 +71,7 @@ public class SingleStockInfoPO
 		setClose(Double.parseDouble(info[5]));
 		setHigh(Double.parseDouble(info[3]));
 		setLow(Double.parseDouble(info[4]));
-		setVolume(Integer.parseInt(info[6]));
+		setVolume(Long.parseLong(info[6]));
 		setAdjclose(Double.parseDouble(info[7]));
 		setMarket(info[10]);
 		setStr(stockinfo);
@@ -137,7 +137,7 @@ public class SingleStockInfoPO
 	 * 获得SingleStockInfoPO中的股票当天交易量
 	 * @return the volume
 	 */
-	public int getVolume() {
+	public long getVolume() {
 		return volume;
 	}
 	
@@ -215,7 +215,7 @@ public class SingleStockInfoPO
 	 * 设置SingleStockInfoPO中的股票当天交易量
 	 * @param volume the volume to set
 	 */
-	private void setVolume(int _volume) {
+	private void setVolume(long _volume) {
 		volume = _volume;
 	}
 	
