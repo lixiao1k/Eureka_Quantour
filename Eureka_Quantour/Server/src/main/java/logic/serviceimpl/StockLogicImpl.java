@@ -22,14 +22,14 @@ import vo.SingleStockInfoVO;
  */
 public class StockLogicImpl implements StockLogicInterface{
 
-	private StockLogicImplStub slis = new StockLogicImplStub();   
-//	private IDataInterface idi = new DataInterfaceImpl();
+//	private StockLogicImplStub slis = new StockLogicImplStub();   
+	private IDataInterface idi = new DataInterfaceImpl();
 	
 	@Override
 	public List<SingleStockInfoVO> getSingleStockInfoByTime( String stockCode, Calendar begin, Calendar end )throws RemoteException{
 		// TODO Auto-generated method stub
-//		return new SingleStockInfoVO().POToVO( idi.getSingleStockInfo(stockCode, begin, end) );
-		return slis.getSingleStockInfo("1", begin, end);
+		return new SingleStockInfoPO().POToVO( idi.getSingleStockInfo(stockCode, begin, end) );
+//		return slis.getSingleStockInfo("1", begin, end);
 	}
 
 	@Override
@@ -37,8 +37,8 @@ public class StockLogicImpl implements StockLogicInterface{
 		// TODO Auto-generated method stub
 		int methods[] = { 5, 10, 20, 30, 60 };
 		// invoke stub to get data
-//		List<SingleStockInfoVO> lssi = new SingleStockInfoVO().POToVO( idi.getSingleStockInfo(stockCode, begin, end) );
-		List<SingleStockInfoVO> lssi = slis.getSingleStockInfo("1", begin, end);
+		List<SingleStockInfoVO> lssi = new SingleStockInfoPO().POToVO( idi.getSingleStockInfo(stockCode, begin, end) );
+//		List<SingleStockInfoVO> lssi = slis.getSingleStockInfo("1", begin, end);
 		List<List<EMAInfoVO>> llemai = new ArrayList<List<EMAInfoVO>>();
 		SingleStockInfoVO ssi = new SingleStockInfoVO();
 		
@@ -78,10 +78,10 @@ public class StockLogicImpl implements StockLogicInterface{
 	public ComparedInfoVO getComparedInfo(String stockCodeA, String stockCodeB, Calendar begin, Calendar end)throws RemoteException {
 		// TODO Auto-generated method stub
 		// invoke stub to get data
-//		List<SingleStockInfoVO> lstiA = new SingleStockInfoVO().POToVO( idi.getSingleStockInfo(stockCodeA, begin, end) );
-//		List<SingleStockInfoVO> lstiB = new SingleStockInfoVO().POToVO( idi.getSingleStockInfo(stockCodeB, begin, end) );
-		List<SingleStockInfoVO> lstiA = slis.getSingleStockInfo("1", begin, end);
-		List<SingleStockInfoVO> lstiB = slis.getSingleStockInfo("151", begin, end);
+		List<SingleStockInfoVO> lstiA = new SingleStockInfoPO().POToVO( idi.getSingleStockInfo(stockCodeA, begin, end) );
+		List<SingleStockInfoVO> lstiB = new SingleStockInfoPO().POToVO( idi.getSingleStockInfo(stockCodeB, begin, end) );
+//		List<SingleStockInfoVO> lstiA = slis.getSingleStockInfo("1", begin, end);
+//		List<SingleStockInfoVO> lstiB = slis.getSingleStockInfo("151", begin, end);
 		SingleStockInfoVO ssiA = new SingleStockInfoVO();
 		SingleStockInfoVO ssiB = new SingleStockInfoVO();
 		int tempInt = lstiA.size();
@@ -90,18 +90,18 @@ public class StockLogicImpl implements StockLogicInterface{
 		// 获取前一天的数据
 		double closeA1 = 0.0, closeB1 = 0.0;
 		Calendar tempCal = begin;
-//		int getCount = 5;
-//		for( int i=0; i<getCount; i++ ){
-//			tempCal = calendarAdvance(tempCal);
-//			if( ssiA.getCode().equals("") )
-//				ssiA = getSingleStockInfoByTime(stockCodeA, tempCal, tempCal).get(0);
-//			if( ssiB.getCode().equals("") )
-//				ssiB = getSingleStockInfoByTime(stockCodeB, tempCal, tempCal).get(0);
-//			if( !ssiA.getCode().equals("") && !ssiB.getCode().equals(""))
-//				break;
-//		}
-		ssiA = slis.getSingleStockInfo("1", tempCal);
-		ssiB = slis.getSingleStockInfo("151", tempCal);
+		int getCount = 5;
+		for( int i=0; i<getCount; i++ ){
+			tempCal = calendarAdvance(tempCal);
+			if( ssiA.getCode().equals("") )
+				ssiA = getSingleStockInfoByTime(stockCodeA, tempCal, tempCal).get(0);
+			if( ssiB.getCode().equals("") )
+				ssiB = getSingleStockInfoByTime(stockCodeB, tempCal, tempCal).get(0);
+			if( !ssiA.getCode().equals("") && !ssiB.getCode().equals(""))
+				break;
+		}
+//		ssiA = slis.getSingleStockInfo("1", tempCal);
+//		ssiB = slis.getSingleStockInfo("151", tempCal);
 		closeA1 = ssiA.getClose();
 		closeB1 = ssiB.getClose();
 		
@@ -185,8 +185,8 @@ public class StockLogicImpl implements StockLogicInterface{
 	public MarketInfoVO getMarketInfo(Calendar date)throws RemoteException {
 		// TODO Auto-generated method stub
 		MarketInfoVO mi = new MarketInfoVO();
-//		List<SingleStockInfoVO> lsti = new SingleStockInfoVO().POToVO( idi.getMarketByDate(date) );
-		List<SingleStockInfoVO> lsti = slis.getSingleStockInfo("1", date, date);
+		List<SingleStockInfoVO> lsti = new SingleStockInfoPO().POToVO( idi.getMarketByDate(date) );
+//		List<SingleStockInfoVO> lsti = slis.getSingleStockInfo("1", date, date);
 		SingleStockInfoVO ssi = new SingleStockInfoVO();
 		
 		// 用来存储上一个交易日的数据

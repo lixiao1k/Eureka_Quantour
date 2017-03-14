@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import vo.EMAInfoVO;
+import vo.SingleStockInfoVO;
 /**
  * 
  * @Description: TODO
@@ -24,15 +25,22 @@ public class test {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		List<EMAInfoVO> listA = new ArrayList<EMAInfoVO>();
+//		List<EMAInfoVO> listA = new ArrayList<EMAInfoVO>();
+		List<SingleStockInfoVO> listA = new ArrayList<SingleStockInfoVO>();
+		Calendar begin = Calendar.getInstance();
+		Calendar end = Calendar.getInstance();
+		begin.set(14, 3, 1, 0, 0, 0);
+		end.set(14, 3, 29, 0, 0, 0);
 		try{
-			listA = RemoteHelper.getInstance().getStockLogic().getEMAInfo("1", Calendar.getInstance(), Calendar.getInstance()).get(0);
+			listA = RemoteHelper.getInstance().getStockLogic().getSingleStockInfoByTime("1", begin, end);
 		}catch(RemoteException e){
 			e.printStackTrace();
 		}
 		List<Double> listSave = new ArrayList<Double>();
-		for(int i=0;i<listA.size();i++)
-			listSave.add(listA.get(i).getEMA());
+		for(int i=0;i<listA.size();i++){
+//			listSave.add(listA.get(i).getEMA());
+			listSave.add(listA.get(i).getLow());
+		}
 		for( int i=0; i<listSave.size(); i++ )
 			System.out.println(listSave.get(i));
 	}

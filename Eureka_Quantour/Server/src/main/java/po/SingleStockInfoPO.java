@@ -2,7 +2,11 @@ package po;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+
+import vo.SingleStockInfoVO;
 /**
  * SingleStockInfo的PO类，用来维护SingleStock的持久对象
  * @author	刘宇翔
@@ -21,6 +25,7 @@ public class SingleStockInfoPO
 	private double adjclose;//这支股票的复权收盘指数
 	private String market;//这支股票所处的市场
 	private String str;
+	public SingleStockInfoPO(){}
 	/**
 	 * 
 	 * @param _name String类型，这支股票的名字
@@ -248,5 +253,28 @@ public class SingleStockInfoPO
 				"   该条记录时间为: "+sdf.format(date.getTime())+
 				"   该股票编号为: "+code+
 				"\n开盘价为: "+open+"   收盘价为: "+close+"   最高价为: "+high+"   最低价为: "+low+"   交易量为: "+volume+"   复权价为: "+adjclose;
+	}
+	
+	public SingleStockInfoVO POToVO(SingleStockInfoPO ssiPO){
+		SingleStockInfoVO ssiVO = new SingleStockInfoVO();
+		ssiVO.setName(ssiPO.getName());
+		ssiVO.setDate(ssiPO.getDate());
+		ssiVO.setCode(ssiPO.getCode());
+		ssiVO.setOpen(ssiPO.getOpen());
+		ssiVO.setClose(ssiPO.getClose());
+		ssiVO.setHigh(ssiPO.getHigh());
+		ssiVO.setLow(ssiPO.getLow());
+		ssiVO.setVolume(ssiPO.getVolume());
+		ssiVO.setAdjclose(ssiPO.getAdjclose());
+		ssiVO.setMarket(ssiPO.getMarket());
+		return ssiVO;
+	}
+	
+	public List<SingleStockInfoVO> POToVO(List<SingleStockInfoPO> ssiPO){
+		List<SingleStockInfoVO> ssiVO = new ArrayList<SingleStockInfoVO>();
+		for( int i=0; i<ssiPO.size(); i++ ){
+			ssiVO.add( POToVO(ssiPO.get(i)) );
+		}
+		return ssiVO;
 	}
 }
