@@ -19,8 +19,11 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.util.Duration;
+import vo.SingleStockInfoVO;
 
 /**
  * A candlestick chart is a style of bar-chart used primarily to describe price
@@ -37,7 +40,7 @@ public class  CandleStickChart extends XYChart<String, Number> {
     SimpleDateFormat sdf = new SimpleDateFormat("yy:MM:dd");
     protected int maxBarsToDisplay;
     protected ObservableList<XYChart.Series<String, Number>> dataSeries;
-    protected BarData lastBar;
+    protected SingleStockInfoVO lastBar;
     protected NumberAxis yAxis;
     protected CategoryAxis xAxis;
 
@@ -48,7 +51,7 @@ public class  CandleStickChart extends XYChart<String, Number> {
      * @param title The chart title
      * @param bars  The bars data to display in the chart.
      */
-    public CandleStickChart(String title, List<BarData> bars) {
+    public CandleStickChart(String title, List<SingleStockInfoVO> bars) {
         this(title, bars, Integer.MAX_VALUE);
     }
 
@@ -59,7 +62,7 @@ public class  CandleStickChart extends XYChart<String, Number> {
      * @param bars The bars to display in the chart
      * @param maxBarsToDisplay The maximum number of bars to display in the chart.
      */
-    public CandleStickChart(String title, List<BarData> bars, int maxBarsToDisplay) {
+    public CandleStickChart(String title, List<SingleStockInfoVO> bars, int maxBarsToDisplay) {
         this(title, new CategoryAxis(), new NumberAxis(), bars, maxBarsToDisplay);
     }
 
@@ -72,14 +75,15 @@ public class  CandleStickChart extends XYChart<String, Number> {
      * @param bars The bars to display on the chart
      * @param maxBarsToDisplay The maximum number of bars to display on the chart.
      */
-    public CandleStickChart(String title, CategoryAxis xAxis, NumberAxis yAxis, List<BarData> bars, int maxBarsToDisplay) {
+    public CandleStickChart(String title, CategoryAxis xAxis, NumberAxis yAxis, List<SingleStockInfoVO> bars, int maxBarsToDisplay) {
         super(xAxis, yAxis);
         this.xAxis = xAxis;
         this.yAxis = yAxis;
         this.maxBarsToDisplay = maxBarsToDisplay;
-
         yAxis.autoRangingProperty().set(true);
+
         yAxis.forceZeroInRangeProperty().setValue(Boolean.FALSE);
+        yAxis.setPrefWidth(35);
         setTitle(title);
         setAnimated(true);
         getStylesheets().add(getClass().getResource("/styles/CandleStickChartStyles.css").toExternalForm());
@@ -87,13 +91,10 @@ public class  CandleStickChart extends XYChart<String, Number> {
         yAxis.setAnimated(true);
         verticalGridLinesVisibleProperty().set(false);
         XYChart.Series<String, Number> series = new XYChart.Series<>();
-        List<BarData> sublist = getSubList(bars, maxBarsToDisplay);
-        for (BarData bar : sublist) {
-            String label = "";
-
-            label = sdf.format(bar.getDateTime().getTime());
-
-            series.getData().add(new XYChart.Data<>(label, bar.getOpen(), bar));
+        List<SingleStockInfoVO> sublist = getSubList(bars, maxBarsToDisplay);
+        for (SingleStockInfoVO bar : sublist) {
+            String label = sdf.format(bar.getDate().getTime());
+            series.getData().add(new XYChart.Data<>(label, bar.getOpen(),bar));
         }
 
         dataSeries = FXCollections.observableArrayList(series);
@@ -102,55 +103,10 @@ public class  CandleStickChart extends XYChart<String, Number> {
         lastBar = sublist.get(sublist.size() - 1);
     }
 
-
-    
-    /**
-     * Appends a new bar on to the end of the chart.
-     * @param bar The bar to append to the chart
-     */
-//    public void addBar(BarData bar) {
-//
-//        if (dataSeries.get(0).getData().size() >= maxBarsToDisplay) {
-//            dataSeries.get(0).getData().remove(0);
-//        }
-//
-//        int datalength = dataSeries.get(0).getData().size();
-//        dataSeries.get(0).getData().get(datalength - 1).setYValue(bar.getOpen());
-//        dataSeries.get(0).getData().get(datalength - 1).setExtraValue(bar);
-//        String label = sdf.format(bar.getDateTime().getTime());
-//        logger.log(Level.INFO, "Adding bar with actual time:  {0}", bar.getDateTime().getTime());
-//        logger.log(Level.INFO, "Adding bar with formated time: {0}", label);
-//
-//        lastBar = new BarData(bar.getDateTime(), bar.getClose(), bar.getClose(), bar.getClose(), bar.getClose(), 0);
-//        Data<String, Number> data = new XYChart.Data<>(label, lastBar.getOpen(), lastBar);
-//        dataSeries.get(0).getData().add(data);
-//
-//
-//
-//    }
-
-    
-    /**
-     * Update the "Last" price of the most recent bar
-     * @param price The Last price of the most recent bar.
-     */
-//    public void updateLast(double price) {
-//        if (lastBar != null) {
-//            lastBar.update(price);
-//            logger.log(Level.INFO, "Updating last bar with date/time: {0}", lastBar.getDateTime().getTime());
-//
-//            int datalength = dataSeries.get(0).getData().size();
-//            dataSeries.get(0).getData().get(datalength - 1).setYValue(lastBar.getOpen());
-//
-//            dataSeries.get(0).getData().get(datalength - 1).setExtraValue(lastBar);
-//            logger.log(Level.INFO, "Updating last bar with formatteddate/time: {0}", dataSeries.get(0).getData().get(datalength - 1).getXValue());
-//        }
-//    }
-
     
     
-    protected List<BarData> getSubList(List<BarData> bars, int maxBars) {
-        List<BarData> sublist;
+    protected List<SingleStockInfoVO> getSubList(List<SingleStockInfoVO> bars, int maxBars) {
+        List<SingleStockInfoVO> sublist;
         if (bars.size() > maxBars) {
             return bars.subList(bars.size() - 1 - maxBars, bars.size() - 1);
         } else {
@@ -183,7 +139,7 @@ public class  CandleStickChart extends XYChart<String, Number> {
                 double x = getXAxis().getDisplayPosition(getCurrentDisplayedXValue(item));
                 double y = getYAxis().getDisplayPosition(getCurrentDisplayedYValue(item));
                 Node itemNode = item.getNode();
-                BarData bar = (BarData) item.getExtraValue();
+                SingleStockInfoVO bar = (SingleStockInfoVO) item.getExtraValue();
                 if (itemNode instanceof Candle && item.getYValue() != null) {
                     Candle candle = (Candle) itemNode;
 
@@ -234,18 +190,18 @@ public class  CandleStickChart extends XYChart<String, Number> {
     @Override
     protected void dataItemRemoved(Data<String, Number> item, Series<String, Number> series) {
 
-//        final Node candle = item.getNode();
-//        if (shouldAnimate()) {
-//            // fade out old candle
-//            FadeTransition ft = new FadeTransition(Duration.millis(500), candle);
-//            ft.setToValue(0);
-//            ft.setOnFinished((ActionEvent actionEvent) -> {
-//                getPlotChildren().remove(candle);
-//            });
-//            ft.play();
-//        } else {
-//            getPlotChildren().remove(candle);
-//        }
+        final Node candle = item.getNode();
+        if (shouldAnimate()) {
+            // fade out old candle
+            FadeTransition ft = new FadeTransition(Duration.millis(500), candle);
+            ft.setToValue(0);
+            ft.setOnFinished((ActionEvent actionEvent) -> {
+                getPlotChildren().remove(candle);
+            });
+            ft.play();
+        } else {
+            getPlotChildren().remove(candle);
+        }
     }
 
     @Override
@@ -334,13 +290,14 @@ public class  CandleStickChart extends XYChart<String, Number> {
             yData = new ArrayList<>();
         }
         if (xData != null || yData != null) {
+            System.out.println("1");
             for (Series<String, Number> series : getData()) {
                 for (Data<String, Number> data : series.getData()) {
                     if (xData != null) {
                         xData.add(data.getXValue());
                     }
                     if (yData != null) {
-                        BarData extras = (BarData) data.getExtraValue();
+                        SingleStockInfoVO extras = (SingleStockInfoVO) data.getExtraValue();
                         if (extras != null) {
                             yData.add(extras.getHigh());
                             yData.add(extras.getLow());

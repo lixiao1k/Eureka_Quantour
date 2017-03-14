@@ -2,6 +2,7 @@ package presentation.chart.barChart;
 
 import javafx.scene.chart.*;
 import javafx.scene.control.Tooltip;
+import javafx.scene.layout.StackPane;
 import presentation.chart.chartService;
 import vo.EMAInfoVO;
 import vo.SingleStockInfoVO;
@@ -23,26 +24,28 @@ public class VolumeChart implements chartService {
     public VolumeChart(List<SingleStockInfoVO> list){
         xAxis=new CategoryAxis();
         yAxis=new NumberAxis();
+
         yAxis.autoRangingProperty().set(true);
         yAxis.forceZeroInRangeProperty().setValue(Boolean.FALSE);
+
 
         volumechart=new BarChart<>(xAxis,yAxis);
 
         XYChart.Series<String,Number> series =new XYChart.Series<>();
 
-        for (SingleStockInfoVO info:list){
+        for (SingleStockInfoVO info:list){ 
             String label =sdf.format(info.getDate().getTime());
             series.getData().add(new XYChart.Data<>(label,info.getVolume()));
         }
-        series.setName("");
+
         volumechart.getData().add(series);
-        volumechart.setTitle("均线图");
+        volumechart.setTitle("成交量图");
+        volumechart.setLegendVisible(false);
 
         for (XYChart.Series<String, Number> s : volumechart.getData()) {
             for (XYChart.Data<String, Number> d : s.getData()) {
                 Tooltip.install(d.getNode(), new Tooltip(
-                        d.getXValue().toString() + "\n" +
-                                "Number Of Events : " + d.getYValue()));
+                        d.getXValue().toString() + "   " +d.getYValue()));
 
             }
         }
@@ -53,5 +56,6 @@ public class VolumeChart implements chartService {
     public XYChart<String, Number> getchart() {
         return volumechart;
     }
+
 
 }

@@ -169,6 +169,7 @@ public class BorderController implements Initializable {
 			
 		});
 		
+
 		Button searchEMAButton = new Button("均线");
 		//均线浏览的监听
 		searchEMAButton.setOnAction((ActionEvent e)->{
@@ -194,6 +195,7 @@ public class BorderController implements Initializable {
 //				borderPane.setCenter(EMAchart);
 			}
 			
+
 		});
 		
 		hb.getChildren().addAll(beginLabel,beginDatePicker,endLabel,endDatePicker,blank,stockName,searchKButton,searchEMAButton);
