@@ -256,6 +256,8 @@ public class SingleStockInfoPO
 	}
 	
 	public SingleStockInfoVO POToVO(SingleStockInfoPO ssiPO){
+		if( ssiPO==null )
+			return null;
 		SingleStockInfoVO ssiVO = new SingleStockInfoVO();
 		ssiVO.setName(ssiPO.getName());
 		ssiVO.setDate(ssiPO.getDate());
@@ -272,9 +274,13 @@ public class SingleStockInfoPO
 	
 	public List<SingleStockInfoVO> POToVO(List<SingleStockInfoPO> ssiPO){
 		List<SingleStockInfoVO> ssiVO = new ArrayList<SingleStockInfoVO>();
-		for( int i=0; i<ssiPO.size(); i++ ){
-			ssiVO.add( POToVO(ssiPO.get(i)) );
+		if( ssiPO==null )
+			return null;
+		else{
+			for( int i=0; i<ssiPO.size(); i++ ){
+				ssiVO.add( POToVO(ssiPO.get(i)) );
+			}
+			return ssiVO;
 		}
-		return ssiVO;
 	}
 }

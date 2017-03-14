@@ -28,10 +28,6 @@ public class EMAChart implements chartService {
         yAxis.autoRangingProperty().set(true);
         yAxis.setAnimated(true);
 
-
-
-
-
         yAxis.setPrefWidth(35);
 
         yAxis.forceZeroInRangeProperty().setValue(false);
