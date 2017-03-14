@@ -32,15 +32,16 @@ public class test {
 		begin.set(14, 3, 1, 0, 0, 0);
 		end.set(14, 3, 29, 0, 0, 0);
 		try{
-			listA = RemoteHelper.getInstance().getStockLogic().getSingleStockInfoByTime("1", begin, end);
+			listA = RemoteHelper.getInstance().getStockLogic().getSingleStockInfoByTime("151", begin, end);
 		}catch(RemoteException e){
 			e.printStackTrace();
 		}
 		List<Double> listSave = new ArrayList<Double>();
-		for(int i=0;i<listA.size();i++){
-//			listSave.add(listA.get(i).getEMA());
-			listSave.add(listA.get(i).getLow());
-		}
+		if(	listA!=null	)
+			for(int i=0;i<listA.size();i++){
+//				listSave.add(listA.get(i).getEMA());
+				listSave.add(listA.get(i).getLow());
+			}
 		for( int i=0; i<listSave.size(); i++ )
 			System.out.println(listSave.get(i));
 	}
