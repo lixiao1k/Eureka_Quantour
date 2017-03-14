@@ -1,11 +1,8 @@
 package vo;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
-import po.SingleStockInfoPO;
 /**
  * 
  * @Description: gather the data of stock in one day
@@ -114,28 +111,5 @@ public class SingleStockInfoVO implements Serializable{
 		ssi.setAdjclose(adjclose);
 		ssi.setMarket(market);
 		return ssi;
-	}
-	
-	public SingleStockInfoVO POToVO(SingleStockInfoPO ssiPO){
-		SingleStockInfoVO ssiVO = new SingleStockInfoVO();
-		ssiVO.setName(ssiPO.getName());
-		ssiVO.setDate(ssiPO.getDate());
-		ssiVO.setCode(ssiPO.getCode());
-		ssiVO.setOpen(ssiPO.getOpen());
-		ssiVO.setClose(ssiPO.getClose());
-		ssiVO.setHigh(ssiPO.getHigh());
-		ssiVO.setLow(ssiPO.getLow());
-		ssiVO.setVolume(ssiPO.getVolume());
-		ssiVO.setAdjclose(ssiPO.getAdjclose());
-		ssiVO.setMarket(ssiPO.getMarket());
-		return ssiVO;
-	}
-	
-	public List<SingleStockInfoVO> POToVO(List<SingleStockInfoPO> ssiPO){
-		List<SingleStockInfoVO> ssiVO = new ArrayList<SingleStockInfoVO>();
-		for( int i=0; i<ssiPO.size(); i++ ){
-			ssiVO.add( POToVO(ssiPO.get(i)) );
-		}
-		return ssiVO;
 	}
 }

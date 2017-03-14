@@ -2,6 +2,7 @@ package vo;
 
 import java.io.Serializable;
 import java.util.Calendar;
+
 /**
  * 
  * @Description: gather the data of stock in one day
@@ -9,7 +10,7 @@ import java.util.Calendar;
  * @time: 2017.3.6
  */
 public class SingleStockInfoVO implements Serializable{
-	
+
 	private static final long serialVersionUID = -185701255295387970L;
 	
 	/**
