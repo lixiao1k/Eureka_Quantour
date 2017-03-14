@@ -40,7 +40,6 @@ import presentation.chart.chartService;
 import presentation.chart.barChart.ExtremeValueComparedChart;
 import presentation.chart.klineChart.CandleStickChart;
 import presentation.chart.klineChart.KLineChart;
-import presentation.chart.klineChart.kChartStub;
 import presentation.chart.lineChart.EMAChart;
 import dataController.DataContorller;
 import rmi.RemoteHelper;
@@ -188,11 +187,11 @@ public class BorderController implements Initializable {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-//				chartService service = new EMAChart(emaInfo);
-//				XYChart<String, Number> EMAchart = service.getchart();
-//				ObservableList<Node> nodelist = borderPane.getChildren();
-//				nodelist.clear();
-//				borderPane.setCenter(EMAchart);
+				chartService service = new EMAChart(emaInfo);
+				XYChart<String, Number> EMAchart = service.getchart();
+				ObservableList<Node> nodelist = borderPane.getChildren();
+				nodelist.clear();
+				borderPane.setCenter(EMAchart);
 			}
 			
 

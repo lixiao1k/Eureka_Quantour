@@ -1,6 +1,9 @@
 package presentation.borderUI;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import dataController.DataContorller;
@@ -8,9 +11,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
+import presentation.chart.chartService;
 import presentation.chart.barChart.ExtremeValueComparedChart;
+import presentation.chart.lineChart.ComparedCloseChart;
+import presentation.chart.lineChart.EMAChart;
 import vo.ComparedInfoVO;
 import presentation.chart.barChart.ExtremeValueComparedChart;
 
@@ -28,12 +35,29 @@ public class CompareChartPaneController implements Initializable{
 	AnchorPane compareChartPane3;
 	
 	@FXML
-	protected void goBrowseClose(ActionEvent e){
-		
+	protected void goBrowesClose(ActionEvent e){
+		compareChartPane3.getChildren().clear();
+        Calendar[] date = vo.getDate();
+        double[] closeA = vo.getCloseA();
+        double[] closeB = vo.getCloseB();
+        String stockA = vo.getNameA();
+        String stockB = vo.getNameB();
+		chartService service = new ComparedCloseChart(date, closeA, closeB, stockA, stockB);
+		XYChart<String, Number> closeComparedchart = service.getchart();
+		compareChartPane3.getChildren().add(closeComparedchart);
 	}
 	
 	@FXML
 	protected void goBrowseLogYield(ActionEvent e){
+		compareChartPane3.getChildren().clear();
+        Calendar[] date = vo.getDate();
+        double[] logYieldA = vo.getLogYieldA();
+        double[] logYieldB = vo.getLogYieldB();
+        String stockA = vo.getNameA();
+        String stockB = vo.getNameB();
+		chartService service = new ComparedCloseChart(date, logYieldA, logYieldB, stockA, stockB);
+		XYChart<String, Number> closeComparedchart = service.getchart();
+		compareChartPane3.getChildren().add(closeComparedchart);
 		
 	}
 	
