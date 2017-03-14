@@ -14,6 +14,7 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import presentation.chart.chartService;
 import presentation.chart.barChart.ExtremeValueComparedChart;
 import presentation.chart.lineChart.ComparedCloseChart;
@@ -32,7 +33,7 @@ public class CompareChartPaneController implements Initializable{
 	AnchorPane compareChartPane2;
 	
 	@FXML
-	AnchorPane compareChartPane3;
+	BorderPane compareChartPane3;
 	
 	@FXML
 	protected void goBrowesClose(ActionEvent e){
@@ -44,7 +45,7 @@ public class CompareChartPaneController implements Initializable{
         String stockB = vo.getNameB();
 		chartService service = new ComparedCloseChart(date, closeA, closeB, stockA, stockB);
 		XYChart<String, Number> closeComparedchart = service.getchart();
-		compareChartPane3.getChildren().add(closeComparedchart);
+		compareChartPane3.setCenter(closeComparedchart);
 	}
 	
 	@FXML
@@ -56,8 +57,8 @@ public class CompareChartPaneController implements Initializable{
         String stockA = vo.getNameA();
         String stockB = vo.getNameB();
 		chartService service = new ComparedCloseChart(date, logYieldA, logYieldB, stockA, stockB);
-		XYChart<String, Number> closeComparedchart = service.getchart();
-		compareChartPane3.getChildren().add(closeComparedchart);
+		XYChart<String, Number> logYieldComparedchart = service.getchart();
+		compareChartPane3.setCenter(logYieldComparedchart);
 		
 	}
 	
