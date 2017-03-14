@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import junit.framework.Assert;
 import logic.service.StockLogicInterface;
 import vo.EMAInfoVO;
 /**
@@ -21,9 +22,13 @@ public class test {
 	private StockLogicImpl SLIm = new StockLogicImpl();
 
 	public static void main(String args[]){
-//		new test().testGetEMAInfo();
-//		new test().testCalendarAdvance();
-//		System.out.println( Math.log(10.69/11.16) );
+		try{
+			new test().testGetEMAInfo();
+//			new test().testCalendarAdvance();
+//			System.out.println( Math.log(10.69/11.16) );
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 	
 	private static boolean ifListEqual(List<Double> list1, List<Double> list2){
@@ -56,13 +61,47 @@ public class test {
 	}
 	
 	private void testGetEMAInfo() throws RemoteException{
-		List<EMAInfoVO> list1 = SLI.getEMAInfo("1", Calendar.getInstance(), Calendar.getInstance()).get(0);
-		List<Double> list2 = new ArrayList<Double>();
-		for(int i=0;i<list1.size();i++)
-			list2.add(list1.get(i).getEMA());
-		List<Double> list3 = new ArrayList<Double>();
-		list3.add(11.16); list3.add(11.03); list3.add(11.25);
-		list3.add(11.23); list3.add(11.19); 
-		System.out.println(ifListEqual(list2, list3));
+		Calendar begin = Calendar.getInstance();
+		Calendar end = Calendar.getInstance();
+		begin.set(2014, 3, 16);
+		end.set(2014, 3, 29);
+		List<EMAInfoVO> listA = SLI.getEMAInfo("1", begin, end).get(0);
+		List<EMAInfoVO> listB = SLI.getEMAInfo("1", begin, end).get(1);
+		List<EMAInfoVO> listC = SLI.getEMAInfo("1", begin, end).get(2);
+		
+		List<Double> listSave = new ArrayList<Double>();
+		List<Double> listRight = new ArrayList<Double>();
+		
+		listSave = new ArrayList<Double>();
+		listRight = new ArrayList<Double>();
+		for(int i=0;i<listA.size();i++)
+			listSave.add(listA.get(i).getEMA());	
+		listRight.add(11.16); listRight.add(11.03); listRight.add(11.25);
+		listRight.add(11.23); listRight.add(11.19); listRight.add(11.17); 
+		listRight.add(11.11); listRight.add(11.02); listRight.add(10.95); 
+		listRight.add(10.91); 
+		for( int i=0; i<Math.min( listSave.size(), listRight.size() ) ; i++){
+			System.out.println(listSave.get(i)+" "+listRight.get(i));
+		}
+		
+		listSave = new ArrayList<Double>();
+		listRight = new ArrayList<Double>();
+		for(int i=0;i<listB.size();i++)
+			listSave.add(listB.get(i).getEMA());
+		listRight.add(11.16); listRight.add(11.03); listRight.add(11.25);
+		listRight.add(11.23); listRight.add(11.3); listRight.add(11.06); 
+		listRight.add(10.69); listRight.add(10.8); listRight.add(10.9); 
+		listRight.add(11.04); 
+		
+		
+		listSave = new ArrayList<Double>();
+		listRight = new ArrayList<Double>();
+		for(int i=0;i<listC.size();i++)
+			listSave.add(listC.get(i).getEMA());
+		listRight.add(11.16); listRight.add(11.03); listRight.add(11.25);
+		listRight.add(11.23); listRight.add(11.3); listRight.add(11.06); 
+		listRight.add(10.69); listRight.add(10.8); listRight.add(10.9); 
+		listRight.add(10.99); 
+		
 	}
 }
