@@ -289,11 +289,17 @@ public class StockDataController {
 				System.out.println("error");
 				return null;
 			}
-//			return processmap.get(date);
-			return null;
+			else{
+				List<SingleStockInfoPO> list=new ArrayList<SingleStockInfoPO>();
+				for(String str:processmap.get(date)){
+					list.add(new SingleStockInfoPO(str));
+				}
+				return list;
+			}
+			
 		}
 		else{
-			return null;
+			return processMarketByDate(date);
 		}
 	}
 	/**
@@ -301,7 +307,22 @@ public class StockDataController {
 	 * @param date，所选的时间
 	 * @return List<SingleStockInfoPO>一系列股票对象
 	 */
-	private List<String> processMarketByDate(Calendar date) {
+	private List<SingleStockInfoPO> processMarketByDate(Calendar date) {
+		String string_date=tostring(sdf.format(date.getTime()));
+		if(!stockinfo_StringType.containsKey(string_date)){
+			return null;
+		}
+		HashMap<String,String> datamap=stockinfo_StringType.get(string_date);
+		Iterator<Entry<String, String>> it=datamap.entrySet().iterator();
+		ArrayList<SingleStockInfoPO> list=new ArrayList<SingleStockInfoPO>();
+		while(it.hasNext()){
+			String info=it.next().getValue();
+			list.add(new SingleStockInfoPO(info));
+		}
+		return list;
+	}
+	
+	private List<String> processMarketByDate_String(Calendar date) {
 		String string_date=tostring(sdf.format(date.getTime()));
 		if(!stockinfo_StringType.containsKey(string_date)){
 			return null;
@@ -337,7 +358,7 @@ public class StockDataController {
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
-				processmap.put(cal, processMarketByDate(cal));
+				processmap.put(cal, processMarketByDate_String(cal));
 			}
 			process_data=true;
 			System.out.println("处理完成");
