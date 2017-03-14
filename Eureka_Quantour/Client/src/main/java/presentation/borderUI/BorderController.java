@@ -40,12 +40,12 @@ import presentation.chart.chartService;
 import presentation.chart.barChart.ExtremeValueComparedChart;
 import presentation.chart.klineChart.CandleStickChart;
 import presentation.chart.klineChart.KLineChart;
-import presentation.chart.klineChart.kChartStub;
 import presentation.chart.lineChart.EMAChart;
 import dataController.DataContorller;
 import rmi.RemoteHelper;
 import vo.ComparedInfoVO;
 import vo.EMAInfoVO;
+import vo.MarketInfoVO;
 import vo.SingleStockInfoVO;
 
 public class BorderController implements Initializable {
@@ -85,6 +85,7 @@ public class BorderController implements Initializable {
 			}
 		}
 		setInfoAnchorPane.getChildren().add(searchSingleStockHBox());
+		borderPane.getChildren().clear();
 	}
 	/*
 	 * 点击左侧比较按钮，出现相应比较搜索栏
@@ -100,6 +101,7 @@ public class BorderController implements Initializable {
 			}
 		}
 		setInfoAnchorPane.getChildren().add(compareHBox());
+		borderPane.getChildren().clear();
 	}
 	/*
 	 * 点击左侧市场情况按钮，出现相应搜索栏
@@ -115,6 +117,7 @@ public class BorderController implements Initializable {
 			}
 		}
 		setInfoAnchorPane.getChildren().add(marketHBox());
+		borderPane.getChildren().clear();
 	}
 	/*
 	 * 登出按钮
@@ -188,11 +191,11 @@ public class BorderController implements Initializable {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-//				chartService service = new EMAChart(emaInfo);
-//				XYChart<String, Number> EMAchart = service.getchart();
-//				ObservableList<Node> nodelist = borderPane.getChildren();
-//				nodelist.clear();
-//				borderPane.setCenter(EMAchart);
+				chartService service = new EMAChart(emaInfo);
+				XYChart<String, Number> EMAchart = service.getchart();
+				ObservableList<Node> nodelist = borderPane.getChildren();
+				nodelist.clear();
+				borderPane.setCenter(EMAchart);
 			}
 			
 
@@ -271,16 +274,33 @@ public class BorderController implements Initializable {
 		DatePicker timeDatePicker = new DatePicker();
 		Label blank = new Label();
 		blank.setPrefSize(40, 10);
-		TextField stockName = new TextField();
-		stockName.setPrefSize(100, 5);
-		stockName.setPromptText("股票名");
+		TextField marketName = new TextField();
+		marketName.setPrefSize(100, 5);
+		marketName.setPromptText("市场名");
 		Button marketThermometer = new Button("市场温度计");
 		marketThermometer.setOnAction((ActionEvent e)->{
-			ObservableList<Node> nodeList = borderPane.getChildren();
-			nodeList.clear();
-			borderPane.setTop(getMarketThermometerResultVBox(20, 20, 20, 20, 20, 20, 20));
+			MarketInfoVO marketInfoVO = null;
+			RemoteHelper remote = RemoteHelper.getInstance();
+			Calendar date = localDate2Calendar(timeDatePicker.getValue());
+			StockLogicInterface slinterface = remote.getStockLogic();
+			if(timeDatePicker.getValue()==null||marketName.getText().isEmpty()){
+				java.awt.Toolkit.getDefaultToolkit().beep(); 
+			}else{
+				try {
+					marketInfoVO = slinterface.getMarketInfo(date);
+					ObservableList<Node> nodeList = borderPane.getChildren();
+					nodeList.clear();
+					borderPane.setTop(getMarketThermometerResultVBox(marketInfoVO.getVolume(), marketInfoVO.getNumOfRiseStop()
+							,marketInfoVO.getNumOfDropStop(),marketInfoVO.getNumOfRiseLTFP(),marketInfoVO.getNumOfDropLTFP(), 
+							marketInfoVO.getNumOfOMCLTFP(), marketInfoVO.getNumOfOMCSTFP()));
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			
 		});
-		hb.getChildren().addAll(timeLabel,timeDatePicker,blank,stockName,marketThermometer);
+		hb.getChildren().addAll(timeLabel,timeDatePicker,blank,marketName,marketThermometer);
 		hb.getProperties().put("Name","marketHBox");
 		return hb;
 	}
@@ -320,6 +340,7 @@ public class BorderController implements Initializable {
 	 */
 	private VBox getMarketThermometerResultVBox(int sumOfVolume,int numOfUp,int numOfDown,int numOfRateIncrease,int numOfRateDecrease,
 			int A,int B){
+		
 		VBox result = new VBox();
 		result.setPadding(new Insets(4,4,4,4));
 		result.setSpacing(5);
