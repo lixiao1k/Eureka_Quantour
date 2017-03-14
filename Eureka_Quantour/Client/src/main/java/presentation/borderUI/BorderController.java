@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Observable;
 import java.util.ResourceBundle;
 
+import com.sun.javafx.tk.Toolkit;
+
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -38,18 +40,20 @@ import presentation.chart.barChart.ExtremeValueComparedChart;
 import presentation.chart.klineChart.CandleStickChart;
 import presentation.chart.klineChart.KLineChart;
 import presentation.chart.klineChart.kChartStub;
+import presentation.chart.lineChart.EMAChart;
 import rmi.RemoteHelper;
 import vo.ComparedInfoVO;
+import vo.EMAInfoVO;
 import vo.SingleStockInfoVO;
 
 public class BorderController implements Initializable {
-	
-	private Calendar beginDate;
-	private Calendar endDate;
-	private String stockA;
-	private String stockB;
-	private CandleStickChart candleStickChart;
-	
+//	
+//	private Calendar beginDate;
+//	private Calendar endDate;
+//	private String stockA;
+//	private String stockB;
+//	private CandleStickChart candleStickChart;
+//	
 	@FXML
 	ImageView imageView;
 	
@@ -124,44 +128,64 @@ public class BorderController implements Initializable {
 		TextField stockName = new TextField();
 		stockName.setPrefSize(100,5);
 		stockName.setPromptText("股票名称");
-		Button searchButton = new Button("搜索");
+		Button searchKButton = new Button("K线");
 		
-		
-		searchButton.setOnAction((ActionEvent e)->{
+		searchKButton.setOnAction((ActionEvent e)->{
 			List<SingleStockInfoVO> stockInfoList=null;
 			String stockCode = stockName.getText();
 			Calendar beginTime = localDate2Calendar(beginDatePicker.getValue());
 			Calendar endTime = localDate2Calendar(endDatePicker.getValue());
 			RemoteHelper remote = RemoteHelper.getInstance();
 			StockLogicInterface slinterface = remote.getStockLogic();
-//			if(beginTime.after(endTime)){
-//				Notification
-//			}
-			System.out.println(stockCode);
-			System.out.println(beginTime);
-			System.out.println(endTime);
-			try {
-				System.out.println(slinterface);
-				System.out.println(slinterface.getSingleStockInfoByTime(stockCode, beginTime, endTime));
-			    stockInfoList = slinterface.getSingleStockInfoByTime(stockCode, beginTime, endTime);
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+			if(beginTime.after(endTime)){
+				java.awt.Toolkit.getDefaultToolkit().beep(); 
+			}else{
+				try {
+				    stockInfoList = slinterface.getSingleStockInfoByTime(stockCode, beginTime, endTime);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				chartService service = new KLineChart(stockInfoList);
+				XYChart<String, Number> klchart = service.getchart();
+				ObservableList<Node> nodelist = borderPane.getChildren();
+				nodelist.clear();
+				
+				borderPane.setCenter(klchart);
 			}
-			chartService service = new KLineChart(stockInfoList);
-			XYChart<String, Number> klchart = service.getchart();
-			ObservableList<Node> nodelist = borderPane.getChildren();
-			nodelist.clear();
 			
-//			kChartStub kchart = new kChartStub();
-//			candleStickChart = kchart.getKChart();
-			borderPane.setCenter(klchart);
 		});
 		
-		hb.getChildren().addAll(beginLabel,beginDatePicker,endLabel,endDatePicker,blank,stockName,searchButton);
+		Button searchEMAButton = new Button("均线");
+		
+		searchEMAButton.setOnAction((ActionEvent e)->{
+			List<List<EMAInfoVO>> emaInfo = null;
+			String stockCode = stockName.getText();
+			Calendar beginTime = localDate2Calendar(beginDatePicker.getValue());
+			Calendar endTime = localDate2Calendar(endDatePicker.getValue());
+			RemoteHelper remote = RemoteHelper.getInstance();
+			StockLogicInterface slinterface = remote.getStockLogic();
+			if(beginTime.after(endTime)){
+				java.awt.Toolkit.getDefaultToolkit().beep(); 
+			}else{
+				try {
+					emaInfo = remote.getStockLogic().getEMAInfo(stockCode, beginTime, endTime);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+//				chartService service = new EMAChart(emaInfo);
+			}
+			
+		});
+		
+		hb.getChildren().addAll(beginLabel,beginDatePicker,endLabel,endDatePicker,blank,stockName,searchKButton,searchEMAButton);
 		hb.getProperties().put("Name","searchSingleStockHBox");
 		return hb;
 	}
+	
+	
+	
 	
 	private HBox compareHBox(){
 		HBox hb = new HBox();
