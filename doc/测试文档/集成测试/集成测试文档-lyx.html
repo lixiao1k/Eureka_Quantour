@@ -1,0 +1,302 @@
+<!doctype html>
+<html>
+	<head>
+	<meta charset="UTF-8">
+	<title>单元测试文档</title>
+	<style>	
+	#divfont
+	{	font-family:"STXINGKA";
+		margin:0 auto;
+		width:50%;
+	}
+	table{width:960px;word-break:break-all; word-wrap:break-all;}
+	.t1{width:220px}.t2{width:280px}.t3{width:180px}.t4{width:180px}.t5{width:140px}
+	.tt{width:135px}
+	</style>
+	</head>
+	<body>
+		<div id="divfont">
+		<h3> Integation Test Case L1</h3>
+		<p style="text-indent:2em"> 测试用例标题:股票比较集成测试</p>
+		<p style="text-indent:2em"> 测试用例列表</p>
+		<table border="1">
+			<tr>
+				<th class="t1" rowspan="2">
+				测试用例ID
+				</th>
+				<th class="t2" colspan="4">
+				输入数据
+				</th>
+				<th class="t3" rowspan="2">
+				预期输出
+				</th>
+				<th class="t4" rowspan="2">
+				实际输出
+				</th>
+				<th class="t5" rowspan="2">
+				Pass/Fail
+				</th>
+			</tr>
+			<tr>
+				<th class="tt">
+				股票一编号
+				</th>
+				<th class="tt">
+				股票二编号
+				</th>
+				<th class="tt">
+				起始日期
+				</th>
+				<th class="tt">
+				结束日期
+				</th>
+			</tr>
+			<tr>
+				<td height="60">
+				testStockCompare-01
+				</td>
+				<td><center>
+				1
+				</center></td>
+				<td><center>
+				402
+				</center></td>
+				<td><center>
+				14/4/25
+				</center></td>
+				<td><center>
+				14/4/31
+				</center></td>
+				<td style="text-indent:1em">
+				显示股票1和402在14/4/25到14/4/31号之间的数据和对比
+				</td >
+				<td style="text-indent:1em">
+				输出股票1和402在14/4/25到14/4/31号之间的数据和对比
+				</td>
+				<td>
+				Pass
+				</td>
+			</tr>
+			<tr>
+				<td height="60">
+				testStockCompare-02
+				</td>
+				<td><center>
+				2
+				</center></td>
+				<td><center>
+				402
+				</center></td>
+				<td><center>
+				14/4/25
+				</center></td>
+				<td><center>
+				14/4/31
+				</center></td>
+				<td style="text-indent:1em">
+				显示股票编号2不存在
+				</td >
+				<td style="text-indent:1em">
+				显示股票编号2不存在
+				</td>
+				<td>
+				Pass
+				</td>
+			</tr>
+			<tr>
+				<td height="60">
+				testStockCompare-03
+				</td>
+				<td><center>
+				1
+				</center></td>
+				<td><center>
+				402
+				</center></td>
+				<td><center>
+				14/4/30
+				</center></td>
+				<td><center>
+				14/4/31
+				</center></td>
+				<td style="text-indent:1em">
+				显示时间溢出
+				</td >
+				<td style="text-indent:1em">
+				显示时间溢出
+				</td>
+				<td>
+				Pass
+				</td>
+			</tr>
+			<tr>
+				<td height="60">
+				testStockCompare-04
+				</td>
+				<td><center>
+				1
+				</center></td>
+				<td><center>
+				402
+				</center></td>
+				<td><center>
+				14/4/26
+				</center></td>
+				<td><center>
+				14/4/27
+				</center></td>
+				<td style="text-indent:1em">
+				提示该时间段内没有股票数据
+				</td >
+				<td style="text-indent:1em">
+				提示该时间段内没有股票数据
+				</td>
+				<td>
+				Pass
+				</td>
+			</tr>
+		</table>
+		<br><br>
+		<h3> Integation Test Case L2</h3>
+		<p style="text-indent:2em"> 测试用例标题:股票绘图集成测试</p>
+		<p style="text-indent:2em"> 测试用例列表</p>
+		<table border="1">
+			<tr>
+				<th class="t1" rowspan="2">
+				测试用例ID
+				</th>
+				<th class="t2" colspan="4">
+				输入数据
+				</th>
+				<th class="t3" rowspan="2">
+				预期输出
+				</th>
+				<th class="t4" rowspan="2">
+				实际输出
+				</th>
+				<th class="t5" rowspan="2">
+				Pass/Fail
+				</th>
+			</tr>
+			<tr>
+				<th class="tt">
+				股票一编号
+				</th>
+				<th class="tt">
+				股票二编号
+				</th>
+				<th class="tt">
+				起始日期
+				</th>
+				<th class="tt">
+				结束日期
+				</th>
+			</tr>
+			<tr>
+				<td height="60">
+				testStockCompare-01
+				</td>
+				<td><center>
+				1
+				</center></td>
+				<td><center>
+				402
+				</center></td>
+				<td><center>
+				14/4/25
+				</center></td>
+				<td><center>
+				14/4/31
+				</center></td>
+				<td style="text-indent:1em">
+				显示股票1和402在14/4/25到14/4/31号之间对数收益率与最高价最低价对比
+				</td >
+				<td style="text-indent:1em">
+				输出股票1和402在14/4/25到14/4/31号之间对数收益率与最高价最低价对比
+				</td>
+				<td>
+				Pass
+				</td>
+			</tr>
+			<tr>
+				<td height="60">
+				testStockCompare-02
+				</td>
+				<td><center>
+				2
+				</center></td>
+				<td><center>
+				402
+				</center></td>
+				<td><center>
+				14/4/25
+				</center></td>
+				<td><center>
+				14/4/31
+				</center></td>
+				<td style="text-indent:1em">
+				显示股票编号2不存在
+				</td >
+				<td style="text-indent:1em">
+				显示股票编号2不存在
+				</td>
+				<td>
+				Pass
+				</td>
+			</tr>
+			<tr>
+				<td height="60">
+				testStockCompare-03
+				</td>
+				<td><center>
+				1
+				</center></td>
+				<td><center>
+				402
+				</center></td>
+				<td><center>
+				14/4/30
+				</center></td>
+				<td><center>
+				14/4/31
+				</center></td>
+				<td style="text-indent:1em">
+				显示时间溢出
+				</td >
+				<td style="text-indent:1em">
+				显示时间溢出
+				</td>
+				<td>
+				Pass
+				</td>
+			</tr>
+			<tr>
+				<td height="60">
+				testStockCompare-04
+				</td>
+				<td><center>
+				1
+				</center></td>
+				<td><center>
+				402
+				</center></td>
+				<td><center>
+				14/4/26
+				</center></td>
+				<td><center>
+				14/4/27
+				</center></td>
+				<td style="text-indent:1em">
+				提示该时间段内没有股票数据
+				</td >
+				<td style="text-indent:1em">
+				提示该时间段内没有股票数据
+				</td>
+				<td>
+				Pass
+				</td>
+			</tr>
+		</table>
+		</div>
+	</body>
+</html>

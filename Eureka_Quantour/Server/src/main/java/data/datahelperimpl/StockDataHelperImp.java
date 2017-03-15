@@ -27,11 +27,13 @@ public class StockDataHelperImp implements IStockDataHelper {
 	private OutputStream out_rank;//股票顺序配置文件的outputstream对象
 	private File filepath;//所有stockdata相关数据的存储路径
 	private Boolean need_init;//判断程序的配置文件是否生成的boolean变量
+	private String path;
 	/**
 	 * stockdatahelper的初始化
 	 */
 	private StockDataHelperImp(){
-		stockdata=new File("date.csv");
+		path=this.getClass().getClassLoader().getResource("").getPath();
+		stockdata=new File(path+"date.csv");
 		filepath=new File("data/stock");
 		if(!filepath.exists()&&!filepath.isDirectory())
 		{
