@@ -41,7 +41,7 @@ public class UserDataHelperImpl implements IUserDataHelper {
 			if(!userStatus.exists()){
 				userStatus.createNewFile();
 			}
-			init_status();
+//			init_status();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
