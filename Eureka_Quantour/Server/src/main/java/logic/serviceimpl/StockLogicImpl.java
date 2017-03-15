@@ -128,7 +128,7 @@ public class StockLogicImpl implements StockLogicInterface{
 					else{
 						tempDouble += close;
 						lemai.add( new EMAInfoVO(ssi.getDate(), formatDoubleSaveTwo(tempDouble/method)) );
-						tempDouble -= lemai.get(i-method+1).getEMA();
+						tempDouble -= lssi.get(i-method+1).getClose();
 					}
 				}
 				llemai.add(lemai);
@@ -490,7 +490,7 @@ public class StockLogicImpl implements StockLogicInterface{
 	 * @exception: BeginInvalidException: 起始日期大于最大有效日期
 	 * @exception: EndInvalidException: 结束日期小于最小有效日期
 	 */
-	public boolean ifDateValid(Calendar begin, Calendar end)throws BeginInvalidException, EndInvalidException{
+	private boolean ifDateValid(Calendar begin, Calendar end)throws BeginInvalidException, EndInvalidException{
 		Calendar head=Calendar.getInstance();
 		Calendar tail=Calendar.getInstance();
 		try {
