@@ -1,0 +1,74 @@
+
+<html>
+
+<head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+ </head>
+<body>
+<h1 class="md-end-block md-heading">接口定义文档</h1>
+<h2 class="md-end-block md-heading">对象</h2>
+<ul class="ul-list" data-mark="*">
+<li>
+<p><span class="md-line md-end-block">singleStockInfo : name, date , code , open , close , high , low , volume, adjclose, market</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">comparedInfo : A and B's processed info : name, code, begin, end, low, high, ROD, close, logYield, logYieldVariance</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">marketInfo : volume 、 涨（跌）停股票数、涨（跌）幅超过</span><span class="md-line md-end-block">5% 的股票数、开盘‐收盘大（小）于 5%*上一个交易日收盘价的</span><span class="md-line md-end-block">股票个数</span></p>
+</li>
+</ul>
+<h2 class="md-end-block md-heading">界面层需（逻辑层）接口/逻辑层供（界面层）接口</h2>
+<ul class="ul-list" data-mark="*">
+<li>
+<p><span class="md-line md-end-block">注册 public boolean signUp ( String username, String password )</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">登录 public boolean signIn ( String username, String password )</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">搜索 public List&lt; singleStockInfo &gt; getSingleStockInfoByTime ( String stockCode, Calendar begin, Calendar end )</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">public List&lt; double &gt; getEMAInfo ( String stockCode, Calendar begin, Calendar end, int method )</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">public comparedInfo getComparedInfo ( String stockCodeA, String stockCodeB, Calendar begin, Calendar end )</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">public marketInfo getMarketInfo ( Calendar date )</span></p>
+</li>
+</ul>
+<h2 class="md-end-block md-heading">逻辑层需（数据层）接口/数据层供（逻辑层）接口</h2>
+<ul class="ul-list" data-mark="*">
+<li>
+<p><span class="md-line md-end-block">public boolean signUpCheck ( String username, String password )</span></p>
+</li>
+</ul>
+<ul class="ul-list" data-mark="*">
+<li>
+<p><span class="md-line md-end-block">public boolean signInCheck ( String username, String password )</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">public List&lt; singleStockInfo &gt; getSingleStockInfo ( String stockCode, Calendar begin, Calendar end )</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">public List&lt; singleStockInfo &gt; getMarketByDate ( Calendar date )</span></p>
+</li>
+</ul>
+<h2 class="md-end-block md-heading">逻辑层自己的方法</h2>
+<ul class="ul-list" data-mark="*">
+<li>
+<p><span class="md-line md-end-block">public comparedInfo compare ( List&lt; singleStockInfo &gt; , List&lt; singleStockInfo &gt;)</span></p>
+</li>
+</ul>
+<h2 class="md-end-block md-heading">数据层自己的方法</h2>
+<ul class="ul-list" data-mark="*">
+<li>
+<p><span class="md-line md-end-block">public boolean insert ( String username, String password )</span></p>
+</li>
+</ul>
+</body>
+</html>
+
