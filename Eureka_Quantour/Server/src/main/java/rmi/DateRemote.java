@@ -9,6 +9,9 @@ import logic.service.ClientLogicInterface;
 import logic.service.StockLogicInterface;
 import logic.serviceimpl.ClientLogicImpl;
 import logic.serviceimpl.StockLogicImpl;
+import resultmessage.BeginInvalidException;
+import resultmessage.DateInvalidException;
+import resultmessage.EndInvalidException;
 import vo.ComparedInfoVO;
 import vo.EMAInfoVO;
 import vo.MarketInfoVO;
@@ -32,26 +35,28 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 
 	@Override
 	public List<SingleStockInfoVO> getSingleStockInfoByTime(String stockCode, Calendar begin, Calendar end)
-			throws RemoteException {
+			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException {
 		// TODO Auto-generated method stub
 		return sli.getSingleStockInfoByTime(stockCode, begin, end);
 	}
 
 	@Override
-	public List<List<EMAInfoVO>> getEMAInfo(String stockCode, Calendar begin, Calendar end) throws RemoteException {
+	public List<List<EMAInfoVO>> getEMAInfo(String stockCode, Calendar begin, Calendar end)
+			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException {
 		// TODO Auto-generated method stub
 		return sli.getEMAInfo(stockCode, begin, end);
 	}
 
 	@Override
 	public ComparedInfoVO getComparedInfo(String stockCodeA, String stockCodeB, Calendar begin, Calendar end)
-			throws RemoteException {
+			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException {
 		// TODO Auto-generated method stub
 		return sli.getComparedInfo(stockCodeA, stockCodeB, begin, end);
 	}
 
 	@Override
-	public MarketInfoVO getMarketInfo(Calendar date) throws RemoteException {
+	public MarketInfoVO getMarketInfo(Calendar date) 
+			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException {
 		// TODO Auto-generated method stub
 		return sli.getMarketInfo(date);
 	}

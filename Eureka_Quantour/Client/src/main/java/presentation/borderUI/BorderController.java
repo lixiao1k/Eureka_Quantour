@@ -38,6 +38,7 @@ import javafx.stage.Stage;
 import logic.service.StockLogicInterface;
 import presentation.chart.chartService;
 import presentation.chart.barChart.ExtremeValueComparedChart;
+import presentation.chart.barChart.VolumeChart;
 import presentation.chart.klineChart.CandleStickChart;
 import presentation.chart.klineChart.KLineChart;
 import presentation.chart.lineChart.EMAChart;
@@ -164,10 +165,13 @@ public class BorderController implements Initializable {
 				}
 				chartService service = new KLineChart(stockInfoList);
 				XYChart<String, Number> klchart = service.getchart();
+				chartService service1 = new VolumeChart(stockInfoList);
+				XYChart<String, Number> vlchart = service1.getchart();
 				ObservableList<Node> nodelist = borderPane.getChildren();
 				nodelist.clear();
 				
 				borderPane.setCenter(klchart);
+//				borderPane.setBottom(vlchart);
 			}
 			
 		});

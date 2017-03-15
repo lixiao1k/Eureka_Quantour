@@ -45,17 +45,17 @@ public class test {
 //			e1.printStackTrace();
 //		}
 		
-		begin.set(2014, 3, 1, 0, 0, 0);
-		end.set(2014, 3, 29, 0, 0, 0);
-		
-		try{
+//		begin.set(2014, 3, 1, 0, 0, 0);
+//		end.set(2014, 3, 29, 0, 0, 0);
+//		
+//		try{
 //			listA = RemoteHelper.getInstance().getStockLogic().getSingleStockInfoByTime("1", begin, end);
-			listB = RemoteHelper.getInstance().getStockLogic().getMarketInfo(begin);
-		}catch(RemoteException e){
-			e.printStackTrace();
-		}
-		System.out.println(listB.getVolume()+" "+listB.getNumOfDropEFP()+" "+
-				listB.getNumOfDropStop()+" "+listB.getNumOfOMCEFP());
+//			listB = RemoteHelper.getInstance().getStockLogic().getMarketInfo(begin);
+//		}catch(RemoteException e){
+//			e.printStackTrace();
+//		}
+//		System.out.println(listB.getVolume()+" "+listB.getNumOfDropEFP()+" "+
+//				listB.getNumOfDropStop()+" "+listB.getNumOfOMCEFP());
 //		if(	listA!=null	)
 //			for(int i=0;i<listA.size();i++){
 //				System.out.println(sdf.format(listA.get(i).getDate().getTime())+" "+listA.get(i).getHigh()+" "+listA.get(i).getVolume());

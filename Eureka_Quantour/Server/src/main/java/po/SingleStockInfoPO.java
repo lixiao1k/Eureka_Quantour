@@ -306,6 +306,13 @@ public class SingleStockInfoPO
 				+"\n   昨日收盘价价为: "+last_close;
 	}
 	
+	/**
+	 * 
+	 * @Description: 用于将SingleStockInfoPO转化为SingleStockInfoVO
+	 * @author: hzp
+	 * @time: 2017年3月14日
+	 * @return: SingleStockInfoVO
+	 */
 	public SingleStockInfoVO POToVO(SingleStockInfoPO ssiPO){
 		if( ssiPO==null )
 			return null;
@@ -322,7 +329,13 @@ public class SingleStockInfoPO
 		ssiVO.setMarket(ssiPO.getMarket());
 		return ssiVO;
 	}
-	
+	/**
+	 * 
+	 * @Description: 用于将List<SingleStockInfoPO>转化为List<SingleStockInfoVO>
+	 * @author: hzp
+	 * @time: 2017年3月14日
+	 * @return: SingleStockInfoVO
+	 */
 	public List<SingleStockInfoVO> POToVO(List<SingleStockInfoPO> ssiPO){
 		List<SingleStockInfoVO> ssiVO = new ArrayList<SingleStockInfoVO>();
 		if( ssiPO==null )
