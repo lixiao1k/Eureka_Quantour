@@ -54,7 +54,7 @@ public class EMAChart implements chartService {
         lineChart.getData().addAll(series);
 
         lineChart.setTitle("均线图");
-//        lineChart.setCreateSymbols(false);
+        lineChart.setCreateSymbols(false);
 
         for (XYChart.Series<String, Number> s : lineChart.getData()) {
             for (XYChart.Data<String, Number> d : s.getData()) {
@@ -63,6 +63,7 @@ public class EMAChart implements chartService {
 
             }
         }
+        lineChart.getStylesheets().add(getClass().getResource("/styles/EMAChart.css").toExternalForm());
 
 
     }
