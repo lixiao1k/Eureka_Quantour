@@ -18,7 +18,7 @@ import java.util.List;
 public class EMAChart implements chartService {
     protected NumberAxis yAxis;
     protected CategoryAxis xAxis;
-    SimpleDateFormat sdf = new SimpleDateFormat("yy:MM:dd");
+    private SimpleDateFormat sdf = new SimpleDateFormat("yy:MM:dd");
 
     private LineChart<String, Number> lineChart;
 
@@ -71,6 +71,11 @@ public class EMAChart implements chartService {
     @Override
     public XYChart<String, Number> getchart() {
         return lineChart;
+    }
+
+    @Override
+    public void setName(String name) {
+        lineChart.setTitle(name);
     }
 
 }

@@ -38,21 +38,22 @@ import vo.SingleStockInfoVO;
 public class  CandleStickChart extends XYChart<String, Number> {
 
     SimpleDateFormat sdf = new SimpleDateFormat("yy:MM:dd");
-    protected int maxBarsToDisplay;
     protected ObservableList<XYChart.Series<String, Number>> dataSeries;
-    protected SingleStockInfoVO lastBar;
     protected NumberAxis yAxis;
     protected CategoryAxis xAxis;
+    private int candlewidth=10;
 
     
-    
+    public void setCandlewidth(int candlewidth){
+        this.candlewidth=candlewidth;
+    }
     /**
      * 
      * @param title The chart title
      * @param bars  The bars data to display in the chart.
      */
     public CandleStickChart(String title, List<SingleStockInfoVO> bars) {
-        this(title, bars, Integer.MAX_VALUE);
+        this(title, new CategoryAxis(),new NumberAxis(),bars);
     }
 
     
@@ -62,9 +63,6 @@ public class  CandleStickChart extends XYChart<String, Number> {
      * @param bars The bars to display in the chart
      * @param maxBarsToDisplay The maximum number of bars to display in the chart.
      */
-    public CandleStickChart(String title, List<SingleStockInfoVO> bars, int maxBarsToDisplay) {
-        this(title, new CategoryAxis(), new NumberAxis(), bars, maxBarsToDisplay);
-    }
 
     /**
      * Construct a new CandleStickChart with the given axis.
@@ -73,26 +71,20 @@ public class  CandleStickChart extends XYChart<String, Number> {
      * @param xAxis The x axis to use
      * @param yAxis The y axis to use
      * @param bars The bars to display on the chart
-     * @param maxBarsToDisplay The maximum number of bars to display on the chart.
      */
-    public CandleStickChart(String title, CategoryAxis xAxis, NumberAxis yAxis, List<SingleStockInfoVO> bars, int maxBarsToDisplay) {
+    public CandleStickChart(String title, CategoryAxis xAxis, NumberAxis yAxis, List<SingleStockInfoVO> bars) {
         super(xAxis, yAxis);
         this.xAxis = xAxis;
         this.yAxis = yAxis;
-        this.maxBarsToDisplay = maxBarsToDisplay;
         yAxis.autoRangingProperty().set(true);
-
         yAxis.forceZeroInRangeProperty().setValue(Boolean.FALSE);
-        yAxis.setPrefWidth(35);
         setTitle(title);
         setAnimated(true);
-        getStylesheets().add(getClass().getResource("/styles/CandleStickChartStyles.css").toExternalForm());
         xAxis.setAnimated(true);
         yAxis.setAnimated(true);
         verticalGridLinesVisibleProperty().set(false);
         XYChart.Series<String, Number> series = new XYChart.Series<>();
-        List<SingleStockInfoVO> sublist = getSubList(bars, maxBarsToDisplay);
-        for (SingleStockInfoVO bar : sublist) {
+        for (SingleStockInfoVO bar : bars) {
             String label = sdf.format(bar.getDate().getTime());
             series.getData().add(new XYChart.Data<>(label, bar.getOpen(),bar));
         }
@@ -100,19 +92,9 @@ public class  CandleStickChart extends XYChart<String, Number> {
         dataSeries = FXCollections.observableArrayList(series);
 
         setData(dataSeries);
-        lastBar = sublist.get(sublist.size() - 1);
     }
 
-    
-    
-    protected List<SingleStockInfoVO> getSubList(List<SingleStockInfoVO> bars, int maxBars) {
-        List<SingleStockInfoVO> sublist;
-        if (bars.size() > maxBars) {
-            return bars.subList(bars.size() - 1 - maxBars, bars.size() - 1);
-        } else {
-            return bars;
-        }
-    }
+
 
     // -------------- METHODS ------------------------------------------------------------------------------------------
     /**
@@ -146,7 +128,7 @@ public class  CandleStickChart extends XYChart<String, Number> {
                     double close = getYAxis().getDisplayPosition(bar.getClose());
                     double high = getYAxis().getDisplayPosition(bar.getHigh());
                     double low = getYAxis().getDisplayPosition(bar.getLow());
-                    double candleWidth = 10;
+                    double candleWidth = candlewidth;
                     // update candle
                     candle.update(close - y, high - y, low - y, candleWidth);
 
@@ -338,13 +320,13 @@ public class  CandleStickChart extends XYChart<String, Number> {
             Tooltip.install(bar, tooltip);
         }
 
-        public void setSeriesAndDataStyleClasses(String seriesStyleClass, String dataStyleClass) {
+        private void setSeriesAndDataStyleClasses(String seriesStyleClass, String dataStyleClass) {
             this.seriesStyleClass = seriesStyleClass;
             this.dataStyleClass = dataStyleClass;
             updateStyleClasses();
         }
 
-        public void update(double closeOffset, double highOffset, double lowOffset, double candleWidth) {
+        private void update(double closeOffset, double highOffset, double lowOffset, double candleWidth) {
             openAboveClose = closeOffset > 0;
             updateStyleClasses();
             highLowLine.setStartY(highOffset);
@@ -359,7 +341,7 @@ public class  CandleStickChart extends XYChart<String, Number> {
             }
         }
 
-        public void updateTooltip(double open, double close, double high, double low) {
+        private void updateTooltip(double open, double close, double high, double low) {
             TooltipContent tooltipContent = (TooltipContent) tooltip.getGraphic();
             tooltipContent.update(open, close, high, low);
         }
@@ -400,14 +382,12 @@ public class  CandleStickChart extends XYChart<String, Number> {
             getChildren().addAll(open, openValue, close, closeValue, high, highValue, low, lowValue);
         }
 
-        public void update(double open, double close, double high, double low) {
+        private void update(double open, double close, double high, double low) {
             openValue.setText(Double.toString(open));
             closeValue.setText(Double.toString(close));
             highValue.setText(Double.toString(high));
             lowValue.setText(Double.toString(low));
         }
     }
-
-    protected static CandleStickChart chart;
 
 }

@@ -10,5 +10,7 @@ public interface chartService {
 
     XYChart<String, Number> getchart();
 
+    void setName(String name);
+
 
 }

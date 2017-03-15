@@ -1,9 +1,7 @@
 package presentation.borderUI;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import dataController.DataContorller;
@@ -12,15 +10,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import presentation.chart.chartService;
 import presentation.chart.barChart.ExtremeValueComparedChart;
-import presentation.chart.lineChart.ComparedCloseChart;
-import presentation.chart.lineChart.EMAChart;
+import presentation.chart.lineChart.ComparedChart;
 import vo.ComparedInfoVO;
-import presentation.chart.barChart.ExtremeValueComparedChart;
 
 public class CompareChartPaneController implements Initializable{
 	private DataContorller dataController = DataContorller.getInstance();
@@ -43,7 +38,7 @@ public class CompareChartPaneController implements Initializable{
         double[] closeB = vo.getCloseB();
         String stockA = vo.getNameA();
         String stockB = vo.getNameB();
-		chartService service = new ComparedCloseChart(date, closeA, closeB, stockA, stockB);
+		chartService service = new ComparedChart(date, closeA, closeB, stockA, stockB);
 		XYChart<String, Number> closeComparedchart = service.getchart();
 		compareChartPane3.setCenter(closeComparedchart);
 	}
@@ -56,7 +51,7 @@ public class CompareChartPaneController implements Initializable{
         double[] logYieldB = vo.getLogYieldB();
         String stockA = vo.getNameA();
         String stockB = vo.getNameB();
-		chartService service = new ComparedCloseChart(date, logYieldA, logYieldB, stockA, stockB);
+		chartService service = new ComparedChart(date, logYieldA, logYieldB, stockA, stockB);
 		XYChart<String, Number> logYieldComparedchart = service.getchart();
 		compareChartPane3.setCenter(logYieldComparedchart);
 		

@@ -35,15 +35,15 @@ limitations under the License.
 
 
 .candlestick-bar.close-above-open {
-    -fx-background-color: rgb(25,225,25,1.00);
+    -fx-background-color: rgb(255,34,34,1.00);
     -fx-border-width: 1, 1,1,1;
+    -fx-font-weight: bold;
     -fx-border-color: #e2e2e2;
 }
 
 .candlestick-bar.open-above-close {
-    -fx-background-color: rgb(255,34,34,1.00); 
+    -fx-background-color: rgb(25,225,25,1.00);
     -fx-border-width: 1, 1,1,1;
-    -fx-font-weight: bold;
     -fx-border-color: #e2e2e2;
 }
 

@@ -69,10 +69,10 @@ public class DataInterface_Driver {
 				}
 				System.out.println(sdf.format(cal.getTime()));
 				long start_time1=System.currentTimeMillis();
-//				for(SingleStockInfoPO po:data.getMarketByDate(cal)){
-//					System.out.println(po.toString());
-//				}
-				data.getMarketByDate(cal);
+				for(SingleStockInfoPO po:data.getMarketByDate(cal)){
+					System.out.println(po.toString());
+				}
+//				data.getMarketByDate(cal);
 				long end_time1=System.currentTimeMillis();
 				System.out.println(end_time1);
 				System.out.println("runtime: "+(-start_time1+end_time1)+" ms");
