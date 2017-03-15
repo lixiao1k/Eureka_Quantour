@@ -65,10 +65,16 @@ public class test {
 		Calendar end = Calendar.getInstance();
 		begin.set(2014, 3, 16);
 		end.set(2014, 3, 29);
-		List<EMAInfoVO> listA = SLI.getEMAInfo("1", begin, end).get(0);
-		List<EMAInfoVO> listB = SLI.getEMAInfo("1", begin, end).get(1);
-		List<EMAInfoVO> listC = SLI.getEMAInfo("1", begin, end).get(2);
-		
+		List<EMAInfoVO> listA = new ArrayList<EMAInfoVO>();
+		List<EMAInfoVO> listB = new ArrayList<EMAInfoVO>();
+		List<EMAInfoVO> listC = new ArrayList<EMAInfoVO>();
+		try{
+		listA = SLI.getEMAInfo("1", begin, end).get(0);
+		listB = SLI.getEMAInfo("1", begin, end).get(1);
+		listC = SLI.getEMAInfo("1", begin, end).get(2);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		List<Double> listSave = new ArrayList<Double>();
 		List<Double> listRight = new ArrayList<Double>();
 		
