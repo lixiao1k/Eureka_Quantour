@@ -25,6 +25,7 @@ public class SingleStockInfoPO
 	private double adjclose;//这支股票的复权收盘指数
 	private String market;//这支股票所处的市场
 	private String str;
+	private double last_close;//昨日收盘价格
 	public SingleStockInfoPO(){}
 	/**
 	 * 
@@ -53,6 +54,7 @@ public class SingleStockInfoPO
 		setAdjclose(_adjclose);
 		setMarket(_market);
 		setStr(null);
+		last_close=0;
 	}
 	public SingleStockInfoPO(String stockinfo){
 		String[] info=stockinfo.split("\t");
@@ -75,6 +77,54 @@ public class SingleStockInfoPO
 		setAdjclose(Double.parseDouble(info[7]));
 		setMarket(info[10]);
 		setStr(stockinfo);
+		last_close=0;
+	}
+	public SingleStockInfoPO(String stockinfo,double lastclose){
+		String[] info=stockinfo.split("\t");
+		setName(info[9]);
+		SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yy");
+		Calendar cal=Calendar.getInstance();
+		try {
+			cal.setTime(sdf.parse(info[1]));
+		} catch (ParseException e) {
+			e.printStackTrace();
+			System.out.println("日期格式有错");
+		}
+		setDate(cal);
+		setCode(info[8]);
+		setOpen(Double.parseDouble(info[2]));
+		setClose(Double.parseDouble(info[5]));
+		setHigh(Double.parseDouble(info[3]));
+		setLow(Double.parseDouble(info[4]));
+		setVolume(Long.parseLong(info[6]));
+		setAdjclose(Double.parseDouble(info[7]));
+		setMarket(info[10]);
+		setStr(stockinfo);
+		last_close=lastclose;
+	}
+	
+	public SingleStockInfoPO(String stockinfo,int flag,int f){
+		String[] info=stockinfo.split("\t");
+		setName(info[9]);
+		SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yy");
+		Calendar cal=Calendar.getInstance();
+		try {
+			cal.setTime(sdf.parse(info[1]));
+		} catch (ParseException e) {
+			e.printStackTrace();
+			System.out.println("日期格式有错");
+		}
+		setDate(cal);
+		setCode(info[8]);
+		setOpen(Double.parseDouble(info[2]));
+		setClose(Double.parseDouble(info[5]));
+		setHigh(Double.parseDouble(info[3]));
+		setLow(Double.parseDouble(info[4]));
+		setVolume(Long.parseLong(info[6]));
+		setAdjclose(Double.parseDouble(info[7]));
+		setMarket(info[10]);
+		setStr(stockinfo);
+		last_close=Double.parseDouble(info[11]);
 	}
 	/**
 	 * 获得SingleStockInfoPO中的股票名字
@@ -252,7 +302,8 @@ public class SingleStockInfoPO
 				"   所处的市场为: "+market+
 				"   该条记录时间为: "+sdf.format(date.getTime())+
 				"   该股票编号为: "+code+
-				"\n开盘价为: "+open+"   收盘价为: "+close+"   最高价为: "+high+"   最低价为: "+low+"   交易量为: "+volume+"   复权价为: "+adjclose;
+				"\n开盘价为: "+open+"   收盘价为: "+close+"   最高价为: "+high+"   最低价为: "+low+"   交易量为: "+volume+"   复权价为: "+adjclose
+				+"\n   昨日收盘价价为: "+last_close;
 	}
 	
 	public SingleStockInfoVO POToVO(SingleStockInfoPO ssiPO){
@@ -282,5 +333,17 @@ public class SingleStockInfoPO
 			}
 			return ssiVO;
 		}
+	}
+	/**
+	 * @return the last_close
+	 */
+	public double getLast_close() {
+		return last_close;
+	}
+	/**
+	 * @param last_close the last_close to set
+	 */
+	public void setLast_close(double last_close) {
+		this.last_close = last_close;
 	}
 }

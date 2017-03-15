@@ -60,7 +60,7 @@ public class StockDataController {
 		singlesortmap=new HashMap<String,List<String>>();
 		sortmap=new HashMap<String,HashMap<Calendar,Integer>>();
 		sdf=new SimpleDateFormat("MM/dd/yy");
-		
+
 		//打开对于getmarket处理的线程
 		process_thread tt=new process_thread();
 		Thread t=new Thread(tt);
@@ -292,7 +292,7 @@ public class StockDataController {
 			else{
 				List<SingleStockInfoPO> list=new ArrayList<SingleStockInfoPO>();
 				for(String str:processmap.get(date)){
-					list.add(new SingleStockInfoPO(str));
+					list.add(new SingleStockInfoPO(str,1,1));
 				}
 				return list;
 			}
@@ -316,12 +316,35 @@ public class StockDataController {
 		Iterator<Entry<String, String>> it=datamap.entrySet().iterator();
 		ArrayList<SingleStockInfoPO> list=new ArrayList<SingleStockInfoPO>();
 		while(it.hasNext()){
-			String info=it.next().getValue();
-			list.add(new SingleStockInfoPO(info));
+			Entry<String,String> e=it.next();
+			String info=e.getValue();
+			String code=e.getKey();
+			list.add(new SingleStockInfoPO(info,getLastClose(string_date,code)));
 		}
 		return list;
 	}
-	
+	private double getLastClose(String calendar,String code){
+		try {
+			Calendar date=Calendar.getInstance();
+			date.setTime(sdf.parse(calendar));
+			int i=0;
+			while(i<7){
+				i++;
+				date.set(Calendar.DATE, date.get(Calendar.DATE)-1);
+				String cal=tostring(sdf.format(date.getTime()));
+				if(stockinfo_StringType.containsKey(cal)){
+					if(stockinfo_StringType.get(cal).containsKey(code)){
+						return Double.parseDouble(stockinfo_StringType.get(cal).get(code).split("\t")[5]);
+					}
+				}
+			}
+			return 0;
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return 0;
+		}
+		
+	}
 	private List<String> processMarketByDate_String(Calendar date) {
 		String string_date=tostring(sdf.format(date.getTime()));
 		if(!stockinfo_StringType.containsKey(string_date)){
@@ -331,8 +354,10 @@ public class StockDataController {
 		Iterator<Entry<String, String>> it=datamap.entrySet().iterator();
 		ArrayList<String> list=new ArrayList<String>();
 		while(it.hasNext()){
-			String info=it.next().getValue();
-			list.add(info);
+			Entry<String,String> e=it.next();
+			String info=e.getValue();
+			String code=e.getKey();
+			list.add(info+"\t"+getLastClose(string_date,code));
 		}
 		return list;
 	}
@@ -420,6 +445,8 @@ public class StockDataController {
 			go();
 			long end_time=System.currentTimeMillis();
 			System.out.println("花费在排序股票上的时间为: "+(-start_time+end_time)+" ms");
+			
+			
 		}
 		private void go(){
 			Iterator<Entry<String, HashMap<Calendar, String>>> it1=singlestockmap.entrySet().iterator();
