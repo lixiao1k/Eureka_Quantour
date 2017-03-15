@@ -49,13 +49,15 @@ public class ComparedChart implements chartService {
         }
         lineChart.setCreateSymbols(false);
         lineChart.getData().addAll(serie1,serie2);
-        lineChart.setTitle("对比图");
+        lineChart.setTitle("对数收益率对比图");
         for (XYChart.Series<String, Number> s : lineChart.getData()) {
             for (XYChart.Data<String, Number> d : s.getData()) {
                 Tooltip.install(d.getNode(), new Tooltip(
                         d.getXValue().toString() + "   " +d.getYValue()));
             }
         }
+        
+        lineChart.getStylesheets().add(getClass().getResource("/styles/ComparedChart.css").toExternalForm());
     }
 
     @Override

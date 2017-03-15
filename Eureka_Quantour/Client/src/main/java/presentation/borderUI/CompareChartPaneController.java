@@ -1,6 +1,7 @@
 package presentation.borderUI;
 
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.ResourceBundle;
 
@@ -40,6 +41,7 @@ public class CompareChartPaneController implements Initializable{
         String stockB = vo.getNameB();
 		chartService service = new ComparedChart(date, closeA, closeB, stockA, stockB);
 		XYChart<String, Number> closeComparedchart = service.getchart();
+		closeComparedchart.setTitle("收盘价对比图");
 		compareChartPane3.setCenter(closeComparedchart);
 	}
 	
@@ -53,6 +55,7 @@ public class CompareChartPaneController implements Initializable{
         String stockB = vo.getNameB();
 		chartService service = new ComparedChart(date, logYieldA, logYieldB, stockA, stockB);
 		XYChart<String, Number> logYieldComparedchart = service.getchart();
+		logYieldComparedchart.setTitle("对数收益率对比图");
 		compareChartPane3.setCenter(logYieldComparedchart);
 		
 	}
