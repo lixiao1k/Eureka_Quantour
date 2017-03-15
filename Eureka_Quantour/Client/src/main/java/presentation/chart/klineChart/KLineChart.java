@@ -32,6 +32,11 @@ public class KLineChart implements chartService {
         return candlestickchart;
     }
 
+    @Override
+    public void setName(String name) {
+        candlestickchart.setTitle(name);
+    }
+
     public void setCandlewidth(int candlewidth){
         candlestickchart.setCandlewidth(candlewidth);
     }

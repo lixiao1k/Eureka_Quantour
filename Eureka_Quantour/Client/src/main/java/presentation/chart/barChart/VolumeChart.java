@@ -2,9 +2,7 @@ package presentation.chart.barChart;
 
 import javafx.scene.chart.*;
 import javafx.scene.control.Tooltip;
-import javafx.scene.layout.StackPane;
 import presentation.chart.chartService;
-import vo.EMAInfoVO;
 import vo.SingleStockInfoVO;
 
 import java.text.SimpleDateFormat;
@@ -55,6 +53,11 @@ public class VolumeChart implements chartService {
     @Override
     public XYChart<String, Number> getchart() {
         return volumechart;
+    }
+
+    @Override
+    public void setName(String name) {
+        volumechart.setTitle(name);
     }
 
 
