@@ -61,10 +61,7 @@ public class StockDataController {
 		sortmap=new HashMap<String,HashMap<Calendar,Integer>>();
 		sdf=new SimpleDateFormat("MM/dd/yy");
 
-		//打开对于getmarket处理的线程
-		process_thread tt=new process_thread();
-		Thread t=new Thread(tt);
-		t.start();
+
 		
 		//打开对于getsingle处理的线程
 		single_thread tt1=new single_thread();
@@ -357,7 +354,13 @@ public class StockDataController {
 			Entry<String,String> e=it.next();
 			String info=e.getValue();
 			String code=e.getKey();
-			list.add(info+"\t"+getLastClose(string_date,code));
+			int sort=sortmap.get(code).get(date);
+			if(sort==0){
+				list.add(info+"\t"+0);
+			}
+			else{
+				list.add(info+"\t"+singlesortmap.get(code).get(sort-1).split("\t")[5]);
+			}
 		}
 		return list;
 	}
@@ -446,7 +449,10 @@ public class StockDataController {
 			long end_time=System.currentTimeMillis();
 			System.out.println("花费在排序股票上的时间为: "+(-start_time+end_time)+" ms");
 			
-			
+			//打开对于getmarket处理的线程
+			process_thread tt=new process_thread();
+			Thread t=new Thread(tt);
+			t.start();
 		}
 		private void go(){
 			Iterator<Entry<String, HashMap<Calendar, String>>> it1=singlestockmap.entrySet().iterator();
