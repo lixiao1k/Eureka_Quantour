@@ -98,6 +98,14 @@ public class StockLogicImpl implements StockLogicInterface{
 		if( lssi==null )
 			throw new DateInvalidException();
 		else{
+			// 用于暂存前method的股票数据
+			Calendar lastBegin = beginTemp;
+			Calendar lastEnd = calendarAdvance( endTemp );
+			int circleCount = methods[methods.length-1]+5; //用于表示往前取多少天
+			for( int i=0; i<circleCount; i++)
+				lastBegin = calendarAdvance( lastBegin );
+			List<SingleStockInfoPO> lssiTemp = idi.getSingleStockInfo(stockCode, lastBegin, lastEnd);
+			
 			// 用于存放List，并且作为返回变量
 			List<List<EMAInfoVO>> llemai = new ArrayList<List<EMAInfoVO>>();
 			// 用于暂存取到的每一个Stock数据
@@ -105,31 +113,28 @@ public class StockLogicImpl implements StockLogicInterface{
 			
 			for( int j=0; j<methods.length; j++){
 				int method = methods[j];
-				int methodTemp = method;
 				double close = 0.0;
 				List<EMAInfoVO> lemai = new ArrayList<EMAInfoVO>();
 	
 				double tempDouble = 0.0;
+				List<Double> closes = new ArrayList<Double>();
+				// 先计算前（method-1）天的数据
+				if( lssiTemp.size()>0 ){
+					int i= lssiTemp.size()-1;
+					circleCount = Math.min( method-1, lssiTemp.size() );
+					for( int k=0; k<circleCount; k++){
+						tempDouble += lssiTemp.get(i-k).getClose();
+						closes.add( lssiTemp.get(i-k).getClose() );
+					}
+				}
+				
 				for( int i=0; i<lssi.size(); i++){
 					ssi = lssi.get(i);
 					close = ssi.getClose();
-					System.out.println(close);
-					// 数据丢失
-					if( close==0 ){
-						methodTemp++;
-						continue;
-					}
-					// 先处理不需要加权平均的数据
-					if( i<(methodTemp-1) ){
-						lemai.add( new EMAInfoVO( ssi.getDate(), close) );
-						tempDouble += close;			
-					}
-					// 处理需要加权平均的数据
-					else{
-						tempDouble += close;
-						lemai.add( new EMAInfoVO(ssi.getDate(), formatDoubleSaveTwo(tempDouble/method)) );
-						tempDouble -= lssi.get(i-method+1).getClose();
-					}
+					tempDouble += close;
+					closes.add(close);
+					lemai.add( new EMAInfoVO(ssi.getDate(), formatDoubleSaveTwo(tempDouble/method)) );
+					tempDouble -= closes.remove(0);
 				}
 				llemai.add(lemai);
 			}
@@ -194,9 +199,9 @@ public class StockLogicImpl implements StockLogicInterface{
 			if( ifANull && ifBNull)
 				break;
 			tempCal = calendarAdvance(tempCal);
-			if( ssiA.getCode().equals("") && !ifANull)
+			if( ssiA.getCode().equals("") && !ifANull )
 				ssiA = getSingleStockInfoByTime(stockCodeA, tempCal, tempCal).get(0);
-			if( ssiB.getCode().equals("") && !ifBNull)
+			if( ssiB.getCode().equals("") && !ifBNull )
 				ssiB = getSingleStockInfoByTime(stockCodeB, tempCal, tempCal).get(0);
 			if( !ssiA.getCode().equals("") && !ssiB.getCode().equals(""))
 				break;
