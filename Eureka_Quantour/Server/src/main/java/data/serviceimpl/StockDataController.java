@@ -325,13 +325,13 @@ public class StockDataController {
 			Calendar date=Calendar.getInstance();
 			date.setTime(sdf.parse(calendar));
 			int i=0;
-			while(i<7){
+			while(i<10){
 				i++;
 				date.set(Calendar.DATE, date.get(Calendar.DATE)-1);
 				String cal=tostring(sdf.format(date.getTime()));
 				if(stockinfo_StringType.containsKey(cal)){
 					if(stockinfo_StringType.get(cal).containsKey(code)){
-						return Double.parseDouble(stockinfo_StringType.get(cal).get(code).split("\t")[5]);
+						return Double.parseDouble(stockinfo_StringType.get(cal).get(code).split("\t")[7]);
 					}
 				}
 			}
@@ -359,7 +359,7 @@ public class StockDataController {
 				list.add(info+"\t"+0);
 			}
 			else{
-				list.add(info+"\t"+singlesortmap.get(code).get(sort-1).split("\t")[5]);
+				list.add(info+"\t"+singlesortmap.get(code).get(sort-1).split("\t")[7]);
 			}
 		}
 		return list;
