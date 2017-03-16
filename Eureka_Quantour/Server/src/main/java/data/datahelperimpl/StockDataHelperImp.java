@@ -130,7 +130,10 @@ public class StockDataHelperImp implements IStockDataHelper {
 			int j=2;
 			int now=1;
 			String ne="";
-			Stack<String> stack=new Stack<String>();
+			Stack<String[]> stack=new Stack<String[]>();
+			String last_close="";
+			String last_adjclose="";
+			boolean wrongdate=false;
 			//开始读取数据以及生成配置文件
 			while(br.ready()){
 				String out=br.readLine();
@@ -138,7 +141,6 @@ public class StockDataHelperImp implements IStockDataHelper {
 				String cal=output[1];
             	ne=output[0]+"\t"+output[1]+"\t"+output[2]+"\t"+output[3]+"\t"+output[4]+"\t"+output[5]+
             			"\t"+output[6]+"\t"+output[7]+"\t"+output[8]+"\t"+chkHalf(output[9])+"\t"+output[10];
-            	bw.write(ne+"\n");
 				if(printnumber.equals(output[8])){
 					j++;
 				}
@@ -150,9 +152,29 @@ public class StockDataHelperImp implements IStockDataHelper {
 					j++;
 					now++;
 				}
-//				if(output[6].equals("0")&&!output[5].equals(output[2])
-//           			&&!output[3].equals(output[4]))
-				
+				if(output[6].equals("0")&&!output[5].equals(output[2])
+           			&&!output[3].equals(output[4])
+           			&&!output[2].equals(output[3])
+           			&&!output[3].equals(output[5])){
+					stack.push(output);
+					wrongdate=true;
+				}
+				else if(wrongdate){
+					wrongdate=false;
+					String input=ne;
+					last_close=output[5];
+					last_adjclose=output[7];
+					while(!stack.isEmpty()){
+						String[] m=stack.pop();
+						input=m[0]+"\t"+m[1]+"\t"+last_close+"\t"+last_close+"\t"+last_close
+								+"\t"+last_close+"\t"+m[6]+"\t"+last_adjclose
+								+"\t"+m[8]+"\t"+m[9]+"\t"+m[10]+"\n"+input;
+					}
+					bw.write(input+"\n");
+				}
+				else{
+					bw.write(ne+"\n");
+				}			
 //				if(output[6].equals("0")&&!output[5].equals(output[2])
 //            			&&!output[3].equals(output[4])){
 //            		prop_ignore.setProperty(String.valueOf(j-1), "1");

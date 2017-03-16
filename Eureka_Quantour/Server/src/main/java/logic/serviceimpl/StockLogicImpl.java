@@ -304,11 +304,15 @@ public class StockLogicImpl implements StockLogicInterface{
 			newAdjloseA = ssiA.getAdjclose();
 			if( lastAdjcloseA>0 )
 				logYieldA[i] = formatDoubleSaveFive( Math.log(newAdjloseA/lastAdjcloseA) );
+			else
+				logYieldA[i] = Integer.MIN_VALUE;
 			lastAdjcloseA = newAdjloseA;
 			
 			newAdjcloseB = ssiB.getAdjclose();
 			if( lastAdjcloseB>0 )
 				logYieldB[i] = formatDoubleSaveFive( Math.log(newAdjcloseB/lastAdjcloseB) );
+			else
+				logYieldB[i] = Integer.MIN_VALUE;
 			lastAdjcloseB = newAdjcloseB;
 		}
 		
@@ -360,11 +364,11 @@ public class StockLogicImpl implements StockLogicInterface{
 			int OMCEFP = 0, OMCLTFP = 0;
 			for( int i=0; i<lsti.size(); i++ ){
 				ssi = lsti.get(i);
-				double adjclose = ssi.getAdjclose();
-				double lastClose = ssi.getAdjclose();
 				double open = ssi.getOpen();
 				double close = ssi.getClose();
-				double lastAdjclose = ssi.getLast_close(); // 用于保存前一天的复权收盘价
+				double lastClose = ssi.getLast_close();
+				double adjclose = ssi.getAdjclose();
+				double lastAdjclose = ssi.getLast_adjclose();// 用于保存前一天的复权收盘价
 				// 计算总的交易量
 				if( ssi.getVolume() > 0 )
 					volume += ssi.getVolume();
@@ -383,14 +387,13 @@ public class StockLogicImpl implements StockLogicInterface{
 					if( (lastAdjclose-adjclose)/lastAdjclose > 0.05 )
 						stopEFP++;
 				}
-				if( open>0 && close>0 ){
+				if( open>0 && close>0 && lastClose>0 ){
 					// 计算某某数据
 					if( (open-close) > (0.05*lastClose) )
 						OMCEFP++;
 					else if( (open-close) < (-0.05*lastClose) )
 						OMCLTFP++;
 				}
-				lastClose = close;
 			}
 					
 			mi.setVolume(volume);
@@ -449,6 +452,18 @@ public class StockLogicImpl implements StockLogicInterface{
 		}
 		tempD2 = Math.pow(tempD2, 2);
 		result = (tempD1 - tempD2/length) / length;
+//		System.out.println(result);
+//		double result2 = 0.0;
+//		double avg = 0.0;
+//		for( int i=0;i<length;i++){
+//			avg += num[i];
+//		}
+//		avg = avg/num.length;
+//		for( int i=0;i<length;i++){
+//			result2 += Math.pow(num[i]-avg, 2);
+//		}
+//		result2 /= num.length;
+//		System.out.println(result2);
 		return formatDoubleSaveFive( result );
 	}
 	

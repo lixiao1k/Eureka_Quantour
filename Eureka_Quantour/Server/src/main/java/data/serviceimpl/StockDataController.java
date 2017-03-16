@@ -289,7 +289,7 @@ public class StockDataController {
 			else{
 				List<SingleStockInfoPO> list=new ArrayList<SingleStockInfoPO>();
 				for(String str:processmap.get(date)){
-					list.add(new SingleStockInfoPO(str,1,1));
+					list.add(new SingleStockInfoPO(str,1));
 				}
 				return list;
 			}
@@ -316,11 +316,13 @@ public class StockDataController {
 			Entry<String,String> e=it.next();
 			String info=e.getValue();
 			String code=e.getKey();
-			list.add(new SingleStockInfoPO(info,getLastClose(string_date,code)));
+			List<Double> listi=getLastClose(string_date,code);
+			list.add(new SingleStockInfoPO(info,listi.get(0),listi.get(1)));
 		}
 		return list;
 	}
-	private double getLastClose(String calendar,String code){
+	private List<Double> getLastClose(String calendar,String code){
+		List<Double> list=new ArrayList<Double>();
 		try {
 			Calendar date=Calendar.getInstance();
 			date.setTime(sdf.parse(calendar));
@@ -331,14 +333,20 @@ public class StockDataController {
 				String cal=tostring(sdf.format(date.getTime()));
 				if(stockinfo_StringType.containsKey(cal)){
 					if(stockinfo_StringType.get(cal).containsKey(code)){
-						return Double.parseDouble(stockinfo_StringType.get(cal).get(code).split("\t")[7]);
+						list.add(Double.parseDouble(stockinfo_StringType.get(cal).get(code).split("\t")[5]));
+						list.add(Double.parseDouble(stockinfo_StringType.get(cal).get(code).split("\t")[7]));
+						return list;
 					}
 				}
 			}
-			return 0;
+			list.add((double) 0);
+			list.add((double) 0);
+			return list;
 		} catch (ParseException e) {
 			e.printStackTrace();
-			return 0;
+			list.add((double) 0);
+			list.add((double) 0);
+			return list;
 		}
 		
 	}
@@ -359,7 +367,8 @@ public class StockDataController {
 				list.add(info+"\t"+0);
 			}
 			else{
-				list.add(info+"\t"+singlesortmap.get(code).get(sort-1).split("\t")[7]);
+				String[] out=singlesortmap.get(code).get(sort-1).split("\t");
+				list.add(info+"\t"+out[5]+"\t"+out[7]);
 			}
 		}
 		return list;

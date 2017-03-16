@@ -70,7 +70,7 @@ public class DataInterface_Driver {
 				System.out.println(sdf.format(cal.getTime()));
 				long start_time1=System.currentTimeMillis();
 				for(SingleStockInfoPO po:data.getMarketByDate(cal)){
-					System.out.println(po.toString());
+					if(po.getLast_adjclose()!=po.getLast_close()) System.out.println(po.toString());
 				}
 //				data.getMarketByDate(cal);
 				long end_time1=System.currentTimeMillis();
