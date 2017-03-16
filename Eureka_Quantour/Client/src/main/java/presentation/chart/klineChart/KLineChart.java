@@ -23,6 +23,10 @@ public class KLineChart implements chartService {
 
     public KLineChart(List<SingleStockInfoVO> stocklist){
         this.candlestickchart=new CandleStickChart("k线图", stocklist);
+        candlestickchart.setHorizontalGridLinesVisible(false);
+        candlestickchart.setVerticalGridLinesVisible(false);
+        System.out.println(stocklist.size());
+        if (stocklist.size()>63) candlestickchart.setCandlewidth(630/stocklist.size());
         candlestickchart.getStylesheets().add(getClass().getResource("/styles/CandleStickChartStyles.css").toExternalForm());
 
     }
@@ -35,10 +39,6 @@ public class KLineChart implements chartService {
     @Override
     public void setName(String name) {
         candlestickchart.setTitle(name);
-    }
-
-    public void setCandlewidth(int candlewidth){
-        candlestickchart.setCandlewidth(candlewidth);
     }
 
 

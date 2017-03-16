@@ -28,12 +28,16 @@ public class ComparedChart implements chartService {
 
     public ComparedChart(Calendar[] date, double[] data1, double[] data2, String s1, String s2) {
         xAxis = new CategoryAxis();
+
         yAxis = new NumberAxis();
         yAxis.autoRangingProperty().set(true);
         yAxis.setAnimated(true);
         yAxis.forceZeroInRangeProperty().setValue(false);
 
+
         lineChart = new LineChart<>(xAxis, yAxis);
+        lineChart.setHorizontalGridLinesVisible(false);
+        lineChart.setVerticalGridLinesVisible(false);
         XYChart.Series<String, Number> serie1 = new XYChart.Series<>();
         serie1.setName(s1);
         XYChart.Series<String, Number> serie2 = new XYChart.Series<>();
@@ -44,7 +48,7 @@ public class ComparedChart implements chartService {
             if (data1[i]!=0)
             serie1.getData().add(new XYChart.Data<>(label, data1[i]));
 
-            if(data2[i]!=0)
+            if(data2[i]!=Integer.MIN_VALUE)
             serie2.getData().add(new XYChart.Data<>(label, data2[i]));
         }
         lineChart.setCreateSymbols(false);

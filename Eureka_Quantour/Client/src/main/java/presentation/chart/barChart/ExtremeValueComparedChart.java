@@ -51,6 +51,7 @@ public class ExtremeValueComparedChart implements Initializable {
         	    StackPane bar = (StackPane)data.getNode();
         	    final Text dataText = new Text(data.getYValue()+"");
         	    bar.getChildren().add(dataText);
+                dataText.relocate(bar.getBoundsInParent().getMinX(), bar.getBoundsInParent().getMinY() - 30);
         	}
         }        
         bc.setCategoryGap(50);

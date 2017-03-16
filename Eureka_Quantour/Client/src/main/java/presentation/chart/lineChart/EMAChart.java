@@ -1,5 +1,6 @@
 package presentation.chart.lineChart;
 
+import javafx.scene.Node;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
@@ -23,17 +24,18 @@ public class EMAChart implements chartService {
     private LineChart<String, Number> lineChart;
 
     public EMAChart(List<List<EMAInfoVO>> lists) {
+
         xAxis = new CategoryAxis();
         yAxis = new NumberAxis();
         yAxis.autoRangingProperty().set(true);
         yAxis.setAnimated(true);
-
-        yAxis.setPrefWidth(35);
-
         yAxis.forceZeroInRangeProperty().setValue(false);
 
         lineChart = new LineChart<>(xAxis, yAxis);
 
+        lineChart.setHorizontalGridLinesVisible(false);
+        lineChart.setVerticalGridLinesVisible(false);
+        lineChart.setLegendVisible(false);
         List<XYChart.Series<String, Number>> series = new ArrayList<>();
 
 
@@ -49,20 +51,16 @@ public class EMAChart implements chartService {
             serie.setName(1 + index + "");
             series.add(serie);
 
-
         }
         lineChart.getData().addAll(series);
+        for(XYChart.Series<String, Number> s:series){
+            System.out.println("series-"+s.getName());
+            s.getNode().getStyleClass().add("series-"+s.getName());
+        }
 
         lineChart.setTitle("均线图");
         lineChart.setCreateSymbols(false);
 
-        for (XYChart.Series<String, Number> s : lineChart.getData()) {
-            for (XYChart.Data<String, Number> d : s.getData()) {
-                Tooltip.install(d.getNode(), new Tooltip(
-                        d.getXValue().toString() + "   " +d.getYValue()));
-
-            }
-        }
         lineChart.getStylesheets().add(getClass().getResource("/styles/EMAChart.css").toExternalForm());
 
 

@@ -7,3 +7,22 @@
 .chart-legend{
 	-fx-background-color:  transparent;
 }
+
+.chart-plot-background {
+	-fx-background-color: transparent;
+}
+.series-1 {
+	-fx-stroke: white;
+}
+.series-2 {
+	-fx-stroke: yellow;
+}
+.series-3 {
+	-fx-stroke: purple;
+}
+.series-4 {
+	-fx-stroke: green;
+}
+.series-5 {
+	-fx-stroke: blue;
+}

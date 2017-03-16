@@ -10,3 +10,7 @@
 .chart-series-background{
 	-fx-background-color:transparent;
 }
+
+.chart{
+	-fx-horizontal-zero-line-visible: false;
+}
