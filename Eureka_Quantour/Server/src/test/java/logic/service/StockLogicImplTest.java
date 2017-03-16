@@ -156,42 +156,6 @@ public class StockLogicImplTest extends TestCase {
 		}
 		return true;
 	}
-//	/**
-//	 * 
-//	 * @Description: to compare if two ComparedInfoVOs are same
-//	 * @author: hzp
-//	 * @time: 2017年3月12日
-//	 * @return: boolean
-//	 */
-//	private boolean ifComparedInfoVOEqual(ComparedInfoVO ciA, ComparedInfoVO ciB){
-//		if( !ciA.getNameA().equals( ciB.getNameA() ) 
-//				|| !ciA.getNameB().equals( ciB.getNameB() )
-//				|| !ciA.getCodeA().equals( ciB.getCodeA() ) 
-//				|| !ciA.getCodeB().equals( ciB.getCodeB() )
-//				|| !ifDoubleEqual( ciA.getLowA(), ciB.getLowA() )
-//				|| !ifDoubleEqual( ciA.getLowB(), ciB.getLowB() )
-//				|| !ifDoubleEqual( ciA.getHighA(), ciB.getHighA() )
-//				|| !ifDoubleEqual( ciA.getHighB(), ciB.getHighB() )
-//				|| !ifDoubleEqual( ciA.getRODA(), ciB.getRODA() )
-//				|| !ifDoubleEqual( ciA.getRODB(), ciB.getRODB() )
-//				|| !ifDoubleEqual( ciA.getLogYieldVarianceA(), ciB.getLogYieldVarianceA() )
-//				|| !ifDoubleEqual( ciA.getLogYieldVarianceB(), ciB.getLogYieldVarianceB() )
-//				)
-//			return false;
-//		else{
-//			double ACloseA[] = ciA.getCloseA();
-//			double ACloseB[] = ciA.getCloseB();
-//			double BCloseA[] = ciB.getCloseA();
-//			double BCloseB[] = ciB.getCloseB();
-//			for(int i=0; i<ACloseA.length; i++){
-//				if( !ifDoubleEqual( ACloseA[i], BCloseA[i] ) 
-//						|| !ifDoubleEqual( ACloseB[i], BCloseB[i] )
-//						)
-//					return false;
-//			}
-//			return true;
-//		}
-//	}
 	
 	private boolean ifDoubleEqual(double d1, double d2){
 		String s1 = String.valueOf(formatDoubleTwo(d1));
