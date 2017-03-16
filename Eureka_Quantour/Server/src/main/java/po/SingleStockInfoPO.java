@@ -26,6 +26,7 @@ public class SingleStockInfoPO
 	private String market;//这支股票所处的市场
 	private String str;
 	private double last_close;//昨日收盘价格
+	private double last_adjclose;//昨日收盘价格
 	public SingleStockInfoPO(){}
 	/**
 	 * 
@@ -79,7 +80,7 @@ public class SingleStockInfoPO
 		setStr(stockinfo);
 		last_close=0;
 	}
-	public SingleStockInfoPO(String stockinfo,double lastclose){
+	public SingleStockInfoPO(String stockinfo,double flag,double flag1){
 		String[] info=stockinfo.split("\t");
 		setName(info[9]);
 		SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yy");
@@ -100,10 +101,11 @@ public class SingleStockInfoPO
 		setAdjclose(Double.parseDouble(info[7]));
 		setMarket(info[10]);
 		setStr(stockinfo);
-		last_close=lastclose;
+		last_close=flag;
+		last_adjclose=flag1;
 	}
 	
-	public SingleStockInfoPO(String stockinfo,int flag,int f){
+	public SingleStockInfoPO(String stockinfo,int flag){
 		String[] info=stockinfo.split("\t");
 		setName(info[9]);
 		SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yy");
@@ -125,6 +127,7 @@ public class SingleStockInfoPO
 		setMarket(info[10]);
 		setStr(stockinfo);
 		last_close=Double.parseDouble(info[11]);
+		last_adjclose=Double.parseDouble(info[12]);
 	}
 	/**
 	 * 获得SingleStockInfoPO中的股票名字
@@ -303,7 +306,8 @@ public class SingleStockInfoPO
 				"   该条记录时间为: "+sdf.format(date.getTime())+
 				"   该股票编号为: "+code+
 				"\n开盘价为: "+open+"   收盘价为: "+close+"   最高价为: "+high+"   最低价为: "+low+"   交易量为: "+volume+"   复权价为: "+adjclose
-				+"\n   昨日收盘价价为: "+last_close;
+				+"\n   昨日收盘价价为: "+last_close
+				+"\n   昨日fuquan收盘价价为: "+last_adjclose;
 	}
 	
 	/**
@@ -358,5 +362,17 @@ public class SingleStockInfoPO
 	 */
 	public void setLast_close(double last_close) {
 		this.last_close = last_close;
+	}
+	/**
+	 * @return the last_adjclose
+	 */
+	public double getLast_adjclose() {
+		return last_adjclose;
+	}
+	/**
+	 * @param last_adjclose the last_adjclose to set
+	 */
+	public void setLast_adjclose(double last_adjclose) {
+		this.last_adjclose = last_adjclose;
 	}
 }
