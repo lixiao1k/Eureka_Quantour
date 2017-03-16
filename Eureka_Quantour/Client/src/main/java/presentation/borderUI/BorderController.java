@@ -479,7 +479,7 @@ public class BorderController implements Initializable {
 	 */
 	private Calendar localDate2Calendar(LocalDate date){
 		Calendar calendar = Calendar.getInstance();
-		calendar.set(date.getYear(), date.getMonthValue(), date.getDayOfMonth());
+		calendar.set(date.getYear(), date.getMonthValue()-1, date.getDayOfMonth());
 		return calendar;
 	}
 
