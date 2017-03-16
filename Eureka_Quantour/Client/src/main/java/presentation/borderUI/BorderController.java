@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Observable;
 import java.util.ResourceBundle;
 
+import org.controlsfx.control.Notifications;
+
 import com.sun.javafx.tk.Toolkit;
 
 import javafx.collections.ObservableList;
@@ -289,6 +291,8 @@ public class BorderController implements Initializable {
 			StockLogicInterface slinterface = remote.getStockLogic();
 			if(timeDatePicker.getValue()==null||marketName.getText().isEmpty()){
 				java.awt.Toolkit.getDefaultToolkit().beep(); 
+				Notifications.create().text("Hello").show();
+				System.out.println("sad");
 			}else{
 				try {
 					marketInfoVO = slinterface.getMarketInfo(date);
