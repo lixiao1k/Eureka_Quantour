@@ -78,9 +78,6 @@ public class StockLogicImpl implements StockLogicInterface{
 			throw new EndInvalidException();
 		}
 		
-		// methods用于存储日均线计算的方式
-		int methods[] = { 5, 10, 20, 30, 60 };
-		
 		// 日期格式化
 		Calendar beginTemp = Calendar.getInstance();
 		Calendar endTemp = Calendar.getInstance();
@@ -98,6 +95,17 @@ public class StockLogicImpl implements StockLogicInterface{
 		if( lssi==null )
 			throw new DateInvalidException();
 		else{
+			// methods用于存储日均线计算的方式
+			int methods[] = { 5, 10, 20, 30, 60 };
+			
+			// 用于暂存前method天的股票数据
+			Calendar lastBegin = beginTemp;
+			Calendar lastEnd = calendarAdvance( endTemp );
+			int circleCount = methods[methods.length-1]+5; //用于表示往前取多少天
+			for( int i=0; i<circleCount; i++)
+				lastBegin = calendarAdvance( lastBegin );
+			List<SingleStockInfoPO> lssiTemp = idi.getSingleStockInfo(stockCode, lastBegin, lastEnd);
+			
 			// 用于存放List，并且作为返回变量
 			List<List<EMAInfoVO>> llemai = new ArrayList<List<EMAInfoVO>>();
 			// 用于暂存取到的每一个Stock数据
@@ -105,31 +113,35 @@ public class StockLogicImpl implements StockLogicInterface{
 			
 			for( int j=0; j<methods.length; j++){
 				int method = methods[j];
-				int methodTemp = method;
 				double close = 0.0;
 				List<EMAInfoVO> lemai = new ArrayList<EMAInfoVO>();
 	
 				double tempDouble = 0.0;
+				List<Double> closes = new ArrayList<Double>();
+				// 先叠加前（method-1）天的数据
+				if( lssiTemp.size()>0 ){
+					int maxIndex= lssiTemp.size()-1;
+					circleCount = Math.min( method-1, maxIndex+1 );
+					for( int k=0; k<circleCount; k++){
+						if( lssiTemp.get(maxIndex-k).getClose()>0 ){
+							tempDouble += lssiTemp.get(maxIndex-k).getClose();
+							closes.add( lssiTemp.get(maxIndex-k).getClose() );
+						}
+						else{
+							if( circleCount<(maxIndex+1) )
+								circleCount++;
+						}
+					}
+				}
+				// 平均的基数
+				method = closes.size()+1;
 				for( int i=0; i<lssi.size(); i++){
 					ssi = lssi.get(i);
 					close = ssi.getClose();
-					System.out.println(close);
-					// 数据丢失
-					if( close==0 ){
-						methodTemp++;
-						continue;
-					}
-					// 先处理不需要加权平均的数据
-					if( i<(methodTemp-1) ){
-						lemai.add( new EMAInfoVO( ssi.getDate(), close) );
-						tempDouble += close;			
-					}
-					// 处理需要加权平均的数据
-					else{
-						tempDouble += close;
-						lemai.add( new EMAInfoVO(ssi.getDate(), formatDoubleSaveTwo(tempDouble/method)) );
-						tempDouble -= lssi.get(i-method+1).getClose();
-					}
+					tempDouble += close;
+					closes.add(close);
+					lemai.add( new EMAInfoVO(ssi.getDate(), formatDoubleSaveTwo(tempDouble/method)) );
+					tempDouble -= closes.remove(0);
 				}
 				llemai.add(lemai);
 			}
@@ -194,73 +206,73 @@ public class StockLogicImpl implements StockLogicInterface{
 			if( ifANull && ifBNull)
 				break;
 			tempCal = calendarAdvance(tempCal);
-			if( ssiA.getCode().equals("") && !ifANull)
+			if( ssiA.getCode().equals("") && !ifANull )
 				ssiA = getSingleStockInfoByTime(stockCodeA, tempCal, tempCal).get(0);
-			if( ssiB.getCode().equals("") && !ifBNull)
+			if( ssiB.getCode().equals("") && !ifBNull )
 				ssiB = getSingleStockInfoByTime(stockCodeB, tempCal, tempCal).get(0);
 			if( !ssiA.getCode().equals("") && !ssiB.getCode().equals(""))
 				break;
 		}
-		// 用于暂存前一天的收盘价
-		double lastCloseA = 0.0, lastCloseB = 0.0;
-		lastCloseA = ssiA.getClose();
-		lastCloseB = ssiB.getClose();
+		// 用于暂存前一天的复权收盘价
+		double lastAdjcloseA = 0.0, lastAdjcloseB = 0.0;
+		lastAdjcloseA = ssiA.getAdjclose();
+		lastAdjcloseB = ssiB.getAdjclose();
 		
 		// 开始存储返回的数据
 		int tempInt = lstiA.size(); // 用处初始化VO内部数组大小
 		ComparedInfoVO ci = new ComparedInfoVO(tempInt);
-		ci.setNameA(lstiA.get(0).getName());
-		ci.setNameB(lstiB.get(0).getName());
-		ci.setCodeA(stockCodeA);
-		ci.setCodeB(stockCodeB);
+		ci.setNameA( lstiA.get(0).getName() );
+		ci.setNameB( lstiB.get(0).getName() );
+		ci.setCodeA( stockCodeA );
+		ci.setCodeB( stockCodeB );
 		// 涨幅为正，跌幅为负
-		int iLastClose = 0, iNewClose = tempInt-1;
-		double dLastClose =0.0, dNewClose = 0.0;
-		// 如果A不为空，一直获取到A的最初一天收盘价 >0
+		int iLastIndex = 0, iNewIndex = tempInt-1;
+		double dLastAdjclose =0.0, dNewAdjclose = 0.0;
+		// 如果A不为空，一直获取到A的最初一天复权收盘价 >0
 		if( !ifANull ){
-			if( lastCloseA==0 ){
-				while( lstiA.get(iLastClose).getClose()==0 && iLastClose<iNewClose )
-					iLastClose++;
-				dLastClose = lstiA.get(iLastClose).getClose();
-				lastCloseA = dLastClose;
+			if( lastAdjcloseA==0 ){
+				while( lstiA.get(iLastIndex).getAdjclose()==0 && iLastIndex<iNewIndex )
+					iLastIndex++;
+				dLastAdjclose = lstiA.get(iLastIndex).getAdjclose();
+				lastAdjcloseA = dLastAdjclose;
 			}
 			else
-				dLastClose = lastCloseA;
-			if( lastCloseA!=0 ){
-				// 一直获取到A的最近的收盘价 >0
-				while( lstiA.get(iNewClose).getClose()==0 && iNewClose>iLastClose )
-					iNewClose--;
-				dNewClose = lstiA.get(iNewClose).getClose();
-				double result = ( dNewClose-dLastClose ) / dLastClose;
+				dLastAdjclose = lastAdjcloseA;
+			if( lastAdjcloseA!=0 ){
+				// 一直获取到A的最近的复权收盘价 >0
+				while( lstiA.get(iNewIndex).getAdjclose()==0 && iNewIndex>iLastIndex )
+					iNewIndex--;
+				dNewAdjclose = lstiA.get(iNewIndex).getAdjclose();
+				double result = ( dNewAdjclose-dLastAdjclose ) / dLastAdjclose;
 				ci.setRODA( formatDoubleSaveFive( result ) );
 			}
 		}
 		
-		iLastClose = 0; iNewClose = tempInt-1;
-		dLastClose =0.0; dNewClose = 0.0;
-		// 如果B不为空，一直获取到B的最初一天收盘价 >0
+		iLastIndex = 0; iNewIndex = tempInt-1;
+		dLastAdjclose =0.0; dNewAdjclose = 0.0;
+		// 如果B不为空，一直获取到B的最初一天复权收盘价 >0
 		if( !ifBNull ){
-			if( lastCloseB==0 ){
-				while( lstiB.get(iLastClose).getClose()==0 && iLastClose<iNewClose )
-					iLastClose++;
-				dLastClose = lstiB.get(iLastClose).getClose();
-				lastCloseB = dLastClose;
+			if( lastAdjcloseB==0 ){
+				while( lstiB.get(iLastIndex).getAdjclose()==0 && iLastIndex<iNewIndex )
+					iLastIndex++;
+				dLastAdjclose = lstiB.get(iLastIndex).getAdjclose();
+				lastAdjcloseB = dLastAdjclose;
 			}
 			else
-				dLastClose = lastCloseB;
-			if( lastCloseB!=0 ){
-				// 一直获取到B的最近的收盘价 >0
-				while( lstiB.get(iNewClose).getClose()==0 && iNewClose>iLastClose )
-					iNewClose--;
-				dNewClose = lstiB.get(iNewClose).getClose();
-				double result = ( dNewClose-dLastClose ) / dLastClose;
+				dLastAdjclose = lastAdjcloseB;
+			if( lastAdjcloseB!=0 ){
+				// 一直获取到B的最近的复权收盘价 >0
+				while( lstiB.get(iNewIndex).getAdjclose()==0 && iNewIndex>iLastIndex )
+					iNewIndex--;
+				dNewAdjclose = lstiB.get(iNewIndex).getAdjclose();
+				double result = ( dNewAdjclose-dLastAdjclose ) / dLastAdjclose;
 				ci.setRODB( formatDoubleSaveFive( result ) );
 			}
 		}
 		
 		// 计算最高值、最低值、储存收盘价、计算对数收益率和对数收益率方差
 		double maxA = 0, minA = 1000000.0, maxB = 0, minB = 1000000.0;
-		double newCloseA = 0.0, newCloseB = 0.0;
+		double newAdjloseA = 0.0, newAdjcloseB = 0.0;
 		double[] logYieldA = new double[tempInt];
 		double[] logYieldB = new double[tempInt];
 		double[] closeA = new double[tempInt];
@@ -289,15 +301,15 @@ public class StockLogicImpl implements StockLogicInterface{
 				minB = ssiB.getLow();
 			
 			// 计算对数收益率
-			newCloseA = ssiA.getClose();
-			if( lastCloseA!=0 )
-				logYieldA[i] = formatDoubleSaveFive( Math.log(newCloseA/lastCloseA) );
-			lastCloseA = newCloseA;
+			newAdjloseA = ssiA.getAdjclose();
+			if( lastAdjcloseA>0 )
+				logYieldA[i] = formatDoubleSaveFive( Math.log(newAdjloseA/lastAdjcloseA) );
+			lastAdjcloseA = newAdjloseA;
 			
-			newCloseB = ssiB.getClose();
-			if( lastCloseB!=0 )
-				logYieldB[i] = formatDoubleSaveFive( Math.log(newCloseB/lastCloseB) );
-			lastCloseB = newCloseB;
+			newAdjcloseB = ssiB.getAdjclose();
+			if( lastAdjcloseB>0 )
+				logYieldB[i] = formatDoubleSaveFive( Math.log(newAdjcloseB/lastAdjcloseB) );
+			lastAdjcloseB = newAdjcloseB;
 		}
 		
 		ci.setLowA(minA); ci.setLowB(minB);
@@ -348,25 +360,27 @@ public class StockLogicImpl implements StockLogicInterface{
 			int OMCEFP = 0, OMCLTFP = 0;
 			for( int i=0; i<lsti.size(); i++ ){
 				ssi = lsti.get(i);
-				double close = ssi.getClose();
+				double adjclose = ssi.getAdjclose();
+				double lastClose = ssi.getAdjclose();
 				double open = ssi.getOpen();
-				double lastClose = ssi.getLast_close(); // 用于保存前一天的收盘价
+				double close = ssi.getClose();
+				double lastAdjclose = ssi.getLast_close(); // 用于保存前一天的复权收盘价
 				// 计算总的交易量
 				if( ssi.getVolume() > 0 )
 					volume += ssi.getVolume();
 							
-				if( lastClose>0 && close>0 ){
+				if( lastAdjclose>0 && adjclose>0 ){
 					// 计算涨停的股票数
-					if( ifDoubleEqual((ssi.getHigh()-lastClose)/lastClose,  0.10) )
+					if( ifDoubleEqual((ssi.getHigh()-lastAdjclose)/lastAdjclose,  0.10) )
 						riseStop++;
 					// 计算跌停的股票数
-					if( ifDoubleEqual((lastClose-ssi.getLow())/lastClose,  0.10) )
+					if( ifDoubleEqual((lastAdjclose-ssi.getLow())/lastAdjclose,  0.10) )
 						dropStop++;
 					// 计算涨幅超过5%
-					if( (close-lastClose)/lastClose > 0.05 )
+					if( (adjclose-lastAdjclose)/lastAdjclose > 0.05 )
 						riseEFP++;
 					// 计算跌幅超过5%
-					if( (lastClose-close)/lastClose > 0.05 )
+					if( (lastAdjclose-adjclose)/lastAdjclose > 0.05 )
 						stopEFP++;
 				}
 				if( open>0 && close>0 ){
@@ -376,6 +390,7 @@ public class StockLogicImpl implements StockLogicInterface{
 					else if( (open-close) < (-0.05*lastClose) )
 						OMCLTFP++;
 				}
+				lastClose = close;
 			}
 					
 			mi.setVolume(volume);
