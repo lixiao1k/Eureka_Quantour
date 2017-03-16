@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
@@ -24,11 +26,23 @@ public class UserDataHelperImpl implements IUserDataHelper {
 	private Properties prop_userstatus;
 	private BufferedInputStream userinfo_in;
 	private BufferedInputStream userstatus_in;
+	private String path;
 	private UserDataHelperImpl(){
+		path=this.getClass().getResource("/").getPath();
 		try {
-			userPath=new File("data/user");
-			userLog=new File("data/user/userLog.properties");
-			userStatus=new File("data/user/userStatus.properties");
+			path=URLDecoder.decode(path, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		File file=new File(path+"resources");
+		if(!file.exists()&&!file.isDirectory()){
+			file.mkdir();
+		}
+		try {
+			userPath=new File(path+"resources/user");
+			userLog=new File(path+"resources/user/userLog.properties");
+			userStatus=new File(path+"resources/user/userStatus.properties");
 			prop_userinfo=new Properties();
 			prop_userstatus=new Properties();
 			if(!userPath.exists()&&!userPath.isDirectory())
@@ -58,8 +72,8 @@ public class UserDataHelperImpl implements IUserDataHelper {
 	 */
 	public void insertUser(String username,String password){
 		try {
-			FileOutputStream out_info = new FileOutputStream("data/user/userLog.properties");
-			FileOutputStream out_status = new FileOutputStream("data/user/userStatus.properties");
+			FileOutputStream out_info = new FileOutputStream(path+"resources/user/userLog.properties");
+			FileOutputStream out_status = new FileOutputStream(path+"resources/user/userStatus.properties");
 			prop_userinfo.setProperty(username, password);
 			prop_userstatus.setProperty(username, "0");
 			prop_userinfo.store(out_info, "update new user:" + username);
@@ -102,7 +116,7 @@ public class UserDataHelperImpl implements IUserDataHelper {
 	public boolean containName(String username) {
 		try {
 			userstatus_in = new BufferedInputStream(
-					new FileInputStream("data/user/userStatus.properties"));
+					new FileInputStream(path+"resources/user/userStatus.properties"));
 			prop_userstatus.load(userstatus_in);
 			userstatus_in.close();
 		} catch (IOException e) {
@@ -125,11 +139,11 @@ public class UserDataHelperImpl implements IUserDataHelper {
 	public boolean login(String username,String password) {
 		try {
 			userinfo_in = new BufferedInputStream(
-					new FileInputStream("data/user/userLog.properties"));
+					new FileInputStream(path+"resources/user/userLog.properties"));
 			prop_userinfo.load(userinfo_in);
 			userinfo_in.close();
 			userstatus_in = new BufferedInputStream(
-					new FileInputStream("data/user/userStatus.properties"));
+					new FileInputStream(path+"resources/user/userStatus.properties"));
 			prop_userstatus.load(userstatus_in);
 			userstatus_in.close();
 		} catch (IOException e) {
@@ -156,7 +170,7 @@ public class UserDataHelperImpl implements IUserDataHelper {
 	 */
 	private void change_status(String username){
 		try {
-			FileOutputStream out_status = new FileOutputStream("data/user/userStatus.properties");
+			FileOutputStream out_status = new FileOutputStream(path+"resources/user/userStatus.properties");
 			prop_userstatus.setProperty(username, "1");
 			prop_userstatus.store(out_status, "login user:" + username);
 		} catch (Exception e) {
@@ -185,7 +199,7 @@ public class UserDataHelperImpl implements IUserDataHelper {
 	 */
 	public void logout(String username){
 		try {
-			FileOutputStream out_status = new FileOutputStream("data/user/userStatus.properties");
+			FileOutputStream out_status = new FileOutputStream(path+"resources/user/userStatus.properties");
 			if(containName(username)){
 				prop_userstatus.setProperty(username, "0");
 				prop_userstatus.store(out_status, "username logout:"+username);
@@ -205,10 +219,10 @@ public class UserDataHelperImpl implements IUserDataHelper {
 	public void init_status() {
 		try {
 			userstatus_in = new BufferedInputStream(
-					new FileInputStream("data/user/userStatus.properties"));
+					new FileInputStream(path+"resources/user/userStatus.properties"));
 			prop_userstatus.load(userstatus_in);
 			userstatus_in.close();
-			FileOutputStream out_status = new FileOutputStream("data/user/userStatus.properties");
+			FileOutputStream out_status = new FileOutputStream(path+"resources/user/userStatus.properties");
 			Iterator it=prop_userstatus.entrySet().iterator();
 			while(it.hasNext()){
 			    Map.Entry entry=(Map.Entry)it.next();
