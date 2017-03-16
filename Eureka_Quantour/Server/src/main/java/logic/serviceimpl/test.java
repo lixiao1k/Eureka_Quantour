@@ -27,7 +27,7 @@ public class test {
 //			new test().testGetEMAInfo();
 //			new test().testCalendarAdvance();
 //			System.out.println( Math.log(10.69/11.16) );
-			new test().testGetComparedInfo();
+//			new test().testGetComparedInfo();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -47,7 +47,8 @@ public class test {
 	
 	private void testCalendarAdvance(){
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		Calendar cal = Calendar.getInstance(), tempCal = Calendar.getInstance();
+		Calendar cal = Calendar.getInstance();
+		Calendar tempCal = Calendar.getInstance();
 		Date date = new Date(), tempDate = new Date();
 		cal.set(2017, 2, 10); tempCal.set(2017, 2, 9);
 		date = SLIm.calendarAdvance(cal).getTime(); tempDate = tempCal.getTime();
@@ -60,6 +61,10 @@ public class test {
 		cal.set(2017, 0, 1); tempCal.set(2016, 11, 30);
 		date = SLIm.calendarAdvance(cal).getTime(); tempDate = tempCal.getTime();
 		System.out.println(format.format(date)+" "+ format.format(tempDate));
+		
+		cal.set(2014, 3, 16); tempCal.set(2014, 3, 15);
+		date = SLIm.calendarAdvance(cal).getTime(); tempDate = tempCal.getTime();
+		System.out.println(format.format(date)+" "+ format.format(tempDate));
 	}
 	
 	private void testGetEMAInfo() throws RemoteException{
@@ -70,10 +75,14 @@ public class test {
 		List<EMAInfoVO> listA = new ArrayList<EMAInfoVO>();
 		List<EMAInfoVO> listB = new ArrayList<EMAInfoVO>();
 		List<EMAInfoVO> listC = new ArrayList<EMAInfoVO>();
+		List<EMAInfoVO> listD = new ArrayList<EMAInfoVO>();
+		List<EMAInfoVO> listE = new ArrayList<EMAInfoVO>();
 		try{
-		listA = SLI.getEMAInfo("1", begin, end).get(0);
-		listB = SLI.getEMAInfo("1", begin, end).get(1);
-		listC = SLI.getEMAInfo("1", begin, end).get(2);
+			listA = SLI.getEMAInfo("1", begin, end).get(0);
+			listB = SLI.getEMAInfo("1", begin, end).get(1);
+			listC = SLI.getEMAInfo("1", begin, end).get(2);
+			listD = SLI.getEMAInfo("1", begin, end).get(3);
+			listE = SLI.getEMAInfo("1", begin, end).get(4);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -84,37 +93,50 @@ public class test {
 		listRight = new ArrayList<Double>();
 		for(int i=0;i<listA.size();i++)
 			listSave.add(listA.get(i).getEMA());	
-//		listRight.add(11.16); listRight.add(11.03); listRight.add(11.25);
-//		listRight.add(11.23); listRight.add(11.19); listRight.add(11.17); 
-//		listRight.add(11.11); listRight.add(11.02); listRight.add(10.95); 
-//		listRight.add(10.91); 
-		listRight.add(10.99); listRight.add(10.9); listRight.add(10.8);
-		listRight.add(10.69); listRight.add(10.89); listRight.add(10.95); 
+		listRight.add(11.2); listRight.add(11.11); listRight.add(10.99);
+		listRight.add(10.87); listRight.add(10.89); listRight.add(10.95); 
 		listRight.add(11.02); listRight.add(11.11); listRight.add(11.17); 
 		listRight.add(11.19); 
 		for( int i=0; i<Math.min( listSave.size(), listRight.size() ) ; i++){
-			System.out.println(listSave.get(i)+" "+listRight.get(i));
+			System.out.print(listSave.get(i)+"<br/>");
+			/* +" "+listRight.get(i) */
 		}
+		System.out.println();
 		
 		listSave = new ArrayList<Double>();
 		listRight = new ArrayList<Double>();
 		for(int i=0;i<listB.size();i++)
 			listSave.add(listB.get(i).getEMA());
-		listRight.add(11.16); listRight.add(11.03); listRight.add(11.25);
-		listRight.add(11.23); listRight.add(11.3); listRight.add(11.06); 
-		listRight.add(10.69); listRight.add(10.8); listRight.add(10.9); 
+		listRight.add(11.08); listRight.add(11.09); listRight.add(11.10);
+		listRight.add(11.09); listRight.add(11.06); listRight.add(11.07); 
+		listRight.add(11.06); listRight.add(11.05); listRight.add(11.02); 
 		listRight.add(11.04); 
+		for( int i=0; i<Math.min( listSave.size(), listRight.size() ) ; i++){
+			System.out.print(listSave.get(i)+"<br/>");
+			/* +" "+listRight.get(i) */
+		}
 		
-		
+		System.out.println();
 		listSave = new ArrayList<Double>();
 		listRight = new ArrayList<Double>();
 		for(int i=0;i<listC.size();i++)
 			listSave.add(listC.get(i).getEMA());
-		listRight.add(11.16); listRight.add(11.03); listRight.add(11.25);
-		listRight.add(11.23); listRight.add(11.3); listRight.add(11.06); 
-		listRight.add(10.69); listRight.add(10.8); listRight.add(10.9); 
-		listRight.add(10.99); 
+		listRight.add(10.89); listRight.add(10.93); listRight.add(10.93);
+		listRight.add(10.93); listRight.add(10.95); listRight.add(10.98); 
+		listRight.add(11.00); listRight.add(11.03); listRight.add(11.04); 
+		listRight.add(11.06); 
+		for( int i=0; i<Math.min( listSave.size(), listRight.size() ) ; i++){
+			System.out.print(listSave.get(i)+"<br/>");
+			/* +" "+listRight.get(i) */
+		}
 		
+//		System.out.println();
+//		listSave = new ArrayList<Double>();
+//		for(int i=0;i<listD.size();i++)
+//			listSave.add(listD.get(i).getEMA());
+//		for( int i=0; i<listSave.size() ; i++){
+//			System.out.print(listSave.get(i)+"<br/>");
+//		}
 	}
 	
 	private void testGetComparedInfo()throws RemoteException{
@@ -133,12 +155,13 @@ public class test {
 		System.out.println( ci.getLowB()+" "+7.23 );
 		System.out.println( ci.getHighA()+" "+11.52 );
 		System.out.println( ci.getHighB()+" "+8.07 );
-		System.out.println( ci.getRODA()+" "+ -0.00272 );
-		System.out.println( ci.getRODB()+" "+ 0.10151 );
-		double[] dCloseA = { 11.16, 11.03, 11.25, 11.23, 11.3, 11.06, 10.69, 10.8, 10.9, 10.99};
-		double[] dCloseB = { 7.38, 7.29, 7.47, 7.54, 7.74, 7.69, 7.74, 8.03, 8.02, 8.03};
+		System.out.println( ci.getRODA()+" "+ 0.01732 );
+		System.out.println( ci.getRODB()+" "+ -0.07519 );
+		double[] dCloseA = { 10.99, 10.9, 10.8, 10.69, 11.06, 11.3, 11.23, 11.25, 11.03, 11.16};
+		double[] dCloseB = { 8.03, 8.02, 8.03, 7.74, 7.69, 7.74, 7.54, 7.47, 7.29, 7.38};
 
-		double[] dLogYieldA = { 0, -0.01171, 0.01975, -0.00178, 0.00621, -0.02147, -0.03402, 0.01023, 0.00922, 0.00822};
-		double[] dLogYieldB = { 0, -0.01227, 0.02439, 0.00933, 0.02618, -0.00648, 0.00648, 0.03678, -0.00125, 0.00125};
+		double[] dLogYieldA = { 0.00182, -0.00819, -0.00917, -0.01019, 0.03461, 0.02170, -0.00619, 0.00178, -0.01956, 0.01179};
+		double[] dLogYieldB = { 0.00625, -0.00125, 0.00125, -0.03678, -0.00648, 0.00648, -0.02618, -0.00933, -0.02439, 0.01227};
+
 	}
 }

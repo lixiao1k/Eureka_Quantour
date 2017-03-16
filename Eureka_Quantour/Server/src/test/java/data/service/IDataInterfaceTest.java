@@ -14,8 +14,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
-import com.Eureka.www.AppTest;
-
 import data.serviceimpl.DataInterfaceImpl;
 import data.serviceimpl.StockDataController;
 import junit.framework.Test;
