@@ -63,9 +63,10 @@ public class CompareChartPaneController implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
-		ExtremeValueComparedChart chart = new ExtremeValueComparedChart();
-		BarChart<String, Number> barChart = chart.createChart(vo.getNameA(), vo.getNameB(), vo.getHighA(), vo.getHighB(), vo.getLowA(), vo.getLowB());
-		compareChartPane1.getChildren().add(barChart);
+		ExtremeValueComparedChart chart = new ExtremeValueComparedChart(vo.getNameA(), vo.getNameB(), vo.getHighA(), vo.getHighB(), vo.getLowA(), vo.getLowB());
+
+//		BarChart<String, Number> barChart = chart.createChart(vo.getNameA(), vo.getNameB(), vo.getHighA(), vo.getHighB(), vo.getLowA(), vo.getLowB());
+		compareChartPane1.getChildren().add(chart.getchart());
 		
 	}
 
