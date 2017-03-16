@@ -305,7 +305,8 @@ public class SingleStockInfoPO
 				"   所处的市场为: "+market+
 				"   该条记录时间为: "+sdf.format(date.getTime())+
 				"   该股票编号为: "+code+
-				"\n开盘价为: "+open+"   收盘价为: "+close+"   最高价为: "+high+"   最低价为: "+low+"   交易量为: "+volume+"   复权价为: "+adjclose
+				"\n开盘价为: "+open+"   收盘价为: "+close+"   最高价为: "+high+"   最低价为: "+low+"   交易量为: "+volume+
+				"   复权价为: "+adjclose
 				+"\n   昨日收盘价价为: "+last_close
 				+"\n   昨日fuquan收盘价价为: "+last_adjclose;
 	}
