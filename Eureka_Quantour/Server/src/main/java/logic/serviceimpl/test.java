@@ -72,13 +72,17 @@ public class test {
 		Calendar end = Calendar.getInstance();
 		begin.set(2014, 3, 16);
 		end.set(2014, 3, 29);
-//		List<EMAInfoVO> listA = new ArrayList<EMAInfoVO>();
-//		List<EMAInfoVO> listB = new ArrayList<EMAInfoVO>();
+		List<EMAInfoVO> listA = new ArrayList<EMAInfoVO>();
+		List<EMAInfoVO> listB = new ArrayList<EMAInfoVO>();
 		List<EMAInfoVO> listC = new ArrayList<EMAInfoVO>();
+		List<EMAInfoVO> listD = new ArrayList<EMAInfoVO>();
+		List<EMAInfoVO> listE = new ArrayList<EMAInfoVO>();
 		try{
-//		listA = SLI.getEMAInfo("1", begin, end).get(0);
-//		listB = SLI.getEMAInfo("1", begin, end).get(1);
-		listC = SLI.getEMAInfo("1", begin, end).get(2);
+			listA = SLI.getEMAInfo("1", begin, end).get(0);
+			listB = SLI.getEMAInfo("1", begin, end).get(1);
+			listC = SLI.getEMAInfo("1", begin, end).get(2);
+			listD = SLI.getEMAInfo("1", begin, end).get(3);
+			listE = SLI.getEMAInfo("1", begin, end).get(4);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -87,31 +91,34 @@ public class test {
 		
 		listSave = new ArrayList<Double>();
 		listRight = new ArrayList<Double>();
-//		for(int i=0;i<listA.size();i++)
-//			listSave.add(listA.get(i).getEMA());	
-//		listRight.add(11.2); listRight.add(11.11); listRight.add(10.99);
-//		listRight.add(10.87); listRight.add(10.89); listRight.add(10.95); 
-//		listRight.add(11.02); listRight.add(11.11); listRight.add(11.17); 
-//		listRight.add(11.19); 
-//		for( int i=0; i<Math.min( listSave.size(), listRight.size() ) ; i++){
-//			System.out.println(listSave.get(i)+" "+listRight.get(i));
-//		}
+		for(int i=0;i<listA.size();i++)
+			listSave.add(listA.get(i).getEMA());	
+		listRight.add(11.2); listRight.add(11.11); listRight.add(10.99);
+		listRight.add(10.87); listRight.add(10.89); listRight.add(10.95); 
+		listRight.add(11.02); listRight.add(11.11); listRight.add(11.17); 
+		listRight.add(11.19); 
+		for( int i=0; i<Math.min( listSave.size(), listRight.size() ) ; i++){
+			System.out.print(listSave.get(i)+"<br/>");
+			/* +" "+listRight.get(i) */
+		}
+		System.out.println();
 		
-//		listSave = new ArrayList<Double>();
-//		listRight = new ArrayList<Double>();
-//		for(int i=0;i<listB.size();i++)
-//			listSave.add(listB.get(i).getEMA());
-//		listRight.add(11.08); listRight.add(11.09); listRight.add(11.10);
-//		listRight.add(11.09); listRight.add(11.06); listRight.add(11.07); 
-//		listRight.add(11.06); listRight.add(11.05); listRight.add(11.02); 
-//		listRight.add(11.04); 
-//		for( int i=0; i<Math.min( listSave.size(), listRight.size() ) ; i++){
-//			System.out.println(listSave.get(i)+" "+listRight.get(i));
-//			/* +" "+listRight.get(i) */
-//		}
+		listSave = new ArrayList<Double>();
+		listRight = new ArrayList<Double>();
+		for(int i=0;i<listB.size();i++)
+			listSave.add(listB.get(i).getEMA());
+		listRight.add(11.08); listRight.add(11.09); listRight.add(11.10);
+		listRight.add(11.09); listRight.add(11.06); listRight.add(11.07); 
+		listRight.add(11.06); listRight.add(11.05); listRight.add(11.02); 
+		listRight.add(11.04); 
+		for( int i=0; i<Math.min( listSave.size(), listRight.size() ) ; i++){
+			System.out.print(listSave.get(i)+"<br/>");
+			/* +" "+listRight.get(i) */
+		}
 		
-//		listSave = new ArrayList<Double>();
-//		listRight = new ArrayList<Double>();
+		System.out.println();
+		listSave = new ArrayList<Double>();
+		listRight = new ArrayList<Double>();
 		for(int i=0;i<listC.size();i++)
 			listSave.add(listC.get(i).getEMA());
 		listRight.add(10.89); listRight.add(10.93); listRight.add(10.93);
@@ -119,9 +126,17 @@ public class test {
 		listRight.add(11.00); listRight.add(11.03); listRight.add(11.04); 
 		listRight.add(11.06); 
 		for( int i=0; i<Math.min( listSave.size(), listRight.size() ) ; i++){
-			System.out.println(listSave.get(i));
+			System.out.print(listSave.get(i)+"<br/>");
 			/* +" "+listRight.get(i) */
 		}
+		
+//		System.out.println();
+//		listSave = new ArrayList<Double>();
+//		for(int i=0;i<listD.size();i++)
+//			listSave.add(listD.get(i).getEMA());
+//		for( int i=0; i<listSave.size() ; i++){
+//			System.out.print(listSave.get(i)+"<br/>");
+//		}
 	}
 	
 	private void testGetComparedInfo()throws RemoteException{

@@ -294,6 +294,7 @@ public class StockLogicImpl implements StockLogicInterface{
 		for( int i=0 ; i<tempInt ; i++ ){
 			ssiA = lstiA.get(i);
 			ssiB = lstiB.get(i);
+			System.out.println(ssiA.getAdjclose()+" "+ssiB.getAdjclose());
 			closeA[i] = ssiA.getClose();
 			closeB[i] = ssiB.getClose();
 			if( !ifANull)
