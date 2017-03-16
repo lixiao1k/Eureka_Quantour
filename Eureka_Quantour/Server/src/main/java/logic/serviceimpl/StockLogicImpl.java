@@ -71,7 +71,7 @@ public class StockLogicImpl implements StockLogicInterface{
 		
 		// 判断日期是否有效
 		try{
-			ifDateValid(begin, end);
+			ifDateValid((Calendar)begin.clone(), (Calendar)end.clone());
 		}catch( BeginInvalidException e ){
 			throw new BeginInvalidException();
 		}catch( EndInvalidException e ){
@@ -82,8 +82,8 @@ public class StockLogicImpl implements StockLogicInterface{
 		Calendar beginTemp = Calendar.getInstance();
 		Calendar endTemp = Calendar.getInstance();
 		try {
-			beginTemp.setTime(sdf.parse( formateCalendar(begin) ));
-			endTemp.setTime(sdf.parse( formateCalendar(end) ));
+			beginTemp.setTime(sdf.parse( formateCalendar((Calendar)begin.clone()) ));
+			endTemp.setTime(sdf.parse( formateCalendar((Calendar)end.clone()) ));
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			System.out.println("日期转换出错");
@@ -99,13 +99,20 @@ public class StockLogicImpl implements StockLogicInterface{
 			int methods[] = { 5, 10, 20, 30, 60 };
 			
 			// 用于暂存前method天的股票数据
-			Calendar lastBegin = beginTemp;
-			Calendar lastEnd = calendarAdvance( endTemp );
+			Calendar lastBegin = (Calendar)begin.clone();
+			Calendar lastEnd = calendarAdvance( (Calendar)begin.clone() );
 			int circleCount = methods[methods.length-1]+5; //用于表示往前取多少天
 			for( int i=0; i<circleCount; i++)
-				lastBegin = calendarAdvance( lastBegin );
+				lastBegin = calendarAdvance( (Calendar)lastBegin.clone() );
+			try {
+				lastBegin.setTime(sdf.parse( formateCalendar((Calendar)lastBegin.clone()) ));
+				lastEnd.setTime(sdf.parse( formateCalendar((Calendar)lastEnd.clone()) ));
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				System.out.println("日期转换出错");
+				e.printStackTrace();
+			}
 			List<SingleStockInfoPO> lssiTemp = idi.getSingleStockInfo(stockCode, lastBegin, lastEnd);
-			
 			// 用于存放List，并且作为返回变量
 			List<List<EMAInfoVO>> llemai = new ArrayList<List<EMAInfoVO>>();
 			// 用于暂存取到的每一个Stock数据
@@ -125,7 +132,7 @@ public class StockLogicImpl implements StockLogicInterface{
 					for( int k=0; k<circleCount; k++){
 						if( lssiTemp.get(maxIndex-k).getClose()>0 ){
 							tempDouble += lssiTemp.get(maxIndex-k).getClose();
-							closes.add( lssiTemp.get(maxIndex-k).getClose() );
+							closes.add( 0, lssiTemp.get(maxIndex-k).getClose() );
 						}
 						else{
 							if( circleCount<(maxIndex+1) )
@@ -164,19 +171,23 @@ public class StockLogicImpl implements StockLogicInterface{
 		}
 				
 		// 日期格式化
-		Calendar beginTemp = Calendar.getInstance();
-		Calendar endTemp = Calendar.getInstance();
+		Calendar beginTempA = Calendar.getInstance();
+		Calendar endTempA = Calendar.getInstance();
+		Calendar beginTempB = Calendar.getInstance();
+		Calendar endTempB = Calendar.getInstance();
 		try {
-			beginTemp.setTime(sdf.parse( formateCalendar(begin) ));
-			endTemp.setTime(sdf.parse( formateCalendar(end) ));
+			beginTempA.setTime(sdf.parse( formateCalendar( (Calendar)begin.clone() ) ));
+			endTempA.setTime(sdf.parse( formateCalendar( (Calendar)end.clone() ) ));
+			beginTempB.setTime(sdf.parse( formateCalendar( (Calendar)begin.clone() ) ));
+			endTempB.setTime(sdf.parse( formateCalendar( (Calendar)end.clone() ) ));
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			System.out.println("日期转换出错");
 			e.printStackTrace();
 		}
 
-		List<SingleStockInfoVO> lstiA = new SingleStockInfoPO().POToVO( idi.getSingleStockInfo(stockCodeA, beginTemp, endTemp) );
-		List<SingleStockInfoVO> lstiB = new SingleStockInfoPO().POToVO( idi.getSingleStockInfo(stockCodeB, beginTemp, endTemp) );
+		List<SingleStockInfoVO> lstiA = new SingleStockInfoPO().POToVO( idi.getSingleStockInfo(stockCodeA, beginTempA, endTempA) );
+		List<SingleStockInfoVO> lstiB = new SingleStockInfoPO().POToVO( idi.getSingleStockInfo(stockCodeB, beginTempB, endTempB) );
 		boolean ifANull = false;
 		boolean ifBNull = false;
 		
@@ -381,10 +392,12 @@ public class StockLogicImpl implements StockLogicInterface{
 					if( ifDoubleEqual((lastAdjclose-ssi.getLow())/lastAdjclose,  0.10) )
 						dropStop++;
 					// 计算涨幅超过5%
-					if( (adjclose-lastAdjclose)/lastAdjclose > 0.05 )
+					if( (adjclose-lastAdjclose)/lastAdjclose > 0.05 
+							&& (adjclose-lastAdjclose)/lastAdjclose <= 0.1)
 						riseEFP++;
 					// 计算跌幅超过5%
-					if( (lastAdjclose-adjclose)/lastAdjclose > 0.05 )
+					if( (lastAdjclose-adjclose)/lastAdjclose > 0.05 
+							&& (lastAdjclose-adjclose)/lastAdjclose <= 0.1)
 						stopEFP++;
 				}
 				if( open>0 && close>0 && lastClose>0 ){
