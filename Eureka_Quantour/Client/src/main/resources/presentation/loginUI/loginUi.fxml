@@ -34,6 +34,6 @@
          </children>
       </AnchorPane>
       <Button layoutX="65.0" layoutY="383.0" mnemonicParsing="false" onAction="#login" prefHeight="53.0" prefWidth="373.0" text="Login" />
-      <Label fx:id="feedbackLabel" layoutX="66.0" layoutY="344.0" prefHeight="39.0" prefWidth="373.0" text="Label" />
+      <Label fx:id="feedbackLabel" layoutX="66.0" layoutY="344.0" prefHeight="39.0" prefWidth="373.0" text="请不要输入用户名密码，直接登入" />
    </children>
 </AnchorPane>

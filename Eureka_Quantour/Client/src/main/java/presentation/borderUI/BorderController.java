@@ -44,6 +44,9 @@ import presentation.chart.barChart.VolumeChart;
 import presentation.chart.klineChart.CandleStickChart;
 import presentation.chart.klineChart.KLineChart;
 import presentation.chart.lineChart.EMAChart;
+import resultmessage.BeginInvalidException;
+import resultmessage.DateInvalidException;
+import resultmessage.EndInvalidException;
 import dataController.DataContorller;
 import rmi.RemoteHelper;
 import vo.ComparedInfoVO;
@@ -145,7 +148,7 @@ public class BorderController implements Initializable {
 	    blank.setPrefSize(40, 10);
 		TextField stockName = new TextField();
 		stockName.setPrefSize(100,5);
-		stockName.setPromptText("股票名称");
+		stockName.setPromptText("股票代码");
 		Button searchKButton = new Button("K线");
 		//K线浏览的监听
 		searchKButton.setOnAction((ActionEvent e)->{
@@ -156,16 +159,32 @@ public class BorderController implements Initializable {
 			RemoteHelper remote = RemoteHelper.getInstance();
 			StockLogicInterface slinterface = remote.getStockLogic();
 			//开始时间必须小于结束时间
-			if(beginTime.after(endTime)||stockCode.isEmpty()){
+			if(beginTime.after(endTime)){
 				java.awt.Toolkit.getDefaultToolkit().beep(); 
+				Notifications.create().text("开始日期不能大于结束日期").title("提示").show();
+			}else if(stockCode.isEmpty()){
+				java.awt.Toolkit.getDefaultToolkit().beep(); 
+				Notifications.create().text("股票代码处不能为空").title("提示").show();
 			}else{
 				try {
 				    stockInfoList = slinterface.getSingleStockInfoByTime(stockCode, beginTime, endTime);
-				} catch (Exception e1) {
+				}catch(DateInvalidException ed){
+					Notifications.create().text(ed.toString()).title("提示").show();
+					java.awt.Toolkit.getDefaultToolkit().beep(); 
+				} catch(BeginInvalidException eb){
+					Notifications.create().text(eb.toString()).title("提示").show();
+					java.awt.Toolkit.getDefaultToolkit().beep(); 
+				}catch(EndInvalidException ee){
+					Notifications.create().text(ee.toString()).title("提示").show();
+					java.awt.Toolkit.getDefaultToolkit().beep(); 
+				}catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
+					java.awt.Toolkit.getDefaultToolkit().beep(); 
 				}
+				String title = stockInfoList.get(0).getName()+"  K线图";
 				chartService service = new KLineChart(stockInfoList);
+				service.setName(title);
 				XYChart<String, Number> klchart = service.getchart();
 				chartService service1 = new VolumeChart(stockInfoList);
 				XYChart<String, Number> vlchart = service1.getchart();
@@ -188,16 +207,30 @@ public class BorderController implements Initializable {
 			Calendar endTime = localDate2Calendar(endDatePicker.getValue());
 			RemoteHelper remote = RemoteHelper.getInstance();
 			StockLogicInterface slinterface = remote.getStockLogic();
-			if(beginTime.after(endTime)||stockCode.isEmpty()){
+			if(beginTime.after(endTime)){
 				java.awt.Toolkit.getDefaultToolkit().beep(); 
+				Notifications.create().text("开始日期不能大于结束日期").title("提示").show();
+			}else if(stockCode.isEmpty()){
+				java.awt.Toolkit.getDefaultToolkit().beep(); 
+				Notifications.create().text("股票代码处不能为空").title("提示").show();
 			}else{
 				try {
 					emaInfo = remote.getStockLogic().getEMAInfo(stockCode, beginTime, endTime);
-				} catch (Exception e1) {
+				}catch(DateInvalidException ed){
+					Notifications.create().text(ed.toString()).title("提示").show();
+					java.awt.Toolkit.getDefaultToolkit().beep(); 
+				} catch(BeginInvalidException eb){
+					Notifications.create().text(eb.toString()).title("提示").show();
+					java.awt.Toolkit.getDefaultToolkit().beep(); 
+				}catch(EndInvalidException ee){
+					Notifications.create().text(ee.toString()).title("提示").show();
+					java.awt.Toolkit.getDefaultToolkit().beep(); 
+				}catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				chartService service = new EMAChart(emaInfo);
+				service.setName("标准均线图");
 				XYChart<String, Number> EMAchart = service.getchart();
 				ObservableList<Node> nodelist = borderPane.getChildren();
 				nodelist.clear();
@@ -243,14 +276,27 @@ public class BorderController implements Initializable {
 			String stockB = stockNameB.getText();
 			RemoteHelper remote = RemoteHelper.getInstance();
 			StockLogicInterface slinterface = remote.getStockLogic();
-			if(beginTime.after(endTime)||stockA.isEmpty()||stockB.isEmpty()){
+			if(beginTime.after(endTime)){
 				java.awt.Toolkit.getDefaultToolkit().beep(); 
+				Notifications.create().text("开始日期不能大于结束日期").title("提示").show();
+			}else if(stockA.isEmpty()||stockB.isEmpty()){
+				java.awt.Toolkit.getDefaultToolkit().beep(); 
+				Notifications.create().text("请输入股票A或股票B名称或代号").title("提示").show();
 			}else{
 				try {
 					comparedInfoVO = slinterface.getComparedInfo(stockA, stockB, beginTime, endTime);
 					System.out.println(comparedInfoVO);
 					dataController.upDate("COMPAREDINFO", comparedInfoVO);
-				} catch (Exception e1) {
+				} catch(DateInvalidException ed){
+					Notifications.create().text(ed.toString()).title("提示").show();
+					java.awt.Toolkit.getDefaultToolkit().beep(); 
+				} catch(BeginInvalidException eb){
+					Notifications.create().text(eb.toString()).title("提示").show();
+					java.awt.Toolkit.getDefaultToolkit().beep(); 
+				}catch(EndInvalidException ee){
+					Notifications.create().text(ee.toString()).title("提示").show();
+					java.awt.Toolkit.getDefaultToolkit().beep(); 
+				}catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
@@ -289,10 +335,12 @@ public class BorderController implements Initializable {
 			RemoteHelper remote = RemoteHelper.getInstance();
 			Calendar date = localDate2Calendar(timeDatePicker.getValue());
 			StockLogicInterface slinterface = remote.getStockLogic();
-			if(timeDatePicker.getValue()==null||marketName.getText().isEmpty()){
+			if(timeDatePicker.getValue()==null){
 				java.awt.Toolkit.getDefaultToolkit().beep(); 
-				Notifications.create().text("Hello").show();
-				System.out.println("sad");
+				Notifications.create().text("开始日期不能大于结束日期").title("提示").show();
+			}else if(marketName.getText().isEmpty()){
+				java.awt.Toolkit.getDefaultToolkit().beep(); 
+				Notifications.create().text("请输入市场名，任意字符即可").title("提示").show();
 			}else{
 				try {
 					marketInfoVO = slinterface.getMarketInfo(date);
@@ -301,7 +349,16 @@ public class BorderController implements Initializable {
 					borderPane.setTop(getMarketThermometerResultVBox(marketInfoVO.getVolume(), marketInfoVO.getNumOfRiseStop()
 							,marketInfoVO.getNumOfDropStop(),marketInfoVO.getNumOfRiseEFP(),marketInfoVO.getNumOfDropEFP(), 
 							marketInfoVO.getNumOfOMCEFP(), marketInfoVO.getNumOfOMCLTFP()));
-				} catch (Exception e1) {
+				}catch(DateInvalidException ed){
+					Notifications.create().text(ed.toString()).title("提示").show();
+					java.awt.Toolkit.getDefaultToolkit().beep(); 
+				} catch(BeginInvalidException eb){
+					Notifications.create().text(eb.toString()).title("提示").show();
+					java.awt.Toolkit.getDefaultToolkit().beep(); 
+				}catch(EndInvalidException ee){
+					Notifications.create().text(ee.toString()).title("提示").show();
+					java.awt.Toolkit.getDefaultToolkit().beep(); 
+				}catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
