@@ -40,10 +40,9 @@ public class StockDataHelperImp implements IStockDataHelper {
 	 * stockdatahelper的初始化
 	 */
 	private StockDataHelperImp(){
-//		path=this.getClass().getClassLoader().getResource("").getPath();
-		String p=this.getClass().getResource("/date.csv").getPath();
+		path=this.getClass().getClassLoader().getResource("").getPath();
 		try {
-			stockdata=new File(URLDecoder.decode(p, "UTF-8"));
+			stockdata=new File(URLDecoder.decode(path+"date.csv", "UTF-8"));
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -126,7 +125,7 @@ public class StockDataHelperImp implements IStockDataHelper {
 //			out_ignore = new FileOutputStream("data/stock/ignorelog.properties");
 			FileReader fr=new FileReader(stockdata);
 			BufferedReader br=new BufferedReader(fr);
-			File file1=new File(path+"date1.csv");
+			File file1=new File(URLDecoder.decode(path+"date1.csv", "UTF-8"));
 			FileWriter fw=new FileWriter(file1);
         	BufferedWriter bw=new BufferedWriter(fw);
 			HashMap<String,HashMap<String,String>> result=
