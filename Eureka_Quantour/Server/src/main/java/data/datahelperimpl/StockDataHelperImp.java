@@ -35,18 +35,12 @@ public class StockDataHelperImp implements IStockDataHelper {
 //	private OutputStream out_ignore;//股票脏数据配置文件的outputstream对象
 	private File filepath;//所有stockdata相关数据的存储路径
 	private Boolean need_init;//判断程序的配置文件是否生成的boolean变量
-	private String path;
+	private File path;
 	/**
 	 * stockdatahelper的初始化
 	 */
 	private StockDataHelperImp(){
-		path=this.getClass().getClassLoader().getResource("").getPath();
-		try {
-			stockdata=new File(URLDecoder.decode(path+"date.csv", "UTF-8"));
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		stockdata=new File("resources/date.csv");
 		filepath=new File("data/stock");
 		if(!filepath.exists()&&!filepath.isDirectory())
 		{
@@ -125,7 +119,7 @@ public class StockDataHelperImp implements IStockDataHelper {
 //			out_ignore = new FileOutputStream("data/stock/ignorelog.properties");
 			FileReader fr=new FileReader(stockdata);
 			BufferedReader br=new BufferedReader(fr);
-			File file1=new File(URLDecoder.decode(path+"date1.csv", "UTF-8"));
+			File file1=new File("resources/date1.csv");
 			FileWriter fw=new FileWriter(file1);
         	BufferedWriter bw=new BufferedWriter(fw);
 			HashMap<String,HashMap<String,String>> result=
@@ -144,7 +138,7 @@ public class StockDataHelperImp implements IStockDataHelper {
 				String cal=output[1];
             	ne=output[0]+"\t"+output[1]+"\t"+output[2]+"\t"+output[3]+"\t"+output[4]+"\t"+output[5]+
             			"\t"+output[6]+"\t"+output[7]+"\t"+output[8]+"\t"+chkHalf(output[9])+"\t"+output[10];
-            	
+            	bw.write(ne+"\n");
 				if(printnumber.equals(output[8])){
 					j++;
 				}
@@ -156,9 +150,9 @@ public class StockDataHelperImp implements IStockDataHelper {
 					j++;
 					now++;
 				}
-				if(output[6].equals("0")&&!output[5].equals(output[2])
-           			&&!output[3].equals(output[4]))
-				bw.write(ne+"\n");
+//				if(output[6].equals("0")&&!output[5].equals(output[2])
+//           			&&!output[3].equals(output[4]))
+				
 //				if(output[6].equals("0")&&!output[5].equals(output[2])
 //            			&&!output[3].equals(output[4])){
 //            		prop_ignore.setProperty(String.valueOf(j-1), "1");
