@@ -14,8 +14,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
-import com.Eureka.www.AppTest;
-
 import data.serviceimpl.DataInterfaceImpl;
 import data.serviceimpl.StockDataController;
 import junit.framework.Test;
@@ -36,12 +34,12 @@ public class IDataInterfaceTest extends TestCase {
 	public IDataInterfaceTest(String name) {
 		super(name);
 		data=new DataInterfaceImpl();
-		try {
-			Thread.sleep(10000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			Thread.sleep(10000);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 	
 	/**

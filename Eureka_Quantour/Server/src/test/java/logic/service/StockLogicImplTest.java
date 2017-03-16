@@ -56,20 +56,20 @@ public class StockLogicImplTest extends TestCase {
 		listRight = new ArrayList<Double>();
 		for(int i=0;i<listB.size();i++)
 			listSave.add(listB.get(i).getEMA());
-		listRight.add(10.99); listRight.add(10.9); listRight.add(10.8);
-		listRight.add(10.69); listRight.add(11.06); listRight.add(11.3); 
-		listRight.add(11.23); listRight.add(11.25); listRight.add(11.03); 
-		listRight.add(11.04);  
+		listRight.add(11.08); listRight.add(11.09); listRight.add(11.10);
+		listRight.add(11.09); listRight.add(11.06); listRight.add(11.07); 
+		listRight.add(11.06); listRight.add(11.05); listRight.add(11.02); 
+		listRight.add(11.04); 
 		Assert.assertTrue( ifListEqual(listSave, listRight) );
 		
 		listSave = new ArrayList<Double>();
 		listRight = new ArrayList<Double>();
 		for(int i=0;i<listC.size();i++)
 			listSave.add(listC.get(i).getEMA());
-		listRight.add(10.99); listRight.add(10.9); listRight.add(10.8);
-		listRight.add(10.69); listRight.add(11.06); listRight.add(11.3); 
-		listRight.add(11.23); listRight.add(11.25); listRight.add(11.03); 
-		listRight.add(11.16);  
+		listRight.add(10.89); listRight.add(10.93); listRight.add(10.93);
+		listRight.add(10.93); listRight.add(10.95); listRight.add(10.98); 
+		listRight.add(11.00); listRight.add(11.03); listRight.add(11.04); 
+		listRight.add(11.06); 
 		Assert.assertTrue( ifListEqual(listSave, listRight) );
 	}
 	/**
@@ -97,14 +97,14 @@ public class StockLogicImplTest extends TestCase {
 		Assert.assertEquals( ci.getLowB(), 7.23 );
 		Assert.assertEquals( ci.getHighA(), 11.52 );
 		Assert.assertEquals( ci.getHighB(), 8.07 );
-		Assert.assertEquals( ci.getRODA(), -0.00272 );
-		Assert.assertEquals( ci.getRODB(), 0.10151 );
-		double[] dCloseA = { 11.16, 11.03, 11.25, 11.23, 11.3, 11.06, 10.69, 10.8, 10.9, 10.99};
-		double[] dCloseB = { 7.38, 7.29, 7.47, 7.54, 7.74, 7.69, 7.74, 8.03, 8.02, 8.03};
+		Assert.assertEquals( ci.getRODA(), 0.01732 );
+		Assert.assertEquals( ci.getRODB(), -0.07519 );
+		double[] dCloseA = { 10.99, 10.9, 10.8, 10.69, 11.06, 11.3, 11.23, 11.25, 11.03, 11.16};
+		double[] dCloseB = { 8.03, 8.02, 8.03, 7.74, 7.69, 7.74, 7.54, 7.47, 7.29, 7.38};
 		Assert.assertTrue( ifDoubleEqual(ci.getCloseA(), dCloseA) );
 		Assert.assertTrue( ifDoubleEqual(ci.getCloseB(), dCloseB) );
-		double[] dLogYieldA = { 0, -0.01171, 0.01975, -0.00178, 0.00621, -0.02147, -0.03402, 0.01023, 0.00922, 0.00822};
-		double[] dLogYieldB = { 0, -0.01227, 0.02439, 0.00933, 0.02618, -0.00648, 0.00648, 0.03678, -0.00125, 0.00125};
+		double[] dLogYieldA = { 0.00182, -0.00819, -0.00917, -0.01019, 0.03461, 0.02170, -0.00619, 0.00178, -0.01956, 0.01179};
+		double[] dLogYieldB = { 0.00625, -0.00125, 0.00125, -0.03678, -0.00648, 0.00648, -0.02618, -0.00933, -0.02439, 0.01227};
 		Assert.assertTrue( ifDoubleEqual(ci.getLogYieldA(), dLogYieldA) );
 		Assert.assertTrue( ifDoubleEqual(ci.getLogYieldB(), dLogYieldB) );
 	}
@@ -156,42 +156,6 @@ public class StockLogicImplTest extends TestCase {
 		}
 		return true;
 	}
-//	/**
-//	 * 
-//	 * @Description: to compare if two ComparedInfoVOs are same
-//	 * @author: hzp
-//	 * @time: 2017年3月12日
-//	 * @return: boolean
-//	 */
-//	private boolean ifComparedInfoVOEqual(ComparedInfoVO ciA, ComparedInfoVO ciB){
-//		if( !ciA.getNameA().equals( ciB.getNameA() ) 
-//				|| !ciA.getNameB().equals( ciB.getNameB() )
-//				|| !ciA.getCodeA().equals( ciB.getCodeA() ) 
-//				|| !ciA.getCodeB().equals( ciB.getCodeB() )
-//				|| !ifDoubleEqual( ciA.getLowA(), ciB.getLowA() )
-//				|| !ifDoubleEqual( ciA.getLowB(), ciB.getLowB() )
-//				|| !ifDoubleEqual( ciA.getHighA(), ciB.getHighA() )
-//				|| !ifDoubleEqual( ciA.getHighB(), ciB.getHighB() )
-//				|| !ifDoubleEqual( ciA.getRODA(), ciB.getRODA() )
-//				|| !ifDoubleEqual( ciA.getRODB(), ciB.getRODB() )
-//				|| !ifDoubleEqual( ciA.getLogYieldVarianceA(), ciB.getLogYieldVarianceA() )
-//				|| !ifDoubleEqual( ciA.getLogYieldVarianceB(), ciB.getLogYieldVarianceB() )
-//				)
-//			return false;
-//		else{
-//			double ACloseA[] = ciA.getCloseA();
-//			double ACloseB[] = ciA.getCloseB();
-//			double BCloseA[] = ciB.getCloseA();
-//			double BCloseB[] = ciB.getCloseB();
-//			for(int i=0; i<ACloseA.length; i++){
-//				if( !ifDoubleEqual( ACloseA[i], BCloseA[i] ) 
-//						|| !ifDoubleEqual( ACloseB[i], BCloseB[i] )
-//						)
-//					return false;
-//			}
-//			return true;
-//		}
-//	}
 	
 	private boolean ifDoubleEqual(double d1, double d2){
 		String s1 = String.valueOf(formatDoubleTwo(d1));

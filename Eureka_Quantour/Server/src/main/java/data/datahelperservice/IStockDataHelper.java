@@ -13,4 +13,9 @@ public interface IStockDataHelper {
 	 * @return	HashMap<String,HashMap<String,String>>股票信息
 	 */
 	public HashMap<String,HashMap<String,String>> getAllStock();
+	/**
+	 * 根据股票名字获得股票编号
+	 * @return	String 股票编号
+	 */
+	public String getNameToCode(String name);
 }

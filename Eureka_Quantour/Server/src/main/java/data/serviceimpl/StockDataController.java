@@ -82,14 +82,25 @@ public class StockDataController {
 	 * @return List<SingleStockInfoPO>一系列股票对象
 	 */
 	public List<SingleStockInfoPO> getSingleStockInfo(String stockcode, Calendar begin, Calendar end){
+		String code=stockcode;
+		try{
+			Integer.parseInt(stockcode);
+		}catch(Exception e){
+			System.out.println(code);
+			code=stockdatahelper.getNameToCode(stockcode);
+		}
+		System.out.println(code);
+		if(code==null){
+			return null;
+		}
 		if(sort_data){
-			return getSingleAftersort(stockcode, begin, end);
+			return getSingleAftersort(code, begin, end);
 		}
 		else if(single_data){
-			return getSingle(stockcode, begin, end);
+			return getSingle(code, begin, end);
 		}
 		else{
-			return getSingleStockInfo_unprocess(stockcode, begin, end);
+			return getSingleStockInfo_unprocess(code, begin, end);
 		}
 	}
 	
@@ -364,7 +375,7 @@ public class StockDataController {
 			String code=e.getKey();
 			int sort=sortmap.get(code).get(date);
 			if(sort==0){
-				list.add(info+"\t"+0);
+				list.add(info+"\t"+0+"\t"+0);
 			}
 			else{
 				String[] out=singlesortmap.get(code).get(sort-1).split("\t");
