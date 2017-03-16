@@ -2,13 +2,18 @@ package data.datahelperimpl;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Properties;
+import java.util.Stack;
 
 import data.datahelperservice.IStockDataHelper;
 /**
@@ -25,6 +30,9 @@ public class StockDataHelperImp implements IStockDataHelper {
 	private File stockranklog;//数据中股票顺序文件的配置文件
 	private Properties prop_rank;//股票顺序配置文件的properties对象
 	private OutputStream out_rank;//股票顺序配置文件的outputstream对象
+//	private File ignorelog;//数据中股票脏数据文件的配置文件
+//	private Properties prop_ignore;//股票脏数据配置文件的properties对象
+//	private OutputStream out_ignore;//股票脏数据配置文件的outputstream对象
 	private File filepath;//所有stockdata相关数据的存储路径
 	private Boolean need_init;//判断程序的配置文件是否生成的boolean变量
 	private String path;
@@ -32,8 +40,14 @@ public class StockDataHelperImp implements IStockDataHelper {
 	 * stockdatahelper的初始化
 	 */
 	private StockDataHelperImp(){
-		path=this.getClass().getClassLoader().getResource("").getPath();
-		stockdata=new File(path+"date.csv");
+//		path=this.getClass().getClassLoader().getResource("").getPath();
+		String p=this.getClass().getResource("/date.csv").getPath();
+		try {
+			stockdata=new File(URLDecoder.decode(p, "UTF-8"));
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		filepath=new File("data/stock");
 		if(!filepath.exists()&&!filepath.isDirectory())
 		{
@@ -59,8 +73,21 @@ public class StockDataHelperImp implements IStockDataHelper {
 			stockranklog=new File("data/stock/stockranklog.properties");
 			prop_rank=new Properties();		
 			if(!stockranklog.exists()){
+				need_init=true;
 				stockranklog.createNewFile();
 			}
+			else{
+				need_init=false;
+			}
+//			ignorelog=new File("data/stock/ignorelog.properties");
+//			prop_ignore=new Properties();		
+//			if(!ignorelog.exists()){
+//				need_init=true;
+//				ignorelog.createNewFile();
+//			}
+//			else{
+//				need_init=false;
+//			}
     	}catch(Exception e){
     		e.printStackTrace();
     	}
@@ -96,21 +123,29 @@ public class StockDataHelperImp implements IStockDataHelper {
 			//创建变量
 			out_file = new FileOutputStream("data/stock/filelog.properties");
 			out_rank = new FileOutputStream("data/stock/stockranklog.properties");
+//			out_ignore = new FileOutputStream("data/stock/ignorelog.properties");
 			FileReader fr=new FileReader(stockdata);
 			BufferedReader br=new BufferedReader(fr);
+			File file1=new File(path+"date1.csv");
+			FileWriter fw=new FileWriter(file1);
+        	BufferedWriter bw=new BufferedWriter(fw);
 			HashMap<String,HashMap<String,String>> result=
 					new HashMap<String,HashMap<String,String>>();
-			br.readLine();
+			bw.write(br.readLine()+"\n");
 			String printnumber="1";
 			int i=2;
 			int j=2;
 			int now=1;
-			
+			String ne="";
+			Stack<String> stack=new Stack<String>();
 			//开始读取数据以及生成配置文件
 			while(br.ready()){
 				String out=br.readLine();
 				String[] output=out.split("\t");
 				String cal=output[1];
+            	ne=output[0]+"\t"+output[1]+"\t"+output[2]+"\t"+output[3]+"\t"+output[4]+"\t"+output[5]+
+            			"\t"+output[6]+"\t"+output[7]+"\t"+output[8]+"\t"+chkHalf(output[9])+"\t"+output[10];
+            	
 				if(printnumber.equals(output[8])){
 					j++;
 				}
@@ -122,6 +157,14 @@ public class StockDataHelperImp implements IStockDataHelper {
 					j++;
 					now++;
 				}
+				if(output[6].equals("0")&&!output[5].equals(output[2])
+           			&&!output[3].equals(output[4]))
+				bw.write(ne+"\n");
+//				if(output[6].equals("0")&&!output[5].equals(output[2])
+//            			&&!output[3].equals(output[4])){
+//            		prop_ignore.setProperty(String.valueOf(j-1), "1");
+//            		continue;
+//            	}
 				if(result.containsKey(cal)){
 					result.get(cal).put(output[8], out);
 				}
@@ -137,8 +180,13 @@ public class StockDataHelperImp implements IStockDataHelper {
 			prop_file.store(out_file, "date汇总");
 			prop_rank.setProperty(String.valueOf(now), printnumber);
 			prop_rank.store(out_rank, "abcd");
+//			prop_rank.store(out_ignore, "abcd");
 			br.close();
 			fr.close();
+			bw.close();
+			fw.close();
+			stockdata.delete();
+            file1.renameTo(stockdata);
 			return result;
 		}catch(Exception e)
 		{
@@ -203,6 +251,15 @@ public class StockDataHelperImp implements IStockDataHelper {
 				code=now_row-small_number;
 				i=String.valueOf(code).length()+1;
 				cal=str.substring(i, str.indexOf("\t", i));
+				if(cal.equals("\\s+")){
+					System.out.println(str);
+					break;
+				}
+				if(cal.equals("")){
+					System.out.println(i);
+					System.out.println(str);
+					break;
+				}
 				if(result.containsKey(cal)){
 					result.get(cal).put(now_rank, str);
 				}
@@ -265,4 +322,16 @@ public class StockDataHelperImp implements IStockDataHelper {
 //			return null;
 //		}
 //	}
+	 private String chkHalf(String str){
+	    	String sum="";
+	        for(int i=0;i<str.length();i++)
+	            {   
+	               char strCode=str.charAt(i);   
+	               if((strCode>65248)||(strCode==12288)){  
+	            	   strCode=(char) (strCode-65248);
+	                } 
+	               sum=sum+strCode;
+	        }
+	        return sum;
+	  }
 }

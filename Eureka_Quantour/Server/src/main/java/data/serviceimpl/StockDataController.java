@@ -325,7 +325,7 @@ public class StockDataController {
 			Calendar date=Calendar.getInstance();
 			date.setTime(sdf.parse(calendar));
 			int i=0;
-			while(i<10){
+			while(i<7){
 				i++;
 				date.set(Calendar.DATE, date.get(Calendar.DATE)-1);
 				String cal=tostring(sdf.format(date.getTime()));
@@ -417,6 +417,8 @@ public class StockDataController {
 					cal.setTime(sdf.parse(entry.getKey()));
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
+					System.out.println(entry.getKey());
+					System.out.println(entry.getValue().get("10").toString());
 					e.printStackTrace();
 				}
 				String code="";
