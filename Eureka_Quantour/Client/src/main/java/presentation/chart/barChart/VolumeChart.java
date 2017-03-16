@@ -27,7 +27,11 @@ public class VolumeChart implements chartService {
         yAxis.forceZeroInRangeProperty().setValue(Boolean.FALSE);
 
 
+
         volumechart=new BarChart<>(xAxis,yAxis);
+
+        volumechart.setHorizontalGridLinesVisible(false);
+        volumechart.setVerticalGridLinesVisible(false);
 
         XYChart.Series<String,Number> series =new XYChart.Series<>();
 

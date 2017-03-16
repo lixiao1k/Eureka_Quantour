@@ -82,7 +82,6 @@ public class  CandleStickChart extends XYChart<String, Number> {
         setAnimated(true);
         xAxis.setAnimated(true);
         yAxis.setAnimated(true);
-        verticalGridLinesVisibleProperty().set(false);
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         for (SingleStockInfoVO bar : bars) {
             String label = sdf.format(bar.getDate().getTime());
