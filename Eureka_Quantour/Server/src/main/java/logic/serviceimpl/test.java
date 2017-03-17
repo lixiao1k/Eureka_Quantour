@@ -157,11 +157,14 @@ public class test {
 		System.out.println( ci.getHighB()+" "+8.07 );
 		System.out.println( ci.getRODA()+" "+ 0.01732 );
 		System.out.println( ci.getRODB()+" "+ -0.07519 );
-		double[] dCloseA = { 10.99, 10.9, 10.8, 10.69, 11.06, 11.3, 11.23, 11.25, 11.03, 11.16};
-		double[] dCloseB = { 8.03, 8.02, 8.03, 7.74, 7.69, 7.74, 7.54, 7.47, 7.29, 7.38};
-
 		double[] dLogYieldA = { 0.00182, -0.00819, -0.00917, -0.01019, 0.03461, 0.02170, -0.00619, 0.00178, -0.01956, 0.01179};
 		double[] dLogYieldB = { 0.00625, -0.00125, 0.00125, -0.03678, -0.00648, 0.00648, -0.02618, -0.00933, -0.02439, 0.01227};
-
+		for( int i=0;i<dLogYieldA.length;i++){
+			System.out.print(ci.getLogYieldA()[i]+"<br/>");
+		};
+		System.out.println();
+		for( int i=0;i<dLogYieldA.length;i++){
+			System.out.print(ci.getLogYieldB()[i]+"<br/>");
+		};
 	}
 }

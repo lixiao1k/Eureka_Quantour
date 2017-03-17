@@ -280,7 +280,7 @@ public class StockLogicImpl implements StockLogicInterface{
 				ci.setRODB( formatDoubleSaveFive( result ) );
 			}
 		}
-		
+
 		// 计算最高值、最低值、储存收盘价、计算对数收益率和对数收益率方差
 		double maxA = 0, minA = 1000000.0, maxB = 0, minB = 1000000.0;
 		double newAdjloseA = 0.0, newAdjcloseB = 0.0;
@@ -294,7 +294,6 @@ public class StockLogicImpl implements StockLogicInterface{
 		for( int i=0 ; i<tempInt ; i++ ){
 			ssiA = lstiA.get(i);
 			ssiB = lstiB.get(i);
-			System.out.println(ssiA.getAdjclose()+" "+ssiB.getAdjclose());
 			closeA[i] = ssiA.getClose();
 			closeB[i] = ssiB.getClose();
 			if( !ifANull)
