@@ -97,11 +97,6 @@ public class test {
 		listRight.add(10.87); listRight.add(10.89); listRight.add(10.95); 
 		listRight.add(11.02); listRight.add(11.11); listRight.add(11.17); 
 		listRight.add(11.19); 
-		for( int i=0; i<Math.min( listSave.size(), listRight.size() ) ; i++){
-			System.out.print(listSave.get(i)+"<br/>");
-			/* +" "+listRight.get(i) */
-		}
-		System.out.println();
 		
 		listSave = new ArrayList<Double>();
 		listRight = new ArrayList<Double>();
@@ -111,12 +106,7 @@ public class test {
 		listRight.add(11.09); listRight.add(11.06); listRight.add(11.07); 
 		listRight.add(11.06); listRight.add(11.05); listRight.add(11.02); 
 		listRight.add(11.04); 
-		for( int i=0; i<Math.min( listSave.size(), listRight.size() ) ; i++){
-			System.out.print(listSave.get(i)+"<br/>");
-			/* +" "+listRight.get(i) */
-		}
 		
-		System.out.println();
 		listSave = new ArrayList<Double>();
 		listRight = new ArrayList<Double>();
 		for(int i=0;i<listC.size();i++)
@@ -125,18 +115,6 @@ public class test {
 		listRight.add(10.93); listRight.add(10.95); listRight.add(10.98); 
 		listRight.add(11.00); listRight.add(11.03); listRight.add(11.04); 
 		listRight.add(11.06); 
-		for( int i=0; i<Math.min( listSave.size(), listRight.size() ) ; i++){
-			System.out.print(listSave.get(i)+"<br/>");
-			/* +" "+listRight.get(i) */
-		}
-		
-//		System.out.println();
-//		listSave = new ArrayList<Double>();
-//		for(int i=0;i<listD.size();i++)
-//			listSave.add(listD.get(i).getEMA());
-//		for( int i=0; i<listSave.size() ; i++){
-//			System.out.print(listSave.get(i)+"<br/>");
-//		}
 	}
 	
 	private void testGetComparedInfo()throws RemoteException{
@@ -159,12 +137,5 @@ public class test {
 		System.out.println( ci.getRODB()+" "+ -0.07519 );
 		double[] dLogYieldA = { 0.00182, -0.00819, -0.00917, -0.01019, 0.03461, 0.02170, -0.00619, 0.00178, -0.01956, 0.01179};
 		double[] dLogYieldB = { 0.00625, -0.00125, 0.00125, -0.03678, -0.00648, 0.00648, -0.02618, -0.00933, -0.02439, 0.01227};
-		for( int i=0;i<dLogYieldA.length;i++){
-			System.out.print(ci.getLogYieldA()[i]+"<br/>");
-		};
-		System.out.println();
-		for( int i=0;i<dLogYieldA.length;i++){
-			System.out.print(ci.getLogYieldB()[i]+"<br/>");
-		};
 	}
 }
