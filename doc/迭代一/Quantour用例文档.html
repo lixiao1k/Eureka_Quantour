@@ -33,6 +33,12 @@
 <td class="tdh">李晓冬</td>
 <td class="tdh">2017/3/5</td>
 </tr>
+<tr>
+<td class="tdh">2.0</td>
+<td>整合更新，加入用例2.5</td>
+<td class="tdh">李晓冬</td>
+<td class="tdh">2017/3/16</td>
+</tr>
 </tbody>
 </table>
 <h2 class="kfont" align="left">1.引言</h2>
@@ -352,8 +358,8 @@
 <pre class="kfont">刺激：客户选择查看Ｋ线图（均线图）
 响应：系统显示该段日期内该股票的Ｋ线图（均线图）
 </pre>
-<h4 class="kfont">3.2.3 相关功能需求</h4>
-<table style="font-family: 楷体;" border="2" width="600px" cellspacing="0">
+<h4 class="kfont">3.1.3 相关功能需求</h4>
+<table style="font-family: 楷体;" border="2" width="600px" cellspacing="0" align="center">
 <tbody>
 <tr>
 <td>Stock.Search.Input</td>
@@ -405,4 +411,116 @@
 </tr>
 </tbody>
 </table>
+<h3>3.2 股票比较</h3>
+<h4>3.2.1 特性描述</h4>
+<p>当用户希望去对比所选中的股票在用户选中的时间范围内的情况时，系统需要提供给用户所选的两只股票在用户选定时间范围内的所有数据信息， 并且显示两只对比股票的所有从起始时间到终止时间的最低值、最高值、涨幅/跌幅、每天的收盘价和对数收益率、对数收益率方差。</p>
+<p>优先级=高</p>
+<h4>3.2.2 刺激响应序列</h4>
+<p>刺激：用户输入正确的股票编号或是股票名字以及时间范围。</p>
+<p>响应：系统显示对应的股票的所有从起始时间到终止时间的最低值、最高值、涨幅/跌幅、每天的收盘价和对数收益率、对数收益率方差。</p>
+<p>刺激：用户选择退出股票对比功能。</p>
+<p>响应：系统显示股票软件初始界面。</p>
+<p>刺激：用户输入了错误的股票编号或名字。</p>
+<p>响应：系统提示输入的股票编号或名字有误。</p>
+<p>刺激：用户输入了错误的时间范围。</p>
+<p>响应：系统提示错误的时间范围。</p>
+<h4>3.2.3 相关功能需求</h4>
+<table border="1"  align="center">
+<tbody>
+<tr>
+<td class="tdl">Shares_Compare.Input<br />Shares_Compare.Input.Shares<br />Shares_Compare.Input.Date</td>
+<td class="tdr">系统应该允许用户在对比股票数据时进行键盘输入。<br />系统需要接收用户输入的股票编号或股票名字。<br />系统需要接收用户输入的时间。</td>
+</tr>
+<tr>
+<td>Shares_Compare.Judge<br />Shares_Compare.Judge.Shares<br />Shares_Compare.Judge.Date</td>
+<td>系统会对于用户的输入进行判断。<br />系统判断所接收的股票编号或名字是否正确，如不正确，跳转到.Error.Shares。<br />系统判断所接收的时间是否正确,如不正确，跳转到.Error.Shares。</td>
+</tr>
+<tr>
+<td>Shares_Compare.Error<br />Shares_Compare.Error.Shares<br />Shares_Compare.Error.Date</td>
+<td>系统对于错误的操作进行提示。<br />系统提示输入的股票编号或名字有误。<br />系统提示错误的时间范围。</td>
+</tr>
+<tr>
+<td>Shares_Compare.Compute<br />Shares_Compare.Compute.Info</td>
+<td>系统需要对于获取的股票数据进行处理。<br />系统根据获取的股票数据计算所有从起始时间到终止时间的最低值、最高值、涨幅/跌幅、每天的收盘价和对数收益率、对数收益率方差。</td>
+</tr>
+<tr>
+<td>Shares_Compare.Output</td>
+<td>系统显示两只股票的所有从起始时间到终止时间的最低值、最高值、涨幅/跌幅、每天的收盘价和对数收益率、对数收益率方差的数据。</td>
+</tr>
+<tr>
+<td>Shares_Compare.Exit</td>
+<td>系统显示股票软件初始界面。</td>
+</tr>
+</tbody>
+</table>
+<p><br /><br /><br /></p>
+<h3>3.3 查看股票比较图</h3>
+<h4>3.3.1 特性描述</h4>
+<p>当用户希望去对比所选中的股票的k线图与均线图的对比情况时，系统需要提供给用户所选的两只股票的k线图与均线图的绘制与对比。</p>
+<p>优先级=高</p>
+<h4>3.3.2 刺激响应序列</h4>
+<p>刺激：用户选择查看对比股票的k线图/均线图。</p>
+<p>响应：系统显示对应的股票的k线图与均线图。</p>
+<p>刺激：用户选择返回股票信息对比。</p>
+<p>响应：系统显示股票的信息数据对比界面。</p>
+<h4>3.3.3 相关功能需求</h4>
+<table border="1" align="center">
+<tbody>
+<tr>
+<td class="tdl">Draw_Compare.GetData</td>
+<td class="tdr">系统获取两只对比股票的所有数据。</td>
+</tr>
+<tr>
+<td>Draw_Compare.Output<br />Draw_Compare.Output.kchat<br />Draw_Compare.Output.avgchat</td>
+<td>系统绘制出两只对比股票的相关对比图。<br />系统绘制出两只对比股票的k线图。<br />系统绘制出两只对比股票的均线图。</td>
+</tr>
+<tr>
+<td class="tdl">Draw_Compare.Exit</td>
+<td class="tdr">系统显示股票的信息数据对比界面。</td>
+</tr>
+</tbody>
+</table>
+<h3>3.4 查看市场温度计</h3>
+<h4>3.4.1 特性描述</h4>
+<p>当用户希望去获取特定日期整个股票交易市场的情况时，系统需要提供给用户所选的日期的股票市场信息， 并且显示当日总交易量、涨停股票数、跌停股票数、涨幅超过 5%的股票数，跌幅超过 5%的股票数，开盘‐收盘大于 5%*上一个交易日收盘价的 股票个数、开盘‐收盘小于‐5%*上一个交易日收盘价的股票个数。</p>
+<p>优先级=高</p>
+<h4>3.4.2 刺激响应序列</h4>
+<p>刺激：用户输入正确的日期。</p>
+<p>响应：系统显示对应的日期的股票市场的统计数据。</p>
+<p>刺激：用户选择退出股票对比功能。</p>
+<p>响应：系统显示股票软件初始界面。</p>
+<p>刺激：用户输入了错误的时间。</p>
+<p>响应：系统提示错误的时间。</p>
+<h4>3.4.3 相关功能需求</h4>
+<table border="1" align="center">
+<tbody>
+<tr>
+<td class="tdl">
+<p>Market_Info.Input<br />Market_Info.Input.Date</p>
+</td>
+<td class="tdr">系统应该允许用户在获取市场温度计情况时进行键盘输入。<br />系统需要接收用户输入的时间。</td>
+</tr>
+<tr>
+<td>Market_Info.Judge<br />Market_Info.Date</td>
+<td>系统会对于用户的输入进行判断。<br />系统判断所接收的时间是否正确,如不正确，跳转到.Error.Shares。</td>
+</tr>
+<tr>
+<td>Market_Info.Error<br />Market_Info.Error.Date</td>
+<td>系统对于错误的操作进行提示。<br />系统提示错误的时间范围。</td>
+</tr>
+<tr>
+<td>Market_Info.Compute<br />Market_Info.Compute.Info</td>
+<td>系统需要对于获取的股票数据进行处理。<br />系统根据获取的股票数据计算当天总交易量、涨停股票数、跌停股票数、涨幅超过 5%的股票数，跌幅超过 5%的股票数，开盘‐收盘大于 5%*上一个交易日收盘价的 股票个数、开盘‐收盘小于‐5%*上一个交易日收盘价的股票个数。</td>
+</tr>
+<tr>
+<td>Market_Info.Output</td>
+<td>系统显示当天总交易量、涨停股票数、跌停股票数、涨幅超过 5%的股票数，跌幅超过 5%的股票数，开盘‐收盘大于 5%*上一个交易日收盘价的 股票个数、开盘‐收盘小于‐5%*上一个交易日收盘价的股票个数。</td>
+</tr>
+<tr>
+<td>Market_Info.Exit</td>
+<td>系统显示股票软件初始界面。</td>
+</tr>
+</tbody>
+</table>
+<body>
 </html>
