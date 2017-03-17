@@ -34,12 +34,12 @@ public class IDataInterfaceTest extends TestCase {
 	public IDataInterfaceTest(String name) {
 		super(name);
 		data=new DataInterfaceImpl();
-		try {
-			Thread.sleep(10000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			Thread.sleep(10000);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 	
 	/**

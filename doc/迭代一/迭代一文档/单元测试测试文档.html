@@ -1,0 +1,262 @@
+<!doctype html>
+<html>
+	<head>
+	<meta charset="UTF-8">
+	<title>单元测试文档</title>
+	<style>	
+/*	#divfont
+	{	font-family:"STXINGKA";
+		margin:0 auto;
+		width:50%;
+	}*/
+	body{
+			background-color:rgb(199,237,204);
+			margin-left: 20%;
+			margin-right: 20%;
+			border:2px dotted black;
+			padding:10px 10px 10px 10px;
+			font-family: sans-serif;
+		}
+/*	table{width:960px;word-break:break-all; word-wrap:break-all;}
+	.t1{width:200px}.t2{width:160px}.t3{width:160px}.t4{width:160px}.t5{width:100px}.t6{width:180px}*/
+	</style>
+	</head>
+	<body>
+		<div id="divfont">
+		<h3> Unit Test Case L1</h3>
+		<p style="text-indent:2em"> 被测单元名称:getMarketByDate</p>
+		<p style="text-indent:2em"> 测试用例列表</p>
+		<table border="1">
+			<tr>
+				<th class="t1">
+				测试用例ID
+				</th>
+				<th class="t2">
+				输入数据
+				</th>
+				<th class="t3">
+				预期输出
+				</th>
+				<th class="t4">
+				实际输出
+				</th>
+				<th class="t5">
+				Pass/Fail
+				</th>
+				<th class="t6">
+				备注
+				</th>
+			</tr>
+			<tr>
+				<td>
+				testgetMarketByDate-01
+				</td>
+				<td>
+				有效的时间日期
+				</td>
+				<td>
+				一个在当天开盘的股票信息的列表
+				</td>
+				<td>
+				一个在当天开盘的股票信息的列表
+				</td>
+				<td>
+				Pass
+				</td>
+				<td>
+				</td>
+			</tr>
+			<tr>
+				<td>
+				testgetMarketByDate-02
+				</td>
+				<td>
+				超过最晚日期的时间日期
+				</td>
+				<td>
+				null
+				</td>
+				<td>
+				null
+				</td>
+				<td>
+				Pass
+				</td>
+				<td>
+				逻辑层需要处理接收到的null
+				</td>
+			</tr>
+				<tr>
+				<td>
+				testgetMarketByDate-03
+				</td>
+				<td>
+				小于最早日期的时间日期
+				</td>
+				<td>
+				null
+				</td>
+				<td>
+				null
+				</td>
+				<td>
+				Pass
+				</td>
+				<td>
+				逻辑层需要处理接收到的null
+				</td>
+			</tr>
+			</tr>
+				<tr>
+				<td>
+				testgetMarketByDate-04
+				</td>
+				<td>
+				选取的日期为周六周日或没有该时间的股票信息
+				</td>
+				<td>
+				null
+				</td>
+				<td>
+				null
+				</td>
+				<td>
+				Pass
+				</td>
+				<td>
+				逻辑层需要处理接收到的null
+				</td>
+			</tr>
+		</table>
+		<br><br>
+		<h3> Unit Test Case L2</h3>
+		<p style="text-indent:2em"> 被测单元名称:getSingleStockInfo</p>
+		<p style="text-indent:2em"> 测试用例列表</p>
+		<table border="1">
+			<tr>
+				<th style="width:210px">
+				测试用例ID
+				</th>
+				<th class="t2">
+				输入数据
+				</th>
+				<th class="t3">
+				预期输出
+				</th>
+				<th class="t4">
+				实际输出
+				</th>
+				<th style="width:90px">
+				Pass/Fail
+				</th>
+				<th class="t6">
+				备注
+				</th>
+			</tr>
+			<tr>
+				<td>
+				testgetSingleStockInfo-01
+				</td>
+				<td>
+				有效的时间范围与股票id
+				</td>
+				<td>
+				该股票在这段时间的所有数据
+				</td>
+				<td>
+				该股票在这段时间的所有数据
+				</td>
+				<td>
+				Pass
+				</td>
+				<td>
+				时间范围在05/2/1到14/4/29
+				</td>
+			</tr>
+			<tr>
+				<td>
+				testgetSingleStockInfo-02
+				</td>
+				<td>
+				错误的股票编号
+				</td>
+				<td>
+				null
+				</td>
+				<td>
+				null
+				</td>
+				<td>
+				Pass
+				</td>
+				<td>
+				逻辑层需要处理接收到的null
+				</td>
+			</tr>
+				<tr>
+				<td>
+				testgetSingleStockInfo-03
+				</td>
+				<td>
+				开始时间大于最晚时间或是结束时间小于最早时间
+				</td>
+				<td>
+				null
+				</td>
+				<td>
+				null
+				</td>
+				<td>
+				Pass
+				</td>
+				<td>
+				逻辑层需要处理接收到的null
+				</td>
+			</tr>
+			</tr>
+				<tr>
+				<td>
+				testgetSingleStockInfo-04
+				</td>
+				<td>
+				开始时间小于结束时间
+				</td>
+				<td>
+				null
+				</td>
+				<td>
+				null
+				</td>
+				<td>
+				Pass
+				</td>
+				<td>
+				逻辑层需要处理接收到的null
+				</td>
+			</tr>
+			</tr>
+				<tr>
+				<td>
+				testgetSingleStockInfo-05
+				</td>
+				<td>
+				选取的时间段之间没有数据
+				</td>
+				<td>
+				null
+				</td>
+				<td>
+				null
+				</td>
+				<td>
+				Pass
+				</td>
+				<td>
+				逻辑层需要处理接收到的null
+				</td>
+			</tr>
+		</table>
+		</div>
+		<p><a href="Eureka_Quantour迭代一文档.html">返回首页</a></p>
+	</body>
+</html>

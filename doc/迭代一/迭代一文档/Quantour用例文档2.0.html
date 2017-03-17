@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title> Quantour用例文档2.0</title>
+	<style>
+		.tdl {width:100px;}
+		.tdr {width:150px;}
+		.tdh {width:100px;text-align: center}
+		.kfont {font-family:"楷体";}
+		body{
+			background-color:rgb(199,237,204);
+			margin-left: 20%;
+			margin-right: 20%;
+			border:2px dotted black;
+			padding:10px 10px 10px 10px;
+			font-family: sans-serif;
+		}
+	</style>
+</head>
+
+<body>
+
+	<p>Quantour用例文档2.0</p>
+<h1 class="kfont" align="center">Quantour用例文档2.0</h1>
+<h2 class="kfont" align="center">Eureka</h2>
+<table style="font-family: 楷体;" border="2" width="600px" cellspacing="0" align="center">
+<tbody>
+<tr><th class="tdl">版本</th><th class="tdl" align="center">修改原因</th><th class="td1" align="center">最后修改者</th><th class="tdl" align="center">修改日期</th></tr>
+<tr>
+<td class="tdh">1.0</td>
+<td class="tdh">整合</td>
+<td class="tdh">李晓冬</td>
+<td class="tdh">2017/3/5</td>
+</tr>
+<tr>
+<td class="tdh">2.0</td>
+<td>整合更新，加入用例2.5</td>
+<td class="tdh">李晓冬</td>
+<td class="tdh">2017/3/16</td>
+</tr>
+</tbody>
+</table>
+<h2 class="kfont" align="left">1.引言</h2>
+<h3 class="kfont" align="left">1.1目的</h3>
+<p class="kfont">本文档描述了量化交易系统第一循环的用户需求</p>
+<h2 class="kfont" align="left">2.用例列表</h2>
+<h3 class="kfont" align="left">2.1 查询某段日期单支股票数据</h3>
+<table style="font-family: 楷体;" border="2" width="600px" cellspacing="0" align="center"><!--	<caption> 查询某段日期单支股票数据 </caption> -->
+<tbody>
+<tr><th class="tdl">ID</th>
+<td>1</td>
+<th class="tdr">名称</th>
+<td>查询某段日期单支股票数据</td>
+</tr>
+<tr><th class="tdl">创建者</th>
+<td>黄泽鹏</td>
+<th class="tdr">最后一次更新者</th>
+<td>&nbsp;</td>
+</tr>
+<tr><th class="tdl">创建日期</th>
+<td>2017/3/4</td>
+<th class="tdr">最后更新日期</th>
+<td>&nbsp;</td>
+</tr>
+<tr><th>参与者</th>
+<td colspan="3">用户，目标是快速了解单支股票最近数据的涨跌情况</td>
+</tr>
+<tr><th>触发条件</th>
+<td colspan="3">用户想要了解某支股票数据的涨跌情况</td>
+</tr>
+<tr><th>前置条件</th>
+<td colspan="3">用户已登录</td>
+</tr>
+<tr><th>后置条件</th>
+<td colspan="3">无</td>
+</tr>
+<tr><th>优先级</th>
+<td colspan="3">中</td>
+</tr>
+<tr><th>正常流程</th>
+<td colspan="3">
+<ol style="margin-top: 5px; margin-bottom: 5px;">
+<li>用户输入开始日期、结束日期和股票编号，点击搜索</li>
+<li>系统显示该时间段内该股票的单日开盘价、收盘价、最高价、最低价</li>
+</ol>
+</td>
+</tr>
+<tr><th>扩展流程</th>
+<td colspan="3">
+<pre class="kfont" style="margin-top: 5px; margin-bottom: 5px;"> 1a:日期不在范围内
+   1.系统提示日期不在有效范围内，并要求重新输入
+ 1b:日期跨度过大
+   1.系统提示日期跨度过大，并提示日期跨度限制
+ 1c:股票编号无效
+   1.系统提示股票编号无效，并要求重新输入
+</pre>
+</td>
+</tr>
+<tr><th>特殊需求</th>
+<td colspan="3">
+<ol style="margin-top: 5px; margin-bottom: 5px;">
+<li>日期范围是2005年2月到2014年4月。</li>
+<li>日期跨度是1年。</li>
+</ol>
+</td>
+</tr>
+</tbody>
+</table>
+<h3 class="kfont" align="left">2.2 查看某段日期单支股票走势图</h3>
+<table style="font-family: 楷体;" border="2" width="600px" cellspacing="0" align="center"><!--	<caption> 查看某段日期单支股票走势图 </caption> -->
+<tbody>
+<tr><th class="tdl">ID</th>
+<td>2</td>
+<th class="tdr">名称</th>
+<td>查看某段日期单支股票走势图</td>
+</tr>
+<tr><th class="tdl">创建者</th>
+<td>黄泽鹏</td>
+<th class="tdr">最后一次更新者</th>
+<td>&nbsp;</td>
+</tr>
+<tr><th class="tdl">创建日期</th>
+<td>2017/3/4</td>
+<th class="tdr">最后更新日期</th>
+<td>&nbsp;</td>
+</tr>
+<tr><th>参与者</th>
+<td colspan="3">用户，目标是直观了解单支股票最近的涨跌情况</td>
+</tr>
+<tr><th>触发条件</th>
+<td colspan="3">用户想要直观了解某支股票的涨跌情况</td>
+</tr>
+<tr><th>前置条件</th>
+<td colspan="3">用户已登录并成功查询某一支股票</td>
+</tr>
+<tr><th>后置条件</th>
+<td colspan="3">无</td>
+</tr>
+<tr><th>优先级</th>
+<td colspan="3">中</td>
+</tr>
+<tr><th>正常流程</th>
+<td colspan="3">
+<ol style="margin-top: 5px; margin-bottom: 5px;">
+<li>用户看完股票数据后，选择查看K线图</li>
+<li>系统显示该时间段该股票的K线图</li>
+</ol>
+</td>
+</tr>
+<tr><th>扩展流程</th>
+<td style="margin: 10px;" colspan="3">
+<pre class="kfont" style="margin-top: 5px; margin-bottom: 5px;"> 1a:用户选择查看均线图
+   1.系统显示该时间段该股票的均线图
+</pre>
+</td>
+</tr>
+<tr><th>特殊需求</th>
+<td colspan="3">&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<h3 class="kfont" align="left">2.3 股票比较</h3>
+<table style="font-family: 楷体;" border="2" width="600px" cellspacing="0" align="center">
+<tbody>
+<tr><th class="tdl">ID</th>
+<td>3</td>
+<th class="tdr">名称</th>
+<td>股票比较</td>
+</tr>
+<tr><th class="tdl">创建者</th>
+<td>刘宇翔</td>
+<th class="tdr">最后一次更新者</th>
+<td>刘宇翔</td>
+</tr>
+<tr><th class="tdl">创建日期</th>
+<td>2017年3月4日</td>
+<th class="tdr">最后更新日期</th>
+<td>2017年3月4日</td>
+</tr>
+<tr><th>参与者</th>
+<td colspan="3">用户，目标是查看两只股票的对比信息。</td>
+</tr>
+<tr><th>触发条件</th>
+<td colspan="3">用户将两只股票编号或股票名字添加到比较栏</td>
+</tr>
+<tr><th>前置条件</th>
+<td colspan="3">用户知道股票的编号或名字</td>
+</tr>
+<tr><th>后置条件</th>
+<td colspan="3">展示相关股票信息</td>
+</tr>
+<tr><th>优先级</th>
+<td colspan="3">高</td>
+</tr>
+<tr><th>正常流程</th>
+<td colspan="3">
+<ol style="margin-top: 5px; margin-bottom: 5px;">
+<li>用户选择股票比较</li>
+<li>系统给出股票名字或股票编号的输入框以及查询起始时间与终止时间的输入框。</li>
+<li>用户输入需要对比的股票名字或股票编号以及查询的起始时间与终止时间。</li>
+<li>系统显示两只对比股票的所有从起始时间到终止时间的最低值、最高值、涨幅/跌幅、每天的收盘价和对数收益率、对数收益率方差。</li>
+<li>用户选择返回.</li>
+<li>系统显示起始界面</li>
+</ol>
+</td>
+</tr>
+<tr><th>扩展流程</th>
+<td colspan="3">
+<pre style="margin-top: 5px; margin-bottom: 5px; font-family: 楷体; margin-left: 13px;">3a. 用户输入错误的股票名字或股票编号
+	1.系统提示输入了错误的股票名字或股票编号
+	2.回到正常流程2
+3b. 用户输入错误的日期范围有误
+	1.系统提示错误的日期范围
+	2.回到正常流程2
+                    </pre>
+</td>
+</tr>
+<tr><th>特殊需求</th>
+<td colspan="3">
+<ol style="margin-top: 5px; margin-bottom: 5px;">
+<li>日期范围是2005年2月到2014年4月。</li>
+</ol>
+</td>
+</tr>
+</tbody>
+</table>
+<h3 class="kfont" align="left">2.4 查看股票比较图</h3>
+<table style="font-family: 楷体;" border="2" width="600px" cellspacing="0" align="center">
+<tbody>
+<tr><th class="tdl">ID</th>
+<td>4</td>
+<th class="tdr">名称</th>
+<td>股票比较绘图</td>
+</tr>
+<tr><th class="tdl">创建者</th>
+<td>刘宇翔</td>
+<th class="tdr">最后一次更新者</th>
+<td>刘宇翔</td>
+</tr>
+<tr><th class="tdl">创建日期</th>
+<td>2017年3月4日</td>
+<th class="tdr">最后更新日期</th>
+<td>2017年3月4日</td>
+</tr>
+<tr><th>参与者</th>
+<td colspan="3">用户，目标是查看两只股票的对比信息所绘制出的k线图与均线图。</td>
+</tr>
+<tr><th>触发条件</th>
+<td colspan="3">用户想要查看两只对比股票的k线图与均线图的比较</td>
+</tr>
+<tr><th>前置条件</th>
+<td colspan="3">用户知道股票的编号或名字，且处于股票比较界面</td>
+</tr>
+<tr><th>后置条件</th>
+<td colspan="3">展示相关股票所绘制出的k线图与均线图</td>
+</tr>
+<tr><th>优先级</th>
+<td colspan="3">高</td>
+</tr>
+<tr><th>正常流程</th>
+<td colspan="3">
+<ol style="margin-top: 5px; margin-bottom: 5px;">
+<li>用户选择查看对比股票的k线图。</li>
+<li>系统给出根据对比股票的信息所绘制出的处于时间范围内的k线图。</li>
+</ol>
+</td>
+</tr>
+<tr><th>扩展流程</th>
+<td colspan="3">
+<pre style="margin-top: 5px; margin-bottom: 5px; font-family: 楷体; margin-left: 13px;">1a. 用户选择查看股票比较的均线图
+    1.系统显示用户所选择的的时间范围内的股票比较的均</pre>
+</td>
+</tr>
+<tr><th>特殊需求</th>
+<td colspan="3">
+<ol style="margin-top: 5px; margin-bottom: 5px;">
+<li>日期范围是2005年2月到2014年4月。</li>
+</ol>
+</td>
+</tr>
+</tbody>
+</table>
+<h3 class="kfont" align="left">2.5 查看市场情况温度计</h3>
+<table style="font-family: 楷体;" border="2" width="600px" cellspacing="0" align="center">
+<tbody>
+<tr><th class="tdl">ID</th>
+<td>5</td>
+<th class="tdr">名称</th>
+<td>查看市场情况温度计</td>
+</tr>
+<tr><th class="tdl">创建者</th>
+<td>惠晗涛</td>
+<th class="tdr">最后一次更新者</th>
+<td>惠晗涛</td>
+</tr>
+<tr><th class="tdl">创建日期</th>
+<td>2017年3月5日</td>
+<th class="tdr">最后更新日期</th>
+<td>2017年3月5日</td>
+</tr>
+<tr><th>参与者</th>
+<td colspan="3">用户，目标是查看特定日期的市场情况温度计。</td>
+</tr>
+<tr><th>触发条件</th>
+<td colspan="3">用户想要查看特定日期的市场情况温度计。</td>
+</tr>
+<tr><th>前置条件</th>
+<td colspan="3">用户给定特定的日期，且处于股票比较界面。</td>
+</tr>
+<tr><th>后置条件</th>
+<td colspan="3">展示给定日期的市场情况温度计。</td>
+</tr>
+<tr><th>优先级</th>
+<td colspan="3">高</td>
+</tr>
+<tr><th>正常流程</th>
+<td colspan="3">
+<ol style="margin-top: 5px; margin-bottom: 5px;">
+<li>用户选择查看特定日期的市场情况温度计。</li>
+<li>系统给出市场情况温度计的数据。</li>
+</ol>
+</td>
+</tr>
+<tr><th>扩展流程</th>
+<td colspan="3">
+<pre style="margin-top: 5px; margin-bottom: 5px; font-family: 楷体; margin-left: 13px;">1a.用户选择输入日期不在范围
+    1.系统获取数据失败。用户重新输入日期<br />1b .用户查询股市歇业<br />    1. 显示空的数据                </pre>
+</td>
+</tr>
+<tr><th>特殊需求</th>
+<td colspan="3">
+<ol style="margin-top: 5px; margin-bottom: 5px;">
+<li>日期范围是2005年2月到2014年4月。</li>
+</ol>
+</td>
+</tr>
+</tbody>
+</table>
+<p><a href="Eureka_Quantour迭代一文档.html">返回首页</a></p>
+</html>

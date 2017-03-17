@@ -15,8 +15,8 @@ public class DataInterfaceImpl implements IDataInterface
 	private UserDataController user;
 	private StockDataController stock;
 	public DataInterfaceImpl(){
-		user=UserDataController.getInstance();
 		stock=StockDataController.getInstance();
+		user=UserDataController.getInstance();
 	}
 	@Override
 	public boolean signUpCheck(String username, String password) {
