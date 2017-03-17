@@ -86,10 +86,8 @@ public class StockDataController {
 		try{
 			Integer.parseInt(stockcode);
 		}catch(Exception e){
-			System.out.println(code);
 			code=stockdatahelper.getNameToCode(stockcode);
 		}
-		System.out.println(code);
 		if(code==null){
 			return null;
 		}
@@ -294,7 +292,6 @@ public class StockDataController {
 	public List<SingleStockInfoPO> getMarketByDate(Calendar date){
 		if(process_data){
 			if(!processmap.containsKey(date)){
-				System.out.println("error");
 				return null;
 			}
 			else{
@@ -389,11 +386,12 @@ public class StockDataController {
 	class process_thread implements Runnable{
 		@Override
 		public void run() {
-			System.out.println("开始整理按天数获得市场数据");
-			long start_time=System.currentTimeMillis();
+//			System.out.println("开始整理按天数获得市场数据");
+//			long start_time=System.currentTimeMillis();
 			go();
-			long end_time=System.currentTimeMillis();
-			System.out.println("花费在整理按天数获得市场股票上的时间为: "+(-start_time+end_time)+" ms");
+			System.out.println("处理结束");
+//			long end_time=System.currentTimeMillis();
+//			System.out.println("花费在整理按天数获得市场股票上的时间为: "+(-start_time+end_time)+" ms");
 		}
 		private void go(){
 			Iterator<String> it=stockinfo_StringType.keySet().iterator();
@@ -409,7 +407,6 @@ public class StockDataController {
 				processmap.put(cal, processMarketByDate_String(cal));
 			}
 			process_data=true;
-			System.out.println("处理完成");
 		}
 	}
 	
@@ -417,11 +414,18 @@ public class StockDataController {
 	class single_thread implements Runnable{
 		@Override
 		public void run() {
-			System.out.println("开始整理按单支股票获得数据");
-			long start_time=System.currentTimeMillis();
+//			System.out.println("开始整理按单支股票获得数据");
+//			long start_time=System.currentTimeMillis();
+			try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.out.println("开始处理数据");
 			go();
-			long end_time=System.currentTimeMillis();
-			System.out.println("花费在整理单支股票上的时间为: "+(-start_time+end_time)+" ms");
+//			long end_time=System.currentTimeMillis();
+//			System.out.println("花费在整理单支股票上的时间为: "+(-start_time+end_time)+" ms");
 			sort_thread tt1=new sort_thread();
 			Thread t1=new Thread(tt1);
 			t1.start();
@@ -436,9 +440,6 @@ public class StockDataController {
 				try {
 					cal.setTime(sdf.parse(entry.getKey()));
 				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					System.out.println(entry.getKey());
-					System.out.println(entry.getValue().get("10").toString());
 					e.printStackTrace();
 				}
 				String code="";
@@ -465,11 +466,11 @@ public class StockDataController {
 	class sort_thread implements Runnable{
 		@Override
 		public void run() {
-			System.out.println("开始对股票数据进行排序");
-			long start_time=System.currentTimeMillis();
+//			System.out.println("开始对股票数据进行排序");
+//			long start_time=System.currentTimeMillis();
 			go();
-			long end_time=System.currentTimeMillis();
-			System.out.println("花费在排序股票上的时间为: "+(-start_time+end_time)+" ms");
+//			long end_time=System.currentTimeMillis();
+//			System.out.println("花费在排序股票上的时间为: "+(-start_time+end_time)+" ms");
 			
 			//打开对于getmarket处理的线程
 			process_thread tt=new process_thread();
@@ -503,7 +504,6 @@ public class StockDataController {
 				sortmap.put(e.getKey(), aMap1);
 			}
 			sort_data=true;
-			System.out.println(single_data);
 		}
 	}
 	

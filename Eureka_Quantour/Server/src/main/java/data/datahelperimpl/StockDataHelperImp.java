@@ -122,7 +122,7 @@ public class StockDataHelperImp implements IStockDataHelper {
 	private HashMap<String,HashMap<String,String>> initData_Byrow(){
 		try
 		{
-			System.out.println("initData_Byproperties");
+			System.out.println("初始化可能会花费稍微多一点的时间，当出现success时即可运行。");
 			
 			//创建变量
 			out_file = new FileOutputStream(path+"resources/stock/filelog.properties");
@@ -140,21 +140,17 @@ public class StockDataHelperImp implements IStockDataHelper {
 			int i=2;
 			int j=2;
 			int now=1;
+			int code_series=-1;
 			String ne="";
-			Stack<String[]> stack=new Stack<String[]>();
-			String last_close="";
-			String last_adjclose="";
 			String printCodeName="深发展A";
-			boolean wrongdate=false;
 			//开始读取数据以及生成配置文件
 			while(br.ready()){
 				String out=br.readLine();
 				String[] output=out.split("\t");
 				String cal=output[1];
-            	ne=output[0]+"\t"+output[1]+"\t"+output[2]+"\t"+output[3]+"\t"+output[4]+"\t"+output[5]+
-            			"\t"+output[6]+"\t"+output[7]+"\t"+output[8]+"\t"+chkHalf(output[9].replace(" ", ""))+"\t"+output[10];
 				if(printnumber.equals(output[8])){
 					j++;
+					code_series++;
 				}
 				else{
 					prop_file.setProperty(printnumber,i+","+(j-1));
@@ -164,37 +160,41 @@ public class StockDataHelperImp implements IStockDataHelper {
 					printCodeName=chkHalf(output[9].replace(" ", ""));
 					i=j;
 					j++;
+					code_series=0;
 					now++;
 				}
-				if(output[6].equals("0")&&!output[5].equals(output[2])
-           			&&!output[3].equals(output[4])
-           			&&!output[2].equals(output[3])
-           			&&!output[3].equals(output[5])){
-					stack.push(output);
-					wrongdate=true;
+				ne=String.valueOf(code_series)+"\t"+output[1]+"\t"+output[2]+"\t"+output[3]+"\t"+output[4]+"\t"+output[5]+
+            			"\t"+output[6]+"\t"+output[7]+"\t"+output[8]+"\t"+chkHalf(output[9].replace(" ", ""))+"\t"+output[10];
+				if(output[6].equals("0")){
+					code_series--;
+					j--;
 				}
-				else if(wrongdate){
-					wrongdate=false;
-					String input=ne;
-					last_close=output[5];
-					last_adjclose=output[7];
-					while(!stack.isEmpty()){
-						String[] m=stack.pop();
-						String str_pop=m[0]+"\t"+m[1]+"\t"+last_close+"\t"+last_close+"\t"+last_close
-								+"\t"+last_close+"\t"+m[6]+"\t"+last_adjclose
-								+"\t"+m[8]+"\t"+chkHalf(m[9].replace(" ", ""))+"\t"+m[10];
-						input=str_pop+"\n"+input;
-						if(result.containsKey(m[1])){
-							result.get(m[1]).put(output[8], str_pop);
-						}
-						else{
-							HashMap<String,String> map=new HashMap<String,String>();
-							map.put(m[8], str_pop);
-							result.put(m[1], map);
-						}
-					}
-					bw.write(input+"\n");
-				}
+			//处理交易量为0的数据。
+//					stack.push(output);
+//					wrongdate=true;
+//				}
+//				else if(wrongdate){
+//					wrongdate=false;
+//					String input=ne;
+//					last_close=output[5];
+//					last_adjclose=output[7];
+//					while(!stack.isEmpty()){
+//						String[] m=stack.pop();
+//						String str_pop=m[0]+"\t"+m[1]+"\t"+last_close+"\t"+last_close+"\t"+last_close
+//								+"\t"+last_close+"\t"+m[6]+"\t"+last_adjclose
+//								+"\t"+m[8]+"\t"+chkHalf(m[9].replace(" ", ""))+"\t"+m[10];
+//						input=str_pop+"\n"+input;
+//						if(result.containsKey(m[1])){
+//							result.get(m[1]).put(output[8], str_pop);
+//						}
+//						else{
+//							HashMap<String,String> map=new HashMap<String,String>();
+//							map.put(m[8], str_pop);
+//							result.put(m[1], map);
+//						}
+//					}
+//					bw.write(input+"\n");
+//				}
 				else{
 					bw.write(ne+"\n");
 					if(result.containsKey(cal)){
@@ -262,6 +262,7 @@ public class StockDataHelperImp implements IStockDataHelper {
 	 */
 	private HashMap<String,HashMap<String,String>> initData_Byproperties(){
 		try{
+			System.out.println("当出现success时即可运行。");
 			//创建变量
 			HashMap<String,HashMap<String,String>> result=new HashMap<String,HashMap<String,String>>();
 			FileReader fr=new FileReader(stockdata);
