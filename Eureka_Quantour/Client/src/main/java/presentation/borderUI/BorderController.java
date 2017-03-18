@@ -192,7 +192,7 @@ public class BorderController implements Initializable {
 				nodelist.clear();
 				
 				borderPane.setCenter(klchart);
-//				borderPane.setBottom(vlchart);
+				borderPane.setBottom(vlchart);
 			}
 			
 		});

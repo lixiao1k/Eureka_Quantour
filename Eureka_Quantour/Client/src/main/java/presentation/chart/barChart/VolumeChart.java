@@ -43,7 +43,10 @@ public class VolumeChart implements chartService {
         volumechart.getData().add(series);
         volumechart.setTitle("成交量图");
         volumechart.setLegendVisible(false);
-
+        volumechart.setMaxSize(1000, 50);
+        volumechart.setBarGap(0);
+        volumechart.getYAxis().setTickLabelsVisible(false);
+        volumechart.getStylesheets().add(getClass().getClassLoader().getResource("styles/VolumeChart.css").toExternalForm());
         for (XYChart.Series<String, Number> s : volumechart.getData()) {
             for (XYChart.Data<String, Number> d : s.getData()) {
                 Tooltip.install(d.getNode(), new Tooltip(
