@@ -9,6 +9,8 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -52,9 +54,9 @@ public class StockDataHelperImp implements IStockDataHelper {
 			path1=path+"resources/date.csv";
 		}
 		else{
-			path1=this.getClass().getResource("/date.csv").getPath();
 			newpath.mkdirs();
 			need_init=true;
+			path1="";
 		}
 		try {
 			path=URLDecoder.decode(path, "UTF-8");
@@ -68,7 +70,6 @@ public class StockDataHelperImp implements IStockDataHelper {
 			file.mkdir();
 		}
 		
-		stockdata=new File(path1);
 		filepath=new File(path+"stock");
 		if(!filepath.exists()&&!filepath.isDirectory())
 		{
@@ -136,8 +137,7 @@ public class StockDataHelperImp implements IStockDataHelper {
 			out_file = new FileOutputStream(path+"stock/filelog.properties");
 			out_rank = new FileOutputStream(path+"stock/stockranklog.properties");
 			out_nameTocode = new FileOutputStream(path+"stock/nameTocodelog.properties");
-			FileReader fr=new FileReader(stockdata);
-			BufferedReader br=new BufferedReader(fr);
+			BufferedReader br=new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/date.csv")));
 			File file1=new File(path+"resources/date.csv");
 			FileWriter fw=new FileWriter(file1);
         	BufferedWriter bw=new BufferedWriter(fw);
@@ -230,7 +230,6 @@ public class StockDataHelperImp implements IStockDataHelper {
 			prop_nameTocode.setProperty(printCodeName.replace(" ", ""),printnumber);
 			prop_nameTocode.store(out_nameTocode, "股票编号与名字转换");
 			br.close();
-			fr.close();
 			bw.close();
 			fw.close();
 //          FileReader fr_again=new FileReader(stockdata);
@@ -257,7 +256,6 @@ public class StockDataHelperImp implements IStockDataHelper {
 			return result;
 		}catch(Exception e){
 			e.printStackTrace();
-			JOptionPane.showMessageDialog(null, "alert", "alert", JOptionPane.ERROR_MESSAGE); 
 			return null;
 		}
 	}
@@ -271,7 +269,7 @@ public class StockDataHelperImp implements IStockDataHelper {
 			System.out.println("当出现success时即可运行。");
 			//创建变量
 			HashMap<String,HashMap<String,String>> result=new HashMap<String,HashMap<String,String>>();
-			FileReader fr=new FileReader(stockdata);
+			FileReader fr=new FileReader(new File(path1));
 			BufferedReader br=new BufferedReader(fr);
 			
 			//导入配置文件
@@ -346,7 +344,6 @@ public class StockDataHelperImp implements IStockDataHelper {
 			return result;
 		}catch(Exception e){
 			e.printStackTrace();
-			JOptionPane.showMessageDialog(null, "alert", "alert", JOptionPane.ERROR_MESSAGE); 
 			return this.initData_Byrow();
 		}	
 	}
