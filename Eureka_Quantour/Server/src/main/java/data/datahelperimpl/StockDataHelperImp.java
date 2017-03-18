@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -249,10 +250,9 @@ public class StockDataHelperImp implements IStockDataHelper {
 			prop_nameTocode.load(nameTocode_in);
 			nameTocode_in.close();
 			return result;
-		}catch(Exception e)
-		{
+		}catch(Exception e){
 			e.printStackTrace();
-			return this.initData_Byrow();
+			return null;
 		}
 	}
 	
@@ -340,7 +340,7 @@ public class StockDataHelperImp implements IStockDataHelper {
 			return result;
 		}catch(Exception e){
 			e.printStackTrace();
-			return null;
+			return this.initData_Byrow();
 		}	
 	}
 	public String getNameToCode(String name){
