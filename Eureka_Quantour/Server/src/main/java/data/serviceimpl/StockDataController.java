@@ -12,6 +12,9 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+
+import javax.swing.JOptionPane;
+
 import java.util.Map.Entry;
 
 import data.datahelperimpl.StockDataHelperImp;
@@ -50,8 +53,8 @@ public class StockDataController {
 		stockinfo_StringType=stockdatahelper.getAllStock();
 		long end_time=System.currentTimeMillis();
 		System.out.println("花费在取数据上的时间为: "+(-start_time+end_time)+" ms");
-		
 		//初始化相关变量
+		JOptionPane.showMessageDialog(null, "alert", "alert", JOptionPane.ERROR_MESSAGE); 
 		processmap=new HashMap<Calendar,List<String>>();
 		singlestockmap=new HashMap<String,HashMap<Calendar,String>>();
 		process_data=false;
