@@ -137,7 +137,7 @@ public class StockDataHelperImp implements IStockDataHelper {
 			out_file = new FileOutputStream(path+"stock/filelog.properties");
 			out_rank = new FileOutputStream(path+"stock/stockranklog.properties");
 			out_nameTocode = new FileOutputStream(path+"stock/nameTocodelog.properties");
-			BufferedReader br=new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/date.csv")));
+			BufferedReader br=new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/date.csv"),"utf-8"));
 			File file1=new File(path+"resources/date.csv");
 			FileWriter fw=new FileWriter(file1);
         	BufferedWriter bw=new BufferedWriter(fw);
