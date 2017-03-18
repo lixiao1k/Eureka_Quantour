@@ -34,12 +34,12 @@ public class IDataInterfaceTest extends TestCase {
 	public IDataInterfaceTest(String name) {
 		super(name);
 		data=new DataInterfaceImpl();
-//		try {
-//			Thread.sleep(10000);
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		try {
+			Thread.sleep(6000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -88,11 +88,11 @@ public class IDataInterfaceTest extends TestCase {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	assertEquals(data.getSingleStockInfo("1", day3, day4),null);
-    	assertEquals(data.getSingleStockInfo("1", day6, day2).size(),1);
-    	assertEquals(data.getSingleStockInfo("402", day3, day1).size(),2);
-    	assertEquals(data.getSingleStockInfo("402", day1, day5).size(),1);
-    	assertEquals(data.getSingleStockInfo("10", day3, day2),null);
+    	assertEquals(data.getSingleStockInfo("1", day3, (Calendar) day4.clone()),null);
+    	assertEquals(data.getSingleStockInfo("1", day6, (Calendar) day2.clone()).size(),1);
+    	assertEquals(data.getSingleStockInfo("402", day3, (Calendar) day1.clone()).size(),1);
+    	assertEquals(data.getSingleStockInfo("402", day1, (Calendar) day5.clone()),null);
+    	assertEquals(data.getSingleStockInfo("10", day3, (Calendar) day2.clone()),null);
 //    	assertEquals(10,data.getMarketByDate(day4).size());
 //    	assertEquals(10,data.getMarketByDate(day5).size());
 //    	data.getSingleStockInfo("1", begin, end);
@@ -117,12 +117,12 @@ public class IDataInterfaceTest extends TestCase {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	assertEquals(data.getMarketByDate(day1).size(),791);
-    	assertEquals(data.getMarketByDate(day2).size(),82);
+    	assertEquals(data.getMarketByDate(day1).size(),725);
+    	assertEquals(data.getMarketByDate(day2).size(),80);
     	assertEquals(data.getMarketByDate(day3),null);
     	assertEquals(data.getMarketByDate(day4),null);
     	assertEquals(data.getMarketByDate(day5),null);
-    	assertEquals(data.getMarketByDate(day6).size(),791);
+    	assertEquals(data.getMarketByDate(day6).size(),770);
 //    	assertEquals(10,data.getMarketByDate(day4).size());
 //    	assertEquals(10,data.getMarketByDate(day5).size());
 //    	data.getSingleStockInfo("1", begin, end);

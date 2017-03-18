@@ -92,13 +92,13 @@ public class StockDataController {
 			return null;
 		}
 		if(sort_data){
-			return getSingleAftersort(code, begin, end);
+			return getSingleAftersort(code, (Calendar)begin.clone(), (Calendar)end.clone());
 		}
 		else if(single_data){
-			return getSingle(code, begin, end);
+			return getSingle(code, (Calendar)begin.clone(), (Calendar)end.clone());
 		}
 		else{
-			return getSingleStockInfo_unprocess(code, begin, end);
+			return getSingleStockInfo_unprocess(code, (Calendar)begin.clone(), (Calendar)end.clone());
 		}
 	}
 	
@@ -209,7 +209,6 @@ public class StockDataController {
 	 * @return List<SingleStockInfoPO>一系列股票对象
 	 */
 	private List<SingleStockInfoPO> getSingleAftersort(String code, Calendar begin, Calendar end) {
-		
 		//如果不存在该支股票放回null
 		if(!sortmap.containsKey(code)){
 			return null;
@@ -241,7 +240,6 @@ public class StockDataController {
 		
 		List<String> list=singlesortmap.get(code);
 		HashMap<Calendar,Integer> map=sortmap.get(code);
-		
 		//找到begin存在的日期
 		while(begin.compareTo(end)<=0){
 			if(map.containsKey(begin)){
