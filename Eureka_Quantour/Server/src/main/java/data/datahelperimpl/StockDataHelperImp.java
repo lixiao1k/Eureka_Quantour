@@ -16,6 +16,8 @@ import java.util.HashMap;
 import java.util.Properties;
 import java.util.Stack;
 
+import javax.swing.JOptionPane;
+
 import data.datahelperservice.IStockDataHelper;
 /**
  * 股票模块数据的数据处理实现
@@ -37,13 +39,26 @@ public class StockDataHelperImp implements IStockDataHelper {
 	private File filepath;//所有stockdata相关数据的存储路径
 	private Boolean need_init;//判断程序的配置文件是否生成的boolean变量
 	private String path;
+	private String path1;
 	/**
 	 * stockdatahelper的初始化
 	 */
 	private StockDataHelperImp(){
 		path="config/";
+		need_init=false;
+		File newresources=new File(path+"resources/date.csv");
+		File newpath=new File(path+"resources");
+		if(newresources.exists()){
+			path1=path+"resources/date.csv";
+		}
+		else{
+			path1=this.getClass().getResource("/date.csv").getPath();
+			newpath.mkdirs();
+			need_init=true;
+		}
 		try {
 			path=URLDecoder.decode(path, "UTF-8");
+			path1=URLDecoder.decode(path1, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -52,7 +67,8 @@ public class StockDataHelperImp implements IStockDataHelper {
 		if(!file.exists()&&!file.isDirectory()){
 			file.mkdir();
 		}
-		stockdata=new File("date.csv");
+		
+		stockdata=new File(path1);
 		filepath=new File(path+"stock");
 		if(!filepath.exists()&&!filepath.isDirectory())
 		{
@@ -69,29 +85,20 @@ public class StockDataHelperImp implements IStockDataHelper {
 			prop_file=new Properties();
 			
 			if(!filelog.exists()){
-				need_init=true;
 				filelog.createNewFile();
-			}
-			else{
-				need_init=false;
+				need_init=true;
 			}
 			stockranklog=new File(path+"stock/stockranklog.properties");
 			prop_rank=new Properties();		
 			if(!stockranklog.exists()){
-				need_init=true;
 				stockranklog.createNewFile();
-			}
-			else{
-				need_init=false;
+				need_init=true;
 			}
 			nameTocodelog=new File(path+"stock/nameTocodelog.properties");
 			prop_nameTocode=new Properties();		
 			if(!nameTocodelog.exists()){
-				need_init=true;
 				nameTocodelog.createNewFile();
-			}
-			else{
-				need_init=false;
+				need_init=true;
 			}
     	}catch(Exception e){
     		e.printStackTrace();
@@ -131,7 +138,7 @@ public class StockDataHelperImp implements IStockDataHelper {
 			out_nameTocode = new FileOutputStream(path+"stock/nameTocodelog.properties");
 			FileReader fr=new FileReader(stockdata);
 			BufferedReader br=new BufferedReader(fr);
-			File file1=new File(path+"date1.csv");
+			File file1=new File(path+"resources/date.csv");
 			FileWriter fw=new FileWriter(file1);
         	BufferedWriter bw=new BufferedWriter(fw);
 			HashMap<String,HashMap<String,String>> result=
@@ -226,8 +233,6 @@ public class StockDataHelperImp implements IStockDataHelper {
 			fr.close();
 			bw.close();
 			fw.close();
-			stockdata.delete();
-            file1.renameTo(stockdata);
 //          FileReader fr_again=new FileReader(stockdata);
 //			BufferedReader br_again=new BufferedReader(fr_again);
 //			br_again.readLine();
@@ -252,6 +257,7 @@ public class StockDataHelperImp implements IStockDataHelper {
 			return result;
 		}catch(Exception e){
 			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "alert", "alert", JOptionPane.ERROR_MESSAGE); 
 			return null;
 		}
 	}
@@ -340,6 +346,7 @@ public class StockDataHelperImp implements IStockDataHelper {
 			return result;
 		}catch(Exception e){
 			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "alert", "alert", JOptionPane.ERROR_MESSAGE); 
 			return this.initData_Byrow();
 		}	
 	}
