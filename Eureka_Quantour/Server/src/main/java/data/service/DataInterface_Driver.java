@@ -44,6 +44,7 @@ public class DataInterface_Driver {
 				}
 				long start_time1=System.currentTimeMillis();
 				int i=0;
+				System.out.println(three[0]+" "+three[1]+ " "+three[2]);
 				if(data.getSingleStockInfo(three[0],cal1,cal2)==null){
 					System.out.println("bucunzai");
 				}
