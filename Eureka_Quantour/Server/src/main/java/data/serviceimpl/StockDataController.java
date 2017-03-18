@@ -54,7 +54,6 @@ public class StockDataController {
 		long end_time=System.currentTimeMillis();
 		System.out.println("花费在取数据上的时间为: "+(-start_time+end_time)+" ms");
 		//初始化相关变量
-		JOptionPane.showMessageDialog(null, "alert", "alert", JOptionPane.ERROR_MESSAGE); 
 		processmap=new HashMap<Calendar,List<String>>();
 		singlestockmap=new HashMap<String,HashMap<Calendar,String>>();
 		process_data=false;
