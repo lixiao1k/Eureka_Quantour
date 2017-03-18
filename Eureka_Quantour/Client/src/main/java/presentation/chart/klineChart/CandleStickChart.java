@@ -77,10 +77,13 @@ public class  CandleStickChart extends XYChart<String, Number> {
         this.xAxis = xAxis;
         this.yAxis = yAxis;
         yAxis.autoRangingProperty().set(true);
+        yAxis.setPrefWidth(35);
+        xAxis.setPrefHeight(0);
         yAxis.forceZeroInRangeProperty().setValue(Boolean.FALSE);
         setTitle(title);
         setAnimated(true);
         xAxis.setAnimated(true);
+        xAxis.setOpacity(0);
         yAxis.setAnimated(true);
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         for (SingleStockInfoVO bar : bars) {
