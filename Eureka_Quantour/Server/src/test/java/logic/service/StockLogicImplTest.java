@@ -56,7 +56,7 @@ public class StockLogicImplTest extends TestCase {
 		listRight = new ArrayList<Double>();
 		for(int i=0;i<listB.size();i++)
 			listSave.add(listB.get(i).getEMA());
-		listRight.add(11.08); listRight.add(11.09); listRight.add(11.10);
+		listRight.add(11.09); listRight.add(11.09); listRight.add(11.10);
 		listRight.add(11.09); listRight.add(11.06); listRight.add(11.07); 
 		listRight.add(11.06); listRight.add(11.05); listRight.add(11.02); 
 		listRight.add(11.04); 
@@ -66,8 +66,8 @@ public class StockLogicImplTest extends TestCase {
 		listRight = new ArrayList<Double>();
 		for(int i=0;i<listC.size();i++)
 			listSave.add(listC.get(i).getEMA());
-		listRight.add(10.89); listRight.add(10.93); listRight.add(10.93);
-		listRight.add(10.93); listRight.add(10.95); listRight.add(10.98); 
+		listRight.add(10.86); listRight.add(10.9); listRight.add(10.93);
+		listRight.add(10.93); listRight.add(10.94); listRight.add(10.98); 
 		listRight.add(11.00); listRight.add(11.03); listRight.add(11.04); 
 		listRight.add(11.06); 
 		Assert.assertTrue( ifListEqual(listSave, listRight) );
