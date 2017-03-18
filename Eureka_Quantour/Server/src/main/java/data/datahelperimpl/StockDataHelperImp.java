@@ -41,19 +41,19 @@ public class StockDataHelperImp implements IStockDataHelper {
 	 * stockdatahelper的初始化
 	 */
 	private StockDataHelperImp(){
-		path=this.getClass().getResource("/").getPath();
+		path="config/";
 		try {
 			path=URLDecoder.decode(path, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		File file=new File(path+"resources");
+		File file=new File(path+"");
 		if(!file.exists()&&!file.isDirectory()){
 			file.mkdir();
 		}
-		stockdata=new File(path+"date.csv");
-		filepath=new File(path+"resources/stock");
+		stockdata=new File("date.csv");
+		filepath=new File(path+"stock");
 		if(!filepath.exists()&&!filepath.isDirectory())
 		{
 			filepath.mkdirs();
@@ -65,7 +65,7 @@ public class StockDataHelperImp implements IStockDataHelper {
 	 */
 	private void init(){
     	try{
-    		filelog=new File(path+"resources/stock/filelog.properties");
+    		filelog=new File(path+"stock/filelog.properties");
 			prop_file=new Properties();
 			
 			if(!filelog.exists()){
@@ -75,7 +75,7 @@ public class StockDataHelperImp implements IStockDataHelper {
 			else{
 				need_init=false;
 			}
-			stockranklog=new File(path+"resources/stock/stockranklog.properties");
+			stockranklog=new File(path+"stock/stockranklog.properties");
 			prop_rank=new Properties();		
 			if(!stockranklog.exists()){
 				need_init=true;
@@ -84,7 +84,7 @@ public class StockDataHelperImp implements IStockDataHelper {
 			else{
 				need_init=false;
 			}
-			nameTocodelog=new File(path+"resources/stock/nameTocodelog.properties");
+			nameTocodelog=new File(path+"stock/nameTocodelog.properties");
 			prop_nameTocode=new Properties();		
 			if(!nameTocodelog.exists()){
 				need_init=true;
@@ -126,9 +126,9 @@ public class StockDataHelperImp implements IStockDataHelper {
 			System.out.println("初始化可能会花费稍微多一点的时间，当出现success时即可运行。");
 			
 			//创建变量
-			out_file = new FileOutputStream(path+"resources/stock/filelog.properties");
-			out_rank = new FileOutputStream(path+"resources/stock/stockranklog.properties");
-			out_nameTocode = new FileOutputStream(path+"resources/stock/nameTocodelog.properties");
+			out_file = new FileOutputStream(path+"stock/filelog.properties");
+			out_rank = new FileOutputStream(path+"stock/stockranklog.properties");
+			out_nameTocode = new FileOutputStream(path+"stock/nameTocodelog.properties");
 			FileReader fr=new FileReader(stockdata);
 			BufferedReader br=new BufferedReader(fr);
 			File file1=new File(path+"date1.csv");
@@ -246,7 +246,7 @@ public class StockDataHelperImp implements IStockDataHelper {
 //            }
 //            br_again.close();
             BufferedInputStream nameTocode_in = new BufferedInputStream(
-					new FileInputStream(path+"resources/stock/nameTocodeLog.properties"));
+					new FileInputStream(path+"stock/nameTocodeLog.properties"));
 			prop_nameTocode.load(nameTocode_in);
 			nameTocode_in.close();
 			return result;
@@ -271,12 +271,12 @@ public class StockDataHelperImp implements IStockDataHelper {
 			//导入配置文件
 			Properties prop=new Properties();
 			BufferedInputStream inputStream = new BufferedInputStream(
-					new FileInputStream(path+"resources/stock/filelog.properties"));
+					new FileInputStream(path+"stock/filelog.properties"));
 			prop.load(inputStream);
 			inputStream.close();
 			Properties prop1=new Properties();
 			BufferedInputStream inputStream1 = new BufferedInputStream(
-					new FileInputStream(path+"resources/stock/stockranklog.properties"));
+					new FileInputStream(path+"stock/stockranklog.properties"));
 			prop1.load(inputStream1);
 			inputStream1.close();
 			
@@ -334,7 +334,7 @@ public class StockDataHelperImp implements IStockDataHelper {
 			}
 			br.close();
 			BufferedInputStream nameTocode_in = new BufferedInputStream(
-					new FileInputStream(path+"resources/stock/nameTocodeLog.properties"));
+					new FileInputStream(path+"stock/nameTocodeLog.properties"));
 			prop_nameTocode.load(nameTocode_in);
 			nameTocode_in.close();
 			return result;
