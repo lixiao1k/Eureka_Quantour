@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title> Quantour 迭代二用例文档lxd</title>
+	<style>
+		.tdl {width:100px;}
+		.tdr {width:150px;}
+		.tdh {width:100px;text-align: center}
+		.kfont {font-family:"楷体";}
+		body{
+			background-color:rgb(199,237,204);
+			margin-left: 20%;
+			margin-right: 20%;
+			border:2px dotted black;
+			padding:10px 10px 10px 10px;
+			font-family: sans-serif;
+		}
+	</style>
+</head>
+<body>
+<h2 class="kfont" align="left">1.用例列表</h2>
+<h3 class="kfont" align="left">1.1 查看市场温度计</h3>
+<table style="font-family: 楷体;" border="2" width="600px" cellspacing="0" align="center"><!--	<caption> 查询某段日期单支股票数据 </caption> -->
+<tbody>
+<tr><th class="tdl">ID</th>
+<td>1</td>
+<th class="tdr">名称</th>
+<td>查看市场温度计</td>
+</tr>
+<tr><th class="tdl">创建者</th>
+<td>李晓冬</td>
+<th class="tdr">最后一次更新者</th>
+<td>&nbsp;</td>
+</tr>
+<tr><th class="tdl">创建日期</th>
+<td>2017/3/21</td>
+<th class="tdr">最后更新日期</th>
+<td>&nbsp;</td>
+</tr>
+<tr><th>参与者</th>
+<td colspan="3">用户，目标是快速了解某市场行情</td>
+</tr>
+<tr><th>触发条件</th>
+<td colspan="3">用户想要了解某市场基本行情</td>
+</tr>
+<tr><th>前置条件</th>
+<td colspan="3">用户已登录</td>
+</tr>
+<tr><th>后置条件</th>
+<td colspan="3">无</td>
+</tr>
+<tr><th>优先级</th>
+<td colspan="3">高</td>
+</tr>
+<tr><th>正常流程</th>
+<td colspan="3">
+<ol style="margin-top: 5px; margin-bottom: 5px;">
+<li>用户输入查看的某一日期并选择市场，点击搜索</li>
+<li>系统显示该天市场的市场温度计信息、股票涨跌幅排名、大盘指数、所有股票信息列表</li>
+<li>市场温度计信息包括：当日总交易量、涨停股票数、跌停股票数、涨幅超过5%的股票数，跌幅超过5%的股票数，开盘‐收盘大于5%*上一个交易日收盘价的股票个数、开盘‐收盘小于‐5%*上一个交易日收盘价的股票个数。</li>
+<li>股票涨跌幅排名只需各显示10条数据，每条数据包括编号、名称、涨跌额、涨跌幅</li>
+<li>大盘指数只当天的大盘指数</li>
+<li>股票信息列表中每条信息包括序号、代码、名称、最新价、涨跌幅、涨跌额、开收盘价、最高低价、交易量</li>
+</ol>
+</td>
+</tr>
+<tr><th>扩展流程</th>
+<td colspan="3">
+<ol style="margin-top: 5px; margin-bottom: 5px;">
+<li>1.系统提示日期不在有效范围内，并要求重新输入</li>
+<li>2.用户在浏览股票信息时，可以查看单只股票的基本信息，包括涨跌幅、涨跌额、开收盘价、最高低价、交易量、K线均线图。</li>
+</ol>
+</td>
+</tr>
+<tr><th>特殊需求</th>
+<td colspan="3">
+<ol style="margin-top: 5px; margin-bottom: 5px;">
+<li>日期显示</li>
+<li>K线均线图的范围根据选择的日期向前推适当天数</li>
+</ol>
+</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>
