@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+	<head>
+	<meta charset='UTF-8'>
+	<title>用户管理的需求文档.html</title>
+	<style>
+		.tdl {width:100px;}
+		.tdr {width:150px;}
+		.kfont {font-family:"楷体";}
+	</style>
+	</head>
+	<body>
+	<div style="margin:0 auto;width:30%">
+		<h3>用例1	用户管理</h3>	
+		<table style="font-family:楷体" border="2" align="center" width="600px" cellspacing="0">
+			<tr>
+				<th class=tdl>ID</th>		<td>1</td>		<th class=tdr>名称</th>	<td>用户管理</td>
+			</tr>
+			<tr>
+				<th class=tdl>创建者</th>		<td>刘宇翔</td>		<th class=tdr>最后一次更新者</th>	<td>刘宇翔</td>
+			</tr>
+			<tr>
+				<th class=tdl>创建日期</th>		<td>2017年3月21日</td>		<th class=tdr>最后更新日期</th>		<td>2017年3月21日</td>
+			</tr>
+			<tr>
+					<th>参与者</th>		<td colspan='3'>用户，目标是注册该软件的一个账户，从而实现对于股票的收藏关注功能。</td>
+			</tr>
+			<tr>
+				<th>触发条件</th>		<td colspan='3'>用户在登录界面点击登录或注册</td>
+			</tr>
+			<tr>
+				<th>前置条件</th> 		<td colspan='3'>用户的用户名与密码符合规定由数字和字母组成且大于6位并且少于10位。</td>
+			</tr>
+			<tr>
+				<th>后置条件</th>		<td colspan='3'>无</td>
+			</tr>
+			<tr>	
+				<th>优先级</th>			<td colspan='3'>中</td>
+			</tr>
+			<tr>
+				<th>正常流程</th>	
+				<td colspan='3'> 
+					<ol style="margin-top:5px;margin-bottom:5px">
+				     <li>用户选择注册</li>
+					 <li>系统显示用户名，密码，重复密码的输入框。</li>
+					 <li>用户输入用户名，密码，重复密码。</li>
+					 <li>系统显示注册成功并进入股市行情界面。</li>
+					 </ol>
+				</td>
+			</tr>
+			<tr>
+				<th>扩展流程</th>
+				<td colspan='3'>
+					<pre style="margin-top:5px;margin-bottom:5px;font-family:楷体;margin-left:13px">
+1a. 用户选择登录
+	1.用户输入用户名与密码
+	2.系统显示登录成功，进入股市行情界面
+	2a.用户输入错误的用户名或密码
+		1.系统显示用户名或密码不正确
+4a. 用户输入的用户名或密码不是由数字和字母组成并且大于6位并小于10位
+	1.系统提示输入了不合法的用户名或密码
+	2.回到正常流程2
+4b. 用户输入的重复密码与密码不一致
+	1.系统提示输入了不一致的重复密码与密码
+	2.回到正常流程2
+4c. 用户选择登出
+	1.系统登出该用户账号
+                    </pre>    						
+				</td>
+			</tr>
+			<tr>
+				<th>特殊需求</th>
+				<td colspan='3'>
+					<ol style="margin-top:5px;margin-bottom:5px;">
+						<li>用户的用户名与密码符合规定由数字和字母组成且大于6位并且少于10位。</li>
+					</ol>	
+				</td>
+			</tr>
+			</table>
+			</div>
+	</body>
+</html>

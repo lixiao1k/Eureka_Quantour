@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+	<head>
+	<meta charset='UTF-8'>
+	<title>用户管理的需求规格说明文档.html</title>
+	<style>
+		.tdl {width:300px;}
+		.tdr {width:600px;}
+		.kfont {font-family:"楷体";}
+		table 
+		{ 
+			border-collapse: collapse; 
+			border: 1; 
+			width: 900px; 
+		} 
+		td 
+		{ 
+			border: solid #000 1px; 
+		}			
+	</style>
+	</head>
+	<body>
+		<div style="margin:0 auto;width:50%;">
+		<h3>3.2.3 用户管理</h3>
+		<h4>3.2.3.1 特性描述</h4>
+		<p style="text-indent:2em">
+			当用户希望去对于自己所选中的股票进行持续性的关注，并且使用该软件的一些功能时，用户需要去注册或是登录自己的账号
+		</p>
+		<p style="text-indent:2em">
+			优先级=中
+		</p>
+		<h4>3.2.3.2 刺激响应序列</h4>
+		<p style="text-indent:2em">刺激：用户选择注册账号。</p>
+		<p style="text-indent:2em">响应：系统显示用户名，密码，重复密码的输入框。</p>
+		<p style="text-indent:2em">刺激：用户输入不合法的用户名或密码。</p>
+		<p style="text-indent:2em">响应：系统提示用户名或密码不合法。</p>
+		<p style="text-indent:2em">刺激：用户输入的重复密码与密码不一致。</p>
+		<p style="text-indent:2em">响应：系统提示重复密码与密码不一致。</p>
+		<p style="text-indent:2em">刺激：用户选择登录。</p>
+		<p style="text-indent:2em">响应：系统显示用户名，密码的输入框。</p>
+		<p style="text-indent:2em">刺激：用户输入不正确的用户名或密码。</p>
+		<p style="text-indent:2em">响应：系统提示用户名或密码不正确。</p>
+		<p style="text-indent:2em">刺激：用户选择登出账号。</p>
+		<p style="text-indent:2em">响应：系统登出用户账号，关闭软件。</p>
+		<h4>3.2.3.3 相关功能需求</h4>
+		<table border="1" width="900px" style="font-size:15px">
+			<tr>
+				<td class=tdl>
+				User_Management.Input<br>
+				User_Management.Input.UserName<br>
+				User_Management.Input.Password<br>
+				User_Management.Input.Repeatpassword
+				</td>
+				<td class=tdr> 
+				系统应该允许用户进行键盘输入。<br>
+				系统需要接收用户输入的用户名。<br>
+				系统需要接收用户输入的密码。<br>
+				系统需要接收用户输入的重复密码。
+				</td>
+			</tr>
+			<tr>
+				<td> 
+				User_Management.Judge<br>
+				User_Management.Judge.Invalid<br>
+				User_Management.Judge.Samepassword<br>
+				User_Management.Judge.Log<br>
+				</td>
+				<td> 
+				系统会对于用户的输入进行判断。<br>
+				系统判断所接收的用户名与密码是否合法，如不正确，跳转到.Error.Invalid。<br>
+				系统判断所接收的密码与重复密码是否一致，如果不一致则跳转到.Error.Samepassword。<br>
+				系统判断所接收的用户名和密码是否匹配，如果不匹配则跳转到.Error.Log。
+				</td>
+			</tr>
+			<tr>
+				<td> 
+				User_Management.Error<br>
+				User_Management.Error.Invalid<br>
+				User_Management.Error.Samepassword<br>
+				User_Management.Error.Log
+				</td>
+				<td> 
+				系统对于错误的操作进行提示。<br>
+				系统提示用户名或密码不合法。<br>
+				系统提示重复密码与密码不一致。<br>
+				系统提示用户名或密码不正确。
+				</td>
+			</tr>
+			<tr>
+				<td> 
+				User_Management.Exit
+				</td>
+				<td> 
+				系统将用户登录状态置为0（登出状态）并关闭软件。
+				</td>
+			</tr>
+		</table>
+		</div>
+	</body>
+</html>
