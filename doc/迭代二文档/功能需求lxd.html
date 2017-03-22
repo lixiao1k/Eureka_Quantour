@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+	<title> 功能需求 李晓冬</title>
+	<style>
+		.tdl {width:100px;}
+		.tdr {width:150px;}
+		.tdh {width:100px;text-align: center}
+		.kfont {font-family:"楷体";}
+		body{
+			background-color:rgb(199,237,204);
+			margin-left: 20%;
+			margin-right: 20%;
+			border:2px dotted black;
+			padding:10px 10px 10px 10px;
+			font-family: sans-serif;
+		}
+	</style>
+</head>
+<body>
+<div style="margin:0 auto;">
+		<h3>3.2.3 查看市场温度计</h3>
+		<h4>3.2.3.1 特性描述</h4>
+		<p style="text-indent:2em">
+			当用户希望去了解当天的某一市场的整体情况时，可以使用此功能
+		</p>
+		<p style="text-indent:2em">
+			优先级=高
+		</p>
+		<h4>3.2.3.2 刺激响应序列</h4>
+		<p style="text-indent:2em">刺激：用户选择查看市场的热点</p>
+		<p style="text-indent:2em">响应：系统显示系统时间当天的大盘指数、股票排名、收藏股票的当天信息</p>
+		<p style="text-indent:2em">刺激：用户选择查看各股票池状况</p>
+		<p style="text-indent:2em">响应：系统显示系统时间当天的股票池状况，包括各股票行情</p>
+		<p style="text-indent:2em">刺激：用户修改当天时间</p>
+		<p style="text-indent:2em">响应：系统修改当天时间，并更改显示内容</p>
+		<h4 class="kfont">1.3 相关功能需求</h4>
+<table style="font-family:楷体;" border="2" width="600px" cellspacing="0">
+<tr>
+<td>Market.Browse.SetTime</td>
+<td>系统允许用户修改当今时间</td>
+</tr>
+<tr>
+<td>Market.Browse.ChooseMarket</td>
+<td>用户选择市场时，系统显示市场热点信息</td>
+</tr>
+<tr>
+<td>Market.Browse.ChooseBlock</td>
+<td>系统选择浏览板块信息时，系统显示相应板块信息</td>
+</tr>
+<tr>
+<td>Market.Browse.TimeInput.Invalid</td>
+<td>用户输入日期不在范围内时，系统提示日期超出范围</td>
+</table>
+		</div>
+</body>
+</html>
