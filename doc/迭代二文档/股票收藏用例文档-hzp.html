@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title> Quantour用例文档2.0</title>
+	<style>
+		.tdl {width:100px;}
+		.tdr {width:150px;}
+		.tdh {width:100px;text-align: center}
+		.kfont {font-family:"楷体";}
+		.dis {font-family:"楷体";margin-top: 5px; margin-bottom: 5px;}
+		body{
+			background-color:rgb(199,237,204);
+			margin-left: 20%;
+			margin-right: 20%;
+			border:2px dotted black;
+			padding:10px 10px 10px 10px;
+			font-family: sans-serif;
+		}
+	</style>
+</head>
+
+<body>
+
+<h2 class="kfont" align="left">2.用例列表</h2>
+<h3 class="kfont" align="left">2.1 收藏股票</h3>
+<table style="font-family: 楷体;" border="2" width="600px" cellspacing="0" align="center">
+<tbody>
+<tr><th class="tdl">ID</th>
+<td></td>
+<th class="tdr">名称</th>
+<td>收藏某只股票</td>
+</tr>
+<tr><th class="tdl">创建者</th>
+<td>黄泽鹏</td>
+<th class="tdr">最后一次更新者</th>
+<td></td>
+</tr>
+<tr><th class="tdl">创建日期</th>
+<td>2017/3/21</td>
+<th class="tdr">最后更新日期</th>
+<td></td>
+</tr>
+<tr><th>参与者</th>
+<td colspan="3">用户，目标是方便以后快速查询收藏的股票信息</td>
+</tr>
+<tr><th>触发条件</th>
+<td colspan="3">用户正在浏览某支股票信息</td>
+</tr>
+<tr><th>前置条件</th>
+<td colspan="3">用户已登录</td>
+</tr>
+<tr><th>后置条件</th>
+<td colspan="3">无</td>
+</tr>
+<tr><th>优先级</th>
+<td colspan="3">中</td>
+</tr>
+<tr><th>正常流程</th>
+<td colspan="3">
+<ol class="dis">
+<li>用户正在浏览某只股票信息</li>
+<li>用户选择“收藏股票”</li>
+<li>系统提示收藏成功，并添加该股票进入收藏列表</li>
+</ol>
+</td>
+</tr>
+<tr><th>扩展流程</th>
+<td colspan="3">
+<pre class="dis" style="font-family: 楷体;"> 2a:用户选择“取消收藏”
+   1.系统提示取消收藏成功，并将该股票移除收藏列表
+</pre>
+</td>
+</tr>
+<tr><th>特殊需求</th>
+<td colspan="3"></td>
+</tr>
+</table>
+
+<br/>
+
+<h3 class="kfont" align="left">2.1 查看股票收藏列表</h3>
+<table style="font-family: 楷体;" border="2" width="600px" cellspacing="0" align="center">
+<tbody>
+<tr><th class="tdl">ID</th>
+<td></td>
+<th class="tdr">名称</th>
+<td>查看股票收藏列表</td>
+</tr>
+<tr><th class="tdl">创建者</th>
+<td>黄泽鹏</td>
+<th class="tdr">最后一次更新者</th>
+<td></td>
+</tr>
+<tr><th class="tdl">创建日期</th>
+<td>2017/3/21</td>
+<th class="tdr">最后更新日期</th>
+<td></td>
+</tr>
+<tr><th>参与者</th>
+<td colspan="3">用户，目标是浏览已经收藏的股票</td>
+</tr>
+<tr><th>触发条件</th>
+<td colspan="3">用户想要查看自己收藏的所有股票</td>
+</tr>
+<tr><th>前置条件</th>
+<td colspan="3">用户已登录</td>
+</tr>
+<tr><th>后置条件</th>
+<td colspan="3">无</td>
+</tr>
+<tr><th>优先级</th>
+<td colspan="3">中</td>
+</tr>
+<tr><th>正常流程</th>
+<td colspan="3">
+<ol class="dis">
+<li>用户选择股票收藏列表</li>
+<li>系统显示用户收藏的所有股票</li>
+</ol>
+</td>
+</tr>
+<tr><th>扩展流程</th>
+<td colspan="3">
+<pre class="dis" style="font-family: 楷体;"> 3a:用户在某只股票上选择“取消收藏”
+   1.系统提示取消收藏成功，并将该股票移除收藏列表
+</pre>
+</td>
+</tr>
+<tr><th>特殊需求</th>
+<td colspan="3"></td>
+</tr>
+</table>
+
+<br/>
+</body>
+</html>

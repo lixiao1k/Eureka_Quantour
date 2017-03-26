@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+	<title> Eureka_Quantour需求规格说明文档1.0 </title>
+	<style>
+		.tdl {width:100px;}
+		.tdr {width:150px;}
+		.kfont {font-family:"楷体";}
+		body{
+			background-color:rgb(199,237,204);
+			margin-left: 20%;
+			margin-right: 20%;
+			border:2px dotted black;
+			padding:10px 10px 10px 10px;
+			font-family: sans-serif;
+		}
+	</style>
+</head>
+
+<body>
+
+<h3 class="kfont">1 收藏某支股票并查看股票收藏列表</h3>
+<h4 class="kfont">1.1 特性描述</h4>
+<p class="kfont">用户在查看某只股票信息的时候，有收藏该股票的意愿，
+用户选择“收藏股票”，系统提示收藏成功，并将该股票加入收藏列表中。</p>
+<p class="kfont">优先级=中。</p>
+	
+<h4 class="kfont">1.2 刺激/响应序列</h4>
+<pre class="kfont">
+刺激：用户查看某只未收藏股票信息时点击“收藏”
+响应：系统提示收藏成功，并将该股票加入收藏列表
+</pre>
+
+<pre class="kfont">
+刺激：用户查看某只未收藏股票信息时点击“收藏”
+响应：系统提示收藏失败，并要求用户再次尝试
+</pre>
+
+<pre class="kfont">
+刺激：用户查看某只已收藏股票信息时点击“取消收藏”
+响应：系统提示取消收藏成功，并将该股票移除收藏列表
+</pre>
+
+<pre class="kfont">
+刺激：用户查看某只已收藏股票信息时点击“取消收藏”
+响应：系统提示取消收藏失败，并要求用户再次尝试
+</pre>
+
+<pre class="kfont">
+刺激：用户查看股票收藏列表
+响应：系统显示该公户收藏的所有股票列表
+</pre>
+
+<h4 class="kfont">1.3 相关功能需求</h4>
+<table style="font-family:楷体;" border="2" width="600px" cellspacing="0">
+
+<tr>
+<td>Stock.Info</td>
+<td>系统应允许客户浏览某支股票信息</td>
+</tr>
+<tr>
+<td>Stock.Info.Collect</td>
+<td>用户浏览某只股票信息时，收藏该股票，系统作出响应，参见Stock.Collect</td>
+</tr>
+<tr>
+<td>Stock.Info.Remove</td>
+<td>用户浏览某只股票信息时（或浏览收藏的股票列表时），取消收藏该股票，系统作出响应，参见Stock.Remove</td>
+</tr>
+<td>Stock.Collect.Succeed</td>
+<td>用户收藏股票成功，系统提示收藏成功并将该只股票添加到股票收藏列表中</td>
+</tr>
+<td>Stock.Collect.Fail</td>
+<td>用户收藏股票失败，系统提示收藏失败并要求用户再次尝试</td>
+</tr>
+<td>Stock.Collect.List</td>
+<td>用户查看收藏的股票列表，系统显示该用户收藏的股票列表</td>
+</tr>
+<td>Stock.Remove.Succeed</td>
+<td>用户取消收藏股票成功，系统提示取消收藏成功并将该只股票移除到股票收藏列表中</td>
+</tr>
+<td>Stock.Remove.Fail</td>
+<td>用户取消收藏股票失败，系统提示取消收藏失败并要求用户再次尝试</td>
+</tr>
+
+</table>
+
+</body>
+</html>
