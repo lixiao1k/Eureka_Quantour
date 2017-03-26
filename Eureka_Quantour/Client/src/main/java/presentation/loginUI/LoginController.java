@@ -1,48 +1,45 @@
 package presentation.loginUI;
 
-import java.io.IOException;
+import java.awt.Label;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 
 public class LoginController implements Initializable{
 	@FXML
-    TextField nameTextField;
+	TextField usernameTextField;
 	
 	@FXML
 	TextField passwordTextField;
 	
 	@FXML
-	Label feedbackLabel;
+	HBox callBackLabel;
 	
 	@FXML
-	protected void login(ActionEvent e) throws IOException{
-		if(true){
-			Stage stage = (Stage)nameTextField.getScene().getWindow();
-			stage.close();
-			Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("presentation/borderUI/BorderUI.fxml"));
-			Scene scene = new Scene(root);
-			Stage stageNew = new Stage();
-//			stageNew.initStyle(StageStyle.TRANSPARENT);
-			stageNew.setScene(scene);
-			stageNew.show();
-		}
+	ImageView logoImageView;
+	
+	@FXML
+	protected void logUp(ActionEvent e){
+		
 	}
 	
+	@FXML
+	protected void logIn(ActionEvent e){
+		
+	}
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
+		Image image = new Image(getClass().getResourceAsStream("Title.png"));
+		logoImageView.setImage(image);
 	}
 
 }

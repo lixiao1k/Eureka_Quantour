@@ -1,4 +1,4 @@
-package presentation.loginUI;
+package main;
 
 import java.rmi.Naming;
 
@@ -17,7 +17,7 @@ public class Main extends Application{
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
 
-		Parent root = FXMLLoader.load(getClass().getResource("/presentation/loginUI/loginUi.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("/presentation/loginUI/Login.fxml"));
 		Scene scene = new Scene(root);
 //		primaryStage.initStyle(StageStyle.TRANSPARENT);
 	    primaryStage.setScene(scene);

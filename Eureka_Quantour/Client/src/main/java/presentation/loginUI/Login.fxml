@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="471.0" prefWidth="412.0" styleClass="background" stylesheets="@../style/Login.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="presentation.loginUI.LoginController">
+  <children>
+    <AnchorPane id="anchorPane2" prefHeight="311.0" prefWidth="412.0" styleClass="top-segment" AnchorPane.bottomAnchor="160.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <children>
+        <VBox id="VBox" alignment="CENTER" layoutX="34.5" layoutY="4.5" prefHeight="291.0" prefWidth="435.0" spacing="5.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="33.0" AnchorPane.rightAnchor="33.0" AnchorPane.topAnchor="3.0">
+          <children>
+            <AnchorPane id="AnchorPane" prefHeight="236.0" prefWidth="343.0">
+              <children>
+                <Label id="label1" layoutX="10.0" layoutY="124.0" text="Username" />
+                <TextField id="textField1" fx:id="usernameTextField" layoutX="10.0" layoutY="140.0" prefWidth="415.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" />
+                <Label id="label1" layoutX="11.0" layoutY="194.0" text="Password" />
+                <PasswordField id="passwordField1" fx:id="passwordTextField" layoutX="10.0" layoutY="210.0" prefWidth="415.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" />
+                <ImageView id="app-login-logo" fx:id="logoImageView" fitHeight="69.0" fitWidth="316.0" layoutX="14.0" layoutY="21.0" AnchorPane.bottomAnchor="189.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="13.0" />
+              </children>
+            </AnchorPane>
+          </children>
+        </VBox>
+      </children>
+    </AnchorPane>
+    <Button id="button1" defaultButton="true" layoutX="236.0" layoutY="358.0" onAction="#logIn" prefHeight="43.0" prefWidth="135.0" text="LogIn" AnchorPane.bottomAnchor="62.0" AnchorPane.leftAnchor="236.0" AnchorPane.rightAnchor="41.0" />
+    <HBox id="hBox1" fx:id="callBackLabel" alignment="CENTER" layoutX="41.0" layoutY="312.0" prefHeight="25.0" prefWidth="418.0" AnchorPane.bottomAnchor="134.0" AnchorPane.leftAnchor="41.0" AnchorPane.rightAnchor="41.0">
+      <children>
+        <Label id="label2" fx:id="errorMessage" />
+      </children>
+    </HBox>
+      <Button layoutX="41.0" layoutY="358.0" mnemonicParsing="false" onAction="#logUp" prefHeight="38.0" prefWidth="135.0" text="LogUp" AnchorPane.bottomAnchor="62.0" AnchorPane.leftAnchor="41.0" AnchorPane.rightAnchor="236.0" />
+  </children>
+</AnchorPane>
