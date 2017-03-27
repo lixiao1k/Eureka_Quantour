@@ -42,6 +42,8 @@ public class LoginController implements Initializable{
 		Stage stage = new Stage();
 		stage.setScene(scene);
 		stage.show();
+		Stage stagenow = (Stage) usernameTextField.getScene().getWindow();
+		stagenow.close();
 	}
 
 	@Override
