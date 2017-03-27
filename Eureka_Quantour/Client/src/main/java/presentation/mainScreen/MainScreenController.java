@@ -4,10 +4,13 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.collections.ObservableArray;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
@@ -47,13 +50,18 @@ public class MainScreenController implements Initializable{
 	
 	@FXML
 	protected void browseStockSet(ActionEvent e) throws IOException{
+		ObservableList<Node> nodeList = mainAnchorPane.getChildren();
+		nodeList.clear();
 		AnchorPane stockSetPane = (AnchorPane)FXMLLoader.load(getClass().getClassLoader().getResource("presentation/stockSetUI/StockSetUI.fxml"));
 		mainAnchorPane.getChildren().add(stockSetPane);
 	}
 	
 	@FXML
-	protected void browseMarket(ActionEvent e){
-		
+	protected void browseMarket(ActionEvent e) throws IOException{
+		ObservableList<Node> nodeList = mainAnchorPane.getChildren();
+		nodeList.clear();
+		AnchorPane marketPane = (AnchorPane)FXMLLoader.load(getClass().getClassLoader().getResource("presentation/marketUI/MarketUI.fxml"));
+		mainAnchorPane.getChildren().add(marketPane);
 	}
 	
 	@FXML
