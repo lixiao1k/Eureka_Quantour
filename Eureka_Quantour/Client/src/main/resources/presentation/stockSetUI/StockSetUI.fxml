@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="stockSetMainAnchorPane" prefHeight="758.0" prefWidth="1217.0" styleClass="background" stylesheets="@../../styles/StockSet.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.stockSetUI.StockSetUIController">
+   <children>
+      <AnchorPane maxHeight="758.0" maxWidth="247.0" prefHeight="758.0" prefWidth="247.0" styleClass="left-segment" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="970.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ScrollPane fx:id="stockSetScrollPane" layoutX="1.0" prefHeight="758.0" prefWidth="247.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <content>
+                  <FlowPane fx:id="stockSetFlowPane" maxWidth="245.0" prefHeight="740.0" prefWidth="239.0" vgap="3.0">
+                     <padding>
+                        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                     </padding>
+                  </FlowPane>
+               </content></ScrollPane>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="247.0" prefHeight="758.0" prefWidth="972.0" styleClass="bottom-segment" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="245.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <AnchorPane layoutX="7.5" layoutY="189.0" maxWidth="657.0" prefHeight="755.0" prefWidth="657.0" styleClass="left-segment" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <ScrollPane fx:id="stocksScrollPane" layoutY="7.0" prefHeight="742.0" prefWidth="657.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <content>
+                        <FlowPane fx:id="stocksFlowPane" maxWidth="652.0" prefHeight="746.0" prefWidth="652.0">
+                           <padding>
+                              <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                           </padding>
+                        </FlowPane>
+                     </content>
+                  </ScrollPane>
+               </children>
+            </AnchorPane>
+            <GridPane layoutX="664.5" layoutY="5.5" maxHeight="755.0" maxWidth="306.0" prefHeight="755.0" prefWidth="306.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="657.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <AnchorPane fx:id="stockBasicInfoAnchorPane" prefHeight="200.0" prefWidth="200.0" styleClass="top-segment" />
+                  <AnchorPane fx:id="kChartAnchorPane" prefHeight="200.0" prefWidth="200.0" styleClass="top-segment" GridPane.rowIndex="1" />
+                  <AnchorPane fx:id="emaChartAnchorPane" prefHeight="200.0" prefWidth="200.0" styleClass="top-segment" GridPane.rowIndex="2" />
+               </children>
+            </GridPane>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

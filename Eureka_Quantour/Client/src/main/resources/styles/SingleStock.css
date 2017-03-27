@@ -5,8 +5,18 @@
         linear-gradient(#20262b, #191d22),
         radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));
 }
-
+.scroll-pane > .viewport {
+   -fx-background-color: transparent;
+}
 .top-segment {
+	-fx-background-color: rgba(255, 255, 255, 0.05);
+	-fx-border-color: 
+		rgb(255, 255, 255, 0.08) transparent rgb(255, 255, 255, 0.08) transparent,
+		rgb(0, 0, 0, 0.5) transparent rgb(0, 0, 0, 0.5) transparent;
+	-fx-border-width: 1, 1.5;
+	-fx-border-insets: -1, 0; 
+}
+.top1-segment {
 	-fx-background-color: rgba(255, 255, 255, 0.05);
 	-fx-border-color: 
 		transparent transparent rgb(255, 255, 255, 0.08) transparent,
@@ -14,11 +24,44 @@
 	-fx-border-width: 1, 1.5;
 	-fx-border-insets: -1, 0; 
 }
+
 .left-segment {
 	-fx-background-color: rgba(255, 255, 255, 0.05);
 	-fx-border-color: 
-		transparent rgb(255, 255, 255, 0.08) transparent  transparent,
-		transparent rgb(0, 0, 0, 0.5) transparent  transparent;
+		transparent rgb(255, 255, 255, 0.08) transparent rgb(255, 255, 255, 0.08),
+		transparent rgb(0, 0, 0, 0.5) transparent  rgb(0, 0, 0, 0.5);
+	-fx-border-width: 1, 1.5;
+	-fx-border-insets: -1, 0; 
+}
+.left1-segment {
+	-fx-background-color: rgba(255, 255, 255, 0.05);
+	-fx-border-color: 
+		rgb(255, 255, 255, 0.08) rgb(255, 255, 255, 0.08) transparent transparent,
+		rgb(0, 0, 0, 0.5) rgb(0, 0, 0, 0.5) transparent  transparent;
+	-fx-border-width: 1, 1.5;
+	-fx-border-insets: -1, 0; 
+}
+.left2-segment {
+	-fx-background-color: rgba(255, 255, 255, 0.05);
+	-fx-border-color: 
+		transparent transparent transparent transparent,
+		transparent transparent transparent  transparent;
+	-fx-border-width: 1, 1.5;
+	-fx-border-insets: -1, 0; 
+}
+.center-segment{
+		-fx-background-color: rgba(255, 255, 255, 0.05);
+	-fx-border-color: 
+		rgb(255, 255, 255, 0.08) rgb(255, 255, 255, 0.08) rgb(255, 255, 255, 0.08) rgb(255, 255, 255, 0.08),
+		rgb(0, 0, 0, 0.5) rgb(0, 0, 0, 0.5) rgb(0, 0, 0, 0.5) rgb(0, 0, 0, 0.5);
+	-fx-border-width: 1, 1.5;
+	-fx-border-insets: -1, 0; 
+}
+.bottom-segment {
+	-fx-background-color: rgba(255, 255, 255, 0.05);
+	-fx-border-color: 
+		rgb(255, 255, 255, 0.08) transparent transparent transparent,
+		rgb(0, 0, 0, 0.5) transparent transparent transparent;
 	-fx-border-width: 1, 1.5;
 	-fx-border-insets: -1, 0; 
 }

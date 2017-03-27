@@ -9,13 +9,12 @@ import logic.service.ClientLogicInterface;
 import logic.service.StockLogicInterface;
 import logic.serviceimpl.ClientLogicImpl;
 import logic.serviceimpl.StockLogicImpl;
+import logic.serviceimpl.StockLogicImplstub;
 import resultmessage.BeginInvalidException;
 import resultmessage.DateInvalidException;
 import resultmessage.EndInvalidException;
-import vo.ComparedInfoVO;
-import vo.EMAInfoVO;
-import vo.MarketInfoVO;
-import vo.SingleStockInfoVO;
+import vo.*;
+
 /**
  * 
  * @Description: TODO
@@ -30,7 +29,7 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 	private StockLogicInterface sli;
 	protected DateRemote() throws RemoteException {
 		cli = new ClientLogicImpl();
-		sli = new StockLogicImpl();
+		sli = new StockLogicImplstub();
 	}
 
 	@Override
@@ -62,15 +61,67 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 	}
 
 	@Override
-	public boolean signUp(String username, String password) throws RemoteException {
-		// TODO Auto-generated method stub
-		return cli.signUp(username, password);
+	public List<String> getStockSet(String username) {
+		return sli.getStockSet(username);
 	}
 
 	@Override
-	public boolean signIn(String username, String password) throws RemoteException {
-		// TODO Auto-generated method stub
-		return cli.signIn(username, password);
+	public List<SingleStockInfoVO> getStockSetSortedInfo(String stockSetName, Calendar now) {
+		return sli.getStockSetSortedInfo(stockSetName,now);
 	}
 
+	@Override
+	public SingleStockInfoVO getStockBasicInfo(String code, Calendar now) {
+		return sli.getStockBasicInfo(code,now);
+	}
+
+	@Override
+	public List<SingleStockInfoVO> getStockSorted(String stockSetName, Calendar now) {
+		return sli.getStockSorted(stockSetName, now);
+	}
+
+	@Override
+	public void setStrategy(StrategyConditionVO sc, SaleVO s, Calendar begin, Calendar now, String stockSetName) {
+		sli.setStrategy(sc, s, begin, now, stockSetName);
+	}
+
+	@Override
+	public YieldChartDataVO getYieldChartData() {
+		return sli.getYieldChartData();
+	}
+
+	@Override
+	public YieldDistributionHistogramDataVO getYieldDistributionHistogramData() {
+		return sli.getYieldDistributionHistogramData();
+	}
+
+	@Override
+	public void addStockSet(String stockSetName, String username) {
+		sli.addStockSet(stockSetName,username);
+	}
+
+	@Override
+	public void deleteStockSet(String stockSetName, String username) {
+		sli.deleteStockSet(stockSetName,username);
+	}
+
+	@Override
+	public void addStockToStockSet(String stockName, String stockSetName, String username) {
+		sli.addStockToStockSet(stockName, stockSetName, username);
+	}
+
+	@Override
+	public void deleteStockFromStockSet(String stockName, String stockSetName, String username) {
+		sli.deleteStockFromStockSet(stockName, stockSetName, username);
+	}
+
+	@Override
+	public boolean signUp(String username, char[] password) throws RemoteException {
+		return true;
+	}
+
+	@Override
+	public boolean signIn(String username, char[] password) throws RemoteException {
+		return true;
+	}
 }
