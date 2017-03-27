@@ -6,8 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane prefHeight="758.0" prefWidth="1217.0" styleClass="background" stylesheets="@../../styles/Market.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="presentation.marketUI.MarketUIController">
+<AnchorPane prefHeight="758.0" prefWidth="1217.0" styleClass="background" stylesheets="@../../styles/Market.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.marketUI.MarketUIController">
    <children>
       <AnchorPane prefHeight="37.0" prefWidth="1217.0" styleClass="top-segment" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -33,7 +32,7 @@
             <ScrollPane fx:id="upTenScrollPane" maxWidth="281.0" prefHeight="200.0" prefWidth="281.0" styleClass="top1-segment" />
          </children>
       </GridPane>
-      <AnchorPane layoutX="281.0" layoutY="73.0" maxWidth="600.0" prefHeight="684.0" prefWidth="600.0" styleClass="left1-segment" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="281.0" AnchorPane.topAnchor="74.0">
+      <AnchorPane layoutX="281.0" layoutY="73.0" maxWidth="600.0" prefHeight="684.0" prefWidth="600.0" styleClass="left2-segment" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="281.0" AnchorPane.topAnchor="74.0">
          <children>
             <ScrollPane fx:id="stocksScrollPane" layoutX="-1.0" layoutY="1.0" prefHeight="678.0" prefWidth="600.0" styleClass="left1-segment" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </children>

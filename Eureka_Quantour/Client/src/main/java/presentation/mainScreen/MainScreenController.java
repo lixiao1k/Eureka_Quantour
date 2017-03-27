@@ -65,8 +65,11 @@ public class MainScreenController implements Initializable{
 	}
 	
 	@FXML
-	protected void browseSingleStock(ActionEvent e){
-		
+	protected void browseSingleStock(ActionEvent e) throws IOException{
+		ObservableList<Node> nodeList = mainAnchorPane.getChildren();
+		nodeList.clear();
+		AnchorPane singleStockPane = (AnchorPane)FXMLLoader.load(getClass().getClassLoader().getResource("presentation/singleStockUI/SingleStockUI.fxml"));
+		mainAnchorPane.getChildren().add(singleStockPane);
 	}
 	
 	@FXML
