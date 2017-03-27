@@ -22,7 +22,7 @@
             <Button fx:id="stockSetButton" layoutX="3.0" maxHeight="66.0" mnemonicParsing="false" onAction="#browseStockSet" prefHeight="66.0" prefWidth="63.0" styleClass="main-button" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="2.0" />
             <Button fx:id="marketButton" layoutX="2.0" layoutY="70.0" maxHeight="66.0" mnemonicParsing="false" onAction="#browseMarket" prefHeight="66.0" prefWidth="63.0" styleClass="main-button" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
             <Button fx:id="singleStockButton" layoutY="136.0" maxHeight="66.0" mnemonicParsing="false" onAction="#browseSingleStock" prefHeight="66.0" prefWidth="63.0" styleClass="main-button" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-            <Button fx:id="mineButton" layoutX="3.0" layoutY="202.0" maxHeight="66.0" mnemonicParsing="false" onAction="#browseMine" prefHeight="66.0" prefWidth="63.0" styleClass="main-button" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <Button fx:id="strategyButton" layoutX="3.0" layoutY="202.0" maxHeight="66.0" mnemonicParsing="false" onAction="#browseStrategy" prefHeight="66.0" prefWidth="63.0" styleClass="main-button" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="mainAnchorPane" layoutX="61.0" layoutY="42.0" prefHeight="757.0" prefWidth="1219.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="61.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="43.0">

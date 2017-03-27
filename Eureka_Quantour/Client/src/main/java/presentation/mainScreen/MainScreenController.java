@@ -43,7 +43,7 @@ public class MainScreenController implements Initializable{
 	Button singleStockButton;
 	
 	@FXML
-	Button mineButton;
+	Button strategyButton;
 	
 	@FXML
 	AnchorPane mainAnchorPane;
@@ -73,7 +73,7 @@ public class MainScreenController implements Initializable{
 	}
 	
 	@FXML
-	protected void browseMine(ActionEvent e){
+	protected void browseStrategy(ActionEvent e){
 		
 	}
 	
@@ -97,7 +97,7 @@ public class MainScreenController implements Initializable{
 		stockSetButton.setText("股池");
 		marketButton.setText("市场");
 		singleStockButton.setText("个股");
-		mineButton.setText("我的");
+		strategyButton.setText("策略");
 		
 	}
 
