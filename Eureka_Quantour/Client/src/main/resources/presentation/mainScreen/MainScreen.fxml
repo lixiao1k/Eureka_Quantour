@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" styleClass="background" stylesheets="@../../styles/MainScreen.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="presentation.mainScreen.MainScreenController">
+   <children>
+      <AnchorPane layoutX="63.0" prefHeight="42.0" prefWidth="1217.0" styleClass="top-segment" AnchorPane.leftAnchor="63.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <DatePicker fx:id="nowDatePicker" layoutX="142.0" layoutY="10.0" prefHeight="9.0" prefWidth="162.0" showWeekNumbers="true" />
+            <Label layoutX="46.0" layoutY="13.0" text="SystemTime" />
+            <Button fx:id="editButton" layoutX="304.0" layoutY="11.0" mnemonicParsing="false" onAction="#edit" styleClass="transperantButton" text="设置" />
+            <Button fx:id="exitButton" layoutX="1141.0" layoutY="11.0" mnemonicParsing="false" onAction="#exit" styleClass="transperantButton" text="登出" />
+            <Label fx:id="nameLabel" layoutX="1096.0" layoutY="14.0" text="李晓冬" />
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="800.0" prefWidth="63.0" styleClass="left-segment" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Button fx:id="stockSetButton" layoutY="41.0" mnemonicParsing="false" onAction="#browseStockSet" prefHeight="67.0" prefWidth="63.0" styleClass="main-button" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <Button fx:id="marketButton" layoutX="-0.5" layoutY="108.0" mnemonicParsing="false" onAction="#browseMarket" prefHeight="67.0" prefWidth="63.0" styleClass="main-button" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <Button fx:id="singleStockButton" layoutX="4.0" layoutY="175.0" mnemonicParsing="false" onAction="#browseSingleStock" prefHeight="67.0" prefWidth="63.0" styleClass="main-button" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <Button fx:id="mineButton" layoutY="242.0" mnemonicParsing="false" onAction="#browseMine" prefHeight="67.0" prefWidth="63.0" styleClass="main-button" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
