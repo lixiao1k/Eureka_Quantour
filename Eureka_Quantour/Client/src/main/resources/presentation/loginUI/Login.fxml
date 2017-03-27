@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="471.0" prefWidth="412.0" styleClass="background" stylesheets="@../style/Login.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="presentation.loginUI.LoginController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="471.0" prefWidth="412.0" styleClass="background" stylesheets="@../../styles/Login.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.loginUI.LoginController">
   <children>
     <AnchorPane id="anchorPane2" prefHeight="311.0" prefWidth="412.0" styleClass="top-segment" AnchorPane.bottomAnchor="160.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <children>
@@ -28,7 +28,7 @@
       </children>
     </AnchorPane>
     <Button id="button1" defaultButton="true" layoutX="236.0" layoutY="358.0" onAction="#logIn" prefHeight="43.0" prefWidth="135.0" text="LogIn" AnchorPane.bottomAnchor="62.0" AnchorPane.leftAnchor="236.0" AnchorPane.rightAnchor="41.0" />
-    <HBox id="hBox1" fx:id="callBackLabel" alignment="CENTER" layoutX="41.0" layoutY="312.0" prefHeight="25.0" prefWidth="418.0" AnchorPane.bottomAnchor="134.0" AnchorPane.leftAnchor="41.0" AnchorPane.rightAnchor="41.0">
+    <HBox id="hBox1" fx:id="callBackHBox" alignment="CENTER" layoutX="41.0" layoutY="312.0" prefHeight="25.0" prefWidth="418.0" AnchorPane.bottomAnchor="134.0" AnchorPane.leftAnchor="41.0" AnchorPane.rightAnchor="41.0">
       <children>
         <Label id="label2" fx:id="errorMessage" />
       </children>
