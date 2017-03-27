@@ -23,6 +23,35 @@ public interface StockLogicInterface extends Remote {
 	 *               invoke getSingleStockInfo() in data layer
 	 * @return: Iterator<SingleStockInfoVO>
 	 */
+
+	public List<String> getStockSet(String username);
+
+	public List<StockBasicInfoVO> getStockSetSortedInfo(String stockSetName, Calendar now);
+
+	// public StockBasicInfoVO getStockBasicInfo(String code, Calendar now)
+	// 待定
+
+	public List<StockBasicInfoVO> getStockSorted(String stockSetName, Calendar now);
+
+
+	public void setStrategy(StrategyConditionVO sc, SaleVO s, Calendar begin, Calendar now, String
+stockSetName);
+
+	public YieldChartDataVo getYieldChartData();
+
+	public YieldDistributionHistogramDataVO getYieldDistributionHistogramData();
+
+	public void addStockSet(String stockSetName, String username);
+
+	public void deleteStockSet(String stockSetName, String username);
+
+	public void addStockToStockSet(String stockName, String stockSetName, String username) ;
+
+	public void deleteStockFromStockSet(String stockName, String stockSetName, String username);
+
+
+
+
 	public List<SingleStockInfoVO> getSingleStockInfoByTime ( String stockCode, Calendar begin, Calendar end )
 			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException;
 	/**

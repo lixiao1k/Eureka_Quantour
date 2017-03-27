@@ -4,6 +4,8 @@ import data.service.IDataInterface;
 import data.serviceimpl.DataInterfaceImpl;
 import logic.service.ClientLogicInterface;
 
+import java.rmi.RemoteException;
+
 /**
  * 
  * @Description: TODO
@@ -13,16 +15,15 @@ import logic.service.ClientLogicInterface;
 public class ClientLogicImpl implements ClientLogicInterface{
 
 	private IDataInterface cli = new DataInterfaceImpl();
+
+
 	@Override
-	public boolean signUp(String username, String password) {
-		// TODO Auto-generated method stub
-		return cli.signUpCheck(username, password);
+	public boolean signUp(String username, char[] password) throws RemoteException {
+		return false;
 	}
 
 	@Override
-	public boolean signIn(String username, String password) {
-		// TODO Auto-generated method stub
-		return cli.signInCheck(username, password);
+	public boolean signIn(String username, char[] password) throws RemoteException {
+		return false;
 	}
-
 }

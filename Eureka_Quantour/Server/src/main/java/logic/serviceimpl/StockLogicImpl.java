@@ -15,10 +15,8 @@ import po.SingleStockInfoPO;
 import resultmessage.BeginInvalidException;
 import resultmessage.DateInvalidException;
 import resultmessage.EndInvalidException;
-import vo.ComparedInfoVO;
-import vo.EMAInfoVO;
-import vo.MarketInfoVO;
-import vo.SingleStockInfoVO;
+import vo.*;
+
 /**
  * 
  * @Description: TODO
@@ -29,12 +27,12 @@ public class StockLogicImpl implements StockLogicInterface{
   
 	private IDataInterface idi = new DataInterfaceImpl();
 	private SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yy");
-	
+
 	@Override
 	public List<SingleStockInfoVO> getSingleStockInfoByTime( String stockCode, Calendar begin, Calendar end )
 			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException {
 		// TODO Auto-generated method stub
-		
+
 		// 判断日期是否有效
 		try{
 			ifDateValid(begin, end);
@@ -43,7 +41,7 @@ public class StockLogicImpl implements StockLogicInterface{
 		}catch( EndInvalidException e ){
 			throw new EndInvalidException();
 		}
-		
+
 		// 日期格式化
 		Calendar beginTemp = Calendar.getInstance();
 		Calendar endTemp = Calendar.getInstance();
@@ -56,7 +54,7 @@ public class StockLogicImpl implements StockLogicInterface{
 			e.printStackTrace();
 		}
 		List<SingleStockInfoVO> lssi = new SingleStockInfoPO().POToVO( idi.getSingleStockInfo(stockCode, beginTemp, endTemp) );
-		
+
 		// 如果没有数据，抛出日期无效异常
 		if( lssi==null )
 			throw new DateInvalidException();
@@ -419,6 +417,61 @@ public class StockLogicImpl implements StockLogicInterface{
 			
 			return mi;
 		}
+	}
+
+	@Override
+	public List<String> getStockSet(String username) {
+		return null;
+	}
+
+	@Override
+	public List<SingleStockInfoVO> getStockSetSortedInfo(String stockSetName, Calendar now) {
+		return null;
+	}
+
+	@Override
+	public SingleStockInfoVO getStockBasicInfo(String code, Calendar now) {
+		return null;
+	}
+
+	@Override
+	public List<SingleStockInfoVO> getStockSorted(String stockSetName, Calendar now) {
+		return null;
+	}
+
+	@Override
+	public void setStrategy(StrategyConditionVO sc, SaleVO s, Calendar begin, Calendar now, String stockSetName) {
+
+	}
+
+	@Override
+	public YieldChartDataVO getYieldChartData() {
+		return null;
+	}
+
+	@Override
+	public YieldDistributionHistogramDataVO getYieldDistributionHistogramData() {
+		return null;
+	}
+
+	@Override
+	public void addStockSet(String stockSetName, String username) {
+
+	}
+
+	@Override
+	public void deleteStockSet(String stockSetName, String username) {
+
+	}
+
+	@Override
+	public void addStockToStockSet(String stockName, String stockSetName, String username) {
+
+	}
+
+	@Override
+	public void deleteStockFromStockSet(String stockName, String stockSetName, String username) {
+
 	}
 
 	/**

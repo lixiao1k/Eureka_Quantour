@@ -8,10 +8,8 @@ import java.util.List;
 import resultmessage.BeginInvalidException;
 import resultmessage.DateInvalidException;
 import resultmessage.EndInvalidException;
-import vo.ComparedInfoVO;
-import vo.EMAInfoVO;
-import vo.MarketInfoVO;
-import vo.SingleStockInfoVO;
+import vo.*;
+
 /**
  * @Description: TODO
  * @author: hzp
@@ -23,27 +21,53 @@ public interface StockLogicInterface extends Remote {
 	 *               invoke getSingleStockInfo() in data layer
 	 * @return: Iterator<SingleStockInfoVO>
 	 */
-	public List<SingleStockInfoVO> getSingleStockInfoByTime ( String stockCode, Calendar begin, Calendar end )
+	 List<SingleStockInfoVO> getSingleStockInfoByTime ( String stockCode, Calendar begin, Calendar end )
 			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException;
 	/**
 	 * @Description: to get all stocks' EMA between "begin" and "end",
 	 *               invoke getSingleStockInfo() in data layer
 	 * @return: Iterator<Double>
 	 */
-	public List<List<EMAInfoVO>> getEMAInfo ( String stockCode, Calendar begin, Calendar end )
+	 List<List<EMAInfoVO>> getEMAInfo ( String stockCode, Calendar begin, Calendar end )
 			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException;
 	/**
 	 * @Description: to get stock A and B's compared information between "begin" and "end",
 	 *               invoke getSingleStockInfo() in data layer
 	 * @return: ComparedInfoVO
 	 */
-	public ComparedInfoVO getComparedInfo ( String stockCodeA, String stockCodeB, Calendar begin, Calendar end )
+	 ComparedInfoVO getComparedInfo ( String stockCodeA, String stockCodeB, Calendar begin, Calendar end )
 			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException;
 	/**
 	 * @Description: to get market's information by date,
 	 *               invoke getMarketByDate() in data layer
 	 * @return: MarketInfoVO
 	 */
-	public MarketInfoVO getMarketInfo ( Calendar date )
+	 MarketInfoVO getMarketInfo ( Calendar date )
 			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException;
+
+
+	 List<String> getStockSet(String username);
+
+	 List<SingleStockInfoVO> getStockSetSortedInfo(String stockSetName, Calendar now);
+
+	 SingleStockInfoVO getStockBasicInfo(String code, Calendar now);
+
+	 List<SingleStockInfoVO> getStockSorted(String stockSetName, Calendar now);
+
+
+	 void setStrategy(StrategyConditionVO sc, SaleVO s, Calendar begin, Calendar now, String
+			stockSetName);
+
+	 YieldChartDataVO getYieldChartData();
+
+	 YieldDistributionHistogramDataVO getYieldDistributionHistogramData();
+
+	 void addStockSet(String stockSetName, String username);
+
+	 void deleteStockSet(String stockSetName, String username);
+
+	 void addStockToStockSet(String stockName, String stockSetName, String username) ;
+
+	 void deleteStockFromStockSet(String stockName, String stockSetName, String username);
+
 }

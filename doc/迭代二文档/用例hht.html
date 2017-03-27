@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title> Quantour用例文档2.0</title>
+	<style>
+		.tdl {width:100px;}
+		.tdr {width:150px;}
+		.tdh {width:100px;text-align: center}
+		.kfont {font-family:"楷体";}
+		.dis {font-family:"楷体";margin-top: 5px; margin-bottom: 5px;}
+		body{
+			background-color:rgb(199,237,204);
+			margin-left: 20%;
+			margin-right: 20%;
+			border:2px dotted black;
+			padding:10px 10px 10px 10px;
+			font-family: sans-serif;
+		}
+	</style>
+</head>
+
+<body>
+
+<h2>用户制定策略</h2>
+<table border="2" width="600px" cellspacing="0" align="center">
+<tbody>
+<tr><th class="tdl">ID</th>
+<td>&nbsp;</td>
+<th class="tdr">名称</th>
+<td>用户制定策略</td>
+</tr>
+<tr><th class="tdl">创建者</th>
+<td>惠晗涛</td>
+<th class="tdr">最后一次更新者</th>
+<td>&nbsp;惠晗涛</td>
+</tr>
+<tr><th class="tdl">创建日期</th>
+<td>2017/3/23</td>
+<th class="tdr">最后更新日期</th>
+<td>2017/3/23&nbsp;</td>
+</tr>
+<tr><th>参与者</th>
+<td colspan="3">用户，目标是使用户制定筛选股票的策略，从而提高收益率</td>
+</tr>
+<tr><th>触发条件</th>
+<td colspan="3">用户选择制定策略</td>
+</tr>
+<tr><th>前置条件</th>
+<td colspan="3">用户已完成股票池的选择</td>
+</tr>
+<tr><th>后置条件</th>
+<td colspan="3">显示策略所对应的图像与参数，来预估策略的收益率与风险程度</td>
+</tr>
+<tr><th>优先级</th>
+<td colspan="3">高</td>
+</tr>
+<tr><th>正常流程</th>
+<td colspan="3">
+<ol class="dis">
+<li>用户设置策略相关参数，股票数量，调仓时间，调仓价格，股票池，数据开始时间，删选条件，删选数量</li>
+<li>用户选择生成策略</li>
+<li>系统显示策略所对应的相关图像，包括收益率图，超额收益率与侧略胜率图像</li>
+<li>系统显示策略的相关参数，阿尔法，贝塔，最大回撤率，收益波动率</li>
+</ol>
+</td>
+</tr>
+<tr><th>扩展流程</th>
+<td colspan="3">
+<pre class="dis">1a:用户设置股票数量大于股票池数量
+1.弹出错误框，并要求用户重新输入<br />1b:调仓时间不超过100天<br />1.弹出错误框，并要求用户重新输入<br />1c：数据开始时间距离现在时间小于一年<br />1.弹出错误框，并要求用户重新输入</pre>
+</td>
+</tr>
+<tr><th>特殊需求</th>
+<td colspan="3">
+<p>1.调仓价格限定在开盘价，收盘价，最高价于最低价算术平均值</p>
+<p>2.筛选条件至少包括动量策略（形成期内收益率的排序），与均值策略（调仓价于均线图偏离率的排序）。</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+</body>
+</html>
