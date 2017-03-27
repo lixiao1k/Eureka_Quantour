@@ -7,11 +7,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Properties;
 
 import data.datahelperservice.IUserDataHelper;
+import resultmessage.LogErrorException;
+import resultmessage.UserNameRepeatException;
 /**
  * 用户模块数据的数据处理实现
  * @author 刘宇翔
@@ -78,6 +78,11 @@ public class UserDataHelperImpl implements IUserDataHelper {
 			prop_userstatus.setProperty(username, "0");
 			prop_userinfo.store(out_info, "update new user:" + username);
 			prop_userstatus.store(out_status, "update new user:" + username);
+			File userDir=new File(userPath+"/info/"+username);
+			if(!userDir.exists()&&!userDir.isDirectory())
+			{
+				userDir.mkdirs();
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -110,10 +115,10 @@ public class UserDataHelperImpl implements IUserDataHelper {
 	/**
 	 * 判断是否存在该用户
 	 * @param String username,用户名字
-	 * @return boolean,含有该用户则返回true，没有则返回false。
+	 * @throws UserNameRepeatException 如果有重复的名字则抛出该异常
 	 */
 	@Override
-	public boolean containName(String username) {
+	public void containName(String username) throws UserNameRepeatException {
 		try {
 			userstatus_in = new BufferedInputStream(
 					new FileInputStream(path+"user/userStatus.properties"));
@@ -122,21 +127,22 @@ public class UserDataHelperImpl implements IUserDataHelper {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		if(prop_userstatus.containsKey(username)){
-			return true;
+		if(prop_userstatus.containsKey(username)){	
+			System.out.println(new UserNameRepeatException().toString());
+			throw new UserNameRepeatException();
 		}
 		else{
-			return false;
+			return ;
 		}
 	} 
 	/**
 	 * 判断密码是否正确
 	 * @param String username,用户名称
 	 * @param String password,用户密码
-	 * @return boolean,密码正确则返回true，不正确则返回false。
+	 * @throws LogErrorException 如果账号或密码错误则抛出该异常
 	 */
 	@Override
-	public boolean login(String username,String password) {
+	public void login(String username,String password) throws LogErrorException{
 		try {
 			userinfo_in = new BufferedInputStream(
 					new FileInputStream(path+"user/userLog.properties"));
@@ -149,18 +155,23 @@ public class UserDataHelperImpl implements IUserDataHelper {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		String pw=prop_userinfo.getProperty(username);
+		String pw=prop_userinfo.getProperty(username,null);
+		if(pw==null){
+			System.out.println(new LogErrorException().toString());
+			throw new LogErrorException();
+		}
 		if(password.equals(pw)){
 //			if(judge_status(username)){
-				change_status(username);
-				return true;
+//				change_status(username);
+				return;
 //			}
 //			else{
 //				return false;
 //			}
 		}
 		else{
-			return false;
+			System.out.println(new LogErrorException().toString());
+			throw new LogErrorException();
 		}
 	} 
 	
@@ -168,16 +179,16 @@ public class UserDataHelperImpl implements IUserDataHelper {
 	 * 当用户登录后，将用户状态设置为已登录
 	 * @param username
 	 */
-	private void change_status(String username){
-		try {
-			FileOutputStream out_status = new FileOutputStream(path+"user/userStatus.properties");
-			prop_userstatus.setProperty(username, "1");
-			prop_userstatus.store(out_status, "login user:" + username);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+//	private void change_status(String username){
+//		try {
+//			FileOutputStream out_status = new FileOutputStream(path+"user/userStatus.properties");
+//			prop_userstatus.setProperty(username, "1");
+//			prop_userstatus.store(out_status, "login user:" + username);
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
 	/**
 	 * 判断登录状态
 	 * @param String username,用户名称
@@ -200,38 +211,37 @@ public class UserDataHelperImpl implements IUserDataHelper {
 	public void logout(String username){
 		try {
 			FileOutputStream out_status = new FileOutputStream(path+"user/userStatus.properties");
-			if(containName(username)){
+			try {
+				containName(username);
+				System.out.println("用户名不存在");
+			} catch (UserNameRepeatException e) {
 				prop_userstatus.setProperty(username, "0");
 				prop_userstatus.store(out_status, "username logout:"+username);
-			}
-			else{
-				System.out.println("用户名错误");
-			}
-		} catch (IOException e) {
+			}	
+		}catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
 	/**
 	 * 当启动服务器时，将所有用户状态更新为未登录
 	 */
-	public void init_status() {
-		try {
-			userstatus_in = new BufferedInputStream(
-					new FileInputStream(path+"user/userStatus.properties"));
-			prop_userstatus.load(userstatus_in);
-			userstatus_in.close();
-			FileOutputStream out_status = new FileOutputStream(path+"user/userStatus.properties");
-			Iterator it=prop_userstatus.entrySet().iterator();
-			while(it.hasNext()){
-			    Map.Entry entry=(Map.Entry)it.next();
-			    prop_userstatus.setProperty((String) entry.getKey(), "0");
-			}
-			prop_userstatus.store(out_status, "init");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+//	private void init_status() {
+//		try {
+//			userstatus_in = new BufferedInputStream(
+//					new FileInputStream(path+"user/userStatus.properties"));
+//			prop_userstatus.load(userstatus_in);
+//			userstatus_in.close();
+//			FileOutputStream out_status = new FileOutputStream(path+"user/userStatus.properties");
+//			Iterator it=prop_userstatus.entrySet().iterator();
+//			while(it.hasNext()){
+//			    Map.Entry entry=(Map.Entry)it.next();
+//			    prop_userstatus.setProperty((String) entry.getKey(), "0");
+//			}
+//			prop_userstatus.store(out_status, "init");
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
 }

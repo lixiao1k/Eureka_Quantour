@@ -1,22 +1,16 @@
 package data.service;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map.Entry;
 import java.util.Scanner;
 
 import data.serviceimpl.DataInterfaceImpl;
-import data.serviceimpl.StockDataController;
 import po.SingleStockInfoPO;
+import resultmessage.LogErrorException;
+import resultmessage.StockNameRepeatException;
+import resultmessage.StockSetNameRepeatException;
+import resultmessage.UserNameRepeatException;
 
 public class DataInterface_Driver {
 	public static void main(String[] args){
@@ -83,16 +77,56 @@ public class DataInterface_Driver {
 			else if(input.charAt(0)=='3'){
 				input=input.substring(2);
 				String[] info=input.split(",");
-				data.signUpCheck(info[0], info[1]);
+				try {
+					data.signUpCheck(info[0], info[1]);
+				} catch (UserNameRepeatException e) {
+					e.toString();
+				}
 			}
 			else if(input.charAt(0)=='4'){
 				input=input.substring(2);
 				String[] info=input.split(",");
-				data.signInCheck(info[0], info[1]);
+				try {
+					data.signInCheck(info[0], info[1]);
+				} catch (LogErrorException e) {
+					e.toString();
+				}
 			}
 			else if(input.charAt(0)=='5'){
 				input=input.substring(2);
 				data.logout(input);
+			}
+			else if(input.charAt(0)=='6'){
+				input=input.substring(2);
+				data.getStockSet(input);
+			}
+			else if(input.charAt(0)=='7'){
+				input=input.substring(2);
+				String[] out=input.split(",");
+				try {
+					data.addStockSet(out[0], out[1]);
+				} catch (StockSetNameRepeatException e) {
+					System.out.println(e.toString());
+				}
+			}
+			else if(input.charAt(0)=='8'){
+				input=input.substring(2);
+				String[] out=input.split(",");
+				data.deleteStockSet(out[0], out[1]);;
+			}
+			else if(input.charAt(0)=='9'){
+				input=input.substring(2);
+				String[] out=input.split(",");
+				try {
+					data.addStockToStockSet(out[0], out[1], out[2]);
+				} catch (StockNameRepeatException e) {
+					System.out.println(e.toString());
+				}
+			}
+			else if(input.charAt(0)=='a'){
+				input=input.substring(2);
+				String[] out=input.split(",");
+				data.deleteStockFromStockSet(out[0], out[1], out[2]);
 			}
 		}
 	}

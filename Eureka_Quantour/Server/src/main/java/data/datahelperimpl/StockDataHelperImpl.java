@@ -26,7 +26,7 @@ import data.datahelperservice.IStockDataHelper;
  * @author 刘宇翔
  *
  */
-public class StockDataHelperImp implements IStockDataHelper {
+public class StockDataHelperImpl implements IStockDataHelper {
 	private static IStockDataHelper datahelper;//datahelper层的单例对象
 	private File stockdata;//数据源文件
 	private File filelog;//数据中每支股票的配置文件
@@ -45,7 +45,7 @@ public class StockDataHelperImp implements IStockDataHelper {
 	/**
 	 * stockdatahelper的初始化
 	 */
-	private StockDataHelperImp(){
+	private StockDataHelperImpl(){
 		path="config/";
 		need_init=false;
 		File newresources=new File(path+"resources/date.csv");
@@ -107,7 +107,7 @@ public class StockDataHelperImp implements IStockDataHelper {
     }
 	
 	public static IStockDataHelper getInstance(){
-		if(datahelper==null) datahelper=new StockDataHelperImp();
+		if(datahelper==null) datahelper=new StockDataHelperImpl();
 		return datahelper;
 	}
 	
