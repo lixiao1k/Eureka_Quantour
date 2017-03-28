@@ -4,6 +4,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import data.datahelperimpl.UserDataHelperImpl;
 import data.datahelperservice.IUserDataHelper;
+import resultmessage.LogErrorException;
+import resultmessage.UserNameRepeatException;
 
 /**
  * 用户模块方法的实现
@@ -13,7 +15,7 @@ import data.datahelperservice.IUserDataHelper;
 public class UserDataController 
 {
 	private IUserDataHelper userdatahelper;
-	public static UserDataController userdata;
+	private static UserDataController userdata;
 	private UserDataController(){
 		userdatahelper=UserDataHelperImpl.getInstance();
 	}
@@ -25,36 +27,24 @@ public class UserDataController
 	 * 判断用户是否注册成功，如果成功，登记用户的账号；如果失败，返回错误信息。
 	 * @param username String,用户的登录名
 	 * @param password String,用户的登录密码
-	 * @return 一个boolean值，注册成功返回true，否则返回false
+	 * @throws UserNameRepeatException 如果用户名重复则抛出异常
 	 */
-	public boolean signUpCheck(String username, String password) {
+	public void signUpCheck(String username, String password) throws UserNameRepeatException{
 		password=EncoderByMd5(password);
-		if(userdatahelper.containName(username)){
-			System.out.println("---------------------注册失败-----------------------");
-			return false;
-		}
-		else{
-			System.out.println("---------------------注册成功-----------------------\n  username:" +username+"    password:"+password);
-			userdatahelper.insertUser(username, password);
-			return true;
-		}
+		userdatahelper.containName(username);
+		System.out.println("---------------------注册成功-----------------------\n  username:" +username+"    password:"+password);
+		userdatahelper.insertUser(username, password);
 	}
 	/**
 	 * 判断用户是否登录成功，如果成功，登录用户的账号；如果失败，返回错误信息。
 	 * @param username String,用户的登录名
 	 * @param password String,用户的登录密码
-	 * @return 一个boolean值，登录成功返回true，否则返回false
+	 * @throws LogErrorException 如果用户名或密码错误则抛出异常
 	 */
-	public boolean signInCheck(String username,String password){
+	public void signInCheck(String username,String password) throws LogErrorException {
 		password=EncoderByMd5(password);
-		if(userdatahelper.login(username, password)){
-			System.out.println("---------------------登录成功-----------------------\n  username:" +username+"    password:"+password);
-			return true;
-		}
-		else{
-			System.out.println("---------------------登录失败-----------------------");
-			return false;
-		}
+		userdatahelper.login(username, password);
+		System.out.println("---------------------登录成功-----------------------\n  username:" +username+"    password:"+password);
 	}
 	/**
 	 * 登出账号。
@@ -64,6 +54,8 @@ public class UserDataController
 	public void logout(String username){
 		userdatahelper.logout(username);
 	}
+	
+	
 	/**
 	 * 将输入的字符串加密返回
 	 * @param str 待加密的字符串

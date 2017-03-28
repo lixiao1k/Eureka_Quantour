@@ -1,0 +1,136 @@
+
+.background {
+	-fx-background-color:
+        linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
+        linear-gradient(#20262b, #191d22),
+        radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));
+}
+.scroll-pane > .viewport {
+   -fx-background-color: transparent;
+}
+.top-segment {
+	-fx-background-color: rgba(255, 255, 255, 0.05);
+	-fx-border-color: 
+		transparent transparent rgb(255, 255, 255, 0.08) transparent,
+		transparent transparent rgb(0, 0, 0, 0.5) transparent;
+	-fx-border-width: 1, 1.5;
+	-fx-border-insets: -1, 0; 
+}
+.left-segment {
+	-fx-background-color: rgba(255, 255, 255, 0.05);
+	-fx-border-color: 
+		rgb(255, 255, 255, 0.08) rgb(255, 255, 255, 0.08) transparent rgb(255, 255, 255, 0.08),
+		rgb(0, 0, 0, 0.5) rgb(0, 0, 0, 0.5) transparent  rgb(0, 0, 0, 0.5);
+	-fx-border-width: 1, 1.5;
+	-fx-border-insets: -1, 0; 
+}
+.bottom-segment {
+	-fx-background-color: rgba(255, 255, 255, 0.05);
+	-fx-border-color: 
+		rgb(255, 255, 255, 0.08) transparent transparent transparent,
+		rgb(0, 0, 0, 0.5) transparent transparent transparent;
+	-fx-border-width: 1, 1.5;
+	-fx-border-insets: -1, 0; 
+}
+
+.transperantButton{
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-background-radius: 6, 5, 4;
+    -fx-background-color: transparent;
+    -fx-font-family:"Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-font-size: 1em; /* 12 */
+    -fx-text-fill: #828282;
+}
+
+
+.transperantButton:pressed
+{
+    -fx-background-color: #6d8187;
+    -fx-text-fill: white;
+}
+
+.main-button{
+    -fx-background-color: #38424b;
+    -fx-font-size: 14px;
+    -fx-font-weight: bolder;
+    -fx-text-fill:ivory;
+}
+.main-button:hover{
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 10, 0.0 , 0 , 1 );
+
+}
+.main-button:pressed{
+    -fx-background-color: #6d8187;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 10, 0.0 , 0 , 1 );
+}
+.main-button:focused{
+    -fx-background-color: #6d8187;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 10, 0.0 , 0 , 1 );
+}
+.label {
+	-fx-font-family: "Arial";
+	-fx-font-size:15;
+    -fx-text-fill: rgb(255, 255, 255, 0.9);
+    -fx-effect: dropshadow( one-pass-box , rgb(0, 0, 0, 0.6), 0, 0.0 , 0 , 1 );
+}
+
+.profileTitle {
+    -fx-font-size: 18;
+}
+
+.hyperlink {
+    -fx-font-family: "Arial";
+    -fx-font-size: 18;
+    -fx-text-fill: rgb(255, 255, 255, 0.4);
+    -fx-effect: dropshadow( one-pass-box , rgb(0, 0, 0, 0.6), 0, 0.0 , 0 , 1 );
+    -fx-border-width: 0;
+}
+
+.hyperlink:focused {
+	-fx-text-fill: rgb(255, 255, 255, 0.6);
+}
+
+.check-box .box {
+	-fx-background-color:
+		rgb(255, 255, 255, 0.1),
+        rgb(0, 0, 0, 1),
+        -fx-outer-border,
+        -fx-inner-border,
+        -fx-body-color;
+    -fx-background-insets: 0 -1.6 -2 -1.6, -1.4, 0, 1, 2;
+}
+
+.check-box:focused .box {
+	-fx-background-color:
+		rgb(255, 255, 255, 0.15),
+        rgb(0, 0, 0, 0.8),
+        -fx-outer-border,
+        -fx-inner-border,
+        white;
+}
+
+.text-field, .text-area {
+    -fx-background-color:
+    	rgb(255, 255, 255, 0.3),
+    	linear-gradient(rgb(0, 0, 0, 0.5), rgb(0, 0, 0, 0.8) 50%),
+        rgb(218, 226, 224);
+    -fx-background-insets: 0 0 -1 0, 0, 1.5;
+    -fx-background-radius: 6, 5, 4;
+    -fx-padding: 6 10 4 10;
+    -fx-effect: innershadow( gaussian, rgb(0, 0, 0, 0.8), 5, 0, 0, 2 );
+    -fx-font-family: "Arial";
+}
+
+.text-area {
+	-fx-padding: 6 5 6 5;
+}
+
+.text-field:focused, .text-area:focused {
+    -fx-prompt-text-fill:
+        rgb(128,128,128);
+    -fx-background-color:
+    	rgb(235, 235, 235, 0.5),
+        rgb(0, 0, 0, 0.4),
+        rgb(255, 255, 255);
+}
