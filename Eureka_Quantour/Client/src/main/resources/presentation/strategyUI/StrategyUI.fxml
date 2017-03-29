@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="758.0" prefWidth="1217.0" styleClass="background" stylesheets="@../../styles/Strategy.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane maxHeight="42.0" prefHeight="42.0" prefWidth="1217.0" styleClass="top-segment" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ComboBox layoutX="108.0" layoutY="10.0" prefWidth="150.0" />
+            <DatePicker layoutX="347.0" layoutY="9.0" prefHeight="25.0" prefWidth="150.0" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
