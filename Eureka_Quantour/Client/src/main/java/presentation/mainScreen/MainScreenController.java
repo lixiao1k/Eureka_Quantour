@@ -18,6 +18,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 public class MainScreenController implements Initializable{
 	
@@ -73,8 +74,11 @@ public class MainScreenController implements Initializable{
 	}
 	
 	@FXML
-	protected void browseStrategy(ActionEvent e){
-		
+	protected void browseStrategy(ActionEvent e) throws IOException{
+		ObservableList<Node> nodeList = mainAnchorPane.getChildren();
+		nodeList.clear();
+		AnchorPane strategyPane = (AnchorPane)FXMLLoader.load(getClass().getClassLoader().getResource("presentation/strategyUI/StrategyUI.fxml"));
+		mainAnchorPane.getChildren().add(strategyPane);
 	}
 	
 	@FXML
@@ -84,7 +88,8 @@ public class MainScreenController implements Initializable{
 	
 	@FXML
 	protected void exit(ActionEvent e){
-		
+		Stage root = (Stage) exitButton.getScene().getWindow();
+		root.close();
 	}
 
 	@Override
