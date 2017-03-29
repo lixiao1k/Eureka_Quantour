@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 
 import data.fetchdataservice.IStockDataFetch;
 import data.parse.ParseStockName;
-import resultmessage.InternetdisconnectException;
+import exception.InternetdisconnectException;
 /**
  * 从网上爬取股票数据
  * @author 刘宇翔

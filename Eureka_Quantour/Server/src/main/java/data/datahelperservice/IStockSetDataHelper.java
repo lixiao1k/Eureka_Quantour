@@ -2,8 +2,8 @@ package data.datahelperservice;
 
 import java.util.List;
 
-import resultmessage.StockNameRepeatException;
-import resultmessage.StockSetNameRepeatException;
+import exception.StockNameRepeatException;
+import exception.StockSetNameRepeatException;
 
 public interface IStockSetDataHelper {
 	/**

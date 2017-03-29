@@ -2,7 +2,7 @@ package data.fetchdataservice;
 
 import java.util.List;
 
-import resultmessage.InternetdisconnectException;
+import exception.InternetdisconnectException;
 /**
  * 从网上爬取股票
  * @author 刘宇翔

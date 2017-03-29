@@ -4,8 +4,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import data.datahelperimpl.UserDataHelperImpl;
 import data.datahelperservice.IUserDataHelper;
-import resultmessage.LogErrorException;
-import resultmessage.UserNameRepeatException;
+import exception.LogErrorException;
+import exception.UserNameRepeatException;
 
 /**
  * 用户模块方法的实现

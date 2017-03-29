@@ -8,7 +8,7 @@ import java.util.Properties;
 
 import data.fetchdataimpl.StockDataFetchImpl;
 import data.fetchdataservice.IStockDataFetch;
-import resultmessage.InternetdisconnectException;
+import exception.InternetdisconnectException;
 
 /**
  * 将股票编号翻译成股票名字或把股票名字翻译成股票编号

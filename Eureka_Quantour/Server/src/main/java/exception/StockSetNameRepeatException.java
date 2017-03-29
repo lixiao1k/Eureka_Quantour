@@ -1,4 +1,4 @@
-package resultmessage;
+package exception;
 
 
 public class StockSetNameRepeatException extends Exception {

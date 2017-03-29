@@ -1,7 +1,7 @@
 package data.datahelperservice;
 
-import resultmessage.LogErrorException;
-import resultmessage.UserNameRepeatException;
+import exception.LogErrorException;
+import exception.UserNameRepeatException;
 
 /**
  * 用户模块数据的数据处理接口

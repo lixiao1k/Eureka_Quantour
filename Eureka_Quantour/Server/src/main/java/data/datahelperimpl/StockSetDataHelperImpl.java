@@ -9,8 +9,8 @@ import java.util.List;
 
 import data.datahelperservice.IStockSetDataHelper;
 import data.parse.Translate;
-import resultmessage.StockNameRepeatException;
-import resultmessage.StockSetNameRepeatException;
+import exception.StockNameRepeatException;
+import exception.StockSetNameRepeatException;
 
 public class StockSetDataHelperImpl implements IStockSetDataHelper {
 	private static IStockSetDataHelper datahelper;

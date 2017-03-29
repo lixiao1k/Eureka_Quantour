@@ -1,4 +1,4 @@
-package resultmessage;
+package exception;
 /**
  * 
  * @Description: 用来表示网络连接断开或不稳定
