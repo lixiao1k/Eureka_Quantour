@@ -5,9 +5,9 @@ import java.rmi.RemoteException;
 import java.util.Calendar;
 import java.util.List;
 
-import resultmessage.BeginInvalidException;
-import resultmessage.DateInvalidException;
-import resultmessage.EndInvalidException;
+import exception.BeginInvalidException;
+import exception.DateInvalidException;
+import exception.EndInvalidException;
 import vo.*;
 
 /**

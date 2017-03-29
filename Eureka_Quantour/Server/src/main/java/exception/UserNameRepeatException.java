@@ -1,4 +1,4 @@
-package resultmessage;
+package exception;
 /**
  * 
  * @Description: 用来表示注册的用户名已经存在

@@ -1,4 +1,4 @@
-package resultmessage;
+package exception;
 /**
  * 
  * @Description: 用来表示结束日期小于最小有效日期

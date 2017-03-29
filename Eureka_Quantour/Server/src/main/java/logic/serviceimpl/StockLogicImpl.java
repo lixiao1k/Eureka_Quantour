@@ -12,9 +12,9 @@ import data.service.IDataInterface;
 import data.serviceimpl.DataInterfaceImpl;
 import logic.service.StockLogicInterface;
 import po.SingleStockInfoPO;
-import resultmessage.BeginInvalidException;
-import resultmessage.DateInvalidException;
-import resultmessage.EndInvalidException;
+import exception.BeginInvalidException;
+import exception.DateInvalidException;
+import exception.EndInvalidException;
 import vo.*;
 
 /**

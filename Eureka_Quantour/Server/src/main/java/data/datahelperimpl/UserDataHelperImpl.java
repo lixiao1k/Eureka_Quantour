@@ -10,8 +10,8 @@ import java.net.URLDecoder;
 import java.util.Properties;
 
 import data.datahelperservice.IUserDataHelper;
-import resultmessage.LogErrorException;
-import resultmessage.UserNameRepeatException;
+import exception.LogErrorException;
+import exception.UserNameRepeatException;
 /**
  * 用户模块数据的数据处理实现
  * @author 刘宇翔

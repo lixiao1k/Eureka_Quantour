@@ -1,4 +1,4 @@
-package resultmessage;
+package exception;
 /**
  * 
  * @Description: 用来表示登录的用户名或密码有误

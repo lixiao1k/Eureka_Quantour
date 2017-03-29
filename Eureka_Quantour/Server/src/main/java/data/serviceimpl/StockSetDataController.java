@@ -4,8 +4,8 @@ import java.util.List;
 
 import data.datahelperimpl.StockSetDataHelperImpl;
 import data.datahelperservice.IStockSetDataHelper;
-import resultmessage.StockNameRepeatException;
-import resultmessage.StockSetNameRepeatException;
+import exception.StockNameRepeatException;
+import exception.StockSetNameRepeatException;
 
 public class StockSetDataController {
 	private static StockSetDataController stocksetdata;

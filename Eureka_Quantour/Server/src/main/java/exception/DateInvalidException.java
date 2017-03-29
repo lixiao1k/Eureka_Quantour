@@ -1,4 +1,4 @@
-package resultmessage;
+package exception;
 /**
  * 
  * @Description: 用来表示该日期段内没有股票数据

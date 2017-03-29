@@ -8,14 +8,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import data.datahelperservice.IStockSetDataHelper;
-import resultmessage.StockNameRepeatException;
-import resultmessage.StockSetNameRepeatException;
+import data.parse.Translate;
+import exception.StockNameRepeatException;
+import exception.StockSetNameRepeatException;
 
 public class StockSetDataHelperImpl implements IStockSetDataHelper {
 	private static IStockSetDataHelper datahelper;
 	private String userPath;
+	private Translate translate;
 	private StockSetDataHelperImpl(){
 		userPath="config/user/info";
+		translate=Translate.getInstance();
 		try {
 			userPath=URLDecoder.decode(userPath, "UTF-8");
 		} catch (UnsupportedEncodingException e) {

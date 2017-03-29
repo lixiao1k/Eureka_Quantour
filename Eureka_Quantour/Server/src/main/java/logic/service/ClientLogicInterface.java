@@ -1,5 +1,8 @@
 package logic.service;
 
+import exception.LoginFailException;
+import exception.NameInvalidException;
+
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
@@ -13,11 +16,13 @@ public interface ClientLogicInterface extends Remote{
 	 * @Description: to sign up, invoke signUp() in data
 	 * @return: boolean
 	 */
-	public boolean signUp ( String username, char[] password )throws RemoteException;
+	public void signUp ( String username, char[] password )throws RemoteException, NameInvalidException;
 	/**
 	 * @Description: to sign in, invoke signIn() indata
 	 * @return: boolean
 	 */
-	public boolean signIn ( String username, char[] password )throws RemoteException;
+	public void signIn ( String username, char[] password )throws RemoteException, LoginFailException;
+
+	public void signOut(String username) throws RemoteException;
 
 }
