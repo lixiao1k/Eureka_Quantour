@@ -9,5 +9,5 @@ import java.util.List;
 public abstract class StrategyConditionVO implements Serializable {
     private static final long serialVersionUID=3607793986868423023L;
     public String name;
-    public void sort(List<SingleStockInfoVO> list, int num){};
+    public abstract void sort(List<SingleStockInfoVO> list, int num);
 }
