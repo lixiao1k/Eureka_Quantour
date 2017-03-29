@@ -21,6 +21,7 @@ import java.util.Stack;
 import javax.swing.JOptionPane;
 
 import data.datahelperservice.IStockDataHelper;
+import data.parse.Translate;
 /**
  * 股票模块数据的数据处理实现
  * @author 刘宇翔
@@ -42,12 +43,14 @@ public class StockDataHelperImpl implements IStockDataHelper {
 	private Boolean need_init;//判断程序的配置文件是否生成的boolean变量
 	private String path;
 	private String path1;
+	private Translate translate;
 	/**
 	 * stockdatahelper的初始化
 	 */
 	private StockDataHelperImpl(){
 		path="config/";
 		need_init=false;
+		translate=Translate.getInstance();
 		File newresources=new File(path+"resources/date.csv");
 		File newpath=new File(path+"resources");
 		if(newresources.exists()){
