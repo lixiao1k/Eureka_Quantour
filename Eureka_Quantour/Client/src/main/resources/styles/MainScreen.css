@@ -5,7 +5,25 @@
         linear-gradient(#20262b, #191d22),
         radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));
 }
-
+.date-picker > .arrow-button > .arrow {
+    -fx-shape: "M0,0v9h9V0H0z M2,8H1V7h1V8z M2,6H1V5h1V6z M2,4H1V3h1V4z M4,8H3V7h1V8z M4,6H3V5h1V6z M4,4H3V3h1V4z M6,8H5V7h1V8z M6,6H5 V5h1V6z M6,4H5V3h1V4z M8,8H7V7h1V8z M8,6H7V5h1V6z M8,4H7V3h1V4z";
+    -fx-background-color: #6d8187;
+    -fx-background-insets: 1 0 -1 0, 0;
+    -fx-padding: 4,6,5,5; /* 5 5 4 4 */
+    -fx-scale-shape: true;
+}
+.combo-box .arrow, .combo-box .arrow-button{
+    -fx-background-color: transparent;
+}
+.combo-box-base {
+    -fx-background-color: -fx-shadow-highlight-color, -fx-outer-border,
+        -fx-inner-border,  rgb(255, 255, 255, 0.3),
+    	linear-gradient(rgb(0, 0, 0, 0.5), rgb(0, 0, 0, 0.8) 50%),
+        rgb(218, 226, 224);
+    -fx-background-insets: 0 0 -1 0, 0, 1, 2;
+    -fx-background-radius: 10px, 10px, 10px, 10px;
+    -fx-effect: innershadow( gaussian, rgb(0, 0, 0, 0.8), 5, 0, 0, 2 );
+}
 .top-segment {
 	-fx-background-color: rgba(255, 255, 255, 0.05);
 	-fx-border-color: 
@@ -106,8 +124,8 @@
     	linear-gradient(rgb(0, 0, 0, 0.5), rgb(0, 0, 0, 0.8) 50%),
         rgb(218, 226, 224);
     -fx-background-insets: 0 0 -1 0, 0, 1.5;
-    -fx-background-radius: 6, 5, 4;
-    -fx-padding: 6 10 4 10;
+    -fx-background-radius: 10px,10px,10px,10px;
+
     -fx-effect: innershadow( gaussian, rgb(0, 0, 0, 0.8), 5, 0, 0, 2 );
     -fx-font-family: "Arial";
 }

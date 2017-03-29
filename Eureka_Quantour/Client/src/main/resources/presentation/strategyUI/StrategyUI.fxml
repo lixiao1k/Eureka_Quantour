@@ -9,9 +9,7 @@
    <children>
       <AnchorPane maxHeight="42.0" prefHeight="42.0" prefWidth="1217.0" styleClass="top-segment" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <ComboBox fx:id="stockSetComboBox" layoutX="459.0" layoutY="12.0" prefHeight="18.0" prefWidth="150.0" />
-            <DatePicker fx:id="beginTimeDatePicker" layoutX="697.0" layoutY="9.0" prefHeight="3.0" prefWidth="150.0" />
-            <Label layoutX="407.0" layoutY="13.0" text="股票池" />
+            <DatePicker fx:id="beginTimeDatePicker" layoutX="697.0" layoutY="9.0" prefHeight="10.0" prefWidth="150.0" />
             <Label layoutX="626.0" layoutY="13.0" text="开始日期" />
          </children>
       </AnchorPane>
@@ -26,13 +24,6 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <AnchorPane prefHeight="184.0" prefWidth="302.0" styleClass="top1-segment">
-                     <children>
-                        <Label layoutX="27.0" layoutY="14.0" text="策略条件" />
-                        <CheckBox fx:id="momentumCheckBox" layoutX="27.0" layoutY="81.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="66.0" text="动量" textFill="#eeebeb" />
-                        <CheckBox fx:id="meanCheckBox" layoutX="106.0" layoutY="85.0" mnemonicParsing="false" text="均值" textFill="#fcfafa" />
-                     </children>
-                  </AnchorPane>
                   <AnchorPane prefHeight="212.0" prefWidth="301.0" styleClass="top1-segment" GridPane.rowIndex="1">
                      <children>
                         <Label layoutX="25.0" layoutY="14.0" text="交易条件" />
@@ -43,6 +34,15 @@
                         <CheckBox fx:id="openCheckBox" layoutX="151.0" layoutY="102.0" mnemonicParsing="false" text="开盘" textFill="#f8f6f6" />
                         <Label layoutX="32.0" layoutY="144.0" text="股票数" />
                         <TextField fx:id="numOfStockTextField" layoutX="84.0" layoutY="140.0" prefHeight="25.0" prefWidth="66.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="184.0" prefWidth="302.0" styleClass="top1-segment">
+                     <children>
+                        <Label layoutX="27.0" layoutY="14.0" text="策略条件" />
+                        <CheckBox fx:id="momentumCheckBox" layoutX="27.0" layoutY="81.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="66.0" text="动量" textFill="#eeebeb" />
+                        <CheckBox fx:id="meanCheckBox" layoutX="106.0" layoutY="85.0" mnemonicParsing="false" text="均值" textFill="#fcfafa" />
+                        <Label layoutX="25.0" layoutY="50.0" text="股票池" />
+                        <ComboBox fx:id="stockSetComboBox" layoutX="87.0" layoutY="47.0" prefHeight="23.0" prefWidth="98.0" />
                      </children>
                   </AnchorPane>
                </children>
