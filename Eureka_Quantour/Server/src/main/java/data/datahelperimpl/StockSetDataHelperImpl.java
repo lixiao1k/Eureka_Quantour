@@ -112,4 +112,7 @@ public class StockSetDataHelperImpl implements IStockSetDataHelper {
 		File file=new File(userPath+"/"+username+"/"+stockSetName+"/"+stockName);
 		file.delete();
 	}
+	private void init_StockSet(){
+		
+	}
 }
