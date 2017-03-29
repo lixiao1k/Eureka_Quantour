@@ -13,11 +13,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import javax.swing.JOptionPane;
-
 import java.util.Map.Entry;
 
-import data.datahelperimpl.StockDataHelperImp;
+import data.datahelperimpl.StockDataHelperImpl;
 import data.datahelperservice.IStockDataHelper;
 import po.SingleStockInfoPO;
 
@@ -47,7 +45,7 @@ public class StockDataController {
 	 */
 	private StockDataController(){
 		//获得服务
-		stockdatahelper=StockDataHelperImp.getInstance();
+		stockdatahelper=StockDataHelperImpl.getInstance();
 		System.out.println("开始取数据");
 		long start_time=System.currentTimeMillis();
 		stockinfo_StringType=stockdatahelper.getAllStock();
@@ -416,12 +414,6 @@ public class StockDataController {
 		public void run() {
 //			System.out.println("开始整理按单支股票获得数据");
 //			long start_time=System.currentTimeMillis();
-			try {
-				Thread.sleep(5000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			System.out.println("开始处理数据");
 			go();
 //			long end_time=System.currentTimeMillis();
