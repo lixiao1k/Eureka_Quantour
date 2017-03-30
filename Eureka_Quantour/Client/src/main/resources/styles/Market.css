@@ -8,6 +8,30 @@
 .scroll-pane > .viewport {
    -fx-background-color: transparent;
 }
+.scroll-bar:vertical {
+	-fx-background-color:
+        linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
+        linear-gradient(#20262b, #191d22),
+        radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));
+    -fx-background-insets: 0, 0 1 0 1;
+}
+.scroll-bar > .thumb {
+    -fx-background-color: 
+        linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
+        linear-gradient(#20262b, #191d22),
+        radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0.1));
+    /*-fx-background-insets: 1, 2, 3;*/
+    -fx-background-insets: 2, 3, 4;
+    /*-fx-background-radius: 0.416667em, 0.333333em, 0.25em; *//* 5, 4,3 */
+    -fx-background-radius: 3, 2, 1;
+}
+.scroll-bar:horizontal {
+    -fx-background-color:
+        linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
+        linear-gradient(#20262b, #191d22),
+        radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));
+    -fx-background-insets: 0, 1 0 1 0;
+}
 .top-segment {
 	-fx-background-color: rgba(255, 255, 255, 0.05);
 	-fx-border-color: 

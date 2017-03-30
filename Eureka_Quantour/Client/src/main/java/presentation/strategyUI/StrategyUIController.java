@@ -11,6 +11,8 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
 public class StrategyUIController implements Initializable{
@@ -42,6 +44,12 @@ public class StrategyUIController implements Initializable{
 	Button makeStrategyButton;
 	
 	@FXML
+	Button editButton;
+	
+	@FXML
+	Button saveButton;
+
+	@FXML
 	AnchorPane chart1AnchorPane;
 	
 	@FXML
@@ -54,11 +62,24 @@ public class StrategyUIController implements Initializable{
 	protected void makeStrategy(ActionEvent e){
 		
 	}
+	
+	@FXML
+	protected void edit(ActionEvent e){
+		
+	}
+	
+	@FXML
+	protected void saveTime(ActionEvent e){
+		
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
-		
+		Image editImage = new Image(getClass().getResourceAsStream("edit.png"));
+		editButton.setGraphic(new ImageView(editImage));
+		Image saveImage = new Image(getClass().getResourceAsStream("save.png"));
+		saveButton.setGraphic(new ImageView(saveImage));
 	}
 
 }

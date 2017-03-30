@@ -29,6 +29,9 @@ public class MainScreenController implements Initializable{
 	Button editButton;
 	
 	@FXML
+	Button saveButton;
+	
+	@FXML
 	Button exitButton;
 	
 	@FXML
@@ -87,6 +90,11 @@ public class MainScreenController implements Initializable{
 	}
 	
 	@FXML
+	protected void saveTime(ActionEvent e){
+		
+	}
+	
+	@FXML
 	protected void exit(ActionEvent e){
 		Stage root = (Stage) exitButton.getScene().getWindow();
 		root.close();
@@ -99,6 +107,8 @@ public class MainScreenController implements Initializable{
 		editButton.setGraphic(new ImageView(editImage));
 		Image exitImage = new Image(getClass().getResourceAsStream("exit.png"));
 		exitButton.setGraphic(new ImageView(exitImage));
+		Image saveImage = new Image(getClass().getResourceAsStream("save.png"));
+		saveButton.setGraphic(new ImageView(saveImage));
 		stockSetButton.setText("股池");
 		marketButton.setText("市场");
 		singleStockButton.setText("个股");

@@ -28,7 +28,26 @@
     /*-fx-background-radius: 0.416667em, 0.333333em, 0.25em; *//* 5, 4,3 */
     -fx-background-radius: 3, 2, 1;
 }
-
+.scroll-bar:horizontal {
+    -fx-background-color:
+        linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
+        linear-gradient(#20262b, #191d22),
+        radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));
+    -fx-background-insets: 0, 1 0 1 0;
+}
+.combo-box > .list-cell {
+    -fx-background: transparent;
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-text-base-color;
+    -fx-padding: 0.333333em 0.666667em 0.333333em 0.666667em; /* 4 8 4 8 */
+}
+.combo-box-popup > .list-view {
+    -fx-background-color:
+     rgba(255,255,255,0.5);
+    -fx-background-insets: 0, 1;
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.2) , 12, 0.0 , 0 , 8 );
+    -fx-background-radius: 10px, 10px, 10px, 10px;
+}
 .combo-box-base {
     -fx-background-color: -fx-shadow-highlight-color, -fx-outer-border,
         -fx-inner-border,  rgb(255, 255, 255, 0.3),
@@ -39,6 +58,22 @@
     -fx-effect: innershadow( gaussian, rgb(0, 0, 0, 0.8), 5, 0, 0, 2 );
 }
 
+.transperantButton{
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-background-radius: 6, 5, 4;
+    -fx-background-color: transparent;
+    -fx-font-family:"Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-font-size: 1em; /* 12 */
+    -fx-text-fill: #828282;
+}
+
+
+.transperantButton:pressed
+{
+    -fx-background-color: #6d8187;
+    -fx-text-fill: white;
+}
 .top-segment {
 	-fx-background-color: rgba(255, 255, 255, 0.05);
 	-fx-border-color: 
