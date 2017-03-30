@@ -39,10 +39,10 @@ public class DataInterfaceImpl implements IDataInterface
 		return stock.getSingleStockInfo(stockcode, begin, end);
 	}
 
-//	@Override
-//	public List<SingleStockInfoPO> getMarketByDate(Calendar date) {
-//		return stock.getMarketByDate(date);
-//	}
+	@Override
+	public List<SingleStockInfoPO> getMarketByDate(Calendar date) {
+		return stock.getMarketByDate(date);
+	}
 	@Override
 	public void logout(String username) {
 		user.logout(username);
