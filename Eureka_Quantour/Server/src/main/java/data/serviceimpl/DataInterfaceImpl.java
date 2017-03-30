@@ -39,10 +39,10 @@ public class DataInterfaceImpl implements IDataInterface
 		return stock.getSingleStockInfo(stockcode, begin, end);
 	}
 
-	@Override
-	public List<SingleStockInfoPO> getMarketByDate(Calendar date) {
-		return stock.getMarketByDate(date);
-	}
+//	@Override
+//	public List<SingleStockInfoPO> getMarketByDate(Calendar date) {
+//		return stock.getMarketByDate(date);
+//	}
 	@Override
 	public void logout(String username) {
 		user.logout(username);
@@ -53,12 +53,12 @@ public class DataInterfaceImpl implements IDataInterface
 	}
 	
 	
-//uncompleted
-	@Override
-	public List<SingleStockInfoPO> getStockSetSortedInfo(String stockSetName, String userName, Calendar date) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+////uncompleted
+//	@Override
+//	public List<SingleStockInfoPO> getStockSetSortedInfo(String stockSetName, String userName, Calendar date) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 	/**
 	 * 添加一个新的股票池
 	 * @param stockSetName 股票池的名字
@@ -95,5 +95,15 @@ public class DataInterfaceImpl implements IDataInterface
 	 */
 	public void deleteStockFromStockSet(String stockName, String stockSetName, String username){
 		stockset.deleteStockFromStockSet(stockName, stockSetName, username);
+	}
+	@Override
+	public SingleStockInfoPO getSingleStockInfo(String stockcode, Calendar date) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public List<String> getStockSetSortedInfo(String stockSetName, String userName) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

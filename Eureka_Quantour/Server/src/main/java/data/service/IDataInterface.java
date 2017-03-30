@@ -81,16 +81,13 @@ public interface IDataInterface
 	 */
 	public List<SingleStockInfoPO> getSingleStockInfo(String stockcode,Calendar begin,Calendar end);
 	
+	public SingleStockInfoPO getSingleStockInfo(String stockcode,Calendar date);
+	
+
 	/**
-	 * 获取市场某一天的所有股票的信息
+	 * 获取某个股票池的股票编号
 	 * @param date Calendar,需要查找的时间
-	 * @return 一个股票信息的对象的列表
+	 * @return 一个股票编号的列表
 	 */
-	public List<SingleStockInfoPO> getMarketByDate(Calendar date);
-	/**
-	 * 获取某个股票池的股票
-	 * @param date Calendar,需要查找的时间
-	 * @return 一个股票信息的对象的列表
-	 */
-	public List<SingleStockInfoPO>  getStockSetSortedInfo(String stockSetName,String userName,Calendar date);
+	public List<String>  getStockSetSortedInfo(String stockSetName,String userName);
 }
