@@ -20,6 +20,9 @@ public class StockSetUIController implements Initializable {
 	ScrollPane stocksScrollPane;
 	
 	@FXML
+	FlowPane stockSetFlowPane;
+	
+	@FXML
 	FlowPane stocksFlowPane;
 	
 	@FXML
@@ -43,7 +46,7 @@ public class StockSetUIController implements Initializable {
 //	    }
 		stockSetScrollPane.setStyle("-fx-background-color:transparent;");
 		stocksScrollPane.setStyle("-fx-background-color:transparent;");
-		
+
 	}
 
 }
