@@ -18,12 +18,15 @@ public class ClientLogicImpl implements ClientLogicInterface{
 
 
 	@Override
-	public boolean signUp(String username, char[] password) throws RemoteException {
-		return false;
+	public void signUp(String username, char[] password) throws RemoteException {
 	}
 
 	@Override
-	public boolean signIn(String username, char[] password) throws RemoteException {
-		return false;
+	public void signIn(String username, char[] password) throws RemoteException {
+	}
+
+	@Override
+	public void signOut(String username) throws RemoteException {
+
 	}
 }
