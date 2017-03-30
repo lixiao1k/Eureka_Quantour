@@ -80,10 +80,15 @@ public interface IDataInterface
 	 * @return 一个股票信息的对象的列表
 	 */
 	public List<SingleStockInfoPO> getSingleStockInfo(String stockcode,Calendar begin,Calendar end);
-	
-	public SingleStockInfoPO getSingleStockInfo(String stockcode,Calendar date);
-	
 
+	
+	/**
+	 * 获取股票某一天的数据
+	 * @param stockcode 股票编号
+	 * @param date 日期
+	 * @return 股票信息
+	 */
+	public SingleStockInfoPO getSingleStockInfo(String stockcode,Calendar date);
 	/**
 	 * 获取某个股票池的股票编号
 	 * @param date Calendar,需要查找的时间
