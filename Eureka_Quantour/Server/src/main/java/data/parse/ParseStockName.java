@@ -5,6 +5,11 @@ package data.parse;
  *
  */
 public class ParseStockName {
+	/**
+	 * 将全角转换为半角并去掉中间的空格
+	 * @param str 未处理的股票名字
+	 * @return 处理后的股票名字
+	 */
 	public static String chkHalf(String str){
 		str=str.replace(" ", "");
     	String sum="";
@@ -17,5 +22,13 @@ public class ParseStockName {
                sum=sum+strCode;
         }
         return sum;
+	}
+	/**
+	 * 将股票编号补为6位
+	 * @param code 未处理的股票编号
+	 * @return 处理后的股票编号
+	 */
+	public static String supCode(String code){
+		return String.format("%06d", Integer.parseInt(code));
 	}
 }

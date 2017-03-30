@@ -17,6 +17,7 @@ import java.util.Map.Entry;
 
 import data.datahelperimpl.StockDataHelperImpl;
 import data.datahelperservice.IStockDataHelper;
+import data.parse.Translate;
 import po.SingleStockInfoPO;
 
 /**
@@ -40,6 +41,8 @@ public class StockDataController {
 	private boolean single_data;//判断为getSingleStock方法提供的map表初次处理是否完成的boolean变量
 	private boolean sort_data;//判断为getSingleStock方法提供的map表二次处理是否完成的boolean变量
 	
+	private Translate translate;
+	
 	/**
 	 * 类的初始化
 	 */
@@ -50,6 +53,7 @@ public class StockDataController {
 		long start_time=System.currentTimeMillis();
 		stockinfo_StringType=stockdatahelper.getAllStock();
 		long end_time=System.currentTimeMillis();
+		translate=Translate.getInstance();
 		System.out.println("花费在取数据上的时间为: "+(-start_time+end_time)+" ms");
 		//初始化相关变量
 		processmap=new HashMap<Calendar,List<String>>();
@@ -86,7 +90,7 @@ public class StockDataController {
 		try{
 			Integer.parseInt(stockcode);
 		}catch(Exception e){
-			code=stockdatahelper.getNameToCode(stockcode);
+			code=translate.trans_nameTocode(stockcode);
 		}
 		if(code==null){
 			return null;

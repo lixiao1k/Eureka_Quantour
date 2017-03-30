@@ -18,11 +18,20 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPFile;
+import org.apache.commons.net.ftp.FTPReply;
+
 import data.fetchdataservice.IStockDataFetch;
 import data.parse.ParseStockName;
 import exception.InternetdisconnectException;
+import jxl.Cell;
+import jxl.Sheet;
+import jxl.Workbook;
+import jxl.WorkbookSettings;
+import jxl.read.biff.BiffException;
 /**
- * 从网上爬取股票数据
+ * 为软件扩充股票池和股票
  * @author 刘宇翔
  *
  */
@@ -33,6 +42,7 @@ public class StockDataFetchImpl implements IStockDataFetch{
 	private String SZB;
 	private String CYB;
 	private String HS300;
+	private String ArtificialSet;
 	public static void main(String[] args){
 		new StockDataFetchImpl();
 	}
@@ -42,6 +52,7 @@ public class StockDataFetchImpl implements IStockDataFetch{
 		SZA="config/stock/stockset/SZA";
 		SZB="config/stock/stockset/SZB";
 		CYB="config/stock/stockset/CYB";
+		ArtificialSet="extendsdata/set";
 		HS300="config/stock/stockset/HS300";
 		makepath("config/parse");
 		makepath("config/backups");
@@ -52,12 +63,7 @@ public class StockDataFetchImpl implements IStockDataFetch{
 		makepath(SZB);
 		makepath(HS300);
 		makepath(CYB);
-		try {
-			getAllStockName();
-		} catch (InternetdisconnectException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		makepath(ArtificialSet);
 	}
 	/**
 	 * 从网上获取所有股票的名字与编号
@@ -68,6 +74,7 @@ public class StockDataFetchImpl implements IStockDataFetch{
 	public void getAllStockName() throws InternetdisconnectException{
 		try{
 			File backups=new File("config/backups/StringNameList_Backups");
+			File backups_HS300=new File("config/backups/HS300List");
 			if(!backups.exists()){
 				backups.createNewFile();
 				try {
@@ -90,9 +97,38 @@ public class StockDataFetchImpl implements IStockDataFetch{
 				dealStringList(match("<li>.*?</li>",total));
 				System.out.println("update by backups");
 			}
-			
+			if(!backups_HS300.exists()){
+				backups_HS300.createNewFile();
+				try {
+					testInternet();
+					saveToFile("115.29.204.48","webdata","000300cons.xls","config/backups/HS300List.xls");
+					System.out.println("update by web");
+				} catch (InternetdisconnectException e) {
+					throw e;
+				}
+			}
+			else{
+				BufferedReader br=new BufferedReader(new FileReader(backups_HS300));
+				dealdir(new File(HS300));
+				while(br.ready()){
+					addstock(br.readLine().substring(0, 6),HS300);
+				}
+				br.close();
+				System.out.println("update by backups");
+			}
 		}catch(IOException e){
 			e.printStackTrace();
+		}
+	}
+	/**
+	 * 获取手工添加的股票池
+	 * @return 名字与编号组成的String的列表（格式:"编号名字"）
+	 * @throws InternetdisconnectException 当无法从网络获取信息时抛出该异常
+	 */
+	public void getArtificialSet(){
+		File file=new File(ArtificialSet);
+		File[] filelist=file.listFiles();
+		for(File set:filelist){
 		}
 	}
 	/**
@@ -149,6 +185,72 @@ public class StockDataFetchImpl implements IStockDataFetch{
   		
   		httpUrl.disconnect();
 		return total;
+	}
+	/**
+	 * 从ftp上下载文件
+	 * @param ftppath ftp地址
+	 * @param absolutepath ftp服务器上的路径
+	 * @param fileName 文件名
+	 * @param localpath 需要存储的路径
+	 * @return 文件内容
+	 * @throws IOException
+	 */
+	private String saveToFile(String ftppath, String absolutepath,
+			String fileName,String localpath) throws IOException {
+		FTPClient ftp=new FTPClient();
+		ftp.connect(ftppath);
+		ftp.login("anonymous", "");
+		int reply = ftp.getReplyCode();    
+        if(!FTPReply.isPositiveCompletion(reply)) {    
+             ftp.disconnect();
+        }   
+		ftp.changeWorkingDirectory(absolutepath);
+		FTPFile[] fs = ftp.listFiles();  
+		for(FTPFile ff:fs){ 
+			if(ff.getName().equals("000300cons.xls")){  
+				File localFile = new File(localpath);    
+                OutputStream is = new FileOutputStream(localFile);     
+                ftp.retrieveFile(ff.getName(), is);  
+                is.close();    
+                break;
+			}    
+        }  
+		String buffer = "";
+        try {  
+               File file = new File(localpath);
+               // 设置读文件编码
+               WorkbookSettings setEncode = new WorkbookSettings();
+               setEncode.setEncoding("GB2312");
+               // 从文件流中获取Excel工作区对象（WorkBook）
+               Workbook wb = Workbook.getWorkbook(file,setEncode); 
+               Sheet sheet = wb.getSheet(0); 
+               for (int i = 1; i < 301; i++) {  
+            		 Cell cell = sheet.getCell(0, i);   
+            		 buffer += cell.getContents(); 
+            		 Cell cell1 = sheet.getCell(1, i); 
+            		 buffer += ParseStockName.chkHalf(cell1.getContents());
+            		 buffer +="\n";
+            		 addstock(cell.getContents(),HS300);
+               }  
+        } catch (BiffException e) {  
+        	e.printStackTrace();  
+        } catch (IOException e) {  
+        	e.printStackTrace();  
+        }   
+        //write the string into the file
+        String savePath = localpath.substring(0,localpath.length()-4);
+        File saveCSV = new File(savePath);
+        try {   
+        	if(!saveCSV.exists())
+        		saveCSV.createNewFile();
+        	BufferedWriter writer = new BufferedWriter(new FileWriter(saveCSV));
+        	writer.write(buffer);
+        	writer.close();
+        } catch (IOException e) {
+        	e.printStackTrace();
+        }        
+  		ftp.disconnect();
+  		return buffer;
 	}
 	/**
 	 * 用正则表达式匹配string中的某段内容

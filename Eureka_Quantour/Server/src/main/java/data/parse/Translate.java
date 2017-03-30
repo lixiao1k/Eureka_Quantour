@@ -22,6 +22,9 @@ public class Translate {
 	private File nameTocode;
 	private File codeToname;
 	private IStockDataFetch datafetch;
+	public static void main(String[] args){
+		new Translate();
+	}
 	private Translate(){	
 		try{
 			datafetch=new StockDataFetchImpl();
@@ -53,10 +56,10 @@ public class Translate {
 		return translate;
 	}
 	public String trans_nameTocode(String name){
-		return nameTocode_pro.getProperty(ParseStockName.chkHalf(name));
+		return nameTocode_pro.getProperty(ParseStockName.chkHalf(name),null);
 	}
 	public String trans_codeToname(String code){
-		return codeToname_pro.getProperty(code);
+		return codeToname_pro.getProperty(code,null);
 	}
 	public void reload(){
 		try{
