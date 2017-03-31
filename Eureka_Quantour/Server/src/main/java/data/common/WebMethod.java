@@ -76,6 +76,10 @@ public class WebMethod {
 		httpUrl = (HttpURLConnection) url.openConnection();
 		httpUrl.connect();
 		bis = new BufferedReader(new InputStreamReader(httpUrl.getInputStream(),"GBK"));
+		File file=new File(fileName);
+		 if(!file.exists()){
+			file.createNewFile();
+		 }
 		fos = new BufferedWriter(new FileWriter(fileName));
 		String total="";
   		while(bis.ready()){
@@ -102,6 +106,10 @@ public class WebMethod {
 		 httpUrl = (HttpURLConnection) url.openConnection();
 		 httpUrl.connect();
 		 bis = new BufferedInputStream(httpUrl.getInputStream());
+		 File file=new File(fileName);
+		 if(!file.exists()){
+			file.createNewFile();
+		 }
 		 fos = new FileOutputStream(fileName);
 		 while ((size = bis.read(buf)) != -1){
 			 fos.write(buf, 0, size);
@@ -133,7 +141,10 @@ public class WebMethod {
 		FTPFile[] fs = ftp.listFiles();  
 		for(FTPFile ff:fs){ 
 			if(ff.getName().equals(fileName)){  
-				File localFile = new File(localpath);    
+				File localFile = new File(localpath);   
+				if(!localFile.exists()){
+					localFile.createNewFile();
+				}
                 OutputStream is = new FileOutputStream(localFile);     
                 ftp.retrieveFile(ff.getName(), is);  
                 is.close();    

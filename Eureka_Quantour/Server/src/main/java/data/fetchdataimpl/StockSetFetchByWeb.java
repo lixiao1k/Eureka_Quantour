@@ -3,6 +3,7 @@ package data.fetchdataimpl;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -11,16 +12,19 @@ import java.io.OutputStream;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
+
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import data.common.FileMethod;
 import data.common.WebMethod;
 import data.parse.ParseStockName;
 import data.parse.Translate;
 import exception.InternetdisconnectException;
-import jxl.Cell;
-import jxl.Sheet;
-import jxl.Workbook;
-import jxl.WorkbookSettings;
-import jxl.read.biff.BiffException;
 
 /**
  * 为软件扩充股票池和股票
@@ -37,10 +41,14 @@ public class StockSetFetchByWeb{
 	private String ZXB;//中小板
 	private FileMethod filemethod;
 	private WebMethod webmethod;
-	public static void main(String[] args){
+	public static void main(String args[]) {
 		new StockSetFetchByWeb();
-	}
+	} 
 	public StockSetFetchByWeb(){
+		init();
+	}
+	//初始化
+	private void init(){
 		SHA="config/stock/stockset/SHA";
 		SHB="config/stock/stockset/SHB";
 		SZA="config/stock/stockset/SZA";
@@ -60,6 +68,14 @@ public class StockSetFetchByWeb{
 		filemethod.makepath(HS300);
 		filemethod.makepath(CYB);
 		filemethod.makepath(ZXB);
+		try {
+			getAllStockName();
+			getHS300List();
+			getZXBList();
+		} catch (InternetdisconnectException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	/**
 	 * 从网上获取所有股票的名字与编号
@@ -68,30 +84,27 @@ public class StockSetFetchByWeb{
 	public void getAllStockName() throws InternetdisconnectException{
 		try{
 			File backups=new File("config/backups/StringNameList_Backups");
-			
-			if(!backups.exists()){
-				backups.createNewFile();
-				try {
-					webmethod.testInternet();
-					String str=webmethod.saveToFile_ByBufferedReader("http://quote.stockstar.com/stock/stock_index.htm"
-							,"config/backups/StringNameList_Backups");
-					dealStringList(webmethod.match("<li>.*?</li>",str));
-					System.out.println("update by web");
-				} catch (InternetdisconnectException e) {
+			try {
+				webmethod.testInternet();
+				String str=webmethod.saveToFile_ByBufferedReader("http://quote.stockstar.com/stock/stock_index.htm"
+						,"config/backups/StringNameList_Backups");
+				dealStringList(webmethod.match("<li>.*?</li>",str));
+				System.out.println("update by web");
+			} catch (InternetdisconnectException e) {
+				if(backups.exists()){
+					BufferedReader br=new BufferedReader(new FileReader(backups));
+					String total="";
+					while(br.ready()){
+						total=total+br.readLine();
+					}
+					br.close();
+					dealStringList(webmethod.match("<li>.*?</li>",total));
+					System.out.println("update by backups");
+				}
+				else{
 					throw e;
 				}
-			}
-			else{
-				BufferedReader br=new BufferedReader(new FileReader(backups));
-				String total="";
-				while(br.ready()){
-					total=total+br.readLine();
-				}
-				br.close();
-				dealStringList(webmethod.match("<li>.*?</li>",total));
-				System.out.println("update by backups");
-			}
-			
+			}		
 		}catch(IOException e){
 			e.printStackTrace();
 		}
@@ -103,62 +116,62 @@ public class StockSetFetchByWeb{
 	public void getHS300List() throws InternetdisconnectException{
 		try{
 			File backups_HS300=new File("config/backups/HS300List");
-			if(!backups_HS300.exists()){
-				backups_HS300.createNewFile();
-				try {
-					webmethod.testInternet();
-					webmethod.saveToFile("115.29.204.48","webdata","000300cons.xls","config/backups/HS300List.xls");
-					processExcel("config/backups/HS300List.xls", HS300);
-					System.out.println("update by web");
-				} catch (InternetdisconnectException e) {
-					throw e;
-				}
-			}
-			else{
-				BufferedReader br=new BufferedReader(new FileReader(backups_HS300));
+			try {
+				webmethod.testInternet();
+				webmethod.saveToFile("115.29.204.48","webdata","000300cons.xls","config/backups/HS300List.xls");
 				filemethod.dealdir(new File(HS300));
-				while(br.ready()){
-					addstock(br.readLine().substring(0, 6),HS300);
-				}
-				br.close();
-				System.out.println("update by backups");
+				readXLS("config/backups/HS300List.xls", HS300);
+				System.out.println("update by web");
+			} catch (InternetdisconnectException e) {
+					if(backups_HS300.exists()){
+						BufferedReader br=new BufferedReader(new FileReader(backups_HS300));
+						filemethod.dealdir(new File(HS300));
+						while(br.ready()){
+							addstock(br.readLine().substring(0, 6),HS300);
+						}
+						br.close();
+						System.out.println("update by backups");
+					}
+					else{
+						throw e;
+					}
 			}
 		}catch(IOException e){
 			e.printStackTrace();
 		}
 	}
-//	/**
-//	 * 从网上获取中小板的列表
-//	 * @throws InternetdisconnectException
-//	 */
-//	public void getZXBList() throws InternetdisconnectException{
-//		try{
-//			File backups_ZXB=new File("config/backups/ZXBList");
-//			if(!backups_ZXB.exists()){
-//				backups_ZXB.createNewFile();
-//				try {
-//					webmethod.testInternet();
-//					webmethod.saveToFile_ByInputStream("http://www.szse.cn/szseWeb/ShowReport.szse?SHOWTYPE=xlsx&CATALOGID=1747&ZSDM=399005&tab1PAGENUM=1&ENCODE=1&TABKEY=tab1"
-//							,"config/backups/ZXBList.xlsx");
-//					processExcel("config/backups/ZXBList.xlsx", ZXB);
-//					System.out.println("update by web");
-//				} catch (InternetdisconnectException e) {
-//					throw e;
-//				}
-//			}
-//			else{
-//				BufferedReader br=new BufferedReader(new FileReader(backups_ZXB));
-//				filemethod.dealdir(new File(ZXB));
-//				while(br.ready()){
-//					addstock(br.readLine().substring(0, 6),ZXB);
-//				}
-//				br.close();
-//				System.out.println("update by backups");
-//			}
-//		}catch(IOException e){
-//			e.printStackTrace();
-//		}
-//	}
+	/**
+	 * 从网上获取中小板的列表
+	 * @throws InternetdisconnectException
+	 */
+	public void getZXBList() throws InternetdisconnectException{
+		try{
+			File backups_ZXB=new File("config/backups/ZXBList");
+			try {
+				webmethod.testInternet();
+				webmethod.saveToFile_ByInputStream("http://www.szse.cn/szseWeb/ShowReport.szse?SHOWTYPE=xlsx&CATALOGID=1747&ZSDM=399005&tab1PAGENUM=1&ENCODE=1&TABKEY=tab1"
+						,"config/backups/ZXBList.xlsx");
+				filemethod.dealdir(new File(ZXB));
+				readXLSX("config/backups/ZXBList.xlsx", ZXB);
+				System.out.println("update by web");
+			} catch (InternetdisconnectException e) {
+					if(backups_ZXB.exists()){
+						BufferedReader br=new BufferedReader(new FileReader(backups_ZXB));
+						filemethod.dealdir(new File(ZXB));
+						while(br.ready()){
+							addstock(br.readLine().substring(0, 6),ZXB);
+						}
+						br.close();
+						System.out.println("update by backups");
+					}
+					else{
+						throw e;
+					}
+			}
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+	}
 	
 	/**
 	 * 处理爬取到的股票名字
@@ -240,50 +253,97 @@ public class StockSetFetchByWeb{
 	}
 	
 	/**
-	 * 处理excel文件
+	 * 处理XLS文件
 	 * @param localpath 本地excel文件地址
 	 * @param sectionpath 将要输入到的股票池
 	 * @return
 	 */
-	private String processExcel(String localpath,String sectionpath){
-		String buffer = "";
-        try {  
-               File file = new File(localpath);
-               // 设置读文件编码
-               WorkbookSettings setEncode = new WorkbookSettings();
-               setEncode.setEncoding("GB2312");
-               // 从文件流中获取Excel工作区对象（WorkBook）
-               Workbook wb = Workbook.getWorkbook(file,setEncode); 
-               Sheet sheet = wb.getSheet(0); 
-               for (int i = 1; i < 301; i++) {  
-            		 Cell cell = sheet.getCell(0, i);   
-            		 buffer += cell.getContents(); 
-            		 Cell cell1 = sheet.getCell(1, i); 
-            		 buffer += ParseStockName.getInstance().chkHalf(cell1.getContents());
-            		 Translate t=Translate.getInstance();
-            		 if(t.trans_codeToname(cell.getContents())==null){
-            			 System.out.println(cell.getContents());
-            		 }
-            		 buffer +="\n";
-            		 addstock(cell.getContents(),sectionpath);
-               }  
-        } catch (BiffException e) {  
-        	e.printStackTrace();  
-        } catch (IOException e) {  
-        	e.printStackTrace();  
-        }   
-        //write the string into the file
-        String savePath = localpath.substring(0,localpath.length()-4);
-        File saveCSV = new File(savePath);
-        try {   
-        	if(!saveCSV.exists())
-        		saveCSV.createNewFile();
-        	BufferedWriter writer = new BufferedWriter(new FileWriter(saveCSV));
-        	writer.write(buffer);
-        	writer.close();
-        } catch (IOException e) {
-        	e.printStackTrace();
-        }
-        return buffer;
+	private String readXLS(String localpath,String sectionpath){
+		String str = "";
+        HSSFWorkbook xwb=null;
+		try {
+			xwb = new HSSFWorkbook(new FileInputStream(localpath));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}  
+		// 读取第一章表格内容  
+		HSSFSheet sheet = xwb.getSheetAt(0);  
+		// 定义 row、cell  
+		HSSFRow row;  
+		String cell; 
+		String cell1;
+		Translate t=Translate.getInstance();
+		// 循环输出表格中的内容  
+		for (int i = sheet.getFirstRowNum()+1; i < sheet.getPhysicalNumberOfRows(); i++) {  
+			row = sheet.getRow(i);  
+			// 通过 row.getCell(j).toString() 获取单元格内容，  
+			cell = row.getCell(0).toString();  
+			cell1= ParseStockName.getInstance().chkHalf(row.getCell(1).toString());
+			str	= str + cell +cell1 +"\n";  
+			if(t.trans_codeToname(cell)==null){
+   			 System.out.println(cell);
+			}
+			addstock(cell,sectionpath);
+		} 
+		String savePath = localpath.substring(0,localpath.length()-4);
+		File saveCSV = new File(savePath);
+		try {   
+			if(!saveCSV.exists())
+				saveCSV.createNewFile();
+			BufferedWriter writer = new BufferedWriter(new FileWriter(saveCSV));
+			writer.write(str);
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return str;
+	}
+	/**
+	 * 处理XLSX文件
+	 * @param localpath 本地excel文件地址
+	 * @param sectionpath 将要输入到的股票池
+	 * @return
+	 */
+	private String readXLSX(String localpath,String sectionpath) {
+        String str = "";
+        XSSFWorkbook xwb=null;
+		try {
+			xwb = new XSSFWorkbook(localpath);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}  
+		// 读取第一章表格内容  
+		XSSFSheet sheet = xwb.getSheetAt(0);  
+		// 定义 row、cell  
+		XSSFRow row;  
+		String cell; 
+		String cell1;
+		Translate t=Translate.getInstance();
+		// 循环输出表格中的内容  
+		for (int i = sheet.getFirstRowNum()+1; i < sheet.getPhysicalNumberOfRows(); i++) {  
+			row = sheet.getRow(i);  
+			// 通过 row.getCell(j).toString() 获取单元格内容，  
+			cell = row.getCell(0).toString();  
+			cell1= ParseStockName.getInstance().chkHalf(row.getCell(1).toString());
+			str	= str + cell +cell1 +"\n";  
+			if(t.trans_codeToname(cell)==null){
+   			 System.out.println(cell);
+			}
+			addstock(cell,sectionpath);
+		} 
+		String savePath = localpath.substring(0,localpath.length()-4);
+		File saveCSV = new File(savePath);
+		try {   
+			if(!saveCSV.exists())
+				saveCSV.createNewFile();
+			BufferedWriter writer = new BufferedWriter(new FileWriter(saveCSV));
+			writer.write(str);
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return str;
 	}
 }

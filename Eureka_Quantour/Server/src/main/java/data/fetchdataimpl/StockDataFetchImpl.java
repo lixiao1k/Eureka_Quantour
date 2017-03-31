@@ -4,7 +4,15 @@ import data.fetchdataservice.IStockDataFetch;
 import exception.InternetdisconnectException;
 
 public class StockDataFetchImpl implements IStockDataFetch{
-
+	private StockSetFetchByWeb setByweb;
+	private static StockDataFetchImpl impl;
+	private StockDataFetchImpl(){
+		setByweb=new StockSetFetchByWeb();
+	}
+	public static StockDataFetchImpl getInstance(){
+		if(impl==null) impl=new StockDataFetchImpl();
+		return impl;
+	}
 
 	@Override
 	public void getArtificialSet() {
@@ -13,9 +21,10 @@ public class StockDataFetchImpl implements IStockDataFetch{
 	}
 
 	@Override
-	public void fetchAllStockName() throws InternetdisconnectException {
-		// TODO Auto-generated method stub
-		
+	public void fetchAllStockSet() throws InternetdisconnectException {
+		setByweb.getAllStockName();
+		setByweb.getHS300List();
+		setByweb.getZXBList();
 	}
 
 }

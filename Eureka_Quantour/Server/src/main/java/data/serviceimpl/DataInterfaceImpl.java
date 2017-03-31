@@ -102,7 +102,7 @@ public class DataInterfaceImpl implements IDataInterface
 		return null;
 	}
 	@Override
-	public List<String> getStockSetSortedInfo(String stockSetName, String userName) {
+	public List<String> getStockSetInfo(String stockSetName, String userName) {
 		// TODO Auto-generated method stub
 		return null;
 	}
