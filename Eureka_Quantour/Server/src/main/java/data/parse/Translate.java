@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 import data.fetchdataimpl.StockDataFetchImpl;
+import data.fetchdataimpl.StockSetFetchByWeb;
 import data.fetchdataservice.IStockDataFetch;
 import exception.InternetdisconnectException;
 
@@ -34,7 +35,7 @@ public class Translate {
 			codeToname=new File("config/parse/codeToname.properties");
 			if(!nameTocode.exists()||!codeToname.exists()){
 				try {
-					datafetch.getAllStockName();
+					datafetch.fetchAllStockName();
 				} catch (InternetdisconnectException e) {
 					System.out.println(e.toString());
 				}
@@ -56,7 +57,7 @@ public class Translate {
 		return translate;
 	}
 	public String trans_nameTocode(String name){
-		return nameTocode_pro.getProperty(ParseStockName.chkHalf(name),null);
+		return nameTocode_pro.getProperty(ParseStockName.getInstance().chkHalf(name),null);
 	}
 	public String trans_codeToname(String code){
 		return codeToname_pro.getProperty(code,null);
@@ -66,7 +67,7 @@ public class Translate {
 			nameTocode_pro=new Properties();
 			codeToname_pro=new Properties();
 			try {
-				datafetch.getAllStockName();
+				datafetch.fetchAllStockName();
 			} catch (InternetdisconnectException e) {
 				System.out.println(e.toString());
 			}

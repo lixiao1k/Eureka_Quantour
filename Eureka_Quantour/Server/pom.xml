@@ -68,4 +68,15 @@
 		<version>2.6.12</version>
 	</dependency>
   </dependencies>
+<dependency>  
+    <groupId>org.apache.poi</groupId>  
+    <artifactId>poi</artifactId>  
+    <version>3.14</version>  
+</dependency>    
+<dependency>  
+    <groupId>org.apache.poi</groupId>  
+    <artifactId>poi-ooxml</artifactId>  
+    <version>3.14</version>  
+</dependency> 
+
 </project>
