@@ -1,76 +1,169 @@
 package presentation.chart.lineChart;
 
+import javafx.event.EventHandler;
+import javafx.scene.Node;
+import javafx.scene.chart.Axis;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Tooltip;
-import presentation.chart.chartService;
-import vo.ComparedInfoVO;
-import vo.EMAInfoVO;
+import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by huihantao on 2017/3/13.
  */
-public class ComparedChart implements chartService {
+
+/**
+ * @Description: TODO
+ * @author: hzp
+ * @time: 2017年3月31日
+ */
+public class ComparedChart {
 
 
-    protected NumberAxis yAxis;
-    protected CategoryAxis xAxis;
-    SimpleDateFormat sdf = new SimpleDateFormat("yy:MM:dd");
+	private AnchorPane pane = new AnchorPane();
+	private Label info = new Label();
+	
+    private NumberAxis yAxis;
+    private CategoryAxis xAxis;
+    private SimpleDateFormat sdf = new SimpleDateFormat("yy:MM:dd");
 
     private LineChart<String, Number> lineChart;
+    private Map<String, String> dataMap = new HashMap<String,String>();
+    private String[] dates;
 
-    public ComparedChart(Calendar[] date, double[] data1, double[] data2, String s1, String s2) {
+    public ComparedChart(Calendar[] date, List<Double[]> doubleList, List<String> dataName, String chartName) {
         xAxis = new CategoryAxis();
 
         yAxis = new NumberAxis();
         yAxis.autoRangingProperty().set(true);
         yAxis.setAnimated(true);
         yAxis.forceZeroInRangeProperty().setValue(false);
-
-
+        yAxis.setLowerBound(0);
+        yAxis.setUpperBound(1);
+        
         lineChart = new LineChart<>(xAxis, yAxis);
         lineChart.setHorizontalGridLinesVisible(false);
         lineChart.setVerticalGridLinesVisible(false);
-        XYChart.Series<String, Number> serie1 = new XYChart.Series<>();
-        serie1.setName(s1);
-        XYChart.Series<String, Number> serie2 = new XYChart.Series<>();
-        serie2.setName(s2);
+        
+        dates = new String[date.length];
+        for(int i=0; i<date.length; i++)
+        	dates[i] = sdf.format(date[i].getTime());
+        
+        Double[] datas ;
+        String name = "";
+        String[] dataStrings = new String[date.length];
+        XYChart.Series<String, Number> serie = new XYChart.Series<>();
+        for(int i=0; i<doubleList.size(); i++){
+        	serie = new XYChart.Series<>();
+        	datas = doubleList.get(i);
+        	name = "";
+        	if( i<dataName.size() ){
+        		name = dataName.get(i);
+        		serie.setName(name);
+        	}
+        	for(int j=0; j<date.length; j++){
+	        	if( j<datas.length && datas[j]!=0 && datas[j]!=Integer.MIN_VALUE ){
+	        		serie.getData().add( new XYChart.Data<>(dates[j], datas[j]) );
+	        		
+	        		String dataFormat = NumberFormat.getPercentInstance().format(datas[j]);
+	        		if( dataStrings[j]!=null )
+	        			dataStrings[j] += "/"+name+","+dataFormat;
+	        		else
+	        			dataStrings[j] = name+","+dataFormat;
+	        	}
+        		else{
+        			if( dataStrings[j]!=null )
+        				dataStrings[j] += "/"+name+","+"0";
+        			else
+        				dataStrings[j] = name+","+"0";
+        		}
 
-        for (int i=0;i<date.length;i++){
-            String label = sdf.format(date[i].getTime());
-            if (data1[i]!=0)
-            serie1.getData().add(new XYChart.Data<>(label, data1[i]));
-
-            if(data2[i]!=Integer.MIN_VALUE)
-            serie2.getData().add(new XYChart.Data<>(label, data2[i]));
+        	}
+        	lineChart.getData().add(serie);
+        }
+        for(int i=0; i<date.length; i++){
+        	if( dataStrings[i].length()!=0 )
+        		dataMap.put(dates[i], dataStrings[i]);
         }
         lineChart.setCreateSymbols(false);
-        lineChart.getData().addAll(serie1,serie2);
-        lineChart.setTitle("对数收益率对比图");
-        for (XYChart.Series<String, Number> s : lineChart.getData()) {
-            for (XYChart.Data<String, Number> d : s.getData()) {
-                Tooltip.install(d.getNode(), new Tooltip(
-                        d.getXValue().toString() + "   " +d.getYValue()));
-            }
-        }
-        
+        lineChart.setTitle(chartName);
         lineChart.getStylesheets().add(getClass().getResource("/styles/ComparedChart.css").toExternalForm());
     }
-
-    @Override
-    public XYChart<String, Number> getchart() {
-        return lineChart;
+    
+    public Pane getchart() {
+    	info = createCursorGraphCoordsMonitorLabel(lineChart);
+    	
+    	pane.getChildren().add(info);
+    	pane.getChildren().add(lineChart);
+    	info.setLayoutX(5);
+    	AnchorPane.setTopAnchor(lineChart, 30.0);
+        return pane;
     }
+    
+    private Label createCursorGraphCoordsMonitorLabel(LineChart<String, Number> lineChart){
+	    Axis<String> xAxis = lineChart.getXAxis();
+	    Axis<Number> yAxis = lineChart.getYAxis();
+	
+	    Label cursorCoords = new Label();
+	
+	    final Node chartBackground = lineChart.lookup(".chart-plot-background");
+	    for( Node n: chartBackground.getParent().getChildrenUnmodifiable() ) {
+	    	if ( n!=chartBackground && n!=xAxis && n!=yAxis) {
+	    		n.setMouseTransparent(true);
+	    	}
+	    }
 
-    @Override
-    public void setName(String name) {
-        lineChart.setTitle(name);
-    }
+	    chartBackground.setOnMouseEntered(new EventHandler<MouseEvent>() {
+	    	@Override 
+	    	public void handle(MouseEvent mouseEvent) {
+	    		cursorCoords.setVisible(true);
+	    	}
+	    });
+	
+	    chartBackground.setOnMouseMoved(new EventHandler<MouseEvent>() {
+	    	@Override 
+	    	public void handle(MouseEvent mouseEvent) {		
+	    		double temp = mouseEvent.getX()*(dates.length-1)/xAxis.getWidth();
+	    		int index = 0;
+	    		if( (temp%1)*(dates.length-1)/lineChart.getWidth()<0.2 )
+	    			index = (int)(temp/1);
+	    		else if( (temp%1)*(dates.length-1)/lineChart.getWidth()>0.8 )
+	    			index = (int)(temp/1)+1;
+	    		else
+	    			index = -1;
+
+	    		if( index>-1){
+		    		String dataInfo = dataMap.get(dates[index]);
+		    		String infos[] = dataInfo.split("/");
+		    		String info = "date : "+dates[index]+"\n";
+		    		for(int i=0; i<infos.length; i++){
+		    			String tempInfos[] = infos[i].split(",");
+		    			info += tempInfos[0]+" : "+tempInfos[1]+"\n";
+		    		}
+		    		cursorCoords.setText(info);
+	    		}
+	    		else
+	    			cursorCoords.setText("");
+	    	}
+	    });
+
+	    chartBackground.setOnMouseExited(new EventHandler<MouseEvent>() {
+	    	@Override 
+	    	public void handle(MouseEvent mouseEvent) {
+	    		cursorCoords.setVisible(false);
+	    	}
+	    });
+	    return cursorCoords;
+	}
 }
