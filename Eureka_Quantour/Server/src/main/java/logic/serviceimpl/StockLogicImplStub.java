@@ -23,7 +23,7 @@ import vo.*;
  * @author: hzp
  * @time: 2017年3月8日
  */
-public class StockLogicImplstub implements StockLogicInterface{
+public class StockLogicImplStub implements StockLogicInterface{
   
 	private IDataInterface idi = new DataInterfaceImpl();
 	private SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yy");

@@ -2,6 +2,7 @@ package presentation.mainScreen;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javafx.collections.ObservableArray;
@@ -113,6 +114,7 @@ public class MainScreenController implements Initializable{
 		marketButton.setText("市场");
 		singleStockButton.setText("个股");
 		strategyButton.setText("策略");
+		Locale.setDefault(Locale.ENGLISH);
 		
 	}
 

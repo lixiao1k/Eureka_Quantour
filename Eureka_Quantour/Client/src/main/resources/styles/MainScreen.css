@@ -12,6 +12,14 @@
     -fx-padding: 4,6,5,5; /* 5 5 4 4 */
     -fx-scale-shape: true;
 }
+.date-picker-popup > .month-year-pane {
+    -fx-padding: 0.588883em 0.5em 0.666667em 0.5em; /* 7 6 8 6 */
+    -fx-background-color:
+        linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
+        linear-gradient(#20262b, #191d22),
+        radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));
+    -fx-background-insets: 0 0 0 0, 0 0 1 0;
+}
 .combo-box .arrow, .combo-box .arrow-button{
     -fx-background-color: transparent;
 }

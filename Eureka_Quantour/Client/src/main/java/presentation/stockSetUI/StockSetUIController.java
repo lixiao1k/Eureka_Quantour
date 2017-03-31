@@ -5,9 +5,11 @@ import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.text.Text;
 
 public class StockSetUIController implements Initializable {
 	@FXML
@@ -34,7 +36,14 @@ public class StockSetUIController implements Initializable {
 	@FXML
 	AnchorPane emaChartAnchorPane;
 	
-	
+	private void addSet(){
+        for(int i=100;i>0;i--){
+            Button button1 = new Button("测试");
+            button1.setPrefWidth(244);
+            button1.setMinWidth(244);
+            stockSetFlowPane.getChildren().add(button1);
+        }	
+	}
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -46,6 +55,7 @@ public class StockSetUIController implements Initializable {
 //	    }
 		stockSetScrollPane.setStyle("-fx-background-color:transparent;");
 		stocksScrollPane.setStyle("-fx-background-color:transparent;");
+		addSet();
 
 	}
 
