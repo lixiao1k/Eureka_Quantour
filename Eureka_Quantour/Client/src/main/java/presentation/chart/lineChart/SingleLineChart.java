@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import presentation.chart.chartService;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -24,7 +25,7 @@ import java.util.Map;
  * @author: hzp
  * @time: 2017年4月2日
  */
-public class SingleLineChart {
+public class SingleLineChart implements chartService{
 
 
 	private AnchorPane pane = new AnchorPane();
@@ -90,9 +91,16 @@ public class SingleLineChart {
         info.getStyleClass().add("/styles/SingleLineChart.css");
     }
     
+    @Override
     public Pane getchart(int width, int height) {
-    	lineChart.setMaxSize(width, height);
-    	lineChart.setMinSize(width, height);
+    	if( width>0 ){
+    		lineChart.setMaxWidth(width);
+    		lineChart.setMinWidth(width);
+    	}
+    	if( height>0 ){
+    		lineChart.setMaxHeight(height);
+    		lineChart.setMaxHeight(height);
+    	}
     	info = createCursorGraphCoordsMonitorLabel(lineChart);
     	
     	pane.getChildren().add(info);
@@ -101,6 +109,12 @@ public class SingleLineChart {
     	AnchorPane.setTopAnchor(lineChart, 30.0);
         return pane;
     }
+    
+	@Override
+	public void setName(String name) {
+		// TODO Auto-generated method stub
+		lineChart.setTitle(name);
+	}
     
     private Label createCursorGraphCoordsMonitorLabel(LineChart<String, Number> lineChart){
 	    Axis<String> xAxis = lineChart.getXAxis();

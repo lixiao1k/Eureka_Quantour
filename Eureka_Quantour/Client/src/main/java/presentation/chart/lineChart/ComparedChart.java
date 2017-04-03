@@ -105,8 +105,14 @@ public class ComparedChart implements chartService{
     
     @Override
     public Pane getchart(int width, int height) {
-    	lineChart.setMaxSize(width, height);
-    	lineChart.setMinSize(width, height);
+    	if( width>0 ){
+    		lineChart.setMaxWidth(width);
+    		lineChart.setMinWidth(width);
+    	}
+    	if( height>0 ){
+    		lineChart.setMaxHeight(height);
+    		lineChart.setMaxHeight(height);
+    	}
     	info = createCursorGraphCoordsMonitorLabel(lineChart);
     	
     	pane.getChildren().add(info);
@@ -122,6 +128,12 @@ public class ComparedChart implements chartService{
 		lineChart.setTitle(name);
 	}
     
+	/**
+	 * @Description: catch mouse movement and get relevant data
+	 * @author: hzp
+	 * @time: 2017年4月1日
+	 * @return: Label
+	 */
     private Label createCursorGraphCoordsMonitorLabel(LineChart<String, Number> lineChart){
 	    Axis<String> xAxis = lineChart.getXAxis();
 	    Axis<Number> yAxis = lineChart.getYAxis();

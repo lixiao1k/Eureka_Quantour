@@ -7,6 +7,13 @@ import javafx.scene.layout.Pane;
  */
 public interface chartService {
 
+	/**
+	 * @Description: you can get a pane contains a chart that you can decide its size
+	 *               only if width<=0 or height <=0, it will be initial size
+	 * @author: hzp
+	 * @time: 2017年4月3日
+	 * @return: Pane
+	 */
     Pane getchart(int width, int height);
 
     void setName(String name);
