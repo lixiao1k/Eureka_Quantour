@@ -21,6 +21,7 @@ public class test extends Application{
     private List<Double> jizhunlist = new ArrayList<Double>();;
     private List<Double> celuelist = new ArrayList<Double>();;
     private static ComparedChart comparedChart;
+    private static SingleLineChart singleLineChart;
     
     private void testComparedChart(){
     	Calendar cal = Calendar.getInstance();
@@ -45,22 +46,39 @@ public class test extends Application{
     	doubleList.add(d2);
     	dataName.add("hello");
     	dataName.add("fuck");
-		String chartName = "afja";
-		comparedChart = new ComparedChart(dates, doubleList, dataName, chartName);
+		comparedChart = new ComparedChart(dates, doubleList, dataName);
+    }
+    
+    private void testSingleLineChart(){
+    	Calendar cal = Calendar.getInstance();
+    	int j = 2;
+    	for(int i=0; i<20; i++,j++){
+    		cal.set(2014, 3, j);
+    		datelist.add( (Calendar)cal.clone() );
+    		jizhunlist.add( Math.random() ); 
+    	}
+    	Calendar[] dates = new Calendar[datelist.size()];
+    	Double[] d1 = new Double[jizhunlist.size()];
+    	for(int i=0; i<datelist.size(); i++){
+    		dates[i] = datelist.get(i);
+    		d1[i] = jizhunlist.get(i);
+    	}
+		singleLineChart = new SingleLineChart(dates, d1, "hello");
     }
     
     @Override
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
 		new test().testComparedChart();
-		
+//		new test().testSingleLineChart();
 		try{
 	        Stage dialogStage = new Stage();
 	        dialogStage.setTitle("Birthday Statistics");
 	        dialogStage.initModality(Modality.WINDOW_MODAL);
 	        dialogStage.initOwner(primaryStage);
 	        
-	        Scene scene = new Scene(comparedChart.getchart());
+	        Scene scene = new Scene(comparedChart.getchart(334, 200));
+//	        Scene scene = new Scene(singleLineChart.getchart(334, 200));
 	        dialogStage.setScene(scene);
 
 	        dialogStage.show();

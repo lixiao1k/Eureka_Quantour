@@ -11,30 +11,24 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import presentation.chart.chartService;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
- * Created by huihantao on 2017/3/13.
- */
-
-/**
+ * 
  * @Description: TODO
  * @author: hzp
- * @time: 2017年3月31日
+ * @time: 2017年4月2日
  */
-public class ComparedChart implements chartService{
+public class SingleLineChart {
 
 
 	private AnchorPane pane = new AnchorPane();
 	private Label info = new Label();
-	
     private NumberAxis yAxis;
     private CategoryAxis xAxis;
     private SimpleDateFormat sdf = new SimpleDateFormat("yy:MM:dd");
@@ -43,16 +37,16 @@ public class ComparedChart implements chartService{
     private Map<String, String> dataMap = new HashMap<String,String>();
     private String[] dates;
 
-    public ComparedChart(Calendar[] date, List<Double[]> doubleList, List<String> dataName) {
+    public SingleLineChart(Calendar[] date, Double[] doubleList, String dataName) {
         xAxis = new CategoryAxis();
         xAxis.setGapStartAndEnd(false);
-
+        
         yAxis = new NumberAxis();
-        yAxis.autoRangingProperty().set(true);
+    	yAxis.autoRangingProperty().set(true);
         yAxis.setAnimated(true);
         yAxis.forceZeroInRangeProperty().setValue(false);
-        yAxis.setLowerBound(0.0);
-        yAxis.setUpperBound(1.0);
+        yAxis.setLowerBound(0);
+        yAxis.setUpperBound(1);
         
         lineChart = new LineChart<>(xAxis, yAxis);
         lineChart.setHorizontalGridLinesVisible(false);
@@ -63,47 +57,39 @@ public class ComparedChart implements chartService{
         for(int i=0; i<date.length; i++)
         	dates[i] = sdf.format(date[i].getTime());
         
-        Double[] datas ;
-        String name = "";
+        Double[] datas = doubleList;
         String[] dataStrings = new String[date.length];
+        
         XYChart.Series<String, Number> serie = new XYChart.Series<>();
-        for(int i=0; i<doubleList.size(); i++){
-        	serie = new XYChart.Series<>();
-        	datas = doubleList.get(i);
-        	name = "";
-        	if( i<dataName.size() ){
-        		name = dataName.get(i);
-        		serie.setName(name);
-        	}
-        	for(int j=0; j<date.length; j++){
-	        	if( j<datas.length && datas[j]!=0 && datas[j]!=Integer.MIN_VALUE ){
-	        		serie.getData().add( new XYChart.Data<>(dates[j], datas[j]) );
+        serie = new XYChart.Series<>();
+        serie.setName(dataName);
+        for(int j=0; j<date.length; j++){
+	        if( j<datas.length && datas[j]!=0 && datas[j]!=Integer.MIN_VALUE ){
+	        	serie.getData().add( new XYChart.Data<>(dates[j], datas[j]) );
 	        		
-	        		String dataFormat = NumberFormat.getPercentInstance().format(datas[j]);
-	        		if( dataStrings[j]!=null )
-	        			dataStrings[j] += "/"+name+","+dataFormat;
-	        		else
-	        			dataStrings[j] = name+","+dataFormat;
-	        	}
-        		else{
-        			if( dataStrings[j]!=null )
-        				dataStrings[j] += "/"+name+","+"0";
-        			else
-        				dataStrings[j] = name+","+"0";
-        		}
-
+	        	String dataFormat = NumberFormat.getPercentInstance().format(datas[j]);
+	        	if( dataStrings[j]!=null )
+	        		dataStrings[j] += "/"+dataName+","+dataFormat;
+	        	else
+	        		dataStrings[j] = dataName+","+dataFormat;
+	        }
+	        else{
+	        	if( dataStrings[j]!=null )
+	        		dataStrings[j] += "/"+dataName+","+"0";
+	        	else
+	        		dataStrings[j] = dataName+","+"0";
         	}
-        	lineChart.getData().add(serie);
         }
+        lineChart.getData().add(serie);
+        
         for(int i=0; i<date.length; i++){
         	if( dataStrings[i].length()!=0 )
         		dataMap.put(dates[i], dataStrings[i]);
         }
         
-        lineChart.getStylesheets().add(getClass().getResource("/styles/ComparedChart.css").toExternalForm());
+        info.getStyleClass().add("/styles/SingleLineChart.css");
     }
     
-    @Override
     public Pane getchart(int width, int height) {
     	lineChart.setMaxSize(width, height);
     	lineChart.setMinSize(width, height);
@@ -115,12 +101,6 @@ public class ComparedChart implements chartService{
     	AnchorPane.setTopAnchor(lineChart, 30.0);
         return pane;
     }
-    
-	@Override
-	public void setName(String name) {
-		// TODO Auto-generated method stub
-		lineChart.setTitle(name);
-	}
     
     private Label createCursorGraphCoordsMonitorLabel(LineChart<String, Number> lineChart){
 	    Axis<String> xAxis = lineChart.getXAxis();
@@ -177,5 +157,4 @@ public class ComparedChart implements chartService{
 	    });
 	    return cursorCoords;
 	}
-
 }
