@@ -10,11 +10,9 @@ import java.util.List;
 
 import data.service.IDataInterface;
 import data.serviceimpl.DataInterfaceImpl;
+import exception.*;
 import logic.service.StockLogicInterface;
 import po.SingleStockInfoPO;
-import exception.BeginInvalidException;
-import exception.DateInvalidException;
-import exception.EndInvalidException;
 import vo.*;
 
 /**
@@ -421,7 +419,7 @@ public class StockLogicImpl implements StockLogicInterface{
 
 	@Override
 	public List<String> getStockSet(String username) {
-		return null;
+		return idi.getStockSet(username);
 	}
 
 	@Override
@@ -431,6 +429,7 @@ public class StockLogicImpl implements StockLogicInterface{
 
 	@Override
 	public SingleStockInfoVO getStockBasicInfo(String code, Calendar now) {
+//		return idi.getSingleStockInfo(code, now);
 		return null;
 	}
 
@@ -455,23 +454,23 @@ public class StockLogicImpl implements StockLogicInterface{
 	}
 
 	@Override
-	public void addStockSet(String stockSetName, String username) {
-
+	public void addStockSet(String stockSetName, String username) throws StockSetNameRepeatException {
+		idi.addStockSet(stockSetName, username);
 	}
 
 	@Override
 	public void deleteStockSet(String stockSetName, String username) {
-
+		idi.deleteStockSet(stockSetName, username);
 	}
 
 	@Override
-	public void addStockToStockSet(String stockName, String stockSetName, String username) {
-
+	public void addStockToStockSet(String stockName, String stockSetName, String username) throws StockNameRepeatException {
+		idi.addStockToStockSet(stockName, stockSetName, username);
 	}
 
 	@Override
 	public void deleteStockFromStockSet(String stockName, String stockSetName, String username) {
-
+		idi.deleteStockFromStockSet(stockName, stockSetName, username);
 	}
 
 	/**

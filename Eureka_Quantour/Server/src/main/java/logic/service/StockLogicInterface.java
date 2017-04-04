@@ -5,9 +5,7 @@ import java.rmi.RemoteException;
 import java.util.Calendar;
 import java.util.List;
 
-import exception.BeginInvalidException;
-import exception.DateInvalidException;
-import exception.EndInvalidException;
+import exception.*;
 import vo.*;
 
 /**
@@ -62,11 +60,11 @@ public interface StockLogicInterface extends Remote {
 
 	 YieldDistributionHistogramDataVO getYieldDistributionHistogramData();
 
-	 void addStockSet(String stockSetName, String username);
+	 void addStockSet(String stockSetName, String username) throws StockSetNameRepeatException;
 
 	 void deleteStockSet(String stockSetName, String username);
 
-	 void addStockToStockSet(String stockName, String stockSetName, String username) ;
+	 void addStockToStockSet(String stockName, String stockSetName, String username) throws StockNameRepeatException;
 
 	 void deleteStockFromStockSet(String stockName, String stockSetName, String username);
 

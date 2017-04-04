@@ -106,7 +106,7 @@ public class SingleStockInfoVO implements Serializable{
 	}
 
 	public SingleStockInfoVO initObject(String name, Calendar date, String code, double open, double close,
-										double high, double low, int volume, double adjclose, String market){
+										double high, double low, int volume, double adjclose, String market,double fudu){
 		SingleStockInfoVO ssi = new SingleStockInfoVO();
 		ssi.setName(name);
 		ssi.setDate(date);
@@ -118,6 +118,7 @@ public class SingleStockInfoVO implements Serializable{
 		ssi.setVolume(volume);
 		ssi.setAdjclose(adjclose);
 		ssi.setMarket(market);
+		ssi.setFudu(fudu);
 		return ssi;
 	}
 }
