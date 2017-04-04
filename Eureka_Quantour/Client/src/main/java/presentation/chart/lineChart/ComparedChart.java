@@ -51,8 +51,8 @@ public class ComparedChart implements chartService{
         yAxis.autoRangingProperty().set(true);
         yAxis.setAnimated(true);
         yAxis.forceZeroInRangeProperty().setValue(false);
-        yAxis.setLowerBound(0.0);
-        yAxis.setUpperBound(1.0);
+        yAxis.setLowerBound(0);
+        yAxis.setUpperBound(1);
         
         lineChart = new LineChart<>(xAxis, yAxis);
         lineChart.setHorizontalGridLinesVisible(false);
