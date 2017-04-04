@@ -9,6 +9,8 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import presentation.chart.chartService;
@@ -18,7 +20,7 @@ import vo.SingleStockInfoVO;
 
 public class KLineChart implements chartService {
 
-
+	private AnchorPane pane = new AnchorPane(); 
     private CandleStickChart candlestickchart;
 
     public KLineChart(List<SingleStockInfoVO> stocklist){
@@ -32,8 +34,18 @@ public class KLineChart implements chartService {
     }
 
     @Override
-    public XYChart<String, Number> getchart() {
-        return candlestickchart;
+    public Pane getchart(int width, int height) {
+    	if( width>0 ){
+    		candlestickchart.setMaxWidth(width);
+    		candlestickchart.setMinWidth(width);
+    	}
+    	if( height>0 ){
+    		candlestickchart.setMaxHeight(height);
+    		candlestickchart.setMaxHeight(height);
+    	}
+    	
+    	pane.getChildren().add(candlestickchart);
+        return pane;
     }
 
     @Override

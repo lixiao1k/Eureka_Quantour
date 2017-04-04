@@ -27,14 +27,14 @@ public class Translate {
 	}
 	private Translate(){	
 		try{
-			datafetch=new StockDataFetchImpl();
+			datafetch=StockDataFetchImpl.getInstance();
 			nameTocode_pro=new Properties();
 			codeToname_pro=new Properties();
 			nameTocode=new File("config/parse/nameTocode.properties");
 			codeToname=new File("config/parse/codeToname.properties");
 			if(!nameTocode.exists()||!codeToname.exists()){
 				try {
-					datafetch.getAllStockName();
+					datafetch.fetchAllStockSet();
 				} catch (InternetdisconnectException e) {
 					System.out.println(e.toString());
 				}
@@ -56,7 +56,7 @@ public class Translate {
 		return translate;
 	}
 	public String trans_nameTocode(String name){
-		return nameTocode_pro.getProperty(ParseStockName.chkHalf(name),null);
+		return nameTocode_pro.getProperty(ParseStockName.getInstance().chkHalf(name),null);
 	}
 	public String trans_codeToname(String code){
 		return codeToname_pro.getProperty(code,null);
@@ -66,7 +66,7 @@ public class Translate {
 			nameTocode_pro=new Properties();
 			codeToname_pro=new Properties();
 			try {
-				datafetch.getAllStockName();
+				datafetch.fetchAllStockSet();
 			} catch (InternetdisconnectException e) {
 				System.out.println(e.toString());
 			}

@@ -6,14 +6,15 @@ import java.util.*;
 
 import javafx.collections.FXCollections;
 import javafx.scene.Node;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import presentation.chart.chartService;
 
 public class ExtremeValueComparedChart implements chartService {
 
+	private AnchorPane pane = new AnchorPane();
     private BarChartExt<String,Number> bc;
 
     public ExtremeValueComparedChart(String stockA,String stockB,double highA,double highB,double lowA,double lowB){
@@ -43,8 +44,18 @@ public class ExtremeValueComparedChart implements chartService {
     }
 
     @Override
-    public XYChart<String, Number> getchart() {
-        return bc;
+    public Pane getchart(int width, int height) {
+    	if( width>0 ){
+    		bc.setMaxWidth(width);
+    		bc.setMinWidth(width);
+    	}
+    	if( height>0 ){
+    		bc.setMaxHeight(height);
+    		bc.setMaxHeight(height);
+    	}
+    	
+    	pane.getChildren().add(bc);
+        return pane;
     }
 
     @Override

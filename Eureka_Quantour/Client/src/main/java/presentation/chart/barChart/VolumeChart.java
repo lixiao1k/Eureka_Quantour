@@ -5,6 +5,8 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 import javafx.scene.chart.*;
 import javafx.scene.control.Tooltip;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import presentation.chart.chartService;
 import vo.SingleStockInfoVO;
 
@@ -16,6 +18,7 @@ import java.util.List;
  */
 public class VolumeChart implements chartService {
 
+	private AnchorPane pane = new AnchorPane();
     protected NumberAxis yAxis;
     protected CategoryAxis xAxis;
     SimpleDateFormat sdf = new SimpleDateFormat("yy:MM:dd");
@@ -71,8 +74,18 @@ public class VolumeChart implements chartService {
     }
 
     @Override
-    public XYChart<String, Number> getchart() {
-        return volumechart;
+    public Pane getchart(int width, int height) {
+    	if( width>0 ){
+    		volumechart.setMaxWidth(width);
+    		volumechart.setMinWidth(width);
+    	}
+    	if( height>0 ){
+    		volumechart.setMaxHeight(height);
+    		volumechart.setMaxHeight(height);
+    	}
+    	
+    	pane.getChildren().add(volumechart);
+        return pane;
     }
 
     @Override
