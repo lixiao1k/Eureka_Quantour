@@ -42,12 +42,11 @@ public class WebMethod {
 		String address ="www.baidu.com";
 		BufferedReader br=null;
 		try {
-			Process process = Runtime.getRuntime().exec("ping " + address+" -n 5");
+			Process process = Runtime.getRuntime().exec("ping " + address+" -n 2");
 			br = new BufferedReader(new InputStreamReader(process.getInputStream(),"GBK"));
 			String connectionStr =null;
 			String total="";
 			while ((connectionStr = br.readLine()) != null) {
-				System.out.println(connectionStr);
 				total=total+connectionStr;
 			}
 			br.close();
@@ -89,7 +88,6 @@ public class WebMethod {
   		}
   		fos.close();
   		bis.close();
-  		
   		httpUrl.disconnect();
 		return total;
 	}

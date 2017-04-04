@@ -18,4 +18,9 @@ public interface IStockDataFetch {
 	 * @throws InternetdisconnectException 当无法从网络获取信息时抛出该异常
 	 */
 	public void getArtificialSet();
+	/**
+	 * 获取所有股票的信息
+	 * @throws InternetdisconnectException 当无法从网络获取信息时抛出该异常
+	 */
+	public void fetchAllStockInfo() throws InternetdisconnectException;
 }

@@ -55,6 +55,7 @@ public class UserDataHelperImpl implements IUserDataHelper {
 			if(!userStatus.exists()){
 				userStatus.createNewFile();
 			}
+			load();
 //			init_status();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -119,14 +120,6 @@ public class UserDataHelperImpl implements IUserDataHelper {
 	 */
 	@Override
 	public void containName(String username) throws UserNameRepeatException {
-		try {
-			userstatus_in = new BufferedInputStream(
-					new FileInputStream(path+"user/userStatus.properties"));
-			prop_userstatus.load(userstatus_in);
-			userstatus_in.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		if(prop_userstatus.containsKey(username)){	
 			System.out.println(new UserNameRepeatException().toString());
 			throw new UserNameRepeatException();
@@ -143,18 +136,6 @@ public class UserDataHelperImpl implements IUserDataHelper {
 	 */
 	@Override
 	public void login(String username,String password) throws LogErrorException{
-		try {
-			userinfo_in = new BufferedInputStream(
-					new FileInputStream(path+"user/userLog.properties"));
-			prop_userinfo.load(userinfo_in);
-			userinfo_in.close();
-			userstatus_in = new BufferedInputStream(
-					new FileInputStream(path+"user/userStatus.properties"));
-			prop_userstatus.load(userstatus_in);
-			userstatus_in.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		String pw=prop_userinfo.getProperty(username,null);
 		if(pw==null){
 			System.out.println(new LogErrorException().toString());
@@ -244,4 +225,21 @@ public class UserDataHelperImpl implements IUserDataHelper {
 //			e.printStackTrace();
 //		}
 //	}
+	/**
+	 * 加载配置文件
+	 */
+	private void load(){
+		try {
+			userinfo_in = new BufferedInputStream(
+					new FileInputStream(path+"user/userLog.properties"));
+			prop_userinfo.load(userinfo_in);
+			userinfo_in.close();
+			userstatus_in = new BufferedInputStream(
+					new FileInputStream(path+"user/userStatus.properties"));
+			prop_userstatus.load(userstatus_in);
+			userstatus_in.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

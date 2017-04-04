@@ -26,5 +26,10 @@ public class StockDataFetchImpl implements IStockDataFetch{
 		setByweb.getHS300List();
 		setByweb.getZXBList();
 	}
+	@Override
+	public void fetchAllStockInfo() throws InternetdisconnectException {
+		// TODO Auto-generated method stub
+		
+	}
 
 }
