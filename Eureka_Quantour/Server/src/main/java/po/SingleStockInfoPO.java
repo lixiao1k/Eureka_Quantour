@@ -27,6 +27,8 @@ public class SingleStockInfoPO
 	private String str;
 	private double last_close;//昨日收盘价格
 	private double last_adjclose;//昨日收盘价格
+	private double adj_rate;//复权涨跌幅
+	private double rate;//未复权涨跌幅
 	public SingleStockInfoPO(){}
 	/**
 	 * 
@@ -375,5 +377,29 @@ public class SingleStockInfoPO
 	 */
 	public void setLast_adjclose(double last_adjclose) {
 		this.last_adjclose = last_adjclose;
+	}
+	/**
+	 * @return the adj_rate
+	 */
+	public double getAdj_rate() {
+		return adj_rate;
+	}
+	/**
+	 * @param adj_rate the adj_rate to set
+	 */
+	public void setAdj_rate(double adj_rate) {
+		this.adj_rate = adj_rate;
+	}
+	/**
+	 * @return the rate
+	 */
+	public double getRate() {
+		return rate;
+	}
+	/**
+	 * @param rate the rate to set
+	 */
+	public void setRate(double rate) {
+		this.rate = rate;
 	}
 }
