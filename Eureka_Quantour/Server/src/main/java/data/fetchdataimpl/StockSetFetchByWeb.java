@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Iterator;
 import java.util.List;
@@ -41,9 +42,9 @@ public class StockSetFetchByWeb{
 	private String ZXB;//中小板
 	private FileMethod filemethod;
 	private WebMethod webmethod;
-	public static void main(String args[]) {
+	public static void main(String[] args){
 		new StockSetFetchByWeb();
-	} 
+	}
 	public StockSetFetchByWeb(){
 		init();
 	}
@@ -61,6 +62,7 @@ public class StockSetFetchByWeb{
 		filemethod.makepath("config/parse");
 		filemethod.makepath("config/backups");
 		filemethod.makepath("config/stock/stockset");
+		filemethod.makepath("config/stock/info");
 		filemethod.makepath(SHA);
 		filemethod.makepath(SHB);
 		filemethod.makepath(SZA);
@@ -76,6 +78,7 @@ public class StockSetFetchByWeb{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 	}
 	/**
 	 * 从网上获取所有股票的名字与编号
@@ -85,6 +88,7 @@ public class StockSetFetchByWeb{
 		try{
 			File backups=new File("config/backups/StringNameList_Backups");
 			try {
+				System.out.println("get stock list");
 				webmethod.testInternet();
 				String str=webmethod.saveToFile_ByBufferedReader("http://quote.stockstar.com/stock/stock_index.htm"
 						,"config/backups/StringNameList_Backups");
@@ -117,6 +121,7 @@ public class StockSetFetchByWeb{
 		try{
 			File backups_HS300=new File("config/backups/HS300List");
 			try {
+				System.out.println("get HS300 list");
 				webmethod.testInternet();
 				webmethod.saveToFile("115.29.204.48","webdata","000300cons.xls","config/backups/HS300List.xls");
 				filemethod.dealdir(new File(HS300));
@@ -148,6 +153,7 @@ public class StockSetFetchByWeb{
 		try{
 			File backups_ZXB=new File("config/backups/ZXBList");
 			try {
+				System.out.println("get ZXB list");
 				webmethod.testInternet();
 				webmethod.saveToFile_ByInputStream("http://www.szse.cn/szseWeb/ShowReport.szse?SHOWTYPE=xlsx&CATALOGID=1747&ZSDM=399005&tab1PAGENUM=1&ENCODE=1&TABKEY=tab1"
 						,"config/backups/ZXBList.xlsx");
@@ -202,6 +208,7 @@ public class StockSetFetchByWeb{
 			Properties codeToname_pro=new Properties();
 			OutputStream nameTocode_out=new FileOutputStream("config/parse/nameTocode.properties");
 			OutputStream codeToname_out=new FileOutputStream("config/parse/codeToname.properties");
+			int i=0;
 			while(it.hasNext()){
 				str=it.next();
 				code=str.substring(0,6);
@@ -209,9 +216,12 @@ public class StockSetFetchByWeb{
 				if(name.equals(code)){
 					continue;
 				}
+				generateStockInfo(code);
 				generateStockSet(code);
 				nameTocode_pro.setProperty(name, code);
 				codeToname_pro.setProperty(code, name);
+				i++;
+				System.out.println("正在处理第"+i+"个");
 			}
 			nameTocode_pro.store(nameTocode_out, "update");
 			codeToname_pro.store(codeToname_out, "update");
@@ -345,5 +355,34 @@ public class StockSetFetchByWeb{
 			e.printStackTrace();
 		}
 		return str;
+	}
+	private void generateStockInfo(String code){
+		String path="config/stock/info"+"/"+code;
+		filemethod.makepath(path);
+		File data=new File(path+"/data");
+		File properties=new File(path+"/config.properties");
+		try {
+			if(!data.exists())
+				data.createNewFile();
+			if(!properties.exists())
+				properties.createNewFile();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Properties pro=new Properties();
+		try {
+			InputStream in = new FileInputStream(path+"/config.properties");
+			pro.load(in);
+			in.close();
+			if(!pro.containsKey("update_day")){
+				OutputStream out=new FileOutputStream(path+"/config.properties");
+				pro.setProperty("first_day", "2005-02-01");
+				pro.store(out, "init");
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
