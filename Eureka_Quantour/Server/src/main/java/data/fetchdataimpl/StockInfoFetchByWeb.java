@@ -6,15 +6,20 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Properties;
 
 import data.common.FileMethod;
@@ -28,15 +33,24 @@ public class StockInfoFetchByWeb {
 	private WebMethod webmethod;
 	private SimpleDateFormat sdf;
 	private File log;
+	private File rightslog;
+	private Properties pro1;
+	private Properties pro2;
+	private DecimalFormat df1;
+	private DecimalFormat df2;
 	public static void main(String[] args){
 		new StockInfoFetchByWeb();
 	}
 	public StockInfoFetchByWeb(){
+		df1 = new DecimalFormat("0.00");
+		df2 = new DecimalFormat("0.0000");
 		sdf=new SimpleDateFormat("yyyy-MM-dd");
 		stockroot="config/stock/info";
 		log=new File("config/stocklog");
+		rightslog=new File("config/rightslog");
 		try {
 			log.createNewFile();
+			rightslog.createNewFile();
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -44,55 +58,13 @@ public class StockInfoFetchByWeb {
 		filemethod=FileMethod.getInstance();
 		webmethod=WebMethod.getInstance();
 		filemethod.makepath(stockroot);
-		try {
-			webmethod.testInternet();
-			fetchAllStockInfo();
-		} catch (InternetdisconnectException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-//		try {
-//			readtxt();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		
 	}
-//	private void readtxt() throws IOException{
-//		int BUFFER_SIZE=(row_length+1)*12;
-//		long t=System.currentTimeMillis();
-//  		RandomAccessFile a = new RandomAccessFile("config/stock/info/000001/data", "rw");
-//  		FileChannel fc=a.getChannel();
-//  		MappedByteBuffer mb=fc.map(FileChannel.MapMode.READ_WRITE, 0, fc.size());
-//  		byte[] buf=new byte[BUFFER_SIZE];
-//  		byte[] buf1 = new byte[(int) (fc.size()%BUFFER_SIZE)];
-//  		int count=0;
-//  		a.seek(BUFFER_SIZE);
-//  		System.out.println(a.readLine());
-//  		long t1=System.currentTimeMillis();
-////  		for(int i=0;i<fc.size();i+=BUFFER_SIZE){
-////  			if(fc.size()>i+BUFFER_SIZE){
-////  				mb.get(buf);
-////  				byte[] newbuf=new byte[101];
-////  				break;
-////  			}
-////  			else{
-////  				mb.get(buf1);
-////  			}
-////  		}
-//  		
-//		 FileReader in = new FileReader("config/stock/info/000001/data");
-//		 BufferedReader reader = new BufferedReader(in);
-//		 reader.skip(BUFFER_SIZE);
-//		 System.out.println(reader.readLine());
-//		 System.out.println(reader.readLine());
-//		 reader.close();
-//		 long t2=System.currentTimeMillis();
-//		 System.out.println("方法1时间为："+(t1-t));
-//		 System.out.println("方法2时间为："+(t2-t1));
-//	}
-	public void fetchAllStockInfo(){
+	/**
+	 * 获取股票信息
+	 * @throws InternetdisconnectException 网络无法链接时抛出异常
+	 */
+	public void fetchAllStockInfo() throws InternetdisconnectException{
+		webmethod.testInternet();
 		File root=new File(stockroot);
 		String[] stocklist=root.list();
 		int i=stocklist.length;
@@ -108,6 +80,268 @@ public class StockInfoFetchByWeb {
 		long time1=System.currentTimeMillis();
 		System.out.println("花费时间：" +(time1-time)+"ms");
 	}
+	/**
+	 * 获取所有股票的复权价格
+	 * @throws InternetdisconnectException 网络无法链接时抛出异常
+	 */
+	public void fetchAllsubscription() throws InternetdisconnectException{
+		webmethod.testInternet();
+		File root=new File(stockroot);
+		String[] stocklist=root.list();
+		int i=stocklist.length;
+		pro1=new Properties();
+		pro2=new Properties();
+		try {
+			BufferedInputStream is = new BufferedInputStream(
+					new FileInputStream("config/parse/codeToname.properties"));
+			pro1.load(is);
+			is.close();
+			BufferedInputStream is1 = new BufferedInputStream(
+					new FileInputStream("config/parse/nameTocode.properties"));
+			pro2.load(is1);
+			is1.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		int count=0;
+		Calendar cal=Calendar.getInstance();
+		String enddate=sdf.format(cal.getTime());
+		for(String stock:stocklist){
+			count++;
+			System.out.println("正在处理第"+count+"个，总共"+i+"个"+"剩余"+(i-count)+"个。");
+			processAdjClose(enddate,stock);
+		}
+		try {
+			OutputStream out=new FileOutputStream("config/parse/codeToname.properties");
+			OutputStream out1=new FileOutputStream("config/parse/nameTocode.properties");
+			pro1.store(out, "update rights_url");
+			pro2.store(out1, "update rights_url");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * 处理和复权有关的计算和存储
+	 */
+	private void processAdjClose(String enddate,String stock){
+		Properties pro=new Properties();
+		String codepath=stockroot+"/"+stock+"/";
+		try  {
+			BufferedInputStream is = new BufferedInputStream(
+					new FileInputStream(codepath+"config.properties"));
+			pro.load(is);
+			is.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String last_update=pro.getProperty("lastupdate_subscriptiondate");
+		int lastupdate=Integer.parseInt(encodeDate(last_update));
+		int end=Integer.parseInt(encodeDate(enddate));
+		String last_day=pro.getProperty("last_subscriptiondate");
+		if(lastupdate>(end+300)){
+			fetchrightsurl(stock);
+			fetchrights(stock,enddate);
+			Properties pro1=new Properties();
+			try  {
+				BufferedInputStream is = new BufferedInputStream(
+						new FileInputStream(codepath+"config.properties"));
+				pro1.load(is);
+				is.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			if(pro1.getProperty("last_subscriptiondate").equals(last_day)){
+				loadsubscription(stock,enddate);
+			}
+			else{
+				calsubscription(stock);
+			}
+		}
+		else{
+			loadsubscription(stock,enddate);
+		}
+	}
+	private void loadsubscription(String stock,String enddate){
+		String codepath=stockroot+"/"+stock+"/";
+		try {
+			BufferedReader br=new BufferedReader(new FileReader(codepath+"data"));
+			BufferedReader br1=new BufferedReader(new FileReader(codepath+"subscription"));
+			while(br1.ready()){
+				br1.readLine();
+				br.readLine();
+			}
+			br1.close();
+			BufferedWriter bw=new BufferedWriter(new FileWriter(codepath+"subscription",true));
+			while(br.ready()){
+				String[] out=br.readLine().split(",");
+				String tclose=out[4];
+				String lclose=out[5];
+				String rate=out[6];
+				bw.write(tclose+","+lclose+","+rate+"\n");
+			}
+			bw.close();
+			br.close();
+		}
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * 获取指定股票复权信息的链接
+	 * @param stock 股票编号
+	 */
+	private void fetchrightsurl(String stock){
+		String codepath=stockroot+"/"+stock+"/";
+		String url="http://quote.cfi.cn/quote_"+stock+".html";
+		String pattern="<DIV\\s+class='b'\\s+id='nodea26'\\s+><NOBR>.*?</NOBR>";
+		String rightsurl="";
+		try {
+			rightsurl=webmethod.fetchandmatch(url, pattern);
+			Properties pro=new Properties();
+			BufferedInputStream is = new BufferedInputStream(
+					new FileInputStream(codepath+"config.properties"));
+			pro.load(is);
+			is.close();
+			OutputStream out=new FileOutputStream(codepath+"config.properties");
+			rightsurl="quote.cfi.cn"+rightsurl;
+			pro.setProperty("rights_url", rightsurl);
+			pro.store(out, "update rights_url");
+		}
+		catch (IllegalStateException e){
+			try {
+				BufferedWriter bw=new BufferedWriter(new FileWriter(rightslog,true));
+				bw.write(stock+"\n");
+				bw.close();
+				File path=new File(stockroot+"/"+stock);
+				filemethod.dealdir(path);
+				path.delete();
+				delStockSet(stock);
+				pro2.remove(pro1.get(stock));
+				pro1.remove(stock);			
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * 获取指定股票的复权信息
+	 * @param stock 股票名称
+	 */
+	private void fetchrights(String stock,String enddate){
+		String codepath=stockroot+"/"+stock+"/";
+		String url="http://";
+		String pattern="<tr.*?>.*?</tr>";
+		File file=new File(codepath+"subscription_record");	
+		try {
+			file.createNewFile();
+			Properties pro=new Properties();
+			BufferedInputStream is = new BufferedInputStream(
+					new FileInputStream(codepath+"config.properties"));
+			pro.load(is);
+			is.close();
+			url=url+pro.getProperty("rights_url");
+			webmethod.fetchandmatch(url, codepath+"subscription_record", pattern);
+			BufferedReader br=new BufferedReader(new FileReader(codepath+"subscription_record"));
+			String date=br.readLine();
+			br.close();
+			pro.setProperty("lastupdate_subscriptiondate", enddate);
+			if(date!=null){
+				pro.setProperty("last_subscriptiondate", date.substring(date.length()-11,date.length()-1));	
+			}
+			else{
+				pro.remove("last_subscriptiondate");
+			}
+			OutputStream out=new FileOutputStream(codepath+"config.properties");
+			pro.store(out, "update last_subscriptiondate");
+		}
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * 计算指定股票的前复权价格
+	 * @param stock 股票编号
+	 */
+	private void calsubscription(String stock){
+		String codepath=stockroot+"/"+stock+"/";
+		try {
+			File data=new File(codepath+"data");
+			File adjrecord=new File(codepath+"subscription_record");
+			File adjdata=new File(codepath+"subscription");
+			BufferedReader br_adjrecord=new BufferedReader(new FileReader(adjrecord));
+			BufferedWriter bw=new BufferedWriter(new FileWriter(adjdata));
+			String adj="";
+			HashMap<Integer,Double> map_1=new HashMap<Integer,Double>();
+			HashMap<Integer,Double> map_2=new HashMap<Integer,Double>();
+			File log=new File("config/error_rights");
+	  		log.createNewFile();
+	  		BufferedWriter bw2=new BufferedWriter(new FileWriter(log,true));
+			List<Integer> list=new ArrayList<Integer>();
+			while(br_adjrecord.ready()){
+				adj=br_adjrecord.readLine();
+				String[] record=adj.split(";");
+				if(record[3].equals("--")){
+					if(record[4].equals("--")){
+						bw2.write(stock+"\n");
+						continue;
+					}
+					record[3]=record[4];
+				}
+				try{
+					Double a=parseDouble(record[0])+parseDouble(record[1]);
+					map_1.put(Integer.parseInt(encodeDate(record[3])),a);
+					map_2.put(Integer.parseInt(encodeDate(record[3])),parseDouble(record[2]));
+					list.add(0, Integer.parseInt(encodeDate(record[3])));
+				}catch(Exception e){
+					System.out.println(stock);
+					e.printStackTrace();
+				}
+			}
+			br_adjrecord.close();
+			BufferedReader br_data=new BufferedReader(new FileReader(data));
+			int rank=0;
+			while(br_data.ready()){
+				String[] record=br_data.readLine().split(",");
+				Double tclose=parseDouble(record[4]);
+				Double lclose=parseDouble(record[5]);
+				int cal=Integer.parseInt(encodeDate(record[0]));
+				for(int i=rank;i<list.size();i++){
+					int key=list.get(i);
+					if(cal<key){
+						tclose=caladj(tclose,map_1.get(key),map_2.get(key));
+						lclose=caladj(lclose,map_1.get(key),map_2.get(key));
+					}
+					else{
+						rank++;
+					}
+				}
+				Double adjrate=(tclose-lclose)/lclose*100;
+				bw.write(df1.format(tclose)+","+df1.format(lclose)+","+df2.format(adjrate)+"\n");
+			}
+			bw2.close();
+			br_data.close();
+			bw.close();
+		}
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	/**
+	 * 爬取股票信息
+	 * @param code 股票编号
+	 * @param enddate 结束日期
+	 */
 	private void fetchdate(String code,String enddate){
 		try {
 			String codepath=stockroot+"/"+code+"/";
@@ -229,6 +463,9 @@ public class StockInfoFetchByWeb {
 		bis.readLine();
 		if(bis.ready()){
 			str=bis.readLine();
+			while(str.indexOf("None")>=0){
+				str=bis.readLine();
+			}
 			i=str.indexOf(",");
 			i_1=str.indexOf(",", i+1);
 			i_2=str.indexOf(",", i_1+1);
@@ -236,12 +473,14 @@ public class StockInfoFetchByWeb {
 			total=str.substring(0, i)+str.substring(i_2)+"\n"+total;
 			while(bis.ready()){
 	  			str=bis.readLine();
-	  			i=str.indexOf(",");
-	  			i_1=str.indexOf(",", i+1);
-	  			i_2=str.indexOf(",", i_1+1);
-	  			total=str.substring(0, i)+str.substring(i_2)+"\n"+total;
+	  			if(str.indexOf("None")<0){
+	  				i=str.indexOf(",");
+		  			i_1=str.indexOf(",", i+1);
+		  			i_2=str.indexOf(",", i_1+1);
+		  			total=str.substring(0, i)+str.substring(i_2)+"\n"+total;
+	  			}
 			}
-	  		resultdate=resultdate+str.substring(0,i);
+	  		resultdate=resultdate+total.substring(0,i);
 		}  	
   		fos.write(total);
   		fos.close();
@@ -264,5 +503,64 @@ public class StockInfoFetchByWeb {
 	 */
 	private String decodeDate(String str){
 		return str.substring(0, 4)+"-"+str.substring(4,6)+"-"+str.substring(6);
+	}
+	/**
+	 * 在股票池中删除指定股票
+	 * @param code 股票编号
+	 */
+	private void delStockSet(String code){
+		switch(code.charAt(0)){
+		case '0':
+			delstock(code,"config/stock/stockset/SZA");
+			break;
+		case '2':
+			delstock(code,"config/stock/stockset/SZB");
+			break;
+		case '3':
+			delstock(code,"config/stock/stockset/CYB");
+			delstock(code,"config/stock/stockset/SZA");
+			break;
+		case '6':
+			delstock(code,"config/stock/stockset/SHA");
+			break;
+		case '9':
+			delstock(code,"config/stock/stockset/SHB");
+			break;
+		default:
+			System.out.println(code);
+		}
+	}
+	/**
+	 * 删除指定文件夹
+	 * @param code
+	 * @param set
+	 */
+	private void delstock(String code,String set){
+		File file=new File(set+"/"+code);
+		file.delete();
+	}
+	/**
+	 * 计算复权价格
+	 * @param row 原价
+	 * @param stock 每股配股
+	 * @param dollar 每股分红
+	 * @return 前复权价格
+	 */
+	private Double caladj(Double row,Double stock,Double dollar){
+		Double sum=(row-dollar/10)/(1+stock/10);
+		return sum;
+	}
+	/**
+	 * 转化字符串为double
+	 * @param str 源字符串
+	 * @return 转换后的数字
+	 */
+	private Double parseDouble(String str){
+		if(str.equals("--")){
+			return 0.0;
+		}
+		else{
+			return Double.parseDouble(str);
+		}
 	}
 }

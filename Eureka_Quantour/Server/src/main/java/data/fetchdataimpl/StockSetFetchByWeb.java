@@ -42,9 +42,6 @@ public class StockSetFetchByWeb{
 	private String ZXB;//中小板
 	private FileMethod filemethod;
 	private WebMethod webmethod;
-	public static void main(String[] args){
-		new StockSetFetchByWeb();
-	}
 	public StockSetFetchByWeb(){
 		init();
 	}
@@ -70,14 +67,6 @@ public class StockSetFetchByWeb{
 		filemethod.makepath(HS300);
 		filemethod.makepath(CYB);
 		filemethod.makepath(ZXB);
-		try {
-			getAllStockName();
-			getHS300List();
-			getZXBList();
-		} catch (InternetdisconnectException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
 	}
 	/**

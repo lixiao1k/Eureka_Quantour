@@ -1,5 +1,6 @@
 package data.common;
 
+import java.util.HashMap;
 import java.util.Map.Entry;
 
 public class BPlusTree {
@@ -23,7 +24,7 @@ public class BPlusTree {
     public int getOrder() { 
         return order; 
     } 
-    public Object get(int key) { 
+    public HashMap<String,Integer> get(int key) { 
         return root.get(key); 
     } 
     public void insertOrUpdate(int key, Entry<String,Integer> obj) { 
