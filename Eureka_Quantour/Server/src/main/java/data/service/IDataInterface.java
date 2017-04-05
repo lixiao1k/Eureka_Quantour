@@ -94,5 +94,5 @@ public interface IDataInterface
 	 * @param date Calendar,需要查找的时间
 	 * @return 一个股票编号的列表
 	 */
-	public List<String>  getStockSetSortedInfo(String stockSetName,String userName);
+	public List<String>  getStockSetInfo(String stockSetName,String userName);
 }
