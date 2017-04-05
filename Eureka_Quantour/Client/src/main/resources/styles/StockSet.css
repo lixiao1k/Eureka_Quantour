@@ -72,7 +72,9 @@
 {
     -fx-background-color:      
     rgb(255, 255, 255, 0.08);
-    -fx-text-fill: #828282;
+    -fx-font-size: 14px;
+    -fx-font-weight: bolder;
+    -fx-text-fill:ivory;
 }
 
 .main-button{
