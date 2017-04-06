@@ -19,31 +19,11 @@
             <HBox fx:id="buttonHBox" layoutX="-22.0" layoutY="10.0" prefHeight="37.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </children>
       </AnchorPane>
-      <GridPane layoutY="74.0" maxWidth="281.0" prefHeight="684.0" prefWidth="281.0" styleClass="left-segment" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="74.0">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="0.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <ScrollPane fx:id="downTenScrollPane" prefHeight="281.0" prefWidth="281.0" styleClass="top1-segment" GridPane.rowIndex="1" />
-            <ScrollPane fx:id="upTenScrollPane" maxWidth="281.0" prefHeight="200.0" prefWidth="281.0" styleClass="top1-segment" />
-         </children>
-      </GridPane>
       <AnchorPane layoutX="281.0" layoutY="73.0" maxWidth="600.0" prefHeight="684.0" prefWidth="600.0" styleClass="left2-segment" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="281.0" AnchorPane.topAnchor="74.0">
          <children>
             <ScrollPane fx:id="stocksScrollPane" layoutX="-1.0" layoutY="1.0" prefHeight="678.0" prefWidth="600.0" styleClass="left1-segment" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <content>
-                  <GridPane fx:id="stocksGridPane" prefHeight="671.0" prefWidth="590.0">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="590.0" minWidth="10.0" prefWidth="590.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                  </GridPane>
+                  <FlowPane fx:id="stocksFlowPane" prefHeight="665.0" prefWidth="645.0" />
                </content></ScrollPane>
          </children>
       </AnchorPane>
@@ -62,5 +42,38 @@
             <AnchorPane fx:id="emaChartAnchorPane" maxWidth="334.0" prefHeight="200.0" prefWidth="334.0" styleClass="top1-segment" GridPane.rowIndex="2" />
          </children>
       </GridPane>
+      <AnchorPane layoutY="71.0" prefHeight="684.0" prefWidth="280.0" styleClass="left-segment" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="74.0">
+         <children>
+            <AnchorPane prefHeight="342.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <AnchorPane prefHeight="26.0" prefWidth="277.0" styleClass="menuPane" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Label layoutY="5.0" text="今日涨幅排名" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="5.0" />
+                     </children>
+                  </AnchorPane>
+                  <ScrollPane fx:id="upTenScrollPane" layoutX="50.0" layoutY="78.0" prefHeight="200.0" prefWidth="200.0" styleClass="TenScroll" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="26.0">
+                     <content>
+                        <FlowPane fx:id="upTenFlowPane" prefHeight="316.0" prefWidth="250.0" />
+                     </content>
+                  </ScrollPane>
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="27.0" layoutY="385.0" prefHeight="342.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+               <children>
+                  <AnchorPane layoutX="22.0" layoutY="14.0" prefHeight="26.0" prefWidth="234.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <AnchorPane layoutX="45.0" layoutY="26.0" prefHeight="26.0" prefWidth="200.0" styleClass="menuPane" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Label layoutX="20.0" layoutY="6.0" text="今日跌幅排名" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="5.0" />
+                     </children>
+                  </AnchorPane>
+                  <ScrollPane fx:id="downTenScrollPane" layoutX="32.0" layoutY="51.0" prefHeight="200.0" prefWidth="200.0" styleClass="TenScroll" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="26.0">
+                     <content>
+                        <FlowPane fx:id="downTenFlowPane" prefHeight="311.0" prefWidth="250.0" />
+                     </content>
+                  </ScrollPane>
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

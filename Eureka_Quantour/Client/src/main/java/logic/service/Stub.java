@@ -34,6 +34,26 @@ public class Stub {
 		vo2.setFudu(-10.00);
 		vo2.setVolume(69000);
 		list1.add(vo2);
+		SingleStockInfoVO vo3 = new SingleStockInfoVO();
+		vo3.setCode("300011");
+		vo3.setName("鼎汉技术");
+		vo3.setClose(21.400);
+		vo3.setOpen(19.470);
+		vo3.setHigh(21.400);
+		vo3.setLow(19.380);
+		vo3.setFudu(10.03);
+		vo3.setVolume(171600);
+		list1.add(vo3);
+		SingleStockInfoVO vo4 = new SingleStockInfoVO();
+		vo4.setCode("002853");
+		vo4.setName("皮阿诺");
+		vo4.setClose(126.230);
+		vo4.setOpen(126.230);
+		vo4.setHigh(138.260);
+		vo4.setLow(126.230);
+		vo4.setFudu(-14.030);
+		vo4.setVolume(69100);
+		list1.add(vo4);
 		return list1;
 		
 	}

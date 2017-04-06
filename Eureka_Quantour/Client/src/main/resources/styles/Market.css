@@ -5,6 +5,12 @@
         linear-gradient(#20262b, #191d22),
         radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));
 }
+.menuPane{
+    -fx-background-color: rgba(0, 0, 0, 0.3);
+	-fx-border-color: rgba(0,0,0,1);
+	-fx-border-width: 1, 1.5;
+	-fx-border-insets: -1, 0; 
+}
 .scroll-pane > .viewport {
    -fx-background-color: transparent;
 }
@@ -48,7 +54,14 @@
 	-fx-border-width: 1, 1.5;
 	-fx-border-insets: -1, 0; 
 }
-
+.TenScroll{
+    -fx-background-color: rgba(255, 255, 255, 0.05);
+	-fx-border-color: 
+		transparent transparent transparent transparent,
+		transparent transparent transparent transparent;
+	-fx-border-width: 1, 1.5;
+	-fx-border-insets: -1, 0; 
+}
 .left-segment {
 	-fx-background-color: rgba(255, 255, 255, 0.05);
 	-fx-border-color: 

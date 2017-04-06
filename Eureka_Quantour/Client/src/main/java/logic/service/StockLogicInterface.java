@@ -52,9 +52,6 @@ public interface StockLogicInterface extends Remote {
 
 	 SingleStockInfoVO getStockBasicInfo(String code, Calendar now);
 
-	 List<SingleStockInfoVO> getStockSorted(String stockSetName, Calendar now);
-
-
 	 void setStrategy(StrategyConditionVO sc, SaleVO s, Calendar begin, Calendar now, String
 			stockSetName);
 
