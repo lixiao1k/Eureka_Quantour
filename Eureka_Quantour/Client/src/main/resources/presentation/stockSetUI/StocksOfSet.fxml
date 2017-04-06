@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="740.0" prefWidth="645.0" styleClass="background" stylesheets="@../../styles/StockSet.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+   <children>
+      <ScrollPane layoutY="-6.0" prefHeight="747.0" prefWidth="645.0" styleClass="background">
+         <content>
+            <FlowPane maxWidth="638.0" minWidth="618.0" prefHeight="744.0" prefWidth="638.0">
+               <children>
+                  <TableView prefHeight="679.0" prefWidth="623.0">
+                    <columns>
+                      <TableColumn prefWidth="34.0" text="序号" />
+                      <TableColumn prefWidth="71.0" text="代码" />
+                        <TableColumn prefWidth="102.0" text="名称" />
+                        <TableColumn prefWidth="63.0" text="最新价" />
+                        <TableColumn prefWidth="53.0" text="涨跌幅" />
+                        <TableColumn prefWidth="61.0" text="今开" />
+                        <TableColumn prefWidth="65.0" text="最高价" />
+                        <TableColumn prefWidth="66.0" text="最低价" />
+                        <TableColumn prefWidth="109.0" text="成交量" />
+                    </columns>
+                  </TableView>
+               </children>
+            </FlowPane>
+         </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>
