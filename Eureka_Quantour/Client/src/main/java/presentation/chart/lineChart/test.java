@@ -64,6 +64,7 @@ public class test extends Application{
     		d1[i] = jizhunlist.get(i);
     	}
 		singleLineChart = new SingleLineChart(dates, d1, "hello");
+		singleLineChart.setName("testSingleLineChart");
     }
     
     @Override
