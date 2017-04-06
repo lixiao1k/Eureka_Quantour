@@ -23,7 +23,7 @@ import vo.*;
  * @author: hzp
  * @time: 2017年3月8日
  */
-public class StockLogicImplstub implements StockLogicInterface{
+public class StockLogicImplStub implements StockLogicInterface{
   
 	private IDataInterface idi = new DataInterfaceImpl();
 	private SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yy");
@@ -433,10 +433,8 @@ public class StockLogicImplstub implements StockLogicInterface{
 	public List<SingleStockInfoVO> getStockSetSortedInfo(String stockSetName, Calendar now) {
 		SingleStockInfoVO q=new SingleStockInfoVO();
 		SingleStockInfoVO p=new SingleStockInfoVO();
-		p.initObject("蜜汁股票",now,"10",15,20,25,10,10000,13,"SZ");
-		q.initObject("蜜汁股票2",now,"11",16,21,26,11,11000,14,"SZ");
-		p.setFudu(0.5);
-		q.setFudu(-0.5);
+		p.initObject("蜜汁股票",now,"10",15,20,25,10,10000,13,"SZ",0.5);
+		q.initObject("蜜汁股票2",now,"11",16,21,26,11,11000,14,"SZ",-05);
 		ArrayList<SingleStockInfoVO> list=new ArrayList<>();
 		list.add(p);
 		list.add(q);
@@ -446,7 +444,7 @@ public class StockLogicImplstub implements StockLogicInterface{
 	@Override
 	public SingleStockInfoVO getStockBasicInfo(String code, Calendar now) {
 		SingleStockInfoVO p=new SingleStockInfoVO();
-		p.initObject("蜜汁股票",now,"10",15,20,25,10,10000,13,"SZ");
+		p.initObject("蜜汁股票",now,"10",15,20,25,10,10000,13,"SZ",0.5);
 		return p;
 	}
 
@@ -454,8 +452,8 @@ public class StockLogicImplstub implements StockLogicInterface{
 	public List<SingleStockInfoVO> getStockSorted(String stockSetName, Calendar now) {
 		SingleStockInfoVO q=new SingleStockInfoVO();
 		SingleStockInfoVO p=new SingleStockInfoVO();
-		p.initObject("蜜汁股票",now,"10",15,20,25,10,10000,13,"SZ");
-		q.initObject("蜜汁股票2",now,"11",16,21,26,11,11000,14,"SZ");
+		p.initObject("蜜汁股票",now,"10",15,20,25,10,10000,13,"SZ",-0.5);
+		q.initObject("蜜汁股票2",now,"11",16,21,26,11,11000,14,"SZ",0.5);
 		ArrayList<SingleStockInfoVO> list=new ArrayList<>();
 		list.add(p);
 		list.add(q);

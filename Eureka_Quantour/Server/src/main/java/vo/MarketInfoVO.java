@@ -31,7 +31,10 @@ public class MarketInfoVO implements Serializable{
 	private int numOfDropEFP =0;
 	private int numOfOMCEFP = 0;
 	private int numOfOMCLTFP = 0;
-	
+
+
+
+
 	public long getVolume(){
 		return this.volume;
 	}

@@ -3,6 +3,7 @@ package logic.service;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.List;
 
 import exception.*;
@@ -26,7 +27,7 @@ public interface StockLogicInterface extends Remote {
 	 *               invoke getSingleStockInfo() in data layer
 	 * @return: Iterator<Double>
 	 */
-	 List<List<EMAInfoVO>> getEMAInfo ( String stockCode, Calendar begin, Calendar end )
+	 List<EMAInfoVO> getEMAInfo ( String stockCode, Calendar begin, Calendar end )
 			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException;
 	/**
 	 * @Description: to get stock A and B's compared information between "begin" and "end",
@@ -46,15 +47,11 @@ public interface StockLogicInterface extends Remote {
 
 	 List<String> getStockSet(String username);
 
-	 List<SingleStockInfoVO> getStockSetSortedInfo(String stockSetName, Calendar now);
+	 List<SingleStockInfoVO> getStockSetSortedInfo(String stockSetName, Calendar now,String username);
 
 	 SingleStockInfoVO getStockBasicInfo(String code, Calendar now);
 
-	 List<SingleStockInfoVO> getStockSorted(String stockSetName, Calendar now);
-
-
-	 void setStrategy(StrategyConditionVO sc, SaleVO s, Calendar begin, Calendar now, String
-			stockSetName);
+	 void setStrategy(StrategyConditionVO strategyConditionVO, SaleVO s, Calendar begin, Calendar now, String stockSetName,int num,String username);
 
 	 YieldChartDataVO getYieldChartData();
 
