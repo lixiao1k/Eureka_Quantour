@@ -219,7 +219,7 @@ public class SingleStockInfoPO
 	
 	/**
 	 * 设置SingleStockInfoPO中的股票名字
-	 * @param name the name to set
+	 * @param _name the name to set
 	 */
 	private void setName(String _name) {
 		name = _name;
@@ -227,7 +227,7 @@ public class SingleStockInfoPO
 	
 	/**
 	 * 设置SingleStockInfoPO中的日期
-	 * @param date the date to set
+	 * @param _date the date to set
 	 */
 	private void setDate(Calendar _date) {
 		date = _date;
@@ -235,21 +235,21 @@ public class SingleStockInfoPO
 	
 	/**
 	 * 设置SingleStockInfoPO中的股票编号
-	 * @param code the code to set
+	 * @param _code the code to set
 	 */
 	private void setCode(String _code) {
 		code = _code;
 	}
 	/**
 	 * 设置SingleStockInfoPO中的股票开盘价格
-	 * @param open the open to set
+	 * @param _open the open to set
 	 */
 	private void setOpen(double _open) {
 		open = _open;
 	}
 	/**
 	 * 设置SingleStockInfoPO中的股票收盘价格
-	 * @param close the close to set
+	 * @param _close the close to set
 	 */
 	private void setClose(double _close) {
 		close = _close;
@@ -257,7 +257,7 @@ public class SingleStockInfoPO
 	
 	/**
 	 * 设置SingleStockInfoPO中的股票当天最高价格
-	 * @param high the high to set
+	 * @param _high the high to set
 	 */
 	private void setHigh(double _high) {
 		high = _high;
@@ -265,7 +265,7 @@ public class SingleStockInfoPO
 	
 	/**
 	 * 设置SingleStockInfoPO中的当天股票最低价格
-	 * @param low the low to set
+	 * @param _low the low to set
 	 */
 	private void setLow(double _low) {
 		low = _low;
@@ -273,7 +273,7 @@ public class SingleStockInfoPO
 	
 	/**
 	 * 设置SingleStockInfoPO中的股票当天交易量
-	 * @param volume the volume to set
+	 * @param _volume the volume to set
 	 */
 	private void setVolume(long _volume) {
 		volume = _volume;
@@ -281,7 +281,7 @@ public class SingleStockInfoPO
 	
 	/**
 	 * 设置SingleStockInfoPO中的股票当天复权收盘价格
-	 * @param adjclose the adjclose to set
+	 * @param _adjclose the adjclose to set
 	 */
 	private void setAdjclose(double _adjclose) {
 		adjclose = _adjclose;
@@ -289,7 +289,7 @@ public class SingleStockInfoPO
 	
 	/**
 	 * 设置SingleStockInfoPO中的股票所处的市场
-	 * @param market the market to set
+	 * @param _market the market to set
 	 */
 	private void setMarket(String _market) {
 		market = _market;
@@ -306,6 +306,7 @@ public class SingleStockInfoPO
 	public void setStr(String str) {
 		this.str = str;
 	}
+<<<<<<< HEAD
 	public String toString(){
 		SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yy");
 		return "股票名字为: "+name+
@@ -359,6 +360,8 @@ public class SingleStockInfoPO
 			return ssiVO;
 		}
 	}
+=======
+>>>>>>> 217690b2f6205bd8dce9224f4f56e5ba49300cbf
 	/**
 	 * @return the last_close
 	 */
@@ -455,5 +458,17 @@ public class SingleStockInfoPO
 	 */
 	public void setLast_aftadjclose(double last_aftadjclose) {
 		this.last_aftadjclose = last_aftadjclose;
+	}
+
+	public String toString(){
+		SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yy");
+		return "股票名字为: "+name+
+				"   所处的市场为: "+market+
+				"   该条记录时间为: "+sdf.format(date.getTime())+
+				"   该股票编号为: "+code+
+				"\n开盘价为: "+open+"   收盘价为: "+close+"   最高价为: "+high+"   最低价为: "+low+"   交易量为: "+volume+
+				"   复权价为: "+adjclose
+				+"\n   昨日收盘价价为: "+last_close
+				+"\n   昨日fuquan收盘价价为: "+last_adjclose;
 	}
 }

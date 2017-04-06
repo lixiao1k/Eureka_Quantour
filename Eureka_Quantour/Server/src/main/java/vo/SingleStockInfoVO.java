@@ -1,5 +1,7 @@
 package vo;
 
+import po.SingleStockInfoPO;
+
 import java.io.Serializable;
 import java.util.Calendar;
 
@@ -9,7 +11,7 @@ import java.util.Calendar;
  * @author: hzp
  * @time: 2017.3.6
  */
-public class SingleStockInfoVO implements Serializable{
+public class SingleStockInfoVO implements Serializable, Comparable<SingleStockInfoVO>{
 
 	private static final long serialVersionUID = -185701255295387970L;
 	
@@ -100,13 +102,12 @@ public class SingleStockInfoVO implements Serializable{
 	public double getFudu() {
 		return fudu;
 	}
-
 	public void setFudu(double fudu) {
 		this.fudu = fudu;
 	}
 
 	public SingleStockInfoVO initObject(String name, Calendar date, String code, double open, double close,
-										double high, double low, int volume, double adjclose, String market){
+										double high, double low, int volume, double adjclose, String market,double fudu){
 		SingleStockInfoVO ssi = new SingleStockInfoVO();
 		ssi.setName(name);
 		ssi.setDate(date);
@@ -118,6 +119,28 @@ public class SingleStockInfoVO implements Serializable{
 		ssi.setVolume(volume);
 		ssi.setAdjclose(adjclose);
 		ssi.setMarket(market);
+		ssi.setFudu(fudu);
 		return ssi;
+	}
+	public SingleStockInfoVO(){}
+	public SingleStockInfoVO(SingleStockInfoPO po){
+		this.setAdjclose(po.getAdjclose());
+		this.setClose(po.getClose());
+		this.setCode(po.getCode());
+		this.setDate(po.getDate());
+		this.setFudu(po.getAdj_rate());
+		this.setHigh(po.getHigh());
+		this.setLow(po.getLow());
+		this.setMarket(po.getMarket());
+		this.setName(po.getName());
+		this.setOpen(po.getOpen());
+		this.setVolume(po.getVolume());
+	}
+
+
+	@Override
+	public int compareTo(SingleStockInfoVO o) {
+
+		return  (int) (Math.rint((this.getFudu()-o.getFudu())*100));
 	}
 }

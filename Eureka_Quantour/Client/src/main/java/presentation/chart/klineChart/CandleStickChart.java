@@ -2,8 +2,11 @@ package presentation.chart.klineChart;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+
 import javafx.animation.FadeTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -36,14 +39,17 @@ import vo.SingleStockInfoVO;
  * 
  */
 public class  CandleStickChart extends XYChart<String, Number> {
-
-    SimpleDateFormat sdf = new SimpleDateFormat("yy:MM:dd");
+	
     protected ObservableList<XYChart.Series<String, Number>> dataSeries;
     protected NumberAxis yAxis;
     protected CategoryAxis xAxis;
+    private SimpleDateFormat sdf = new SimpleDateFormat("yy:MM:dd");
+    
+    protected Map<String, String> dataMap = new HashMap<String,String>();
+    protected String[] dates;
+    
     private int candlewidth=10;
 
-    
     public void setCandlewidth(int candlewidth){
         this.candlewidth=candlewidth;
     }
@@ -75,6 +81,7 @@ public class  CandleStickChart extends XYChart<String, Number> {
     public CandleStickChart(String title, CategoryAxis xAxis, NumberAxis yAxis, List<SingleStockInfoVO> bars) {
         super(xAxis, yAxis);
         this.xAxis = xAxis;
+        this.xAxis.setGapStartAndEnd(false);
         this.yAxis = yAxis;
         yAxis.autoRangingProperty().set(true);
         yAxis.setPrefWidth(35);
@@ -86,18 +93,26 @@ public class  CandleStickChart extends XYChart<String, Number> {
         xAxis.setOpacity(0);
         yAxis.setAnimated(true);
         XYChart.Series<String, Number> series = new XYChart.Series<>();
-        for (SingleStockInfoVO bar : bars) {
+        
+        dates = new String[bars.size()];
+        for(int i=0; i<bars.size(); i++){
+        	SingleStockInfoVO bar = bars.get(i);
             String label = sdf.format(bar.getDate().getTime());
-            series.getData().add(new XYChart.Data<>(label, bar.getOpen(),bar));
+            series.getData().add( new XYChart.Data<>(label, bar.getOpen(),bar) );
+            dates[i] = label;
+            String info = "open : "+bar.getOpen()+"\n"
+            		     +"close : "+bar.getClose()+"\n"
+            		     +"high : "+bar.getHigh()+"\n"
+            		     +"low : "+bar.getLow();
+            dataMap.put(label, info);
         }
 
         dataSeries = FXCollections.observableArrayList(series);
 
         setData(dataSeries);
     }
-
-
-
+    
+    
     // -------------- METHODS ------------------------------------------------------------------------------------------
     /**
      * Called to update and layout the content for the plot
@@ -152,7 +167,6 @@ public class  CandleStickChart extends XYChart<String, Number> {
 
     @Override
     protected void dataItemAdded(Series<String, Number> series, int itemIndex, Data<String, Number> item) {
-
 
         Node candle = createCandle(getData().indexOf(series), item, itemIndex);
         if (shouldAnimate()) {
@@ -391,5 +405,5 @@ public class  CandleStickChart extends XYChart<String, Number> {
             lowValue.setText(Double.toString(low));
         }
     }
-
+    
 }

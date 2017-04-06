@@ -2,6 +2,8 @@ package vo;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.List;
+
 /**
  * 
  * @Description: to save information used to draw JunXianTu
@@ -12,33 +14,37 @@ public class EMAInfoVO implements Serializable{
 
 	private static final long serialVersionUID = -3607793986868403023L;
 
-	private Calendar date;
-	private double EMA;
-	
-	public EMAInfoVO(){
-		this.date = Calendar.getInstance();
-		this.EMA = 0.0;
-	}
-	
-	public EMAInfoVO(Calendar date, double EMA){
+	private List<Calendar> date;
+	private List<Double> EMA;
+	private int tianshu;
+
+	public EMAInfoVO(List<Calendar> date, List<Double> EMA, int tianshu) {
 		this.date = date;
+		this.EMA = EMA;
+		this.tianshu = tianshu;
+	}
+
+	public void setDate(List<Calendar> date) {
+		this.date = date;
+	}
+
+	public void setEMA(List<Double> EMA) {
 		this.EMA = EMA;
 	}
 
-	public Calendar getDate() {
+	public int getTianshu() {
+		return tianshu;
+	}
+
+	public void setTianshu(int tianshu) {
+		this.tianshu = tianshu;
+	}
+
+	public List<Calendar> getDate() {
 		return date;
 	}
 
-	public void setDate(Calendar date) {
-		this.date = date;
-	}
-
-	public double getEMA() {
+	public List<Double> getEMA() {
 		return EMA;
 	}
-
-	public void setEMA(double EMA) {
-		this.EMA = EMA;
-	}
-	
 }
