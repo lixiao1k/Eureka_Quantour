@@ -172,4 +172,109 @@ public class WebMethod {
   		}
   		return result;
 	}
+	/**
+	 * 从网站上爬取信息
+	 * @param destUrl 网站地址
+	 * @param fileName 存储到的文件路径
+	 * @return 网站上的信息
+	 * @throws IOException 
+	 */
+	public String fetchandmatch(String destUrl,String pattern) throws IOException, IllegalStateException{
+		BufferedReader bis = null;
+		HttpURLConnection httpUrl = null;
+		URL url = null;	
+		url = new URL(destUrl);
+		httpUrl = (HttpURLConnection) url.openConnection();
+		httpUrl.connect();
+		bis = new BufferedReader(new InputStreamReader(httpUrl.getInputStream()));
+		String total="";
+  		while(bis.ready()){
+  			String str=bis.readLine();
+  			total=total+str;
+  		}
+  		Pattern pat=Pattern.compile(pattern);
+  		Matcher m=pat.matcher(total);
+  		m.find();
+  		String result=m.group();
+  		result=result.substring(result.indexOf("href='")+6,result.length()-18);
+  		bis.close();
+  		httpUrl.disconnect();
+		return result;
+	}
+	/**
+	 * 从网站上爬取信息
+	 * @param destUrl 网站地址
+	 * @param fileName 存储到的文件路径
+	 * @return 网站上的信息
+	 * @throws IOException 
+	 */
+	public List<String> fetchandmatch(String destUrl,String filepath,String pattern) throws IOException, IllegalStateException{
+		BufferedReader bis = null;
+		HttpURLConnection httpUrl = null;
+		URL url = null;	
+		url = new URL(destUrl);
+		httpUrl = (HttpURLConnection) url.openConnection();
+		httpUrl.connect();
+		bis = new BufferedReader(new InputStreamReader(httpUrl.getInputStream()));
+		String total="";
+  		while(bis.ready()){
+  			String str=bis.readLine();
+  			total=total+str;
+  		}
+		String p=pattern;
+  		Pattern pat=Pattern.compile(p);
+  		Matcher m=pat.matcher(total);
+   	
+  		m.find();
+  		m.find();
+  		String right="<td>方案实施</td>";
+  		String date="</td><td>";
+  		File file=new File(filepath);
+  		if(!file.exists()){
+  			file.createNewFile();
+  		}
+  		BufferedWriter bw=new BufferedWriter(new FileWriter(file));
+  		List<String> list=new ArrayList<String>();
+  		String row="";
+  		while(m.find()){
+  			String result=m.group();
+  			boolean f1=false;
+  			boolean f2=false;
+  			if(result.indexOf(right)>=0){
+  				int z=Integer.parseInt(result.substring(result.indexOf(date)+date.length(), result.indexOf(date)+date.length()+4));
+  				if(z<2005){
+  					continue;
+  				}
+  				result=result.substring(result.indexOf(right)+right.length());
+  				String pa="<td>.*?</td>";
+  		  		Pattern p2=Pattern.compile(pa);
+  		  		Matcher mt=p2.matcher(result);
+  		  		int count=0;
+  		  		while(mt.find()){
+  		  			count++;
+  		  			String column=mt.group();
+  		  			if(count==4){
+  		  			}
+  		  			else{
+  		  				if(count==5&&column.substring(4,column.length()-5).equals("--")){
+  		  					f1=true;
+  		  				}
+  		  				if(count==6&&column.substring(4,column.length()-5).equals("--")){
+  		  					f2=true;
+  		  				}	
+  		  				row=row+column.substring(4,column.length()-5)+";";
+  		  			}
+  		  		}
+  		  		if(!f1||!f2){
+  		  			bw.write(row+"\n");
+  		  			list.add(row);
+  		  		}
+  	  	  		row="";
+  			}
+  		}
+  		bw.close();
+  		bis.close();
+  		httpUrl.disconnect();
+		return list;
+	}
 }

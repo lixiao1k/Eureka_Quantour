@@ -169,12 +169,12 @@ public class TreeNode {
             //复制子节点到分裂出来的新节点，并更新关键字 
             for (int i = 0; i < leftSize; i++){ 
                 left.getChildren().add(children.get(i)); 
-                left.getEntries().add(new AbstractMap.SimpleEntry(children.get(i).getEntries().get(0).getKey(), null)); 
+                left.getEntries().add(new AbstractMap.SimpleEntry<Integer,HashMap<String,Integer>>(children.get(i).getEntries().get(0).getKey(), null)); 
                 children.get(i).setParent(left); 
             } 
             for (int i = 0; i < rightSize; i++){ 
                 right.getChildren().add(children.get(leftSize + i)); 
-                right.getEntries().add(new AbstractMap.SimpleEntry(children.get(leftSize + i).getEntries().get(0).getKey(), null)); 
+                right.getEntries().add(new AbstractMap.SimpleEntry<Integer,HashMap<String,Integer>>(children.get(leftSize + i).getEntries().get(0).getKey(), null)); 
                 children.get(leftSize + i).setParent(right); 
             } 
              
@@ -217,7 +217,11 @@ public class TreeNode {
             for (int i = 0; i < node.getEntries().size(); i++) { 
                 int key = node.getChildren().get(i).getEntries().get(0).getKey(); 
                 if (node.getEntries().get(i).getKey() != key) { 
-                	System.out.println(node.toString());
+                	node.getEntries().remove(i); 
+                    node.getEntries().add(i, new AbstractMap.SimpleEntry<Integer,HashMap<String,Integer>>(key,null)); 
+                    if(!node.isRoot()){ 
+                        validate(node.getParent(), tree); 
+                    } 
                 } 
             } 
             // 如果子节点数不等于关键字个数但仍大于M / 2并且小于M，并且大于2 
@@ -228,7 +232,7 @@ public class TreeNode {
             node.getEntries().clear(); 
             for (int i = 0; i < node.getChildren().size(); i++) { 
                 int key = node.getChildren().get(i).getEntries().get(0).getKey(); 
-                node.getEntries().add(new AbstractMap.SimpleEntry(key, null)); 
+                node.getEntries().add(new AbstractMap.SimpleEntry<Integer,HashMap<String,Integer>>(key,null)); 
                 if (!node.isRoot()) { 
                     validate(node.getParent(), tree); 
                 } 

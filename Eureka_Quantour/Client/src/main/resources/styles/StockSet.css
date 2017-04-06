@@ -58,20 +58,23 @@
 }
 
 .transperantButton{
-    -fx-border-color: transparent;
-    -fx-border-width: 0;
-    -fx-background-radius: 6, 5, 4;
-    -fx-background-color: transparent;
-    -fx-font-family:"Segoe UI", Helvetica, Arial, sans-serif;
-    -fx-font-size: 1em; /* 12 */
-    -fx-text-fill: #828282;
+    -fx-background-color: #38424b;
+    -fx-font-size: 14px;
+    -fx-font-weight: bolder;
+    -fx-text-fill:ivory;
+    -fx-border-color: rgba(255, 255, 255, 0.6);
+    -fx-border-width: 4;
+    -fx-background-radius:6,5,4;
 }
 
 
 .transperantButton:pressed
 {
-    -fx-background-color: #6d8187;
-    -fx-text-fill: white;
+    -fx-background-color:      
+    rgb(255, 255, 255, 0.08);
+    -fx-font-size: 14px;
+    -fx-font-weight: bolder;
+    -fx-text-fill:ivory;
 }
 
 .main-button{

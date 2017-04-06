@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="100.0" prefWidth="300.0" styleClass="background" stylesheets="@../../styles/StockSet.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="presentation.stockSetUI.StockSetPopupController">
+   <children>
+      <Button layoutX="102.0" layoutY="63.0" mnemonicParsing="false" onAction="#cancel" styleClass="main-button" text="取消" />
+      <Button fx:id="ensureButton" layoutX="164.0" layoutY="63.0" mnemonicParsing="false" onAction="#ensure" styleClass="main-button" text="确定" />
+      <TextField fx:id="stockSetName" layoutX="77.0" layoutY="27.0" promptText="StockSetName" />
+   </children>
+</AnchorPane>

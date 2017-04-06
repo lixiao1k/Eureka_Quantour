@@ -1,6 +1,7 @@
 package presentation.strategyUI;
 
 import java.net.URL;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
@@ -80,6 +81,8 @@ public class StrategyUIController implements Initializable{
 		editButton.setGraphic(new ImageView(editImage));
 		Image saveImage = new Image(getClass().getResourceAsStream("save.png"));
 		saveButton.setGraphic(new ImageView(saveImage));
+		beginTimeDatePicker.setShowWeekNumbers(false);
+	    Locale.setDefault(Locale.ENGLISH);
 	}
 
 }

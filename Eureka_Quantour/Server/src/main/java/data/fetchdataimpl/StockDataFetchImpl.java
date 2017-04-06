@@ -5,9 +5,11 @@ import exception.InternetdisconnectException;
 
 public class StockDataFetchImpl implements IStockDataFetch{
 	private StockSetFetchByWeb setByweb;
+	private StockInfoFetchByWeb infoByweb;
 	private static StockDataFetchImpl impl;
 	private StockDataFetchImpl(){
 		setByweb=new StockSetFetchByWeb();
+		infoByweb=new StockInfoFetchByWeb();
 	}
 	public static StockDataFetchImpl getInstance(){
 		if(impl==null) impl=new StockDataFetchImpl();
@@ -28,8 +30,8 @@ public class StockDataFetchImpl implements IStockDataFetch{
 	}
 	@Override
 	public void fetchAllStockInfo() throws InternetdisconnectException {
-		// TODO Auto-generated method stub
-		
+		infoByweb.fetchAllStockInfo();
+		infoByweb.fetchAllsubscription();
 	}
 
 }
