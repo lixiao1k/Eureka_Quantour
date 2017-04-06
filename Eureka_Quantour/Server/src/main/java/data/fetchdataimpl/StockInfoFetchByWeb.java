@@ -34,10 +34,14 @@ public class StockInfoFetchByWeb {
 	private SimpleDateFormat sdf;
 	private File log;
 	private File rightslog;
+	private File mainData;
+	private File mainPosition;
+	private File mainIndex;
 	private Properties pro1;
 	private Properties pro2;
 	private DecimalFormat df1;
 	private DecimalFormat df2;
+	private long total;
 	public static void main(String[] args){
 		new StockInfoFetchByWeb();
 	}
@@ -48,13 +52,22 @@ public class StockInfoFetchByWeb {
 		stockroot="config/stock/info";
 		log=new File("config/stocklog");
 		rightslog=new File("config/rightslog");
+		mainData=new File("config/resources/mainData");
+		mainPosition=new File("config/resources/mainPosition");
+		mainIndex=new File("config/resources/mainIndex");
 		try {
 			log.createNewFile();
 			rightslog.createNewFile();
+			if(!mainData.exists()){
+				mainData.createNewFile();
+				mainPosition.createNewFile();
+				mainIndex.createNewFile();
+			}
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		total=mainData.length();
 		filemethod=FileMethod.getInstance();
 		webmethod=WebMethod.getInstance();
 		filemethod.makepath(stockroot);
@@ -122,6 +135,92 @@ public class StockInfoFetchByWeb {
 		}
 	}
 	/**
+	 * 汇总所有新添加的数据到主文件中，并且生成索引文件
+	 */
+	public void indexationAllDate(boolean reset){
+		File root=new File(stockroot);
+		int count=0;
+		String[] list=root.list();
+		int i=list.length;
+		try{
+			BufferedWriter bw_data=new BufferedWriter(new FileWriter(mainData,reset));
+			BufferedWriter bw_index=new BufferedWriter(new FileWriter(mainIndex,reset));
+			BufferedWriter bw_position=new BufferedWriter(new FileWriter(mainPosition,reset));
+			for(String code:list){
+				count++;
+				System.out.println("正在处理第"+count+"个，总共"+i+"个"+"剩余"+(i-count)+"个。");
+				indexationStockInfo(code,bw_data,bw_index,bw_position);
+			}
+			bw_data.close();
+			bw_index.close();
+			bw_position.close();
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * 汇总某支股票的新增数据到主文件中，并添加索引文件
+	 * @param code
+	 * @param bw_position 
+	 * @param bw_index 
+	 * @param bw_data 
+	 */
+	private void indexationStockInfo(String code, BufferedWriter bw_data, BufferedWriter bw_index, BufferedWriter bw_position){
+		Properties pro=new Properties();
+		String codepath=stockroot+"/"+code+"/";
+		try  {
+			BufferedInputStream is = new BufferedInputStream(
+					new FileInputStream(codepath+"config.properties"));
+			pro.load(is);
+			is.close();
+			if(pro.containsKey("last_day")){
+				if(pro.containsKey("last_indexationDate")){
+					int dateday=Integer.parseInt(encodeDate(pro.getProperty("last_day")));
+					int indexday=Integer.parseInt(encodeDate(pro.getProperty("last_indexationDate")));
+					if(dateday>indexday){
+						gatherDate(code,indexday,bw_data,bw_index,bw_position);
+					}
+				}
+				else{
+					gatherDate(code,-1,bw_data,bw_index,bw_position);
+				}
+				pro.setProperty("last_indexationDate", pro.getProperty("last_day"));
+				OutputStream out=new FileOutputStream(codepath+"config.properties");
+				pro.store(out, "update last_indexationDate");
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	private void gatherDate(String code,int startday, BufferedWriter bw_data, BufferedWriter bw_index, BufferedWriter bw_position){
+		try{
+			String codepath=stockroot+"/"+code+"/";
+			BufferedReader br1=new BufferedReader(new FileReader(codepath+"data"));
+			BufferedReader br2=new BufferedReader(new FileReader(codepath+"subscription"));
+			BufferedReader br3=new BufferedReader(new FileReader(codepath+"afterscription"));
+			while(br1.ready()){
+				String str=br1.readLine()+","+br2.readLine()+","+br3.readLine();
+				String cal=str.substring(0, 10);
+				str=str.substring(11);
+				int day=Integer.parseInt(encodeDate(cal));
+				if(day>startday){
+					bw_data.write(str+"\n");
+					bw_index.write(cal+","+code+"\n");
+					bw_position.write(String.format("%03d",str.length())+","+String.format("%09d", total)+"\n");
+					total=total+str.length()+1;
+				}
+			}
+			bw_data.flush();
+			bw_index.flush();
+			bw_position.flush();
+			br1.close();
+			br2.close();
+			br3.close();
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+	}
+	/**
 	 * 处理和复权有关的计算和存储
 	 */
 	private void processAdjClose(String enddate,String stock){
@@ -139,7 +238,7 @@ public class StockInfoFetchByWeb {
 		int lastupdate=Integer.parseInt(encodeDate(last_update));
 		int end=Integer.parseInt(encodeDate(enddate));
 		String last_day=pro.getProperty("last_subscriptiondate");
-		if(lastupdate>(end+300)){
+		if((lastupdate+300)<end){
 			fetchrightsurl(stock);
 			fetchrights(stock,enddate);
 			Properties pro1=new Properties();
@@ -155,13 +254,37 @@ public class StockInfoFetchByWeb {
 				loadsubscription(stock,enddate);
 			}
 			else{
-				calsubscription(stock);
+				calsubscription(stock,true);
 			}
 		}
 		else{
 			loadsubscription(stock,enddate);
 		}
+		String lastCalAfter=pro.getProperty("lastCal_Afterscriptiondate","2005-01-01");
+		int lastcal=Integer.parseInt(encodeDate(lastCalAfter));
+		end=Integer.parseInt(encodeDate(pro.getProperty("last_day")));
+		if(lastcal<end){
+			calafterscription(lastcal,stock,true);
+			try {
+				Properties temppro=new Properties();
+				BufferedInputStream tempis = new BufferedInputStream(
+						new FileInputStream(codepath+"config.properties"));
+				temppro.load(tempis);
+				tempis.close();
+				temppro.setProperty("lastCal_Afterscriptiondate",temppro.getProperty("last_day"));
+				OutputStream tempout = new FileOutputStream(codepath+"config.properties");
+				temppro.store(tempout, "update lastCal_Afterscriptiondate");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
+	/**
+	 * 不需要进行复权运算时将直接加载复权数据
+	 * @param stock 股票编号
+	 * @param enddate 终止日期
+	 */
 	private void loadsubscription(String stock,String enddate){
 		String codepath=stockroot+"/"+stock+"/";
 		try {
@@ -267,10 +390,89 @@ public class StockInfoFetchByWeb {
 		}
 	}
 	/**
+	 * 计算股票后复权
+	 * @param stock
+	 * @param reset
+	 */
+	private void calafterscription(int start, String stock,boolean reset){
+		String codepath=stockroot+"/"+stock+"/";
+		try {
+			File data=new File(codepath+"data");
+			File adjrecord=new File(codepath+"subscription_record");
+			File adjdata=new File(codepath+"afterscription");
+			if(!adjdata.exists()){
+				adjdata.createNewFile();
+			}
+			BufferedReader br_adjrecord=new BufferedReader(new FileReader(adjrecord));
+			BufferedWriter bw=new BufferedWriter(new FileWriter(adjdata,reset));
+			String adj="";
+			HashMap<Integer,Double> map_1=new HashMap<Integer,Double>();
+			HashMap<Integer,Double> map_2=new HashMap<Integer,Double>();
+			File log=new File("config/error_rights");
+	  		log.createNewFile();
+	  		BufferedWriter bw2=new BufferedWriter(new FileWriter(log,true));
+			List<Integer> list=new ArrayList<Integer>();
+			while(br_adjrecord.ready()){
+				adj=br_adjrecord.readLine();
+				String[] record=adj.split(";");
+				if(record[3].equals("--")){
+					if(record[4].equals("--")){
+						bw2.write(stock+"\n");
+						continue;
+					}
+					record[3]=record[4];
+				}
+				try{
+					Double a=parseDouble(record[0])+parseDouble(record[1]);
+					map_1.put(Integer.parseInt(encodeDate(record[3])),a);
+					map_2.put(Integer.parseInt(encodeDate(record[3])),parseDouble(record[2]));
+					list.add(Integer.parseInt(encodeDate(record[3])));
+				}catch(Exception e){
+					System.out.println(stock);
+					e.printStackTrace();
+				}
+			}
+			br_adjrecord.close();
+			BufferedReader br_data=new BufferedReader(new FileReader(data));
+			while(br_data.ready()){
+				String[] record=br_data.readLine().split(",");
+				int date=Integer.parseInt(encodeDate(record[0]));
+				if(date>start){
+					Double tclose=parseDouble(record[4]);
+					Double lclose=parseDouble(record[5]);
+					Double trate=parseDouble(record[6]);
+					int cal=Integer.parseInt(encodeDate(record[0]));
+					for(int i=0;i<list.size();i++){
+						int key=list.get(i);
+						if(cal>=key){
+							tclose=calafteradj(tclose,map_1.get(key),map_2.get(key));
+							lclose=calafteradj(lclose,map_1.get(key),map_2.get(key));
+						}
+					}
+					Double adjrate=0.0;
+					if(df1.format(lclose).equals("0.00")){
+						adjrate=trate;
+					}
+					else{
+						adjrate=(tclose-lclose)/lclose*100;
+					}
+					bw.write(df1.format(tclose)+","+df1.format(lclose)+","+df2.format(adjrate)+"\n");
+				}
+			}
+			bw2.close();
+			br_data.close();
+			bw.close();
+		}
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	/**
 	 * 计算指定股票的前复权价格
 	 * @param stock 股票编号
 	 */
-	private void calsubscription(String stock){
+	private void calsubscription(String stock,boolean reset){
 		String codepath=stockroot+"/"+stock+"/";
 		try {
 			File data=new File(codepath+"data");
@@ -283,7 +485,7 @@ public class StockInfoFetchByWeb {
 			HashMap<Integer,Double> map_2=new HashMap<Integer,Double>();
 			File log=new File("config/error_rights");
 	  		log.createNewFile();
-	  		BufferedWriter bw2=new BufferedWriter(new FileWriter(log,true));
+	  		BufferedWriter bw2=new BufferedWriter(new FileWriter(log,reset));
 			List<Integer> list=new ArrayList<Integer>();
 			while(br_adjrecord.ready()){
 				adj=br_adjrecord.readLine();
@@ -312,6 +514,7 @@ public class StockInfoFetchByWeb {
 				String[] record=br_data.readLine().split(",");
 				Double tclose=parseDouble(record[4]);
 				Double lclose=parseDouble(record[5]);
+				Double trate=parseDouble(record[6]);
 				int cal=Integer.parseInt(encodeDate(record[0]));
 				for(int i=rank;i<list.size();i++){
 					int key=list.get(i);
@@ -323,7 +526,13 @@ public class StockInfoFetchByWeb {
 						rank++;
 					}
 				}
-				Double adjrate=(tclose-lclose)/lclose*100;
+				Double adjrate=0.0;
+				if(df1.format(lclose).equals("0.00")){
+					adjrate=trate;
+				}
+				else{
+					adjrate=(tclose-lclose)/lclose*100;
+				}
 				bw.write(df1.format(tclose)+","+df1.format(lclose)+","+df2.format(adjrate)+"\n");
 			}
 			bw2.close();
@@ -548,6 +757,17 @@ public class StockInfoFetchByWeb {
 	 */
 	private Double caladj(Double row,Double stock,Double dollar){
 		Double sum=(row-dollar/10)/(1+stock/10);
+		return sum;
+	}
+	/**
+	 * 计算后复权价格
+	 * @param row 原价
+	 * @param stock 每股配股
+	 * @param dollar 每股分红
+	 * @return 前复权价格
+	 */
+	private Double calafteradj(Double row,Double stock,Double dollar){
+		Double sum=row*(1+stock/10)+dollar/10;
 		return sum;
 	}
 	/**
