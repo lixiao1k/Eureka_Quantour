@@ -27,7 +27,7 @@ public class test extends Application{
     	Calendar cal = Calendar.getInstance();
     	List<String> dataName = new ArrayList<String>();
     	int j = 2;
-    	for(int i=0; i<20; i++,j++){
+    	for(int i=0; i<40; i++,j++){
     		cal.set(2014, 3, j);
     		datelist.add( (Calendar)cal.clone() );
     		jizhunlist.add( Math.random() );
