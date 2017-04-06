@@ -91,7 +91,8 @@ public interface IDataInterface
 	public SingleStockInfoPO getSingleStockInfo(String stockcode,Calendar date);
 	/**
 	 * 获取某个股票池的股票编号
-	 * @param date Calendar,需要查找的时间
+	 * @param stockSetName 股票池名字
+	 * @param userName,用户名字
 	 * @return 一个股票编号的列表
 	 */
 	public List<String>  getStockSetInfo(String stockSetName,String userName);

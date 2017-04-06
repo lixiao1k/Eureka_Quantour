@@ -2,6 +2,7 @@ package data.datahelperservice;
 
 import java.util.List;
 
+import exception.NullSetException;
 import exception.StockNameRepeatException;
 import exception.StockSetNameRepeatException;
 
@@ -41,4 +42,19 @@ public interface IStockSetDataHelper {
 	 * @param username	用户名
 	 */
 	public void deleteStockFromStockSet(String stockName, String stockSetName, String username);
+	/**
+	 * 获取某个用户自定义股票池的股票编号
+	 * @param stockSetName 股票池名字
+	 * @param userName,用户名字
+	 * @return 一个股票编号的列表
+	 * @throws NullSetException 
+	 */
+	public List<String>  getStockSetInfo(String stockSetName,String userName) throws NullSetException;
+	/**
+	 * 获取某个股票池的股票编号
+	 * @param stockSetName 股票池名字
+	 * @return 一个股票编号的列表
+	 * @throws NullSetException 
+	 */
+	public List<String>  getStockSetInfo(String stockSetName) throws NullSetException;
 }

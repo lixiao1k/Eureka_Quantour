@@ -25,9 +25,15 @@ public class SingleStockInfoPO
 	private double adjclose;//这支股票的复权收盘指数
 	private String market;//这支股票所处的市场
 	private String str;
+	
 	private double last_close;//昨日收盘价格
-	private double last_adjclose;//昨日收盘价格
-	private double adj_rate;//复权涨跌幅
+	private double last_subadjclose;//昨日前复权收盘价格
+	private double last_aftadjclose;//昨日后复权收盘价格
+	private double tsubadjclose;//今日前复权收盘价格
+	private double taftadjclose;//今日后复权收盘价格
+	
+	private double subadj_rate;//前复权涨跌幅
+	private double aftadj_rate;//后复权涨跌幅
 	private double rate;//未复权涨跌幅
 	public SingleStockInfoPO(){}
 	/**
@@ -104,7 +110,6 @@ public class SingleStockInfoPO
 		setMarket(info[10]);
 		setStr(stockinfo);
 		last_close=flag;
-		last_adjclose=flag1;
 	}
 	
 	public SingleStockInfoPO(String stockinfo,int flag){
@@ -129,7 +134,7 @@ public class SingleStockInfoPO
 		setMarket(info[10]);
 		setStr(stockinfo);
 		last_close=Double.parseDouble(info[11]);
-		last_adjclose=Double.parseDouble(info[12]);
+		setLast_subadjclose(Double.parseDouble(info[12]));
 	}
 	/**
 	 * 获得SingleStockInfoPO中的股票名字
@@ -310,7 +315,7 @@ public class SingleStockInfoPO
 				"\n开盘价为: "+open+"   收盘价为: "+close+"   最高价为: "+high+"   最低价为: "+low+"   交易量为: "+volume+
 				"   复权价为: "+adjclose
 				+"\n   昨日收盘价价为: "+last_close
-				+"\n   昨日fuquan收盘价价为: "+last_adjclose;
+				+"\n   昨日fuquan收盘价价为: ";
 	}
 	
 	/**
@@ -366,30 +371,7 @@ public class SingleStockInfoPO
 	public void setLast_close(double last_close) {
 		this.last_close = last_close;
 	}
-	/**
-	 * @return the last_adjclose
-	 */
-	public double getLast_adjclose() {
-		return last_adjclose;
-	}
-	/**
-	 * @param last_adjclose the last_adjclose to set
-	 */
-	public void setLast_adjclose(double last_adjclose) {
-		this.last_adjclose = last_adjclose;
-	}
-	/**
-	 * @return the adj_rate
-	 */
-	public double getAdj_rate() {
-		return adj_rate;
-	}
-	/**
-	 * @param adj_rate the adj_rate to set
-	 */
-	public void setAdj_rate(double adj_rate) {
-		this.adj_rate = adj_rate;
-	}
+
 	/**
 	 * @return the rate
 	 */
@@ -401,5 +383,77 @@ public class SingleStockInfoPO
 	 */
 	public void setRate(double rate) {
 		this.rate = rate;
+	}
+	/**
+	 * @return the last_subadjclose
+	 */
+	public double getLast_subadjclose() {
+		return last_subadjclose;
+	}
+	/**
+	 * @param last_subadjclose the last_subadjclose to set
+	 */
+	public void setLast_subadjclose(double last_subadjclose) {
+		this.last_subadjclose = last_subadjclose;
+	}
+	/**
+	 * @return the tsubadjclose
+	 */
+	public double getTsubadjclose() {
+		return tsubadjclose;
+	}
+	/**
+	 * @param tsubadjclose the tsubadjclose to set
+	 */
+	public void setTsubadjclose(double tsubadjclose) {
+		this.tsubadjclose = tsubadjclose;
+	}
+	/**
+	 * @return the taftadjclose
+	 */
+	public double getTaftadjclose() {
+		return taftadjclose;
+	}
+	/**
+	 * @param taftadjclose the taftadjclose to set
+	 */
+	public void setTaftadjclose(double taftadjclose) {
+		this.taftadjclose = taftadjclose;
+	}
+	/**
+	 * @return the subadj_rate
+	 */
+	public double getSubadj_rate() {
+		return subadj_rate;
+	}
+	/**
+	 * @param subadj_rate the subadj_rate to set
+	 */
+	public void setSubadj_rate(double subadj_rate) {
+		this.subadj_rate = subadj_rate;
+	}
+	/**
+	 * @return the aftadj_rate
+	 */
+	public double getAftadj_rate() {
+		return aftadj_rate;
+	}
+	/**
+	 * @param aftadj_rate the aftadj_rate to set
+	 */
+	public void setAftadj_rate(double aftadj_rate) {
+		this.aftadj_rate = aftadj_rate;
+	}
+	/**
+	 * @return the last_aftadjclose
+	 */
+	public double getLast_aftadjclose() {
+		return last_aftadjclose;
+	}
+	/**
+	 * @param last_aftadjclose the last_aftadjclose to set
+	 */
+	public void setLast_aftadjclose(double last_aftadjclose) {
+		this.last_aftadjclose = last_aftadjclose;
 	}
 }

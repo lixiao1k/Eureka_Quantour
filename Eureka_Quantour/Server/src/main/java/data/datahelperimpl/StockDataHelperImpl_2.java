@@ -4,9 +4,14 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
@@ -19,6 +24,11 @@ import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Scanner;
 
+import data.common.DateBplusTree;
+import data.common.Node;
+import data.common.StockBplusTree;
+import data.common.StockNode;
+import data.common.TreeGen;
 import data.datahelperservice.IStockDataHelper;
 import data.fetchdataimpl.StockDataFetchImpl;
 import data.fetchdataservice.IStockDataFetch;
@@ -32,6 +42,9 @@ public class StockDataHelperImpl_2 implements IStockDataHelper{
 	private MappedByteBuffer mbb;
 	private MappedByteBuffer mbb2;
 	private HashMap<String,HashMap<String,Integer>> map;
+	private DateBplusTree tree;
+	private HashMap<String,StockBplusTree> tree2;
+	private TreeGen gen;
 	public static void main(String[] args){
 		new StockDataHelperImpl_2();
 	}
@@ -39,7 +52,10 @@ public class StockDataHelperImpl_2 implements IStockDataHelper{
 		t=Translate.getInstance();
 		fetch=StockDataFetchImpl.getInstance();
 		infopath=new File("config/stock/info");
+		gen=new TreeGen(20);
 		map=new HashMap<String,HashMap<String,Integer>> ();
+		tree=new DateBplusTree(20);
+		tree2=new HashMap<String,StockBplusTree>();
 		if(!infopath.exists()&&!infopath.isDirectory()){
 			try {
 				fetch.fetchAllStockSet();
@@ -51,15 +67,35 @@ public class StockDataHelperImpl_2 implements IStockDataHelper{
 		}
 		long t1=System.currentTimeMillis();
 		HashMap<Integer, Entry<Long,Integer>> map2;
-		loadDate();
+		loadAllStock();
 		//getAllStock();
 		//check();
+		readPosition(0);
 		System.out.println("success");
 		long t2=System.currentTimeMillis();
 		System.out.println("映射到内存的时间"+(t2-t1));
 		
 		long z1=System.currentTimeMillis();
 		//check2();
+		
+		try {
+			File file=new File("config/resources/tree");
+			ObjectInputStream oos;
+			oos = new ObjectInputStream(new FileInputStream(file));
+			try {
+				tree=(DateBplusTree) oos.readObject();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			oos.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		System.out.println("success");
 		long z2=System.currentTimeMillis();
 		System.out.println("测试的时间"+(z2-z1));
@@ -67,21 +103,53 @@ public class StockDataHelperImpl_2 implements IStockDataHelper{
 		String str="";
 		while(!(str=sc.nextLine()).equals("esc")){
 			String[] out=str.split(",");
+			
 			long ttt1=System.currentTimeMillis();
-			Random random=new Random();
+			
+			Random random1=new Random();
 			for(int i=0;i<10000;i++) {
 				String date="2017-03-28";
-				if(map.containsKey(date)){
-					Iterator<Integer> it=map.get(date).values().iterator();
-					while(it.hasNext()){
-						int entry=it.next();
-						readPosition(entry);
-					}
-				}
+//				if(true){
+//					int t=map.get("2017-03-28").get("000001");
+				int t=tree.getSingleInfot(20170328, 000001);
+					readPosition(t);
+//					readPosition(entry);
+//					while(it.hasNext()){
+//						int entry=it.next();
+//						readPosition(entry);
+//					}
+//				}
 			}
-//			System.out.println(readPosition(5638085));
+			
 			long ttt2=System.currentTimeMillis();
 			System.out.println("读取时间"+(ttt2-ttt1));
+			
+			long tttt1=System.currentTimeMillis();
+//			int count=0;
+//			Random random=new Random();
+//			for(int i=0;i<1;i++) {
+//				if(true){
+//					count=0;
+//						StockNode it=map.getMarket(20170328).getMin();
+//						while(it.getNext()!=null){
+//							for(Entry<Integer,Integer> e:it.getIndex()){
+//								readPosition(e.getValue());
+//								count++;
+//								System.out.println(e.getKey());
+//							}
+//							tree2.get("2017-03-28").toString(tree2.get("2017-03-28").getRoot());
+//							it=it.getNext();
+//						}	
+//				}
+//			}
+//			System.out.println(count);
+			
+//			System.out.println(readPosition(5638085));
+//			System.out.println(readPosition(5638085));
+			
+			long tttt2=System.currentTimeMillis();
+			System.out.println("读取时间"+(tttt2-tttt1));
+			
 		}
 	}
 	@Override
@@ -150,7 +218,9 @@ public class StockDataHelperImpl_2 implements IStockDataHelper{
 	private String encodeDate(String str){
 		return str.substring(0, 4)+str.substring(5,7)+str.substring(8);
 	}
-	private void loadDate(){
+	
+	@Override
+	public void loadAllStock(){
 		try {
 			long ttt1=System.currentTimeMillis();	
 			FileInputStream is=new FileInputStream("config/resources/mainData");
@@ -173,17 +243,27 @@ public class StockDataHelperImpl_2 implements IStockDataHelper{
 				String[] out=br.readLine().split(",");
 				String cal=out[0];
 				String code=out[1];
-				if(map.containsKey(cal)){
-					map.get(cal).put(code, count);
-				}
-				else{
-					HashMap<String,Integer> temp=new HashMap<String,Integer>();
-					temp.put(code,count);
-					map.put(cal, temp);
-				}
+				int key=Integer.parseInt(encodeDate(cal));
+				int code1=Integer.parseInt(code);
+//				tree.insertInfo(key, code1, count);
+//				if(!tree2.containsKey(cal)){
+//					StockBplusTree temp=new StockBplusTree(15);
+//					temp.insertInfo(code1, count);
+//					tree2.put(cal, temp);
+//				}
+//				else{
+//					tree2.get(cal).insertInfo(code1, count);
+//				}
+//			if(!map.containsKey(cal)){
+//					HashMap<String,Integer> temp=new HashMap<String,Integer>();
+//					temp.put(code, count);
+//					map.put(cal, temp);
+//				}
+//				else{
+//					map.get(cal).put(code, count);
+//				}
 				count++;
 			}
-			br.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -307,9 +387,6 @@ public class StockDataHelperImpl_2 implements IStockDataHelper{
 					br_adj1.close();
 				}
 				System.out.println(total);
-			}
-			else{
-				
 			}
 			return;
 		} catch (IOException e) {

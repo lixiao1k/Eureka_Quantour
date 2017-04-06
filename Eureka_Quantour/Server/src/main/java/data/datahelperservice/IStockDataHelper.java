@@ -18,4 +18,8 @@ public interface IStockDataHelper {
 	 * @return	String 股票编号
 	 */
 	public String getNameToCode(String name);
+	/**
+	 * 加载所有股票索引
+	 */
+	public void loadAllStock();
 }

@@ -62,4 +62,13 @@ public class StockSetDataController {
 	public void deleteStockFromStockSet(String stockName, String stockSetName, String username){
 		stocksetdatahelper.deleteStockFromStockSet(stockName, stockSetName, username);
 	}
+	/**
+	 * 获取某个股票池的股票编号
+	 * @param stockSetName 股票池名字
+	 * @param userName,用户名字
+	 * @return 一个股票编号的列表
+	 */
+	public List<String>  getStockSetInfo(String stockSetName,String userName){
+		return null;
+	}
 }
