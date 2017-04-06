@@ -2,6 +2,8 @@ package logic.serviceimpl;
 
 import data.service.IDataInterface;
 import data.serviceimpl.DataInterfaceImpl;
+import exception.LogErrorException;
+import exception.UserNameRepeatException;
 import logic.service.ClientLogicInterface;
 
 import java.rmi.RemoteException;
@@ -18,15 +20,17 @@ public class ClientLogicImpl implements ClientLogicInterface{
 
 
 	@Override
-	public void signUp(String username, char[] password) throws RemoteException {
+	public void signUp(String username, char[] password) throws RemoteException, UserNameRepeatException {
+		cli.signUpCheck(username,String.valueOf(password));
 	}
 
 	@Override
-	public void signIn(String username, char[] password) throws RemoteException {
+	public void signIn(String username, char[] password) throws RemoteException, LogErrorException {
+		cli.signInCheck(username,String.valueOf(password));
 	}
 
 	@Override
 	public void signOut(String username) throws RemoteException {
-
+		cli.logout(username);
 	}
 }

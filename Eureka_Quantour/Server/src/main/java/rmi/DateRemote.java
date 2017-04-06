@@ -5,13 +5,11 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.Calendar;
 import java.util.List;
 
+import exception.*;
 import logic.service.ClientLogicInterface;
 import logic.service.StockLogicInterface;
 import logic.serviceimpl.ClientLogicImpl;
 import logic.serviceimpl.StockLogicImplstub;
-import exception.BeginInvalidException;
-import exception.DateInvalidException;
-import exception.EndInvalidException;
 import vo.*;
 
 /**
@@ -95,7 +93,7 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 	}
 
 	@Override
-	public void addStockSet(String stockSetName, String username) {
+	public void addStockSet(String stockSetName, String username) throws StockSetNameRepeatException {
 		sli.addStockSet(stockSetName,username);
 	}
 
@@ -105,7 +103,7 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 	}
 
 	@Override
-	public void addStockToStockSet(String stockName, String stockSetName, String username) {
+	public void addStockToStockSet(String stockName, String stockSetName, String username) throws StockNameRepeatException {
 		sli.addStockToStockSet(stockName, stockSetName, username);
 	}
 
@@ -115,12 +113,16 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 	}
 
 	@Override
-	public boolean signUp(String username, char[] password) throws RemoteException {
-		return true;
+	public void signUp(String username, char[] password) throws RemoteException {
 	}
 
 	@Override
-	public boolean signIn(String username, char[] password) throws RemoteException {
-		return true;
+	public void signIn(String username, char[] password) throws RemoteException {
+
+	}
+
+	@Override
+	public void signOut(String username) throws RemoteException {
+
 	}
 }

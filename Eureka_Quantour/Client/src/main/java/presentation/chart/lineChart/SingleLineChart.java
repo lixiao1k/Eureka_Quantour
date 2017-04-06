@@ -1,17 +1,15 @@
 package presentation.chart.lineChart;
 
-import javafx.event.EventHandler;
-import javafx.scene.Node;
-import javafx.scene.chart.Axis;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import presentation.chart.chartService;
+import presentation.chart.show.CatchMouseMove;
+import presentation.chart.show.CatchMouseMoveService;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -27,6 +25,7 @@ import java.util.Map;
  */
 public class SingleLineChart implements chartService{
 
+	private CatchMouseMoveService catchMouseMove = new CatchMouseMove();
 
 	private AnchorPane pane = new AnchorPane();
 	private Label info = new Label();
@@ -62,23 +61,22 @@ public class SingleLineChart implements chartService{
         String[] dataStrings = new String[date.length];
         
         XYChart.Series<String, Number> serie = new XYChart.Series<>();
-        serie = new XYChart.Series<>();
         serie.setName(dataName);
         for(int j=0; j<date.length; j++){
 	        if( j<datas.length && datas[j]!=0 && datas[j]!=Integer.MIN_VALUE ){
 	        	serie.getData().add( new XYChart.Data<>(dates[j], datas[j]) );
-	        		
+	        	
 	        	String dataFormat = NumberFormat.getPercentInstance().format(datas[j]);
 	        	if( dataStrings[j]!=null )
-	        		dataStrings[j] += "/"+dataName+","+dataFormat;
+	        		dataStrings[j] += "/"+dataName+" : "+dataFormat;
 	        	else
-	        		dataStrings[j] = dataName+","+dataFormat;
+	        		dataStrings[j] = dataName+" : "+dataFormat;
 	        }
 	        else{
 	        	if( dataStrings[j]!=null )
-	        		dataStrings[j] += "/"+dataName+","+"0";
+	        		dataStrings[j] += "/"+dataName+" : "+"0";
 	        	else
-	        		dataStrings[j] = dataName+","+"0";
+	        		dataStrings[j] = dataName+" : "+"0";
         	}
         }
         lineChart.getData().add(serie);
@@ -88,7 +86,6 @@ public class SingleLineChart implements chartService{
         		dataMap.put(dates[i], dataStrings[i]);
         }
         
-        info.getStyleClass().add("/styles/SingleLineChart.css");
     }
     
     @Override
@@ -101,74 +98,22 @@ public class SingleLineChart implements chartService{
     		lineChart.setMaxHeight(height);
     		lineChart.setMaxHeight(height);
     	}
-    	info = createCursorGraphCoordsMonitorLabel(lineChart);
+    	
+    	info = catchMouseMove.createCursorGraphCoordsMonitorLabel(lineChart, dataMap, dates);
     	
     	pane.getChildren().add(info);
     	pane.getChildren().add(lineChart);
     	info.setLayoutX(5);
     	AnchorPane.setTopAnchor(lineChart, 30.0);
-        return pane;
+    	
+    	pane.getStylesheets().add(
+    			getClass().getResource("/styles/SingleLineChart.css").toExternalForm() );
+    	return pane;
     }
     
 	@Override
 	public void setName(String name) {
 		// TODO Auto-generated method stub
 		lineChart.setTitle(name);
-	}
-    
-    private Label createCursorGraphCoordsMonitorLabel(LineChart<String, Number> lineChart){
-	    Axis<String> xAxis = lineChart.getXAxis();
-	    Axis<Number> yAxis = lineChart.getYAxis();
-	
-	    Label cursorCoords = new Label();
-	
-	    final Node chartBackground = lineChart.lookup(".chart-plot-background");
-	    for( Node n: chartBackground.getParent().getChildrenUnmodifiable() ) {
-	    	if ( n!=chartBackground && n!=xAxis && n!=yAxis) {
-	    		n.setMouseTransparent(true);
-	    	}
-	    }
-
-	    chartBackground.setOnMouseEntered(new EventHandler<MouseEvent>() {
-	    	@Override 
-	    	public void handle(MouseEvent mouseEvent) {
-	    		cursorCoords.setVisible(true);
-	    	}
-	    });
-	
-	    chartBackground.setOnMouseMoved(new EventHandler<MouseEvent>() {
-	    	@Override 
-	    	public void handle(MouseEvent mouseEvent) {		
-	    		double temp = mouseEvent.getX()*(dates.length-1)/xAxis.getWidth();
-	    		int index = 0;
-	    		if( (temp%1)<0.2 )
-	    			index = (int)(temp/1);
-	    		else if( (temp%1)>0.8 )
-	    			index = (int)(temp/1)+1;
-	    		else
-	    			index = -1;
-
-	    		if( index>-1){
-		    		String dataInfo = dataMap.get(dates[index]);
-		    		String infos[] = dataInfo.split("/");
-		    		String info = "date : "+dates[index]+"\n";
-		    		for(int i=0; i<infos.length; i++){
-		    			String tempInfos[] = infos[i].split(",");
-		    			info += tempInfos[0]+" : "+tempInfos[1]+"\n";
-		    		}
-		    		cursorCoords.setText(info);
-	    		}
-	    		else
-	    			cursorCoords.setText("");
-	    	}
-	    });
-
-	    chartBackground.setOnMouseExited(new EventHandler<MouseEvent>() {
-	    	@Override 
-	    	public void handle(MouseEvent mouseEvent) {
-	    		cursorCoords.setVisible(false);
-	    	}
-	    });
-	    return cursorCoords;
 	}
 }
