@@ -11,12 +11,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
 public class StrategyUIController implements Initializable{
+	
 	@FXML
 	ComboBox<String> stockSetComboBox;
 	
@@ -24,19 +27,19 @@ public class StrategyUIController implements Initializable{
 	DatePicker beginTimeDatePicker;
 	
 	@FXML
-	CheckBox momentumCheckBox;
+	RadioButton momentumRadioButton;
 	
 	@FXML
-	CheckBox meanCheckBox;
+	RadioButton meanRadioButton;
 	
 	@FXML
 	TextField holdPeriodTextField;
 	
 	@FXML
-	CheckBox closeCheckBox;
+	RadioButton closeRadioButton;
 	
 	@FXML
-	CheckBox openCheckBox;
+	RadioButton openRadioButton;
 	
 	@FXML
 	TextField numOfStockTextField;
@@ -60,9 +63,15 @@ public class StrategyUIController implements Initializable{
 	AnchorPane chart3AnchorPane;
 	
 	@FXML
+	ToggleGroup strategy;
+	
+	@FXML
+	ToggleGroup price;
+	
+	@FXML
 	protected void makeStrategy(ActionEvent e){
-		
 	}
+
 	
 	@FXML
 	protected void edit(ActionEvent e){
@@ -73,6 +82,7 @@ public class StrategyUIController implements Initializable{
 	protected void saveTime(ActionEvent e){
 		
 	}
+
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

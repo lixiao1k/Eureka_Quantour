@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="100.0" prefWidth="300.0" styleClass="background" stylesheets="@../../styles/Strategy.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="presentation.singleStockUI.SingleStockUIPopupController">
+   <children>
+      <ComboBox fx:id="comboBox" layoutX="150.0" layoutY="14.0" prefHeight="23.0" prefWidth="91.0" />
+      <Button layoutX="75.0" layoutY="63.0" mnemonicParsing="false" onAction="#cancel" styleClass="main-button" text="取消" />
+      <Button layoutX="172.0" layoutY="63.0" mnemonicParsing="false" onAction="#ensure" styleClass="main-button" text="确定" />
+      <Label fx:id="nameLabel" layoutX="54.0" layoutY="14.0" prefHeight="23.0" prefWidth="69.0" AnchorPane.leftAnchor="54.0" AnchorPane.topAnchor="14.0" />
+      <Label layoutX="130.0" layoutY="17.0" text="to" AnchorPane.leftAnchor="130.0" AnchorPane.topAnchor="17.0" />
+   </children>
+</AnchorPane>

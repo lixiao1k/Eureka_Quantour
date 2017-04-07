@@ -55,6 +55,9 @@ public class MarketUIController implements Initializable {
 	FlowPane stocksFlowPane;
 	
 	@FXML
+	AnchorPane menuAnchorPane;
+	
+	@FXML
 	protected void goSetHSButtons(ActionEvent e){
 		buttonHBox.getChildren().clear();
 		Button HSAButton = new Button("沪市A股");
@@ -193,11 +196,43 @@ public class MarketUIController implements Initializable {
 		return root;
 	}
 
+	
+	private void initialMenuAnchorPane(){
+		HBox hb = new HBox();
+		hb.setPrefSize(597, 25);
+		Label numLabel = getLabel4initialMenu(50, Pos.CENTER, "序号");
+		Label codeLabel = getLabel4initialMenu(75, Pos.CENTER_RIGHT,"代码");
+		Label nameLabel = getLabel4initialMenu(85, Pos.CENTER_LEFT, "名称");
+		Label closeLabel = getLabel4initialMenu(65, Pos.CENTER_RIGHT,"最新价");
+		Label RAFLabel = getLabel4initialMenu(75, Pos.CENTER_RIGHT, "涨跌幅");
+		Label openLabel = getLabel4initialMenu(65, Pos.CENTER_RIGHT, "今开");
+		Label highLabel = getLabel4initialMenu(65, Pos.CENTER_RIGHT, "最高");
+		Label lowLabel = getLabel4initialMenu(65, Pos.CENTER_RIGHT, "最低");
+		Label volumeLabel = getLabel4initialMenu(52, Pos.CENTER_RIGHT, "成交量");
+		hb.getChildren().addAll(numLabel,codeLabel,nameLabel,closeLabel,RAFLabel,openLabel,highLabel,lowLabel,volumeLabel);
+		menuAnchorPane.getChildren().add(hb);
+	}
+	
+	private Label getLabel4initialMenu(double width, Pos alignment,String text){
+		Label label = new Label(text);
+		label.setPrefSize(width, 25);
+		label.setMaxWidth(width);
+		label.setAlignment(alignment);
+		label.setStyle("-fx-border-width: 1;"
+				+ "-fx-border-color: black;"
+				+ "-fx-background-color:rgba(255,255,255,0.1);"
+				+ "-fx-text-fill: rgb(255, 255, 255, 0.9);"
+				+ "-fx-font-weight:bold");
+		return label;
+	}
+	
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
 //		upTenScrollPane.setStyle("-fx-background-color:transparent;");
 //		downTenScrollPane.setStyle("-fx-background-color:transparent;");
+		initialMenuAnchorPane();
 		Stub stub = new Stub();
 		System.out.println(stub.getStockSetSortedInfo().size());
 		initialTenScroll(stub.getStockSetSortedInfo());
