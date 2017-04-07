@@ -185,8 +185,11 @@
 .hyperlink:focused {
 	-fx-text-fill: rgb(255, 255, 255, 0.6);
 }
-
-.check-box .box {
+.radio-button {
+    -fx-label-padding: 0.0em 0.0em 0.0em 0.416667em; /* 0 0 0 5 */
+    -fx-text-fill: rgba(255,255,255,1);
+}
+.radio-button > .radio{
 	-fx-background-color:
 		rgb(255, 255, 255, 0.1),
         rgb(0, 0, 0, 1),
@@ -195,8 +198,7 @@
         -fx-body-color;
     -fx-background-insets: 0 -1.6 -2 -1.6, -1.4, 0, 1, 2;
 }
-
-.check-box:focused .box {
+.radio-button:focused > .radio  {
 	-fx-background-color:
 		rgb(255, 255, 255, 0.15),
         rgb(0, 0, 0, 0.8),

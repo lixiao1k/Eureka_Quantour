@@ -21,10 +21,11 @@
       </AnchorPane>
       <AnchorPane layoutX="281.0" layoutY="73.0" maxWidth="600.0" prefHeight="684.0" prefWidth="600.0" styleClass="left2-segment" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="281.0" AnchorPane.topAnchor="74.0">
          <children>
-            <ScrollPane fx:id="stocksScrollPane" layoutX="-1.0" layoutY="1.0" prefHeight="678.0" prefWidth="600.0" styleClass="left1-segment" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <ScrollPane fx:id="stocksScrollPane" layoutX="3.5" layoutY="20.5" prefHeight="664.0" prefWidth="597.0" styleClass="left1-segment" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
                <content>
                   <FlowPane fx:id="stocksFlowPane" prefHeight="665.0" prefWidth="645.0" />
                </content></ScrollPane>
+            <AnchorPane fx:id="menuAnchorPane" layoutX="-10.0" layoutY="-2.0" prefHeight="25.0" prefWidth="597.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </children>
       </AnchorPane>
       <GridPane layoutX="882.0" layoutY="76.0" maxWidth="334.0" prefHeight="681.0" prefWidth="334.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="76.0">

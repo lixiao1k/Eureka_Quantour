@@ -149,8 +149,8 @@
     	linear-gradient(rgb(0, 0, 0, 0.5), rgb(0, 0, 0, 0.8) 50%),
         rgb(218, 226, 224);
     -fx-background-insets: 0 0 -1 0, 0, 1.5;
-    -fx-background-radius: 6, 5, 4;
-    -fx-padding: 6 10 4 10;
+    -fx-background-radius: 10px,10px,10px,10px;
+
     -fx-effect: innershadow( gaussian, rgb(0, 0, 0, 0.8), 5, 0, 0, 2 );
     -fx-font-family: "Arial";
 }
