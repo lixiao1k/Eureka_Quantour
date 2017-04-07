@@ -11,6 +11,7 @@ import java.nio.channels.FileChannel.MapMode;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
 import data.datahelperservice.IStockDataHelper_2;
@@ -19,6 +20,7 @@ import data.fetchdataservice.IStockDataFetch;
 import data.parse.Parse;
 import exception.InternetdisconnectException;
 import exception.StockHaltingException;
+import po.StockSetInfoPO;
 /**
  * 股票模块数据的数据处理接口
  * @author 刘宇翔
@@ -33,6 +35,7 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 	private Parse parse;//一些数据转换的方法
 	private byte[] receive;//接受数据的容器（一次一行）
 	private byte[] doublereceive;//接受数据的容器（一次两行）
+	private HashMap<Integer,Integer> datemap;//某天日期的哈希表
 	public static void main(String[] args){
 		new StockDataHelperImpl_2();
 	}
@@ -50,6 +53,50 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 		}catch(Exception e){
 			throw new StockHaltingException(a,b);
 		}
+	}
+	/**
+	 * 将日期map停留在日期date上
+	 * @param date 日期
+	 */
+	public void remain(int date){
+		datemap=map.get(date);
+	}
+	/**
+	 * 获取某个软件自带的股票池的股票的某天信息
+	 * @param set 股票池名称
+	 * @param date 日期
+	 * @return StockSetInfoPO 股票池信息的po
+	 * @throws StockHaltingException 停牌时抛出该异常
+	 */
+	public String getStockInfoinSet_throughRemain(int code) throws StockHaltingException{
+		try{
+			int row=datemap.get(code);
+			return readPosition(row);
+		}catch(Exception e){
+			throw new StockHaltingException(code);
+		}
+	}
+	
+	/**
+	 * 获取某个软件自带的股票池的股票的某天信息
+	 * @param set 股票池名称
+	 * @param date 日期
+	 * @param last 持续时间（至少为1天）
+	 * @return List<StockSetInfoPO> 股票池信息的po的列表
+	 */
+	public List<StockSetInfoPO> getStockInfoinSetStopBy_end(List<String> set,int date,int last){
+		return null;
+	}
+	
+	/**
+	 * 获取某个软件自带的股票池的股票的某天信息
+	 * @param set 股票池名称
+	 * @param startDate 起始日期
+	 * @param endDate 终止日期
+	 * @return List<StockSetInfoPO> 股票池信息的po的列表
+	 */
+	public List<StockSetInfoPO> getStockInfoinSetStopBy_last(List<String> set,int startDate,int endDate){
+		return null;
 	}
 	/**
 	 * 初始化
@@ -73,6 +120,8 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 	private void initContainer(){
 		receive=new byte[13];
 		doublereceive=new byte[17];
+		datemap=new HashMap<Integer,Integer>();
+		map=new HashMap<Integer,HashMap<Integer,Integer>>();
 	}
 	/**
 	 * 初始化爬取数据的通道
@@ -81,7 +130,6 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 		fetch=StockDataFetchImpl.getInstance();
 		parse=Parse.getInstance();
 		infopath=new File("config/stock/info");
-		map=new HashMap<Integer,HashMap<Integer,Integer>> ();
 		if(!infopath.exists()&&!infopath.isDirectory()){
 			try {
 				fetch.fetchAllStockSet();

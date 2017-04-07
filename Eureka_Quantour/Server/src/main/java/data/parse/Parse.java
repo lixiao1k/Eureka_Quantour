@@ -58,4 +58,8 @@ public class Parse {
 	public int getIntDate(String str){
 		return Integer.parseInt(str.substring(0, 4)+str.substring(5,7)+str.substring(8));
 	}
+	public int strToint(String code){
+		return (code.charAt(0)-48)*100000+(code.charAt(1)-48)*10000+(code.charAt(2)-48)*1000
+				+(code.charAt(3)-48)*100+(code.charAt(4)-48)*10+(code.charAt(5)-48);
+	}
 }

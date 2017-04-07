@@ -4,10 +4,13 @@ import java.util.Calendar;
 import java.util.List;
 
 import exception.LogErrorException;
+import exception.NullStockIDException;
+import exception.StockHaltingException;
 import exception.StockNameRepeatException;
 import exception.StockSetNameRepeatException;
 import exception.UserNameRepeatException;
 import po.SingleStockInfoPO;
+import po.StockSetInfoPO;
 
 /**
  * 数据层提供的接口
@@ -102,9 +105,64 @@ public interface IDataInterface
 	 * @param stockcode 股票编号
 	 * @param date 日期
 	 * @return 股票信息
+	 * @throws NullStockIDException 不存在该支股票时抛出该异常
+	 * @throws StockHaltingException 该日期股票停牌时抛出该异常
 	 */
-	public SingleStockInfoPO getSingleStockInfo(String stockcode,Calendar date);
+	public SingleStockInfoPO getSingleStockInfo(String stockcode,Calendar date) 
+			throws StockHaltingException, NullStockIDException;
 	
+	/**
+	 * 获取某个软件自带的股票池的股票的某天信息
+	 * @param set 股票池名称
+	 * @param date 日期
+	 * @return StockSetInfoPO 股票池信息的po
+	 */
+	public StockSetInfoPO getStockInfoinSet(String set,Calendar date);
 	
+	/**
+	 * 获取某个用户自定义的股票池的股票的某天信息
+	 * @param set 股票池名称
+	 * @param date 日期
+	 * @param userName 用户名
+	 * @return StockSetInfoPO 股票池信息的po
+	 */
+	public StockSetInfoPO getStockInfoinSet(String set,Calendar date,String userName);
 	
+	/**
+	 * 获取某个股票池的股票的某天与往后x天的信息
+	 * @param set 股票池名称
+	 * @param date 日期
+	 * @param last 往后推的天数（至少为0天）
+	 * @return List<StockSetInfoPO> 股票池信息的po的列表
+	 */
+	public List<StockSetInfoPO> getStockInfoinSet_StopByLast(String set,Calendar date,int last);
+	
+	/**
+	 * 获取某个股票池的股票的某天与往后x天的信息
+	 * @param set 股票池名称
+	 * @param date 日期
+	 * @param userName 用户名
+	 * @param last 往后推的天数（至少为0天）
+	 * @return List<StockSetInfoPO> 股票池信息的列表
+	 */
+	public List<StockSetInfoPO> getStockInfoinSet_StopByLast(String set,Calendar date,String userName,int last);
+	
+	/**
+	 * 获取某个软件自带的股票池的股票的起始于终止日期之间的所有信息
+	 * @param set 股票池名称
+	 * @param startDate 起始日期
+	 * @param endDate 终止日期
+	 * @return List<StockSetInfoPO> 股票池信息的列表
+	 */
+	public List<StockSetInfoPO> getStockInfoinSet_StopByEnd(String set,Calendar startDate,Calendar endDate);
+	
+	/**
+	 * 获取某个软件自带的股票池的股票的起始于终止日期之间的所有信息
+	 * @param set 股票池名称
+	 * @param startDate 起始日期
+	 * @param endDate 终止日期
+	 * @param userName 用户名
+	 * @return List<StockSetInfoPO> 股票池信息的列表
+	 */
+	public List<StockSetInfoPO> getStockInfoinSet_StopByEnd(String set,Calendar startDate,Calendar endDate,String userName);
 }

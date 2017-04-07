@@ -5,10 +5,13 @@ import java.util.List;
 
 import data.service.IDataInterface;
 import exception.LogErrorException;
+import exception.NullStockIDException;
+import exception.StockHaltingException;
 import exception.StockNameRepeatException;
 import exception.StockSetNameRepeatException;
 import exception.UserNameRepeatException;
 import po.SingleStockInfoPO;
+import po.StockSetInfoPO;
 /**
  * 数据层接口的实现
  * @author 刘宇翔
@@ -18,11 +21,11 @@ public class DataInterfaceImpl implements IDataInterface
 {
 	private UserDataController user;
 	private StockDataController stock;
-	private StockDataController stock2;
+	private StockDataController_2 stock2;
 	private StockSetDataController stockset;
 	public DataInterfaceImpl(){
 		stock=StockDataController.getInstance();
-		stock2=StockDataController.getInstance();
+		stock2=StockDataController_2.getInstance();
 		user=UserDataController.getInstance();
 		stockset=StockSetDataController.getInstance();
 	}
@@ -143,9 +146,78 @@ public class DataInterfaceImpl implements IDataInterface
 	 * @param stockcode 股票编号
 	 * @param date 日期
 	 * @return 股票信息
+	 * @throws NullStockIDException 不存在该支股票时抛出该异常
+	 * @throws StockHaltingException 该日期股票停牌时抛出该异常
 	 */
 	@Override
-	public SingleStockInfoPO getSingleStockInfo(String stockcode, Calendar date) {
+	public SingleStockInfoPO getSingleStockInfo(String stockcode, Calendar date) 
+			throws StockHaltingException, NullStockIDException {
+		return stock2.getSingleStockInfo(stockcode, date);
+	}
+	
+	/**
+	 * 获取某个软件自带的股票池的股票的某天信息
+	 * @param set 股票池名称
+	 * @param date 日期
+	 * @return StockSetInfoPO 股票池信息的po
+	 */
+	public StockSetInfoPO getStockInfoinSet(String set,Calendar date){
+		return null;
+	}
+	
+	/**
+	 * 获取某个用户自定义的股票池的股票的某天信息
+	 * @param set 股票池名称
+	 * @param date 日期
+	 * @param userName 用户名
+	 * @return StockSetInfoPO 股票池信息的po
+	 */
+	public StockSetInfoPO getStockInfoinSet(String set,Calendar date,String userName){
+		return null;
+	}
+	
+	/**
+	 * 获取某个软件自带的股票池的股票的某天信息
+	 * @param set 股票池名称
+	 * @param date 日期
+	 * @param last 持续时间（至少为1天）
+	 * @return List<StockSetInfoPO> 股票池信息的po的列表
+	 */
+	public List<StockSetInfoPO> getStockInfoinSet_StopByLast(String set,Calendar date,int last){
+		return null;
+	}
+	
+	/**
+	 * 获取某个股票池的股票的某天即往后x天的信息
+	 * @param set 股票池名称
+	 * @param date 日期
+	 * @param userName 用户名
+	 * @param last 持续时间（至少为1天）
+	 * @return List<StockSetInfoPO> 股票池信息的po的列表
+	 */
+	public List<StockSetInfoPO> getStockInfoinSet_StopByLast(String set,Calendar date,String userName,int last){
+		return null;
+	}
+	/**
+	 * 获取某个软件自带的股票池的股票的某天信息
+	 * @param set 股票池名称
+	 * @param startDate 起始日期
+	 * @param endDate 终止日期
+	 * @return List<StockSetInfoPO> 股票池信息的po的列表
+	 */
+	public List<StockSetInfoPO> getStockInfoinSet_StopByEnd(String set,Calendar startDate,Calendar endDate){
+		return null;
+	}
+	
+	/**
+	 * 获取某个股票池的股票的某天即往后x天的信息
+	 * @param set 股票池名称
+	 * @param startDate 起始日期
+	 * @param endDate 终止日期
+	 * @param userName 用户名
+	 * @return List<StockSetInfoPO> 股票池信息的po的列表
+	 */
+	public List<StockSetInfoPO> getStockInfoinSet_StopByEnd(String set,Calendar startDate,Calendar endDate,String userName){
 		return null;
 	}
 }

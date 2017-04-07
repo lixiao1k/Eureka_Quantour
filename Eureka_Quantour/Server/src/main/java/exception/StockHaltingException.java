@@ -13,7 +13,11 @@ public class StockHaltingException extends Exception{
 		this.calendar=_cal;
 		this.stock=_stock;
 	}
-	
+	public StockHaltingException(int _stock){
+		super();
+		this.stock=_stock;
+		calendar=0;
+	}
 	public String toString(){
 		return stock+"股票在"+calendar+"天停牌";
 	}

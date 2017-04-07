@@ -92,6 +92,37 @@ public class SingleStockInfoPO
 		setSubrate(_subrate);
 		setAftrate(_aftrate);
 	}
+	/**
+	 * 新的构造方法，其余的全作废
+	 * @param info
+	 * @param _name
+	 * @param _code
+	 * @param _date
+	 */
+	public SingleStockInfoPO(String info,String _name,String _code,Calendar _date){
+		setName(_name);
+		setCode(_code);
+		
+		setDate(_date);
+		
+		String[] input=info.split(",");
+		setOpen(strTodouble(input[0]));
+		setHigh(strTodouble(input[1]));
+		setLow(strTodouble(input[2]));
+		setVolume(Integer.parseInt(input[6]));
+		
+		setClose(strTodouble(input[3]));
+		setSubClose(strTodouble(input[7]));
+		setAftClose(strTodouble(input[10]));
+		
+		setLclose(strTodouble(input[4]));
+		setLsubClose(strTodouble(input[8]));
+		setLaftClose(strTodouble(input[11]));
+		
+		setRate(strTodouble(input[5]));
+		setSubrate(strTodouble(input[9]));
+		setAftrate(strTodouble(input[12]));
+	}
 	public SingleStockInfoPO(String stockinfo){
 		String[] info=stockinfo.split("\t");
 		setName(info[9]);
@@ -314,111 +345,137 @@ public class SingleStockInfoPO
 		}
 	}
 	/**
+	 * 获取未复权今日收盘价
 	 * @return the close
 	 */
 	public double getClose() {
 		return close;
 	}
 	/**
+	 * 设置未复权今日收盘价
 	 * @param close the close to set
 	 */
-	public void setClose(double close) {
+	private void setClose(double close) {
 		this.close = close;
 	}
 	/**
+	 * 获取前复权今日收盘价
 	 * @return the subClose
 	 */
 	public double getSubClose() {
 		return subClose;
 	}
 	/**
+	 * 设置前复权今日收盘价
 	 * @param subClose the subClose to set
 	 */
-	public void setSubClose(double subClose) {
+	private void setSubClose(double subClose) {
 		this.subClose = subClose;
 	}
 	/**
+	 * 获取后复权今日收盘价
 	 * @return the aftClose
 	 */
 	public double getAftClose() {
 		return aftClose;
 	}
 	/**
+	 * 设置后复权今日收盘价
 	 * @param aftClose the aftClose to set
 	 */
-	public void setAftClose(double aftClose) {
+	private void setAftClose(double aftClose) {
 		this.aftClose = aftClose;
 	}
 	/**
+	 * 获取未复权昨日收盘价
 	 * @return the lclose
 	 */
 	public double getLclose() {
 		return lclose;
 	}
 	/**
+	 * 设置未复权昨日收盘价
 	 * @param lclose the lclose to set
 	 */
-	public void setLclose(double lclose) {
+	private void setLclose(double lclose) {
 		this.lclose = lclose;
 	}
 	/**
+	 * 获取前复权昨日收盘价
 	 * @return the lsubClose
 	 */
 	public double getLsubClose() {
 		return lsubClose;
 	}
 	/**
+	 * 设置前复权昨日收盘价
 	 * @param lsubClose the lsubClose to set
 	 */
-	public void setLsubClose(double lsubClose) {
+	private void setLsubClose(double lsubClose) {
 		this.lsubClose = lsubClose;
 	}
 	/**
+	 * 获取后复权昨日收盘价
 	 * @return the laftClose
 	 */
 	public double getLaftClose() {
 		return laftClose;
 	}
 	/**
+	 * 设置后复权昨日收盘价
 	 * @param laftClose the laftClose to set
 	 */
-	public void setLaftClose(double laftClose) {
+	private void setLaftClose(double laftClose) {
 		this.laftClose = laftClose;
 	}
 	/**
+	 * 获取未复权涨跌幅
 	 * @return the rate
 	 */
 	public double getRate() {
 		return rate;
 	}
 	/**
+	 * 设置未复权涨跌幅
 	 * @param rate the rate to set
 	 */
-	public void setRate(double rate) {
+	private void setRate(double rate) {
 		this.rate = rate;
 	}
 	/**
+	 * 获取前复权涨跌幅
 	 * @return the subrate
 	 */
 	public double getSubrate() {
 		return subrate;
 	}
 	/**
+	 * 设置前复权涨跌幅
 	 * @param subrate the subrate to set
 	 */
-	public void setSubrate(double subrate) {
+	private void setSubrate(double subrate) {
 		this.subrate = subrate;
 	}
 	/**
+	 * 获取后复权涨跌幅
 	 * @return the aftrate
 	 */
 	public double getAftrate() {
 		return aftrate;
 	}
 	/**
+	 * 设置后复权涨跌幅
 	 * @param aftrate the aftrate to set
 	 */
-	public void setAftrate(double aftrate) {
+	private void setAftrate(double aftrate) {
 		this.aftrate = aftrate;
+	}
+	/**
+	 * 字符串转double
+	 * @param str 
+	 * @return
+	 */
+	private double strTodouble(String str){
+		return Double.parseDouble(str);
 	}
 }

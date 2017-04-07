@@ -4,14 +4,14 @@ package exception;
  * @author 刘宇翔
  *
  */
-public class NoneStockIDException extends Exception{
+public class NullStockIDException extends Exception{
 	private String stock;//股票信息，编号或是名字，如1
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1524994497291118046L;
 	
-	public NoneStockIDException(String _stock){
+	public NullStockIDException(String _stock){
 		super();
 		this.stock=_stock;
 	}
