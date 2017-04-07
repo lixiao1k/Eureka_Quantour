@@ -15,55 +15,82 @@ import vo.SingleStockInfoVO;
 public class SingleStockInfoPO 
 {
 	private String name;//这支股票的名字
-	private Calendar date;//这条股票信息的时间
 	private String code;//这支股票的编号
+	
+	private Calendar date;//这条股票信息的时间
+	
 	private double open;//这支股票当天的开盘价格
-	private double close;//这支股票当天的收盘指数
 	private double high;//这支股票当天的最高价格
 	private double low;//这支股票当天的最低价格	
 	private long volume;//这支股票当天的交易量
-	private double adjclose;//这支股票的复权收盘指数
-	private String market;//这支股票所处的市场
-	private String str;
 	
-	private double last_close;//昨日收盘价格
-	private double last_subadjclose;//昨日前复权收盘价格
-	private double last_aftadjclose;//昨日后复权收盘价格
-	private double tsubadjclose;//今日前复权收盘价格
-	private double taftadjclose;//今日后复权收盘价格
+	private double close;//这支股票当天的收盘指数
+	private double subClose;//今日前复权收盘价格
+	private double aftClose;//今日后复权收盘价格
+			
+	private double lclose;//昨日收盘价格
+	private double lsubClose;//昨日前复权收盘价格
+	private double laftClose;//昨日后复权收盘价格
 	
-	private double subadj_rate;//前复权涨跌幅
-	private double aftadj_rate;//后复权涨跌幅
 	private double rate;//未复权涨跌幅
-	public SingleStockInfoPO(){}
+	private double subrate;//前复权涨跌幅
+	private double aftrate;//后复权涨跌幅
+	
+	public SingleStockInfoPO(){
+	}
 	/**
 	 * 
 	 * @param _name String类型，这支股票的名字
-	 * @param _date	Calendar类型，这条股票信息的时间
 	 * @param _code String类型，这支股票的编号
+	 * 
+	 * @param _date	Calendar类型，这条股票信息的时间
+	 *
 	 * @param _open	double类型，这支股票当天的开盘价格
-	 * @param _close double类型，这支股票当天的收盘指数
 	 * @param _high	double类型，这支股票当天的最高价格
 	 * @param _low	double类型，这支股票当天的最低价格	
 	 * @param _volume int类型，这支股票当天的交易量
-	 * @param _adjclose	double类型，这支股票的复权收盘指数
-	 * @param _market String类型，这支股票所处的市场
+	 * 
+	 * @param _close double类型，这支股票当天的收盘指数
+	 * @param _subclose double类型，这支股票当天的前复权收盘指数
+	 * @param _aftclose double类型，这支股票当天的后复权收盘指数
+	 * 
+	 * @param _lclose double类型，这支股票昨天的收盘指数
+	 * @param _lsubclose double类型，这支股票昨天的前复权收盘指数
+	 * @param _laftclose double类型，这支股票昨天的后复权收盘指数
+	 * 
+	 * @param _rate double类型，这支股票当天的涨跌幅
+	 * @param _subrate double类型，这支股票当天的前复权涨跌幅
+	 * @param _aftrate double类型，这支股票当天的后复权涨跌幅
 	 */
-	public SingleStockInfoPO(String _name,Calendar _date,String _code,double _open,
-			double _close,double _high,double _low,int _volume,double _adjclose,String _market)
+	public SingleStockInfoPO(
+			String _name,String _code,
+			Calendar _date,
+			double _open,double _high,double _low,int _volume,
+			double _close,double _subclose,double _aftclose,
+			double _lclose,double _lsubclose,double _laftclose,
+			double _rate,double _subrate,double _aftrate)
 	{
 		setName(_name);
-		setDate(_date);
 		setCode(_code);
+		
+		setDate(_date);
+		
 		setOpen(_open);
-		setClose(_close);
 		setHigh(_high);
 		setLow(_low);
 		setVolume(_volume);
-		setAdjclose(_adjclose);
-		setMarket(_market);
-		setStr(null);
-		last_close=0;
+		
+		setClose(_close);
+		setSubClose(_subclose);
+		setAftClose(_aftclose);
+		
+		setLclose(_lclose);
+		setLsubClose(_lsubclose);
+		setLaftClose(_laftclose);
+		
+		setRate(_rate);
+		setSubrate(_subrate);
+		setAftrate(_aftrate);
 	}
 	public SingleStockInfoPO(String stockinfo){
 		String[] info=stockinfo.split("\t");
@@ -83,10 +110,6 @@ public class SingleStockInfoPO
 		setHigh(Double.parseDouble(info[3]));
 		setLow(Double.parseDouble(info[4]));
 		setVolume(Long.parseLong(info[6]));
-		setAdjclose(Double.parseDouble(info[7]));
-		setMarket(info[10]);
-		setStr(stockinfo);
-		last_close=0;
 	}
 	public SingleStockInfoPO(String stockinfo,double flag,double flag1){
 		String[] info=stockinfo.split("\t");
@@ -106,10 +129,10 @@ public class SingleStockInfoPO
 		setHigh(Double.parseDouble(info[3]));
 		setLow(Double.parseDouble(info[4]));
 		setVolume(Long.parseLong(info[6]));
-		setAdjclose(Double.parseDouble(info[7]));
-		setMarket(info[10]);
-		setStr(stockinfo);
-		last_close=flag;
+//		setAdjclose(Double.parseDouble(info[7]));
+//		setMarket(info[10]);
+//		setStr(stockinfo);
+//		last_close=flag;
 	}
 	
 	public SingleStockInfoPO(String stockinfo,int flag){
@@ -130,11 +153,11 @@ public class SingleStockInfoPO
 		setHigh(Double.parseDouble(info[3]));
 		setLow(Double.parseDouble(info[4]));
 		setVolume(Long.parseLong(info[6]));
-		setAdjclose(Double.parseDouble(info[7]));
-		setMarket(info[10]);
-		setStr(stockinfo);
-		last_close=Double.parseDouble(info[11]);
-		setLast_subadjclose(Double.parseDouble(info[12]));
+//		setAdjclose(Double.parseDouble(info[7]));
+//		setMarket(info[10]);
+//		setStr(stockinfo);
+//		last_close=Double.parseDouble(info[11]);
+//		setLast_subadjclose(Double.parseDouble(info[12]));
 	}
 	/**
 	 * 获得SingleStockInfoPO中的股票名字
@@ -168,13 +191,6 @@ public class SingleStockInfoPO
 		return open;
 	}
 	
-	/**
-	 * 获得SingleStockInfoPO中的股票收盘价格
-	 * @return the close
-	 */
-	public double getClose() {
-		return close;
-	}
 	
 	/**
 	 * 获得SingleStockInfoPO中的股票当天最高价格
@@ -199,22 +215,6 @@ public class SingleStockInfoPO
 	 */
 	public long getVolume() {
 		return volume;
-	}
-	
-	/**
-	 * 获得SingleStockInfoPO中的股票当天复权收盘价格
-	 * @return the adjclose
-	 */
-	public double getAdjclose() {
-		return adjclose;
-	}
-	
-	/**
-	 * 获得SingleStockInfoPO中的股票所处的市场
-	 * @return the market
-	 */
-	public String getMarket() {
-		return market;
 	}
 	
 	/**
@@ -247,13 +247,6 @@ public class SingleStockInfoPO
 	private void setOpen(double _open) {
 		open = _open;
 	}
-	/**
-	 * 设置SingleStockInfoPO中的股票收盘价格
-	 * @param _close the close to set
-	 */
-	private void setClose(double _close) {
-		close = _close;
-	}
 	
 	/**
 	 * 设置SingleStockInfoPO中的股票当天最高价格
@@ -280,46 +273,6 @@ public class SingleStockInfoPO
 	}
 	
 	/**
-	 * 设置SingleStockInfoPO中的股票当天复权收盘价格
-	 * @param _adjclose the adjclose to set
-	 */
-	private void setAdjclose(double _adjclose) {
-		adjclose = _adjclose;
-	}
-	
-	/**
-	 * 设置SingleStockInfoPO中的股票所处的市场
-	 * @param _market the market to set
-	 */
-	private void setMarket(String _market) {
-		market = _market;
-	}
-	/**
-	 * @return the str
-	 */
-	public String getStr() {
-		return str;
-	}
-	/**
-	 * @param str the str to set
-	 */
-	public void setStr(String str) {
-		this.str = str;
-	}
-<<<<<<< HEAD
-	public String toString(){
-		SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yy");
-		return "股票名字为: "+name+
-				"   所处的市场为: "+market+
-				"   该条记录时间为: "+sdf.format(date.getTime())+
-				"   该股票编号为: "+code+
-				"\n开盘价为: "+open+"   收盘价为: "+close+"   最高价为: "+high+"   最低价为: "+low+"   交易量为: "+volume+
-				"   复权价为: "+adjclose
-				+"\n   昨日收盘价价为: "+last_close
-				+"\n   昨日fuquan收盘价价为: ";
-	}
-	
-	/**
 	 * 
 	 * @Description: 用于将SingleStockInfoPO转化为SingleStockInfoVO
 	 * @author: hzp
@@ -338,8 +291,8 @@ public class SingleStockInfoPO
 		ssiVO.setHigh(ssiPO.getHigh());
 		ssiVO.setLow(ssiPO.getLow());
 		ssiVO.setVolume(ssiPO.getVolume());
-		ssiVO.setAdjclose(ssiPO.getAdjclose());
-		ssiVO.setMarket(ssiPO.getMarket());
+//		ssiVO.setAdjclose(ssiPO.getAdjclose());
+//		ssiVO.setMarket(ssiPO.getMarket());
 		return ssiVO;
 	}
 	/**
@@ -360,21 +313,78 @@ public class SingleStockInfoPO
 			return ssiVO;
 		}
 	}
-=======
->>>>>>> 217690b2f6205bd8dce9224f4f56e5ba49300cbf
 	/**
-	 * @return the last_close
+	 * @return the close
 	 */
-	public double getLast_close() {
-		return last_close;
+	public double getClose() {
+		return close;
 	}
 	/**
-	 * @param last_close the last_close to set
+	 * @param close the close to set
 	 */
-	public void setLast_close(double last_close) {
-		this.last_close = last_close;
+	public void setClose(double close) {
+		this.close = close;
 	}
-
+	/**
+	 * @return the subClose
+	 */
+	public double getSubClose() {
+		return subClose;
+	}
+	/**
+	 * @param subClose the subClose to set
+	 */
+	public void setSubClose(double subClose) {
+		this.subClose = subClose;
+	}
+	/**
+	 * @return the aftClose
+	 */
+	public double getAftClose() {
+		return aftClose;
+	}
+	/**
+	 * @param aftClose the aftClose to set
+	 */
+	public void setAftClose(double aftClose) {
+		this.aftClose = aftClose;
+	}
+	/**
+	 * @return the lclose
+	 */
+	public double getLclose() {
+		return lclose;
+	}
+	/**
+	 * @param lclose the lclose to set
+	 */
+	public void setLclose(double lclose) {
+		this.lclose = lclose;
+	}
+	/**
+	 * @return the lsubClose
+	 */
+	public double getLsubClose() {
+		return lsubClose;
+	}
+	/**
+	 * @param lsubClose the lsubClose to set
+	 */
+	public void setLsubClose(double lsubClose) {
+		this.lsubClose = lsubClose;
+	}
+	/**
+	 * @return the laftClose
+	 */
+	public double getLaftClose() {
+		return laftClose;
+	}
+	/**
+	 * @param laftClose the laftClose to set
+	 */
+	public void setLaftClose(double laftClose) {
+		this.laftClose = laftClose;
+	}
 	/**
 	 * @return the rate
 	 */
@@ -388,87 +398,27 @@ public class SingleStockInfoPO
 		this.rate = rate;
 	}
 	/**
-	 * @return the last_subadjclose
+	 * @return the subrate
 	 */
-	public double getLast_subadjclose() {
-		return last_subadjclose;
+	public double getSubrate() {
+		return subrate;
 	}
 	/**
-	 * @param last_subadjclose the last_subadjclose to set
+	 * @param subrate the subrate to set
 	 */
-	public void setLast_subadjclose(double last_subadjclose) {
-		this.last_subadjclose = last_subadjclose;
+	public void setSubrate(double subrate) {
+		this.subrate = subrate;
 	}
 	/**
-	 * @return the tsubadjclose
+	 * @return the aftrate
 	 */
-	public double getTsubadjclose() {
-		return tsubadjclose;
+	public double getAftrate() {
+		return aftrate;
 	}
 	/**
-	 * @param tsubadjclose the tsubadjclose to set
+	 * @param aftrate the aftrate to set
 	 */
-	public void setTsubadjclose(double tsubadjclose) {
-		this.tsubadjclose = tsubadjclose;
-	}
-	/**
-	 * @return the taftadjclose
-	 */
-	public double getTaftadjclose() {
-		return taftadjclose;
-	}
-	/**
-	 * @param taftadjclose the taftadjclose to set
-	 */
-	public void setTaftadjclose(double taftadjclose) {
-		this.taftadjclose = taftadjclose;
-	}
-	/**
-	 * @return the subadj_rate
-	 */
-	public double getSubadj_rate() {
-		return subadj_rate;
-	}
-	/**
-	 * @param subadj_rate the subadj_rate to set
-	 */
-	public void setSubadj_rate(double subadj_rate) {
-		this.subadj_rate = subadj_rate;
-	}
-	/**
-	 * @return the aftadj_rate
-	 */
-	public double getAftadj_rate() {
-		return aftadj_rate;
-	}
-	/**
-	 * @param aftadj_rate the aftadj_rate to set
-	 */
-	public void setAftadj_rate(double aftadj_rate) {
-		this.aftadj_rate = aftadj_rate;
-	}
-	/**
-	 * @return the last_aftadjclose
-	 */
-	public double getLast_aftadjclose() {
-		return last_aftadjclose;
-	}
-	/**
-	 * @param last_aftadjclose the last_aftadjclose to set
-	 */
-	public void setLast_aftadjclose(double last_aftadjclose) {
-		this.last_aftadjclose = last_aftadjclose;
-	}
-
-	public String toString(){
-		SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yy");
-		return "股票名字为: "+name+
-				"   所处的市场为: "+market+
-				"   该条记录时间为: "+sdf.format(date.getTime())+
-				"   该股票编号为: "+code+
-				"\n开盘价为: "+open+"   收盘价为: "+close+"   最高价为: "+high+"   最低价为: "+low+"   交易量为: "+volume+
-				"   复权价为: "+adjclose
-				+"\n   昨日收盘价价为: "+last_close
-				+"\n   昨日fuquan收盘价价为: "+last_adjclose;
+	public void setAftrate(double aftrate) {
+		this.aftrate = aftrate;
 	}
 }

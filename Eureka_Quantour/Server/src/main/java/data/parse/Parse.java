@@ -4,12 +4,12 @@ package data.parse;
  * @author 刘宇翔
  *
  */
-public class ParseStockName {
-	private static ParseStockName p;
-	private ParseStockName(){
+public class Parse {
+	private static Parse p;
+	private Parse(){
 	}
-	public static ParseStockName getInstance(){
-		if(p==null) p=new ParseStockName();
+	public static Parse getInstance(){
+		if(p==null) p=new Parse();
 		return p;
 	}
 	/**
@@ -36,6 +36,26 @@ public class ParseStockName {
 	 * @return 处理后的股票编号
 	 */
 	public String supCode(String code){
-		return String.format("%06d", Integer.parseInt(code));
+		while(code.length()<6){
+			code=0+code;
+		}
+		return code;
+	}
+	
+	/**
+	 * 将XXXX-XX-XX的日期形式转为XXXXXXXX
+	 * @param str 原形式日期
+	 * @return 转换后的日期
+	 */
+	public String encodeDate(String str){
+		return str.substring(0, 4)+str.substring(5,7)+str.substring(8);
+	}
+	/**
+	 * 将XXXX-XX-XX的日期形式转为数字
+	 * @param str 原形式日期
+	 * @return 转换后的日期
+	 */
+	public int getIntDate(String str){
+		return Integer.parseInt(str.substring(0, 4)+str.substring(5,7)+str.substring(8));
 	}
 }

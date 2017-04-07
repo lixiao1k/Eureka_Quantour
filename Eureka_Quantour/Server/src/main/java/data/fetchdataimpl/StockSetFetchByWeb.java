@@ -23,7 +23,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import data.common.FileMethod;
 import data.common.WebMethod;
-import data.parse.ParseStockName;
+import data.parse.Parse;
 import data.parse.Translate;
 import exception.InternetdisconnectException;
 
@@ -201,7 +201,7 @@ public class StockSetFetchByWeb{
 			while(it.hasNext()){
 				str=it.next();
 				code=str.substring(0,6);
-				name=ParseStockName.getInstance().chkHalf(str.substring(6));
+				name=Parse.getInstance().chkHalf(str.substring(6));
 				if(name.equals(code)){
 					continue;
 				}
@@ -278,7 +278,7 @@ public class StockSetFetchByWeb{
 			row = sheet.getRow(i);  
 			// 通过 row.getCell(j).toString() 获取单元格内容，  
 			cell = row.getCell(0).toString();  
-			cell1= ParseStockName.getInstance().chkHalf(row.getCell(1).toString());
+			cell1= Parse.getInstance().chkHalf(row.getCell(1).toString());
 			str	= str + cell +cell1 +"\n";  
 			if(t.trans_codeToname(cell)==null){
    			 System.out.println(cell);
@@ -325,7 +325,7 @@ public class StockSetFetchByWeb{
 			row = sheet.getRow(i);  
 			// 通过 row.getCell(j).toString() 获取单元格内容，  
 			cell = row.getCell(0).toString();  
-			cell1= ParseStockName.getInstance().chkHalf(row.getCell(1).toString());
+			cell1= Parse.getInstance().chkHalf(row.getCell(1).toString());
 			str	= str + cell +cell1 +"\n";  
 			if(t.trans_codeToname(cell)==null){
    			 System.out.println(cell);
