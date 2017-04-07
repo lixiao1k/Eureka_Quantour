@@ -4,6 +4,7 @@ import java.util.List;
 
 import data.datahelperimpl.StockSetDataHelperImpl;
 import data.datahelperservice.IStockSetDataHelper;
+import exception.NullSetException;
 import exception.StockNameRepeatException;
 import exception.StockSetNameRepeatException;
 
@@ -61,5 +62,32 @@ public class StockSetDataController {
 	 */
 	public void deleteStockFromStockSet(String stockName, String stockSetName, String username){
 		stocksetdatahelper.deleteStockFromStockSet(stockName, stockSetName, username);
+	}
+	/**
+	 * 获取某个用户自定义股票池的股票编号
+	 * @param stockSetName 股票池名字
+	 * @param userName,用户名字
+	 * @return 一个股票编号的列表
+	 */
+	public List<String>  getStockSetInfo(String stockSetName,String userName){
+		try {
+			return stocksetdatahelper.getStockSetInfo(stockSetName, userName);
+		} catch (NullSetException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	/**
+	 * 获取软件中某个股票池的股票编号
+	 * @param stockSetName 股票池名字
+	 * @return 一个股票编号的列表
+	 */
+	public List<String>  getStockSetInfo(String stockSetName){
+		try {
+			return stocksetdatahelper.getStockSetInfo(stockSetName);
+		} catch (NullSetException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

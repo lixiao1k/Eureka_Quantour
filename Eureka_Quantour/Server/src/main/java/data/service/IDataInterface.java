@@ -71,7 +71,21 @@ public interface IDataInterface
 	 * @param username	用户名
 	 */
 	public void deleteStockFromStockSet(String stockName, String stockSetName, String username);
-
+	/**
+	 * 获取某个用户自定义股票池的股票编号
+	 * @param stockSetName 股票池名字
+	 * @param userName,用户名字
+	 * @return 一个股票编号的列表
+	 */
+	public List<String>  getStockSetInfo(String stockSetName,String userName);
+	/**
+	 * 获取某个软件自带的股票池的股票编号
+	 * @param stockSetName 股票池名字
+	 * @return 一个股票编号的列表
+	 */
+	public List<String>  getStockSetInfo(String stockSetName);
+	
+	
 	/**
 	 * 获取一支股票从起始时间到终止时间的所有信息
 	 * @param stockcode String,股票编号
@@ -82,6 +96,7 @@ public interface IDataInterface
 	public List<SingleStockInfoPO> getSingleStockInfo(String stockcode,Calendar begin,Calendar end);
 	public List<SingleStockInfoPO> getMarketByDate(Calendar date) ;
 	
+	
 	/**
 	 * 获取股票某一天的数据
 	 * @param stockcode 股票编号
@@ -89,10 +104,7 @@ public interface IDataInterface
 	 * @return 股票信息
 	 */
 	public SingleStockInfoPO getSingleStockInfo(String stockcode,Calendar date);
-	/**
-	 * 获取某个股票池的股票编号
-	 * @param date Calendar,需要查找的时间
-	 * @return 一个股票编号的列表
-	 */
-	public List<String>  getStockSetInfo(String stockSetName,String userName);
+	
+	
+	
 }

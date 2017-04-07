@@ -57,10 +57,13 @@ public class Translate {
 		return translate;
 	}
 	public String trans_nameTocode(String name){
-		return nameTocode_pro.getProperty(ParseStockName.getInstance().chkHalf(name),null);
+		return nameTocode_pro.getProperty(Parse.getInstance().chkHalf(name),null);
 	}
 	public String trans_codeToname(String code){
 		return codeToname_pro.getProperty(code,null);
+	}
+	public boolean containsCode(String code){
+		return codeToname_pro.containsKey(code);
 	}
 	public void reload(){
 		try{

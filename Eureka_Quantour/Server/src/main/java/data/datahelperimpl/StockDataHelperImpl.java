@@ -410,4 +410,9 @@ public class StockDataHelperImpl implements IStockDataHelper {
 	        }
 	        return sum;
 	  }
+	@Override
+	public void loadAllStock() {
+		// TODO Auto-generated method stub
+		
+	}
 }

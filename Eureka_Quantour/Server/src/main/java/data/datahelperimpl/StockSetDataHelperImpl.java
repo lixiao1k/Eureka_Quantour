@@ -9,6 +9,7 @@ import java.util.List;
 
 import data.datahelperservice.IStockSetDataHelper;
 import data.parse.Translate;
+import exception.NullSetException;
 import exception.StockNameRepeatException;
 import exception.StockSetNameRepeatException;
 
@@ -117,5 +118,44 @@ public class StockSetDataHelperImpl implements IStockSetDataHelper {
 	}
 	private void init_StockSet(){
 		
+	}
+	/**
+	 * 获取某个用户自定义股票池的股票编号
+	 * @param stockSetName 股票池名字
+	 * @param userName,用户名字
+	 * @return 一个股票编号的列表
+	 * @throws NullSetException 
+	 */
+	public List<String>  getStockSetInfo(String stockSetName,String userName) throws NullSetException{
+		String path=userPath+"/"+userName+"/"+stockSetName;
+		File set=new File(path);
+		if(!set.exists()){
+			throw new NullSetException(stockSetName,userName);
+		}
+		String[] nameList=set.list();
+		List<String> list=new ArrayList<String>();
+		for(String name:nameList){
+			list.add(name);
+		}
+		return list;
+	}
+	/**
+	 * 获取某个股票池的股票编号
+	 * @param stockSetName 股票池名字
+	 * @return 一个股票编号的列表
+	 * @throws NullSetException 
+	 */
+	public List<String>  getStockSetInfo(String stockSetName) throws NullSetException{
+		String path="config/stock/stockset/";
+		File set=new File(path+stockSetName);
+		if(!set.exists()){
+			throw new NullSetException(stockSetName,"System");
+		}
+		String[] nameList=set.list();
+		List<String> list=new ArrayList<String>();
+		for(String name:nameList){
+			list.add(name);
+		}
+		return list;
 	}
 }
