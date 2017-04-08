@@ -7,7 +7,7 @@ import data.datahelperimpl.StockDataHelperImpl_2;
 import data.datahelperservice.IStockDataHelper_2;
 import data.parse.Parse;
 import data.parse.Translate;
-import exception.NullSetInfoException;
+import exception.NullDateException;
 import exception.NullStockIDException;
 import exception.StockHaltingException;
 import po.SingleStockInfoPO;
@@ -32,15 +32,25 @@ public class StockDataController_2 {
 		return stockdatacontroller;
 	}
 	/**
+	 * 判断是否是交易日
+	 * @param day 需要判断的日期
+	 * @return	是交易日则返回true，否则返回false
+	 */
+	public boolean isMarketDay(Calendar day){
+		int cal=day.get(Calendar.YEAR)*10000+day.get(Calendar.MONTH)*100+100+day.get(Calendar.DAY_OF_MONTH);
+		return datahelper.isMarketDay(cal);
+	}
+	/**
 	 * 获取股票某一天的数据
 	 * @param stockcode 股票编号
 	 * @param date 日期
 	 * @return 股票信息
 	 * @throws StockHaltingException 股票停牌时抛出该异常(即找不到该股票当天的信息)
+	 * @throws NullDateException 该日期不存在时抛出该异常
 	 * @throws NoneStockIDException 搜索不到该股票时抛出该异常()
 	 */
 	public SingleStockInfoPO getSingleStockInfo(String stockcode, Calendar date) 
-			throws StockHaltingException, NullStockIDException {
+			throws StockHaltingException, NullStockIDException, NullDateException {
 		int cal=date.get(Calendar.YEAR)*10000+date.get(Calendar.MONTH)*100+100+date.get(Calendar.DAY_OF_MONTH);
 		int code;
 		String result;
@@ -67,12 +77,13 @@ public class StockDataController_2 {
 	}
 	
 	/**
-	 * 获取某个软件自带的股票池的股票的某天信息
+	 * 获取某个股票池的股票的某天信息
 	 * @param set 股票池名称
 	 * @param date 日期
 	 * @return StockSetInfoPO 股票池信息的po
+	 * @throws NullDateException 不存在该日期时抛出该异常
 	 */
-	public StockSetInfoPO getStockInfoinSet(List<String> set,Calendar date,String setname){
+	public StockSetInfoPO getStockInfoinSet(List<String> set,Calendar date,String setname) throws NullDateException{
 		int cal=date.get(Calendar.YEAR)*10000+date.get(Calendar.MONTH)*100+100+date.get(Calendar.DAY_OF_MONTH);
 		datahelper.remain(cal);
 		int count=0;
@@ -90,6 +101,31 @@ public class StockDataController_2 {
 				setinfo.addHalt(strCode,translate.trans_codeToname(strCode));
 			}
 		}
+		if(count==size){
+			setinfo.allhalt();
+		}
 		return setinfo;
+	}
+	/**
+	 * 获取某个股票池的股票的某天即往后x天的信息
+	 * @param set 股票池名称
+	 * @param date 日期
+	 * @param last 往后推的时间（至少为0天）
+	 * @return List<StockSetInfoPO> 股票池信息的po的列表
+	 */
+	public List<StockSetInfoPO> getStockInfoinSet_StopByLast(List<String> set,Calendar date,int last){
+		int cal=date.get(Calendar.YEAR)*10000+date.get(Calendar.MONTH)*100+100+date.get(Calendar.DAY_OF_MONTH);
+		try {
+			datahelper.remain(cal);
+		} catch (NullDateException e) {
+			if(last>0){
+				date.set(Calendar.DATE, date.get(Calendar.DATE)+1);
+				return getStockInfoinSet_StopByLast(set,date,last-1);
+			}
+			else{
+				return null;
+			}
+		}
+		return null;
 	}
 }

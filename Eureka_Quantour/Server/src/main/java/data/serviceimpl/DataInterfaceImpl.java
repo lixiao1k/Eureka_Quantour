@@ -5,6 +5,7 @@ import java.util.List;
 
 import data.service.IDataInterface;
 import exception.LogErrorException;
+import exception.NullDateException;
 import exception.NullStockIDException;
 import exception.StockHaltingException;
 import exception.StockNameRepeatException;
@@ -148,10 +149,11 @@ public class DataInterfaceImpl implements IDataInterface
 	 * @return 股票信息
 	 * @throws NullStockIDException 不存在该支股票时抛出该异常
 	 * @throws StockHaltingException 该日期股票停牌时抛出该异常
+	 * @throws NullDateException 该日期不存在时抛出该异常
 	 */
 	@Override
 	public SingleStockInfoPO getSingleStockInfo(String stockcode, Calendar date) 
-			throws StockHaltingException, NullStockIDException {
+			throws StockHaltingException, NullStockIDException, NullDateException {
 		return stock2.getSingleStockInfo(stockcode, date);
 	}
 	
@@ -199,7 +201,7 @@ public class DataInterfaceImpl implements IDataInterface
 		return null;
 	}
 	/**
-	 * 获取某个软件自带的股票池的股票的某天信息
+	 * 获取某个软件自带的股票池的股票的起始于终止日期之间的所有信息
 	 * @param set 股票池名称
 	 * @param startDate 起始日期
 	 * @param endDate 终止日期
@@ -210,7 +212,7 @@ public class DataInterfaceImpl implements IDataInterface
 	}
 	
 	/**
-	 * 获取某个股票池的股票的某天即往后x天的信息
+	 * 获取某个软件自带的股票池的股票的起始于终止日期之间的所有信息
 	 * @param set 股票池名称
 	 * @param startDate 起始日期
 	 * @param endDate 终止日期
@@ -219,5 +221,15 @@ public class DataInterfaceImpl implements IDataInterface
 	 */
 	public List<StockSetInfoPO> getStockInfoinSet_StopByEnd(String set,Calendar startDate,Calendar endDate,String userName){
 		return null;
+	}
+	
+	/**
+	 * 判断是否是交易日
+	 * @param day 需要判断的日期
+	 * @return	是交易日则返回true，否则返回false
+	 */
+	public boolean isMarketDay(Calendar day){
+		return false;
+		
 	}
 }

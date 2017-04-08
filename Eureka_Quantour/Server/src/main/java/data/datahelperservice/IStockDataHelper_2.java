@@ -1,7 +1,9 @@
 package data.datahelperservice;
 
+import java.util.Calendar;
 import java.util.List;
 
+import exception.NullDateException;
 import exception.StockHaltingException;
 import po.StockSetInfoPO;
 
@@ -17,8 +19,9 @@ public interface IStockDataHelper_2 {
 	 * @param code 股票编号，形如000001,1
 	 * @return 股票信息，不存在时抛出异常
 	 * @throws StockHaltingException 不存在股票数据时抛出该异常
+	 * @throws NullDateException 不存在该日期时抛出该异常
 	 */
-	public String getSingleInfo(int cal,int code) throws StockHaltingException;
+	public String getSingleInfo(int cal,int code) throws StockHaltingException, NullDateException;
 	
 	/**
 	 * 获取某个软件自带的股票池的股票的某天信息
@@ -49,6 +52,13 @@ public interface IStockDataHelper_2 {
 	/**
 	 * 将日期map停留在日期date上
 	 * @param date 日期
+	 * @throws NullDateException 不存在该日期时抛出该异常
 	 */
-	public void remain(int date);
+	public void remain(int date) throws NullDateException;
+	/**
+	 * 判断是否是交易日
+	 * @param day 需要判断的日期
+	 * @return	是交易日则返回true，否则返回false
+	 */
+	public boolean isMarketDay(int day);
 }
