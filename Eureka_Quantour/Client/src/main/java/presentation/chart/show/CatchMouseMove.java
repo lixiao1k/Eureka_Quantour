@@ -20,6 +20,7 @@ public class CatchMouseMove implements CatchMouseMoveService{
 	    Axis<Number> yAxis = chart.getYAxis();
 	
 	    Label cursorCoords = new Label();
+	    cursorCoords.setVisible(false);
 	
 	    final Node chartBackground = chart.lookup(".chart-plot-background");
 	    for( Node n: chartBackground.getParent().getChildrenUnmodifiable() ) {
@@ -39,14 +40,29 @@ public class CatchMouseMove implements CatchMouseMoveService{
 	    	@Override 
 	    	public void handle(MouseEvent mouseEvent) {
 	    		double temp = mouseEvent.getX()*(dates.length-1)/xAxis.getWidth();
-	    		int index = 0;
-	    		if( (temp%1)<0.2 )
-	    			index = (int)(temp/1);
-	    		else if( (temp%1)>0.8 )
-	    			index = (int)(temp/1)+1;
+	    		
+	    		if( mouseEvent.getX()>chart.getXAxis().getWidth()/2 )
+	    			cursorCoords.setLayoutX(5);
 	    		else
-	    			index = -1;
-
+	    			cursorCoords.setLayoutX(chart.getWidth()-80);
+	    		
+	    		int index = 0;
+	    		if( xAxis.getWidth()/(dates.length-1)<8 ){
+		    		if( (temp%1)<0.49 )
+		    			index = (int)(temp/1);
+		    		else if( (temp%1)>0.51 )
+		    			index = (int)(temp/1)+1;
+		    		else
+		    			index = -1;
+	    		}
+	    		else{
+	    			if( (temp%1)<0.4 )
+		    			index = (int)(temp/1);
+		    		else if( (temp%1)>0.6 )
+		    			index = (int)(temp/1)+1;
+		    		else
+		    			index = -1;
+	    		}
 	    		if( index>-1){
 		    		String dataInfo = dataMap.get(dates[index]);
 		    		String infos[] = dataInfo.split("/");
@@ -54,10 +70,13 @@ public class CatchMouseMove implements CatchMouseMoveService{
 		    		for(int i=0; i<infos.length; i++){
 		    			info += infos[i]+"\n";
 		    		}
+		    		cursorCoords.setVisible(true);
 		    		cursorCoords.setText(info);
 	    		}
-	    		else
+	    		else{
+	    			cursorCoords.setVisible(false);
 	    			cursorCoords.setText("");
+	    		}
 	    	}
 	    });
 

@@ -7,6 +7,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import presentation.chart.chartService;
 import presentation.chart.show.CatchMouseMove;
 import presentation.chart.show.CatchMouseMoveService;
@@ -19,10 +20,6 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by huihantao on 2017/3/13.
- */
-
-/**
  * @Description: TODO
  * @author: hzp
  * @time: 2017年3月31日
@@ -33,6 +30,8 @@ public class ComparedChart implements chartService{
 
 	private AnchorPane pane = new AnchorPane();
 	private Label info = new Label();
+	private Label begin = new Label();
+	private Label end = new Label();
 	
     private NumberAxis yAxis;
     private CategoryAxis xAxis;
@@ -45,13 +44,13 @@ public class ComparedChart implements chartService{
     public ComparedChart(Calendar[] date, List<Double[]> doubleList, List<String> dataName) {
         xAxis = new CategoryAxis();
         xAxis.setGapStartAndEnd(false);
+        xAxis.setTickLabelsVisible(false);
 
         yAxis = new NumberAxis();
         yAxis.autoRangingProperty().set(true);
         yAxis.setAnimated(true);
         yAxis.forceZeroInRangeProperty().setValue(false);
-        yAxis.setLowerBound(0);
-        yAxis.setUpperBound(1);
+        yAxis.setUpperBound(1.25);
         
         lineChart = new LineChart<>(xAxis, yAxis);
         lineChart.setHorizontalGridLinesVisible(false);
@@ -61,6 +60,9 @@ public class ComparedChart implements chartService{
         dates = new String[date.length];
         for(int i=0; i<date.length; i++)
         	dates[i] = sdf.format(date[i].getTime());
+        
+        begin.setText(dates[0]);
+        end.setText(dates[dates.length-1]);
         
         String[] dataStrings = new String[date.length];
         for(int i=0; i<doubleList.size(); i++){
@@ -74,7 +76,6 @@ public class ComparedChart implements chartService{
         	for(int j=0; j<date.length; j++){
 	        	if( j<datas.length && datas[j]!=0 && datas[j]!=Integer.MIN_VALUE ){
 	        		serie.getData().add( new XYChart.Data<>(dates[j], datas[j]) );
-	        		
 	        		String dataFormat = NumberFormat.getPercentInstance().format(datas[j]);
 	        		if( dataStrings[j]!=null )
 	        			dataStrings[j] += "/"+name+" : "+dataFormat;
@@ -104,19 +105,31 @@ public class ComparedChart implements chartService{
     		lineChart.setMinWidth(width);
     	}
     	if( height>0 ){
-    		lineChart.setMaxHeight(height);
-    		lineChart.setMaxHeight(height);
+    		lineChart.setMaxHeight(height-10);
+    		lineChart.setMaxHeight(height-10);
     	}
+    	
     	info = catchMouseMove.createCursorGraphCoordsMonitorLabel(lineChart, dataMap, dates);
     	
     	pane.getChildren().add(info);
     	pane.getChildren().add(lineChart);
-    	info.setLayoutX(5);
-    	AnchorPane.setTopAnchor(lineChart, 30.0);
+    	pane.getChildren().add(begin);
+    	pane.getChildren().add(end);
+    	AnchorPane.setTopAnchor(lineChart, 10.0);
+
+    	begin.setTextFill(Color.WHITE);
+    	end.setTextFill(Color.WHITE);
+    	begin.setLayoutX(50);
+    	end.setLayoutX( Math.max(width, lineChart.getWidth())-70 );
+    	begin.setLayoutY( Math.max(height, lineChart.getWidth())-15 );
+    	end.setLayoutY( Math.max(height, lineChart.getWidth())-15 );
+    	
+    	info.getStylesheets().add(
+    			getClass().getResource("/styles/InfoLabel.css").toExternalForm() );
     	
     	pane.getStylesheets().add(
     			getClass().getResource("/styles/SingleLineChart.css").toExternalForm() );
-        return pane;
+    	return pane;
     }
     
 	@Override

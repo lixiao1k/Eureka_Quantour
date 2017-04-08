@@ -47,6 +47,7 @@ public class test extends Application{
     	dataName.add("hello");
     	dataName.add("fuck");
 		comparedChart = new ComparedChart(dates, doubleList, dataName);
+		comparedChart.setName("ComparedChart");
     }
     
     private void testSingleLineChart(){
@@ -64,7 +65,7 @@ public class test extends Application{
     		d1[i] = jizhunlist.get(i);
     	}
 		singleLineChart = new SingleLineChart(dates, d1, "hello");
-		singleLineChart.setName("testSingleLineChart");
+		singleLineChart.setName("SingleLineChart");
     }
     
     @Override
