@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import exception.LogErrorException;
+import exception.NullDateException;
 import exception.NullStockIDException;
 import exception.StockHaltingException;
 import exception.StockNameRepeatException;
@@ -89,17 +90,14 @@ public interface IDataInterface
 	public List<String>  getStockSetInfo(String stockSetName);
 	
 	
-	/**
-	 * 获取一支股票从起始时间到终止时间的所有信息
-	 * @param stockcode String,股票编号
-	 * @param begin Calendar,起始时间
-	 * @param end Calendar,终止时间
-	 * @return 一个股票信息的对象的列表
-	 */
-	public List<SingleStockInfoPO> getSingleStockInfo(String stockcode,Calendar begin,Calendar end);
+	
 	public List<SingleStockInfoPO> getMarketByDate(Calendar date) ;
 	
 	
+	
+	
+//新增接口————————————————————————————————————————————————————————————————————————————————
+	//针对单支股票
 	/**
 	 * 获取股票某一天的数据
 	 * @param stockcode 股票编号
@@ -107,32 +105,63 @@ public interface IDataInterface
 	 * @return 股票信息
 	 * @throws NullStockIDException 不存在该支股票时抛出该异常
 	 * @throws StockHaltingException 该日期股票停牌时抛出该异常
+	 * @throws NullDateException 该日期不存在时抛出该异常
 	 */
 	public SingleStockInfoPO getSingleStockInfo(String stockcode,Calendar date) 
-			throws StockHaltingException, NullStockIDException;
+			throws StockHaltingException, NullStockIDException, NullDateException;
+	/**
+	 * 获取一支股票从起始时间到终止时间的所有信息
+	 * @param stockcode String,股票编号
+	 * @param begin Calendar,起始时间
+	 * @param end Calendar,终止时间
+	 * @return 一个股票信息的对象的列表
+	 */
+	public List<SingleStockInfoPO> getSingleStockInfo_byEnd(String stockcode,Calendar begin,Calendar end);
+	/**
+	 * 获取一支股票从起点时间（交易日）往后推x个交易日的全部数据（x>=0）
+	 * @param stockcode String,股票编号
+	 * @param begin Calendar,起始时间
+	 * @param last int,长度
+	 * @return 一个股票信息的对象的列表
+	 */
+	public List<SingleStockInfoPO> getSingleStockInfo_byLast(String stockcode,Calendar begin,int last);
+	/**
+	 * 获取一只股票的最早日期
+	 * @param stockCode 股票编号
+	 * @return 最早日期
+	 */
+	public Calendar getMinDay(String stockCode);
+	/**
+	 * 获取一只股票的最晚日期
+	 * @param stockCode 股票编号
+	 * @return 最晚日期
+	 */
+	public Calendar getMaxDay(String stockCode);
 	
+	
+	//针对市场或股票池
 	/**
 	 * 获取某个软件自带的股票池的股票的某天信息
 	 * @param set 股票池名称
 	 * @param date 日期
 	 * @return StockSetInfoPO 股票池信息的po
+	 * @throws NullDateException 该天不是交易日时抛出异常
 	 */
-	public StockSetInfoPO getStockInfoinSet(String set,Calendar date);
-	
+	public StockSetInfoPO getStockInfoinSet(String set,Calendar date) throws NullDateException;
 	/**
 	 * 获取某个用户自定义的股票池的股票的某天信息
 	 * @param set 股票池名称
 	 * @param date 日期
 	 * @param userName 用户名
 	 * @return StockSetInfoPO 股票池信息的po
+	 * @throws NullDateException 该天不是交易日时抛出异常
 	 */
-	public StockSetInfoPO getStockInfoinSet(String set,Calendar date,String userName);
-	
+	public StockSetInfoPO getStockInfoinSet(String set,Calendar date,String userName) throws NullDateException;
 	/**
 	 * 获取某个股票池的股票的某天与往后x天的信息
 	 * @param set 股票池名称
 	 * @param date 日期
-	 * @param last 往后推的天数（至少为0天）
+	 * @param last 往后推的交易日数（至少为0天）
 	 * @return List<StockSetInfoPO> 股票池信息的po的列表
 	 */
 	public List<StockSetInfoPO> getStockInfoinSet_StopByLast(String set,Calendar date,int last);
@@ -142,7 +171,7 @@ public interface IDataInterface
 	 * @param set 股票池名称
 	 * @param date 日期
 	 * @param userName 用户名
-	 * @param last 往后推的天数（至少为0天）
+	 * @param last 往后推的交易日数（至少为0天）
 	 * @return List<StockSetInfoPO> 股票池信息的列表
 	 */
 	public List<StockSetInfoPO> getStockInfoinSet_StopByLast(String set,Calendar date,String userName,int last);
@@ -165,4 +194,10 @@ public interface IDataInterface
 	 * @return List<StockSetInfoPO> 股票池信息的列表
 	 */
 	public List<StockSetInfoPO> getStockInfoinSet_StopByEnd(String set,Calendar startDate,Calendar endDate,String userName);
+	/**
+	 * 判断是否是交易日
+	 * @param day 需要判断的日期
+	 * @return	是交易日则返回true，否则返回false
+	 */
+	public boolean isMarketDay(Calendar day);
 }

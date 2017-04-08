@@ -31,7 +31,7 @@ public class StockLogicImpl implements StockLogicInterface{
 		// 判断日期是否有效
 		utility.ifDateValid(begin, end);
 
-		List<SingleStockInfoPO> list=idi.getSingleStockInfo(stockCode, begin, end);
+		List<SingleStockInfoPO> list=idi.getSingleStockInfo_byEnd(stockCode, begin, end);
 
 		if (list.equals(null)||list.size()==0)
 			throw new DateInvalidException();
@@ -114,8 +114,8 @@ public class StockLogicImpl implements StockLogicInterface{
 
 
 		List<SingleStockInfoVO> lstiA = new ArrayList<>();
-		List<SingleStockInfoPO> listA=idi.getSingleStockInfo(stockCodeA, beginTempA, endTempA);
-		List<SingleStockInfoPO> listB=idi.getSingleStockInfo(stockCodeB, beginTempB, endTempB);
+		List<SingleStockInfoPO> listA=idi.getSingleStockInfo_byEnd(stockCodeA, beginTempA, endTempA);
+		List<SingleStockInfoPO> listB=idi.getSingleStockInfo_byEnd(stockCodeB, beginTempB, endTempB);
 
 		if( listA==null || listB==null)
 			throw new DateInvalidException();
