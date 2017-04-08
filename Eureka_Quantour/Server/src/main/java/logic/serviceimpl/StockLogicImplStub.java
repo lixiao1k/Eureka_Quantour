@@ -53,7 +53,7 @@ public class StockLogicImplStub implements StockLogicInterface{
 			System.out.println("日期转换出错");
 			e.printStackTrace();
 		}
-		List<SingleStockInfoVO> lssi = new SingleStockInfoPO().POToVO( idi.getSingleStockInfo(stockCode, beginTemp, endTemp) );
+		List<SingleStockInfoVO> lssi = new SingleStockInfoPO().POToVO( idi.getSingleStockInfo_byEnd(stockCode, beginTemp, endTemp) );
 		
 		// 如果没有数据，抛出日期无效异常
 		if( lssi==null )
@@ -87,7 +87,7 @@ public class StockLogicImplStub implements StockLogicInterface{
 			System.out.println("日期转换出错");
 			e.printStackTrace();
 		}
-		List<SingleStockInfoPO> lssi = idi.getSingleStockInfo(stockCode, beginTemp, endTemp);
+		List<SingleStockInfoPO> lssi = idi.getSingleStockInfo_byEnd(stockCode, beginTemp, endTemp);
 		
 		// 如果都没有数据，抛出日期无效异常
 		if( lssi==null )
@@ -110,7 +110,7 @@ public class StockLogicImplStub implements StockLogicInterface{
 				System.out.println("日期转换出错");
 				e.printStackTrace();
 			}
-			List<SingleStockInfoPO> lssiTemp = idi.getSingleStockInfo(stockCode, lastBegin, lastEnd);
+			List<SingleStockInfoPO> lssiTemp = idi.getSingleStockInfo_byEnd(stockCode, lastBegin, lastEnd);
 			// 用于存放List，并且作为返回变量
 			List<List<EMAInfoVO>> llemai = new ArrayList<List<EMAInfoVO>>();
 			// 用于暂存取到的每一个Stock数据
@@ -184,8 +184,8 @@ public class StockLogicImplStub implements StockLogicInterface{
 			e.printStackTrace();
 		}
 
-		List<SingleStockInfoVO> lstiA = new SingleStockInfoPO().POToVO( idi.getSingleStockInfo(stockCodeA, beginTempA, endTempA) );
-		List<SingleStockInfoVO> lstiB = new SingleStockInfoPO().POToVO( idi.getSingleStockInfo(stockCodeB, beginTempB, endTempB) );
+		List<SingleStockInfoVO> lstiA = new SingleStockInfoPO().POToVO( idi.getSingleStockInfo_byEnd(stockCodeA, beginTempA, endTempA) );
+		List<SingleStockInfoVO> lstiB = new SingleStockInfoPO().POToVO( idi.getSingleStockInfo_byEnd(stockCodeB, beginTempB, endTempB) );
 		boolean ifANull = false;
 		boolean ifBNull = false;
 		

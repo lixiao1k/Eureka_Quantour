@@ -83,9 +83,9 @@ public class StockDataController_2 {
 	 * @return StockSetInfoPO 股票池信息的po
 	 * @throws NullDateException 不存在该日期时抛出该异常
 	 */
-	public StockSetInfoPO getStockInfoinSet(List<String> set,Calendar date,String setname) throws NullDateException{
+	public StockSetInfoPO getStockInfoinSet(List<String> set,Calendar date) throws NullDateException{
 		int cal=date.get(Calendar.YEAR)*10000+date.get(Calendar.MONTH)*100+100+date.get(Calendar.DAY_OF_MONTH);
-		datahelper.remain(cal);
+		datahelper.remain_forAllinfo(cal);
 		int count=0;
 		int size=set.size();
 		String info;
@@ -106,6 +106,9 @@ public class StockDataController_2 {
 		}
 		return setinfo;
 	}
+	public List<SingleStockInfoPO> getSingleStockInfo(String stockcode, Calendar begin, Calendar end) {
+		return null;
+	}
 	/**
 	 * 获取某个股票池的股票的某天即往后x天的信息
 	 * @param set 股票池名称
@@ -116,7 +119,7 @@ public class StockDataController_2 {
 	public List<StockSetInfoPO> getStockInfoinSet_StopByLast(List<String> set,Calendar date,int last){
 		int cal=date.get(Calendar.YEAR)*10000+date.get(Calendar.MONTH)*100+100+date.get(Calendar.DAY_OF_MONTH);
 		try {
-			datahelper.remain(cal);
+			datahelper.remain_forAllinfo(cal);
 		} catch (NullDateException e) {
 			if(last>0){
 				date.set(Calendar.DATE, date.get(Calendar.DATE)+1);

@@ -82,11 +82,11 @@ public class IDataInterfaceTest extends TestCase {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	assertEquals(data.getSingleStockInfo("1", day3, (Calendar) day4.clone()),null);
-    	assertEquals(data.getSingleStockInfo("1", day6, (Calendar) day2.clone()).size(),1);
-    	assertEquals(data.getSingleStockInfo("402", day3, (Calendar) day1.clone()).size(),1);
-    	assertEquals(data.getSingleStockInfo("402", day1, (Calendar) day5.clone()),null);
-    	assertEquals(data.getSingleStockInfo("10", day3, (Calendar) day2.clone()),null);
+    	assertEquals(data.getSingleStockInfo_byEnd("1", day3, (Calendar) day4.clone()),null);
+    	assertEquals(data.getSingleStockInfo_byEnd("1", day6, (Calendar) day2.clone()).size(),1);
+    	assertEquals(data.getSingleStockInfo_byEnd("402", day3, (Calendar) day1.clone()).size(),1);
+    	assertEquals(data.getSingleStockInfo_byEnd("402", day1, (Calendar) day5.clone()),null);
+    	assertEquals(data.getSingleStockInfo_byEnd("10", day3, (Calendar) day2.clone()),null);
 //    	assertEquals(10,data.getMarketByDate(day4).size());
 //    	assertEquals(10,data.getMarketByDate(day5).size());
 //    	data.getSingleStockInfo("1", begin, end);

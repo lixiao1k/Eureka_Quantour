@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import data.common.DateTrie;
+import data.common.StockHashTree;
 import data.common.DateLeaf;
 import data.datahelperservice.IStockDataHelper_2;
 import data.fetchdataimpl.StockDataFetchImpl;
@@ -38,79 +39,24 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 	private Parse parse;//一些数据转换的方法
 	private byte[] receive;//接受数据的容器（一次一行）
 	private byte[] doublereceive;//接受数据的容器（一次两行）
+	
 	private HashMap<Integer,Integer> datemap;//某天日期的哈希表
 	private DateLeaf leaf;//某天日期的叶子
-	private DateTrie trie;
+	private DateTrie datetree;//以日期为主键的树
+	
+	private StockHashTree stocktree;//以股票编号为主键的树
+	
 	private int previousday;
 	public static void main(String[] args){
 		new StockDataHelperImpl_2();
 	}
-	/**
-	 * 判断是否是交易日
-	 * @param day 需要判断的日期
-	 * @return	是交易日则返回true，否则返回false
-	 */
-	public boolean isMarketDay(int day){
-		return trie.get(day).isLeaf();
-	}
-	/**
-	 * 获取指定股票指定日期的信息
-	 * @param cal 日期，形如XXXXXXXX,20170328
-	 * @param code 股票编号，形如000001,1
-	 * @return 股票信息，不存在时抛出异常
-	 * @throws StockHaltingException 不存在股票数据时抛出该异常
-	 * @throws NullDateException 不存在该日期时抛出该异常
-	 */
-	public String getSingleInfo(int a,int b) throws StockHaltingException, NullDateException{
-		int row;
-		try{
-			row=trie.get(a).getDateinfo().get(b);
-		}catch(NullPointerException e){
-			throw new NullDateException(a);
-		}
-		try{
-			return readPosition(row);
-		}catch(Exception e){
-			throw new StockHaltingException(a,b);
-		}
-	}
-	/**
-	 * 将日期map停留在日期date上
-	 * @param date 日期
-	 * @throws NullDateException 缺少该天信息
-	 */
-	public void remain(int date) throws NullDateException{
-		leaf=trie.get(date);
-		datemap=leaf.getDateinfo();
-		if(!leaf.isLeaf()){
-			throw new NullDateException(previousday);
-		}
-		previousday=leaf.getCal();
-	}
-	public void nextDay(int date) throws NullDateException{
-		leaf=(DateLeaf) leaf.getNext();
-		datemap=leaf.getDateinfo();
-		if(!leaf.isLeaf()){
-			throw new NullDateException(previousday);
-		}
-	}
-	/**
-	 * 获取某个软件自带的股票池的股票的某天信息
-	 * @param set 股票池名称
-	 * @param date 日期
-	 * @return StockSetInfoPO 股票池信息的po
-	 * @throws StockHaltingException 停牌时抛出该异常
-	 */
-	public String getStockInfoinSet_throughRemain(int code) throws StockHaltingException{	
-		try{
-			int row;
-			row=datemap.get(code);
-			return readPosition(row);
-		}catch(Exception e){
-			throw new StockHaltingException(code);
-		}	
-	}
 	
+
+	@Override
+	public List<StockSetInfoPO> getStockInfoinSetStopBy_last(List<String> set, int startDate, int endDate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	/**
 	 * 获取某个软件自带的股票池的股票的某天信息
 	 * @param set 股票池名称
@@ -122,16 +68,6 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 		return null;
 	}
 	
-	/**
-	 * 获取某个软件自带的股票池的股票的某天信息
-	 * @param set 股票池名称
-	 * @param startDate 起始日期
-	 * @param endDate 终止日期
-	 * @return List<StockSetInfoPO> 股票池信息的po的列表
-	 */
-	public List<StockSetInfoPO> getStockInfoinSetStopBy_last(List<String> set,int startDate,int endDate){
-		return null;
-	}
 	/**
 	 * 初始化
 	 */
@@ -157,7 +93,8 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 		datemap=new HashMap<Integer,Integer>();
 		map=new HashMap<Integer,HashMap<Integer,Integer>>();
 		
-		trie=new DateTrie();
+		datetree=new DateTrie();
+		stocktree=new StockHashTree();
 	}
 	/**
 	 * 初始化爬取数据的通道
@@ -205,15 +142,8 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 				int year= cal / 10000;
 				int month= (cal -year * 10000 ) / 100;
 				int day=cal - year * 10000 - month * 100;
-				trie.add(year, month, day, code, count);
-//				if(!map.containsKey(cal)){
-//					HashMap<Integer,Integer> temp=new HashMap<Integer,Integer>();
-//					temp.put(code, count);
-//					map.put(cal, temp);
-//				}
-//				else{
-//					map.get(cal).put(code, count);
-//				}
+				datetree.add(year, month, day, code, count);
+				stocktree.add(year, month, day, code, count);
 				count++;
 			}
 			br.close();
@@ -434,7 +364,7 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 			int year= cal / 10000;
 			int month= (cal -year * 10000 ) / 100;
 			int day=cal - year * 10000 - month * 100;
-			if(trie.get(year, month, day).getDateinfo().get(code)!=count){
+			if(datetree.get(year, month, day).getDateinfo().get(code)!=count){
 				System.out.println(cal+":"+code);
 				System.exit(0);
 			}
@@ -460,12 +390,12 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 			int b2=Integer.parseInt(out[1]);
 //			
 			long ttt1=System.currentTimeMillis();
-			for(int i=0;i<k;i++) map.get(b1);		
+			for(int i=0;i<k;i++) datetree.get(b2);		
 			long ttt2=System.currentTimeMillis();
 			System.out.println("读取时间"+(ttt2-ttt1));
 			
 			long m1=System.currentTimeMillis();
-			for(int i=0;i<k;i++) trie.get(year, month, day);
+			for(int i=0;i<k;i++) stocktree.get(b2);
 			long m2=System.currentTimeMillis();
 			System.out.println("读取时间"+(m2-m1));
 
@@ -507,4 +437,76 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 		}
 		sc.close();
 	}
+	
+	/**
+	 * 判断是否是交易日
+	 * @param day 需要判断的日期
+	 * @return	是交易日则返回true，否则返回false
+	 */
+	public boolean isMarketDay(int day){
+		return datetree.get(day).isLeaf();
+	}
+	/**
+	 * 获取指定股票指定日期的信息
+	 * @param cal 日期，形如XXXXXXXX,20170328
+	 * @param code 股票编号，形如000001,1
+	 * @return 股票信息，不存在时抛出异常
+	 * @throws StockHaltingException 不存在股票数据时抛出该异常
+	 * @throws NullDateException 不存在该日期时抛出该异常
+	 */
+	public String getSingleInfo(int a,int b) throws StockHaltingException, NullDateException{
+		int row;
+		try{
+			row=datetree.get(a).getDateinfo().get(b);
+		}catch(NullPointerException e){
+			throw new NullDateException(a);
+		}
+		try{
+			return readPosition(row);
+		}catch(Exception e){
+			throw new StockHaltingException(a,b);
+		}
+	}
+	/**
+	 * 将日期map停留在日期date上
+	 * @param date 日期
+	 * @throws NullDateException 缺少该天信息
+	 */
+	public void remain_forAllinfo(int date) throws NullDateException{
+		leaf=datetree.get(date);
+		datemap=leaf.getDateinfo();
+		if(!leaf.isLeaf()){
+			throw new NullDateException(previousday);
+		}
+		previousday=leaf.getCal();
+	}
+	/**
+	 * 将日期往后推一天（针对于汇总信息的表）
+	 * @throws NullDateException 如果已是最后一天抛出该异常
+	 */
+	public void nextDay_forAllinfo() throws NullDateException{
+		leaf=(DateLeaf) leaf.getNext();
+		datemap=leaf.getDateinfo();
+		if(!leaf.isLeaf()){
+			throw new NullDateException(previousday);
+		}
+	}
+	/**
+	 * 获取某个软件自带的股票池的股票的某天信息
+	 * @param set 股票池名称
+	 * @param date 日期
+	 * @return StockSetInfoPO 股票池信息的po
+	 * @throws StockHaltingException 停牌时抛出该异常
+	 */
+	public String getStockInfoinSet_throughRemain(int code) throws StockHaltingException{	
+		try{
+			int row;
+			row=datemap.get(code);
+			return readPosition(row);
+		}catch(Exception e){
+			throw new StockHaltingException(code);
+		}	
+	}
+
+
 }

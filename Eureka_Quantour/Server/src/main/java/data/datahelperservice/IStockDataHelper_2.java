@@ -3,6 +3,7 @@ package data.datahelperservice;
 import java.util.Calendar;
 import java.util.List;
 
+import data.common.DateLeaf;
 import exception.NullDateException;
 import exception.StockHaltingException;
 import po.StockSetInfoPO;
@@ -54,7 +55,12 @@ public interface IStockDataHelper_2 {
 	 * @param date 日期
 	 * @throws NullDateException 不存在该日期时抛出该异常
 	 */
-	public void remain(int date) throws NullDateException;
+	public void remain_forAllinfo(int date) throws NullDateException;
+	/**
+	 * 将日期往后推一天（针对于汇总信息的表）
+	 * @throws NullDateException 如果已是最后一天抛出该异常
+	 */
+	public void nextDay_forAllinfo() throws NullDateException;
 	/**
 	 * 判断是否是交易日
 	 * @param day 需要判断的日期
