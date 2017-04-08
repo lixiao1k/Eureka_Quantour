@@ -1,4 +1,7 @@
 package data.parse;
+
+import java.util.Calendar;
+
 /**
  * 将股票名字转换为标准类型
  * @author 刘宇翔
@@ -61,5 +64,9 @@ public class Parse {
 	public int strToint(String code){
 		return (code.charAt(0)-48)*100000+(code.charAt(1)-48)*10000+(code.charAt(2)-48)*1000
 				+(code.charAt(3)-48)*100+(code.charAt(4)-48)*10+(code.charAt(5)-48);
+	}
+	public int getIntDate(Calendar date){
+		int cal=date.get(Calendar.YEAR)*10000+date.get(Calendar.MONTH)*100+100+date.get(Calendar.DAY_OF_MONTH);
+		return cal;
 	}
 }

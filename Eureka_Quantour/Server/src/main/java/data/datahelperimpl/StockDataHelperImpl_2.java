@@ -10,12 +10,15 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
 import data.common.DateTrie;
 import data.common.StockHashTree;
+import data.common.StockLeaf;
 import data.common.DateLeaf;
 import data.datahelperservice.IStockDataHelper_2;
 import data.fetchdataimpl.StockDataFetchImpl;
@@ -41,10 +44,11 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 	private byte[] doublereceive;//接受数据的容器（一次两行）
 	
 	private HashMap<Integer,Integer> datemap;//某天日期的哈希表
-	private DateLeaf leaf;//某天日期的叶子
+	private DateLeaf leaf_forDatetree;//某天日期的叶子
 	private DateTrie datetree;//以日期为主键的树
 	
 	private StockHashTree stocktree;//以股票编号为主键的树
+	private StockLeaf leaf_forStocktree;//某只股票某天的叶子
 	
 	private int previousday;
 	public static void main(String[] args){
@@ -143,7 +147,7 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 				int month= (cal -year * 10000 ) / 100;
 				int day=cal - year * 10000 - month * 100;
 				datetree.add(year, month, day, code, count);
-				stocktree.add(year, month, day, code, count);
+//				stocktree.add(year, month, day, code, count);
 				count++;
 			}
 			br.close();
@@ -388,16 +392,18 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 			int k=10000000;
 			int day=b1 - year * 10000 - month * 100;
 			int b2=Integer.parseInt(out[1]);
-//			
 			long ttt1=System.currentTimeMillis();
-			for(int i=0;i<k;i++) datetree.get(b2);		
+			Collection<Integer> it=datetree.get(b1).getDateinfo().values();
+			for(int i:it){
+				readPosition(i);
+			}
 			long ttt2=System.currentTimeMillis();
 			System.out.println("读取时间"+(ttt2-ttt1));
 			
-			long m1=System.currentTimeMillis();
-			for(int i=0;i<k;i++) stocktree.get(b2);
-			long m2=System.currentTimeMillis();
-			System.out.println("读取时间"+(m2-m1));
+//			long m1=System.currentTimeMillis();
+//			for(int i=0;i<k;i++) stocktree.get(b2);
+//			long m2=System.currentTimeMillis();
+//			System.out.println("读取时间"+(m2-m1));
 
 			//int count=0;
 //			Random random=new Random();
@@ -473,23 +479,36 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 	 * @throws NullDateException 缺少该天信息
 	 */
 	public void remain_forAllinfo(int date) throws NullDateException{
-		leaf=datetree.get(date);
-		datemap=leaf.getDateinfo();
-		if(!leaf.isLeaf()){
-			throw new NullDateException(previousday);
+		leaf_forDatetree=datetree.get(date);
+		datemap=leaf_forDatetree.getDateinfo();
+		if(!leaf_forDatetree.isLeaf()){
+			throw new NullDateException(date);
 		}
-		previousday=leaf.getCal();
+		previousday=leaf_forDatetree.getCal();
 	}
 	/**
 	 * 将日期往后推一天（针对于汇总信息的表）
 	 * @throws NullDateException 如果已是最后一天抛出该异常
 	 */
-	public void nextDay_forAllinfo() throws NullDateException{
-		leaf=(DateLeaf) leaf.getNext();
-		datemap=leaf.getDateinfo();
-		if(!leaf.isLeaf()){
+	public int nextDay_forAllinfo() throws NullDateException{
+		leaf_forDatetree=(DateLeaf) leaf_forDatetree.getNext();
+		datemap=leaf_forDatetree.getDateinfo();
+		if(!leaf_forDatetree.isLeaf()){
 			throw new NullDateException(previousday);
 		}
+		return leaf_forDatetree.getCal();
+	}
+	/**
+	 * 将日期往前推一天（针对于汇总信息的表）
+	 * @throws NullDateException 如果已是第一天抛出该异常
+	 */
+	public int previousDay_forAllinfo() throws NullDateException{
+		leaf_forDatetree=(DateLeaf) leaf_forDatetree.getPrevious();
+		datemap=leaf_forDatetree.getDateinfo();
+		if(!leaf_forDatetree.isLeaf()){
+			throw new NullDateException(previousday);
+		}
+		return leaf_forDatetree.getCal();
 	}
 	/**
 	 * 获取某个软件自带的股票池的股票的某天信息
@@ -508,5 +527,52 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 		}	
 	}
 
-
+	/**
+	 * 将日期map停留在日期date上
+	 * @param date 日期
+	 * @throws NullDateException 缺少该天信息
+	 */
+	public void remain_forSingleinfo(int code,int date) throws NullDateException{
+		leaf_forStocktree=stocktree.get(code).get(date);
+		if(!leaf_forStocktree.isLeaf()){
+			throw new NullDateException(date);
+		}
+		previousday=leaf_forDatetree.getCal();
+	}
+	/**
+	 * 将日期往后推一天（针对于汇总信息的表）
+	 * @throws NullDateException 如果已是最后一天抛出该异常
+	 */
+	public int nextDay_forSingleinfo() throws NullDateException{
+		leaf_forStocktree=(StockLeaf) leaf_forStocktree.getNext();
+		if(!leaf_forDatetree.isLeaf()){
+			throw new NullDateException(previousday);
+		}
+		return leaf_forStocktree.getCal();
+	}
+	/**
+	 * 获取某个的股票的某天信息（根据停留指针）
+	 * @return String 股票池信息的po
+	 * @throws StockHaltingException 停牌时抛出该异常
+	 */
+	public	String getSingleInfo_throughRemain(){
+		int row=leaf_forStocktree.getDateinfo();
+		return readPosition(row);
+	}
+	/**
+	 * 获取某只股票最早的一天
+	 * @param code 股票编号
+	 * @return 日期
+	 */
+	public int getMinDay(int code){
+		return stocktree.get(code).getMin().getCal();
+	}
+	/**
+	 * 获取某只股票最晚的一天
+	 * @param code 股票编号
+	 * @return 日期
+	 */
+	public int getMaxDay(int code){
+		return stocktree.get(code).getMax().getCal();
+	}
 }
