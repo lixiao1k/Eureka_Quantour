@@ -335,122 +335,139 @@ public class StockDataController_2 {
 	 * 获取某只股票最早的一天
 	 * @param code 股票编号
 	 * @return 日期
+	 * @throws NullStockIDException 没有该股票时抛出异常
 	 */
-	public Calendar getMinDay(String stockCode){
-		
-		if(translate.containsCode(parse.supCode(stockCode))){
-			int code=parse.strToint(stockCode);
-			Calendar cal=Calendar.getInstance();
-			try {
-				cal.setTime(sdf.parse(String.valueOf(datahelper.getMaxDay(code))));
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return cal;
+	public Calendar getMinDay(String stockCode) throws NullStockIDException{
+		int code=transStockCode(stockCode);
+		Calendar cal=Calendar.getInstance();
+		try {
+			cal.setTime(sdf.parse(String.valueOf(datahelper.getMinDay(code))));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		else{
-			return null;
-		}
+		return cal;
 	}
 	/**
 	 * 获取某只股票最晚的一天
 	 * @param code 股票编号
 	 * @return 日期
+	 * @throws NullStockIDException 没有该股票时抛出该异常
 	 */
-	public Calendar getMaxDay(String stockCode){
-		if(translate.containsCode(parse.supCode(stockCode))){
-			int code=parse.strToint(stockCode);
-			Calendar cal=Calendar.getInstance();
-			try {
-				cal.setTime(sdf.parse(String.valueOf(datahelper.getMaxDay(code))));
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return cal;
+	public Calendar getMaxDay(String stockCode) throws NullStockIDException{
+		int code=transStockCode(stockCode);
+		Calendar cal=Calendar.getInstance();
+		try {
+			cal.setTime(sdf.parse(String.valueOf(datahelper.getMaxDay(code))));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		else{
-			return null;
-		}
+		return cal;
 	}
 	
-//	/**
-//	 * 获取一支股票从起点时间（交易日）往后推x个交易日的全部数据（x>=0）
-//	 * @param stockcode String,股票编号
-//	 * @param begin Calendar,起始时间
-//	 * @param last int,长度
-//	 * @return 一个股票信息的对象的列表
-//	 */
-//	public List<SingleStockInfoPO> getSingleStockInfo_byLast(String stockcode,Calendar begin,int last){
-//		int cal=parse.getIntDate(begin);
-//		
-//		datahelper.remain_forAllinfo(cal);
-//		List<Integer> setlist=new ArrayList<Integer>();
-//		List<String> namelist=new ArrayList<String>();
-//		List<StockSetInfoPO> result=new ArrayList<StockSetInfoPO>();
-//		int code;
-//		String info;
-//		String name;
-//		String strCode;
-//		StockSetInfoPO setinfo=new StockSetInfoPO(date);
-//		int count=0;
-//		for(int i=0;i<set.size();i++){
-//			strCode=set.get(i);
-//			code=parse.strToint(strCode);
-//			name=translate.trans_codeToname(strCode);
-//			setlist.add(code);
-//			namelist.add(name);
-//			try {
-//				info=datahelper.getStockInfoinSet_throughRemain(code);
-//				setinfo.addStockInfo(info, strCode, name);
-//			} catch (StockHaltingException e) {
-//				count++;
-//				setinfo.addHalt(strCode,name);
-//			}
-//		}
-//		if(count==set.size()){
-//			setinfo.allhalt();
-//		}
-//		result.add(setinfo);
-//		last--;
-//		while(last>=0){
-//			int tempcal;
-//			try{
-//				tempcal=datahelper.nextDay_forAllinfo();
-//			}catch(NullDateException e){
-//				break;
-//			}
-//			Calendar calendar=Calendar.getInstance();
-//			try {
-//				calendar.setTime(sdf.parse(String.valueOf(tempcal)));
-//			} catch (ParseException e) {
-//				e.printStackTrace();
-//			}
-//			StockSetInfoPO tempset=new StockSetInfoPO(calendar);
-//			for(int i=0;i<set.size();i++){
-//				try {
-//					tempset.addStockInfo(datahelper.getStockInfoinSet_throughRemain(setlist.get(i)), set.get(i), namelist.get(i));
-//				} catch (StockHaltingException e) {
-//					count++;
-//					setinfo.addHalt(set.get(i),namelist.get(i));
-//				}
-//			}
-//			if(count==set.size()){
-//				setinfo.allhalt();
-//			}
-//			last--;
-//		}
-//		return result;
-//	}
+	private int transStockCode(String stockCode) throws NullStockIDException{
+		int code;
+		String strCode;
+		try{
+			code=Integer.parseInt(stockCode);
+			if(translate.containsCode(parse.supCode(stockCode))){
+				throw new NullStockIDException(stockCode);
+			}
+			else{
+				return code;
+			}
+		}catch(NumberFormatException e1){
+			try{
+				strCode=translate.trans_nameTocode(stockCode);
+				code=Integer.parseInt(strCode);
+				return code;
+			}catch(NumberFormatException e2){
+				throw new NullStockIDException(stockCode);
+			}
+		}
+	}
+	/**
+	 * 获取一支股票从起点时间（交易日）往后推x个交易日的全部数据（x>=0）
+	 * @param stockcode String,股票编号
+	 * @param begin Calendar,起始时间
+	 * @param last int,长度
+	 * @return 一个股票信息的对象的列表
+	 * @throws NullStockIDException 该股票不存在时抛出该异常
+	 */
+	public List<SingleStockInfoPO> getSingleStockInfo_byLast(String stockcode,Calendar begin,int last) throws NullStockIDException{
+		int cal=parse.getIntDate(begin);
+		int code=transStockCode(stockcode);
+		try {
+			datahelper.remain_forSingleinfo(code, cal);
+		} catch (NullDateException e) {
+			System.out.println(e.toString());
+			e.printStackTrace();
+		}
+		String name=translate.trans_codeToname(parse.supCode(String.valueOf(code)));
+		String strCode=parse.supCode(String.valueOf(code));
+		List<SingleStockInfoPO> result=new ArrayList<SingleStockInfoPO>();
+		while(last>=0){
+			Calendar temp=Calendar.getInstance();
+			try {
+				temp.setTime(sdf.parse(String.valueOf(cal)));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			String info=datahelper.getSingleInfo_throughRemain();
+			SingleStockInfoPO po=new SingleStockInfoPO(info,name,strCode,temp);
+			result.add(po);
+			try {
+				cal=datahelper.nextDay_forSingleinfo();
+			} catch (NullDateException e) {
+				break;
+			}
+		}
+		return result;
+	}
 	/**
 	 * 获取单支股票一段时间的数据
 	 * @param stockcode
 	 * @param begin
 	 * @param end
 	 * @return
+	 * @throws NullStockIDException 不存在改股票时抛出异常
 	 */
-	public List<SingleStockInfoPO> getSingleStockInfo(String stockcode, Calendar begin, Calendar end) {
-		return null;
+	public List<SingleStockInfoPO> getSingleStockInfo_ByEnd(String stockcode, Calendar begin, Calendar end) throws NullStockIDException {
+		int cal=parse.getIntDate(begin);
+		int endcal=parse.getIntDate(end);
+		int code=transStockCode(stockcode);
+		try {
+			datahelper.remain_forSingleinfo(code, cal);
+		} catch (NullDateException e) {
+			begin.set(Calendar.DATE, begin.get(Calendar.DATE)+1);
+			cal=parse.getIntDate(begin);
+			if(cal<=endcal){
+				return getSingleStockInfo_ByEnd(stockcode,begin,end);
+			}
+			else{
+				return null;
+			}
+		}
+		String name=translate.trans_codeToname(parse.supCode(String.valueOf(code)));
+		String strCode=parse.supCode(String.valueOf(code));
+		List<SingleStockInfoPO> result=new ArrayList<SingleStockInfoPO>();
+		while(cal<=endcal){
+			Calendar temp=Calendar.getInstance();
+			try {
+				temp.setTime(sdf.parse(String.valueOf(cal)));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			String info=datahelper.getSingleInfo_throughRemain();
+			SingleStockInfoPO po=new SingleStockInfoPO(info,name,strCode,temp);
+			result.add(po);
+			try {
+				cal=datahelper.nextDay_forSingleinfo();
+			} catch (NullDateException e) {
+				break;
+			}
+		}
+		return result;
 	}
 }

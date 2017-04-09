@@ -1,10 +1,7 @@
 package data.datahelperservice;
 
-import java.util.List;
-
 import exception.NullDateException;
 import exception.StockHaltingException;
-import po.StockSetInfoPO;
 
 /**
  * 股票模块数据的数据处理接口
@@ -31,23 +28,6 @@ public interface IStockDataHelper_2 {
 	 */
 	public String getStockInfoinSet_throughRemain(int code) throws StockHaltingException;
 	
-	/**
-	 * 获取某个软件自带的股票池的股票的某天信息
-	 * @param set 股票池名称
-	 * @param date 日期
-	 * @param last 持续时间（至少为1天）
-	 * @return List<StockSetInfoPO> 股票池信息的po的列表
-	 */
-	public List<StockSetInfoPO> getStockInfoinSetStopBy_end(List<String> set,int date,int last);
-	
-	/**
-	 * 获取某个软件自带的股票池的股票的某天信息
-	 * @param set 股票池名称
-	 * @param startDate 起始日期
-	 * @param endDate 终止日期
-	 * @return List<StockSetInfoPO> 股票池信息的po的列表
-	 */
-	public List<StockSetInfoPO> getStockInfoinSetStopBy_last(List<String> set,int startDate,int endDate);
 	/**
 	 * 将日期map停留在日期date上
 	 * @param date 日期

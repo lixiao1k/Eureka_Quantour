@@ -255,8 +255,9 @@ public class DataInterfaceImpl implements IDataInterface
 	 * 获取一只股票的最早日期
 	 * @param stockCode 股票编号
 	 * @return 最早日期
+	 * @throws NullStockIDException 该股票不存在时抛出异常
 	 */
-	public Calendar getMinDay(String stockCode){
+	public Calendar getMinDay(String stockCode) throws NullStockIDException{
 		return stock2.getMinDay(stockCode);
 		
 	}
@@ -264,16 +265,38 @@ public class DataInterfaceImpl implements IDataInterface
 	 * 获取一只股票的最晚日期
 	 * @param stockCode 股票编号
 	 * @return 最晚日期
+	 * @throws NullStockIDException 该股票不存在时抛出异常
 	 */
-	public Calendar getMaxDay(String stockCode){
+	public Calendar getMaxDay(String stockCode) throws NullStockIDException{
 		return stock2.getMaxDay(stockCode);
 	}
 	
-//old
-	@Override
-	public List<SingleStockInfoPO> getSingleStockInfo_byEnd(String stockcode, Calendar begin, Calendar end) {
-		return stock.getSingleStockInfo(stockcode, begin, end);
+	
+	/**
+	 * 获取一支股票从起点时间（交易日）往后推x个交易日的全部数据（x>=0）
+	 * @param stockcode String,股票编号
+	 * @param begin Calendar,起始时间
+	 * @param last int,长度
+	 * @return 一个股票信息的对象的列表
+	 * @throws NullStockIDException 该股票不存在时抛出异常
+	 */
+	public List<SingleStockInfoPO> getSingleStockInfo_byLast(String stockcode,Calendar begin,int last) throws NullStockIDException{
+		return stock2.getSingleStockInfo_byLast(stockcode, begin, last);
 	}
+	/**
+	 * 获取一支股票从起始时间到终止时间的所有信息
+	 * @param stockcode String,股票编号
+	 * @param begin Calendar,起始时间
+	 * @param end Calendar,终止时间
+	 * @return 一个股票信息的对象的列表
+	 * @throws NullStockIDException 该股票不存在时抛出异常
+	 */
+	public List<SingleStockInfoPO> getSingleStockInfo_byEnd(String stockcode, Calendar begin, Calendar end) throws NullStockIDException {
+		return stock2.getSingleStockInfo_ByEnd(stockcode, begin, end);
+	}
+	
+//old
+
 
 	@Override
 	public List<SingleStockInfoPO> getMarketByDate(Calendar date) {
@@ -283,16 +306,5 @@ public class DataInterfaceImpl implements IDataInterface
 	
 ////uncompleted
 	
-	
-	/**
-	 * 获取一支股票从起点时间（交易日）往后推x个交易日的全部数据（x>=0）
-	 * @param stockcode String,股票编号
-	 * @param begin Calendar,起始时间
-	 * @param last int,长度
-	 * @return 一个股票信息的对象的列表
-	 */
-	public List<SingleStockInfoPO> getSingleStockInfo_byLast(String stockcode,Calendar begin,int last){
-		return null;
-	}
 	
 }

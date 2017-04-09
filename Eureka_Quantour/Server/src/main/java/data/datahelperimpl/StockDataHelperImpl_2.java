@@ -55,23 +55,6 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 		new StockDataHelperImpl_2();
 	}
 	
-
-	@Override
-	public List<StockSetInfoPO> getStockInfoinSetStopBy_last(List<String> set, int startDate, int endDate) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	/**
-	 * 获取某个软件自带的股票池的股票的某天信息
-	 * @param set 股票池名称
-	 * @param date 日期
-	 * @param last 往后推的天数时间（至少为0天）
-	 * @return List<StockSetInfoPO> 股票池信息的po的列表
-	 */
-	public List<StockSetInfoPO> getStockInfoinSetStopBy_end(List<String> set,int date,int last){
-		return null;
-	}
-	
 	/**
 	 * 初始化
 	 */
