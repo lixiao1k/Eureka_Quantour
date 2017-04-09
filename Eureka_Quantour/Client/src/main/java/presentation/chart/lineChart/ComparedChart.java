@@ -7,15 +7,18 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import presentation.chart.chartService;
 import presentation.chart.function.CatchMouseMove;
 import presentation.chart.function.CatchMouseMoveService;
+import presentation.chart.function.CommonSet;
+import presentation.chart.function.CommonSetService;
 import presentation.chart.function.ListToArray;
 import presentation.chart.function.ListToArrayService;
+import vo.ComparedInfoVO;
+import vo.YieldChartDataVO;
 
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +33,7 @@ public class ComparedChart implements chartService{
 
 	private CatchMouseMoveService catchMouseMove = new CatchMouseMove();
 	private ListToArrayService listToArray = new ListToArray();
+	private CommonSetService commonSet = new CommonSet();
 	
 	private AnchorPane pane = new AnchorPane();
 	private Label info = new Label();
@@ -38,13 +42,13 @@ public class ComparedChart implements chartService{
 	
     private NumberAxis yAxis;
     private CategoryAxis xAxis;
-    private SimpleDateFormat sdf = new SimpleDateFormat("yy:MM:dd");
 
     private LineChart<String, Number> lineChart;
     private Map<String, String> dataMap = new HashMap<String,String>();
     private String[] dates;
 
-    public ComparedChart(Calendar[] date, List<Double[]> doubleList, List<String> dataName) {
+    public ComparedChart(){};
+    private ComparedChart(Calendar[] date, List<Double[]> doubleList, List<String> dataName) {
         xAxis = new CategoryAxis();
         xAxis.setGapStartAndEnd(false);
         xAxis.setTickLabelsVisible(false);
@@ -60,12 +64,7 @@ public class ComparedChart implements chartService{
         lineChart.setVerticalGridLinesVisible(false);
         lineChart.setCreateSymbols(false);
         
-        dates = new String[date.length];
-        for(int i=0; i<date.length; i++)
-        	dates[i] = sdf.format(date[i].getTime());
-        
-        begin.setText(dates[0]);
-        end.setText(dates[dates.length-1]);
+        dates = listToArray.formatCalendar(date);
         
         String[] dataStrings = new String[date.length];
         for(int i=0; i<doubleList.size(); i++){
@@ -102,6 +101,36 @@ public class ComparedChart implements chartService{
         }
     }
     
+    public ComparedChart setData(YieldChartDataVO ycd){
+    	Calendar[] date = listToArray.changeCalendar(ycd.getDatelist());
+    	List<Double[]> doubleList = new ArrayList<>();
+    	List<String> dataName = new ArrayList<>();
+    	doubleList.add( listToArray.changeDouble(ycd.getJizhunlist()) );
+    	dataName.add("基础");
+    	doubleList.add( listToArray.changeDouble(ycd.getCeluelist()) );
+    	dataName.add("策略");
+    	return new ComparedChart( date, doubleList, dataName );
+    }
+    
+    public ComparedChart setData(ComparedInfoVO ci){
+    	Calendar[] date = ci.getDate();
+    	List<Double[]> doubleList = new ArrayList<>();
+    	List<String> dataName = new ArrayList<>();
+    	double[] Ad = ci.getLogYieldA();
+    	double[] Bd = ci.getLogYieldB();
+    	Double[] dA = new Double[Ad.length];
+    	Double[] dB = new Double[Bd.length];
+    	for(int i=0; i<Ad.length; i++){
+    		dA[i] = Ad[i];
+    		dB[i] = Bd[i];
+    	}
+    	doubleList.add(dA);
+    	doubleList.add(dB);
+    	dataName.add(ci.getNameA());
+    	dataName.add(ci.getNameB());
+    	return new ComparedChart( date, doubleList, dataName );
+    }
+    
     @Override
     public Pane getchart(int width, int height) {
     	if( width>0 ){
@@ -114,19 +143,16 @@ public class ComparedChart implements chartService{
     	}
     	
     	info = catchMouseMove.createCursorGraphCoordsMonitorLabel(lineChart, dataMap, dates);
+    	begin = commonSet.beignData( dates[0], (int)Math.max(height, lineChart.getWidth()) );
+    	end = commonSet.endData(dates[dates.length-1], 
+    			(int)Math.max(width, lineChart.getWidth()), 
+    			(int)Math.max(height, lineChart.getWidth()) );
     	
     	pane.getChildren().add(info);
     	pane.getChildren().add(lineChart);
     	pane.getChildren().add(begin);
     	pane.getChildren().add(end);
     	AnchorPane.setTopAnchor(lineChart, 10.0);
-
-    	begin.setTextFill(Color.WHITE);
-    	end.setTextFill(Color.WHITE);
-    	begin.setLayoutX(40);
-    	end.setLayoutX( Math.max(width, lineChart.getWidth())-60 );
-    	begin.setLayoutY( Math.max(height, lineChart.getWidth())-15 );
-    	end.setLayoutY( Math.max(height, lineChart.getWidth())-15 );
     	
     	info.getStylesheets().add(
     			getClass().getResource("/styles/InfoLabel.css").toExternalForm() );

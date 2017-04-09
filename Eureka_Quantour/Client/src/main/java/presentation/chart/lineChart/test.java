@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import vo.EMAInfoVO;
+import vo.YieldChartDataVO;
 
 /**
  * 
@@ -35,20 +36,15 @@ public class test extends Application{
     		jizhunlist.add( Math.random() );
     		celuelist.add( Math.random() ); 
     	}
-    	Calendar[] dates = new Calendar[datelist.size()];
     	Double[] d1 = new Double[jizhunlist.size()];
     	Double[] d2 = new Double[celuelist.size()];
     	for(int i=0; i<datelist.size(); i++){
-    		dates[i] = datelist.get(i);
     		d1[i] = jizhunlist.get(i);
     		d2[i] = celuelist.get(i);
     	}
-    	List<Double[]> doubleList = new ArrayList<Double[]>();
-    	doubleList.add(d1);
-    	doubleList.add(d2);
-    	dataName.add("hello");
-    	dataName.add("fuck");
-		comparedChart = new ComparedChart(dates, doubleList, dataName);
+    	
+    	YieldChartDataVO ycd = new YieldChartDataVO(datelist,jizhunlist, celuelist);
+		comparedChart = new ComparedChart().setData(ycd);
 		comparedChart.setName("ComparedChart");
     }
     
@@ -114,18 +110,18 @@ public class test extends Application{
     @Override
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
-//		new test().testComparedChart();
+		new test().testComparedChart();
 //		new test().testSingleLineChart();
-    	new test().testEMAChart();
+//    	new test().testEMAChart();
 		try{
 	        Stage dialogStage = new Stage();
 	        dialogStage.setTitle("Birthday Statistics");
 	        dialogStage.initModality(Modality.WINDOW_MODAL);
 	        dialogStage.initOwner(primaryStage);
 	        
-//	        Scene scene = new Scene(comparedChart.getchart(334, 200));
+	        Scene scene = new Scene(comparedChart.getchart(334, 200));
 //	        Scene scene = new Scene(singleLineChart.getchart(334, 200));
-	        Scene scene = new Scene(emaChart.getchart(334, 200));
+//	        Scene scene = new Scene(emaChart.getchart(334, 200));
 	        dialogStage.setScene(scene);
 
 	        dialogStage.show();

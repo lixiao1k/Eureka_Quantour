@@ -11,6 +11,8 @@ import javafx.scene.paint.Color;
 import presentation.chart.chartService;
 import presentation.chart.function.CatchMouseMove;
 import presentation.chart.function.CatchMouseMoveService;
+import presentation.chart.function.CommonSet;
+import presentation.chart.function.CommonSetService;
 import presentation.chart.function.ListToArray;
 import presentation.chart.function.ListToArrayService;
 import vo.EMAInfoVO;
@@ -35,6 +37,7 @@ public class EMAChart implements chartService {
 	
 	private CatchMouseMoveService catchMouseMove = new CatchMouseMove();
 	private ListToArrayService listToArray = new ListToArray();
+	private CommonSetService commonSet = new CommonSet();
 	
 	private AnchorPane pane = new AnchorPane();
 	private Label info = new Label();
@@ -66,9 +69,6 @@ public class EMAChart implements chartService {
         lineChart.setLegendVisible(false);
         
         dates = listToArray.formatCalendar(EMAList.get(0).getDate());
-        
-        begin.setText(dates[0]);
-        end.setText(dates[dates.length-1]);
     	
     	List<Double[]> doubleList = new ArrayList<>();
     	String[] dataName = {"1", "2", "3", "4", "5"};
@@ -129,19 +129,16 @@ public class EMAChart implements chartService {
     		lineChart.setMaxHeight(height-10);
     	}
     	info = catchMouseMove.createCursorGraphCoordsMonitorLabel(lineChart, dataMap, dates);
+    	begin = commonSet.beignData( dates[0], (int)Math.max(height, lineChart.getWidth()) );
+    	end = commonSet.endData(dates[dates.length-1], 
+    			(int)Math.max(width, lineChart.getWidth()), 
+    			(int)Math.max(height, lineChart.getWidth()) );
     	
     	pane.getChildren().add(info);
     	pane.getChildren().add(lineChart);
     	pane.getChildren().add(begin);
     	pane.getChildren().add(end);
     	AnchorPane.setTopAnchor(lineChart, 10.0);
-    	
-    	begin.setTextFill(Color.WHITE);
-    	end.setTextFill(Color.WHITE);
-    	begin.setLayoutX(40);
-    	end.setLayoutX( Math.max(width, lineChart.getWidth())-60 );
-    	begin.setLayoutY( Math.max(height, lineChart.getWidth())-15 );
-    	end.setLayoutY( Math.max(height, lineChart.getWidth())-15 );
     	
     	info.getStylesheets().add(
     			getClass().getResource("/styles/InfoLabel.css").toExternalForm() );

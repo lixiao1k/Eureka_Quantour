@@ -9,7 +9,31 @@ import java.util.List;
  */
 public class YieldChartDataVO implements Serializable{
 
-    private static final long serialVersionUID=3607793986865623023L;
+    public List<Calendar> getDatelist() {
+		return datelist;
+	}
+
+	public void setDatelist(List<Calendar> datelist) {
+		this.datelist = datelist;
+	}
+
+	public List<Double> getJizhunlist() {
+		return jizhunlist;
+	}
+
+	public void setJizhunlist(List<Double> jizhunlist) {
+		this.jizhunlist = jizhunlist;
+	}
+
+	public List<Double> getCeluelist() {
+		return celuelist;
+	}
+
+	public void setCeluelist(List<Double> celuelist) {
+		this.celuelist = celuelist;
+	}
+
+	private static final long serialVersionUID=3607793986865623023L;
     private List<Calendar> datelist;
     private List<Double> jizhunlist;
     private List<Double> celuelist;

@@ -10,4 +10,6 @@ public interface ListToArrayService {
 	Calendar[] changeCalendar(List<Calendar> list);
 	
 	String[] formatCalendar(List<Calendar> list);
+	
+	String[] formatCalendar(Calendar[] list);
 }

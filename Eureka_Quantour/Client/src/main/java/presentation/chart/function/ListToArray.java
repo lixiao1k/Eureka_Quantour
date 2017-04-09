@@ -37,4 +37,13 @@ public class ListToArray implements ListToArrayService{
 		return cal;
 	}
 
+	@Override
+	public String[] formatCalendar(Calendar[] list) {
+		// TODO Auto-generated method stub
+		String[] cal = new String[list.length];
+		for( int i=0; i<cal.length; i++)
+			cal[i] = sdf.format(list[i].getTime());
+		return cal;
+	}
+
 }
