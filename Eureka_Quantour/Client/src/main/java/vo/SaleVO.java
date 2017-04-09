@@ -12,4 +12,19 @@ public class SaleVO implements Serializable {
 
     private String tiaocangjiage="收盘价";
 
+    public int getTiaocangqi() {
+        return tiaocangqi;
+    }
+
+    public void setTiaocangqi(int tiaocangqi) {
+        this.tiaocangqi = tiaocangqi;
+    }
+
+    public String getTiaocangjiage() {
+        return tiaocangjiage;
+    }
+
+    public void setTiaocangjiage(String tiaocangjiage) {
+        this.tiaocangjiage = tiaocangjiage;
+    }
 }

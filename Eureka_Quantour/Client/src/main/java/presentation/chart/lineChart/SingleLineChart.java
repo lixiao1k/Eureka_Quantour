@@ -7,16 +7,17 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import presentation.chart.chartService;
-import presentation.chart.show.CatchMouseMove;
-import presentation.chart.show.CatchMouseMoveService;
+import presentation.chart.function.CatchMouseMove;
+import presentation.chart.function.CatchMouseMoveService;
+import presentation.chart.function.CommonSet;
+import presentation.chart.function.CommonSetService;
+import presentation.chart.function.ListToArray;
+import presentation.chart.function.ListToArrayService;
 
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,6 +28,8 @@ import java.util.Map;
 public class SingleLineChart implements chartService{
 
 	private CatchMouseMoveService catchMouseMove = new CatchMouseMove();
+	private ListToArrayService listToArray = new ListToArray();
+	private CommonSetService commonSet = new CommonSet();
 
 	private AnchorPane pane = new AnchorPane();
 	private Label info = new Label();
@@ -35,7 +38,6 @@ public class SingleLineChart implements chartService{
 	
     private NumberAxis yAxis;
     private CategoryAxis xAxis;
-    private SimpleDateFormat sdf = new SimpleDateFormat("yy:MM:dd");
 
     private LineChart<String, Number> lineChart;
     private Map<String, String> dataMap = new HashMap<String,String>();
@@ -57,12 +59,7 @@ public class SingleLineChart implements chartService{
         lineChart.setVerticalGridLinesVisible(false);
         lineChart.setCreateSymbols(false);
         
-        dates = new String[date.length];
-        for(int i=0; i<date.length; i++)
-        	dates[i] = sdf.format(date[i].getTime());
-        
-        begin.setText(dates[0]);
-        end.setText(dates[dates.length-1]);
+        dates = listToArray.formatCalendar(date);
         
         Double[] datas = doubleList;
         String[] dataStrings = new String[date.length];
@@ -107,19 +104,16 @@ public class SingleLineChart implements chartService{
     	}
     	
     	info = catchMouseMove.createCursorGraphCoordsMonitorLabel(lineChart, dataMap, dates);
+    	begin = commonSet.beignData( dates[0], (int)Math.max(height, lineChart.getWidth()) );
+    	end = commonSet.endData(dates[dates.length-1], 
+    			(int)Math.max(width, lineChart.getWidth()), 
+    			(int)Math.max(height, lineChart.getWidth()) );
     	
     	pane.getChildren().add(info);
     	pane.getChildren().add(lineChart);
     	pane.getChildren().add(begin);
     	pane.getChildren().add(end);
     	AnchorPane.setTopAnchor(lineChart, 10.0);
-
-    	begin.setTextFill(Color.WHITE);
-    	end.setTextFill(Color.WHITE);
-    	begin.setLayoutX(50);
-    	end.setLayoutX( Math.max(width, lineChart.getWidth())-70 );
-    	begin.setLayoutY( Math.max(height, lineChart.getWidth())-15 );
-    	end.setLayoutY( Math.max(height, lineChart.getWidth())-15 );
     	
     	info.getStylesheets().add(
     			getClass().getResource("/styles/InfoLabel.css").toExternalForm() );
