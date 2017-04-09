@@ -1,6 +1,12 @@
 package data.common;
 
-public class StockTrie {
+import java.io.Serializable;
+
+public class StockTrie implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5542391849125257423L;
 	private TrieNode root;
 	private StockLeaf min;
 	private StockLeaf max;

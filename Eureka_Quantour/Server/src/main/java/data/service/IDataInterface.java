@@ -217,4 +217,13 @@ public interface IDataInterface
 	 * @throws NullDateException 起始日期非交易日
 	 */
 	public List<StockSetInfoPO> getStockInfoinSet_forwardByLast(String set,Calendar date,String userName,int last) throws NullDateException;
+	/**
+	 * 获取某个股票池的股票的某天与往前x天的信息
+	 * @param set 股票池名称
+	 * @param date 日期
+	 * @param last 往前推的交易日数（至少为0天）
+	 * @return List<StockSetInfoPO> 股票池信息的列表
+	 * @throws NullDateException 起始日期非交易日
+	 */
+	public List<StockSetInfoPO> getStockInfoinSet_forwardByLast(String set,Calendar date,int last) throws NullDateException;
 }

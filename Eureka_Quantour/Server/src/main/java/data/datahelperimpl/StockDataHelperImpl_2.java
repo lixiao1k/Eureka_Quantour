@@ -3,8 +3,11 @@ package data.datahelperimpl;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
@@ -68,8 +71,8 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 		loadData();
 		long t2=System.currentTimeMillis();
 		System.out.println("映射到内存的时间"+(t2-t1));
-	    
-		test();
+//	    
+//		test();
 	}
 	/**
 	 * 初始化装载数据的容器
@@ -105,18 +108,48 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 	 */
 	private void loadData(){
 		try {
+			int BUFFER_SIZE=1024*8;
 			long ttt1=System.currentTimeMillis();	
 			FileInputStream is=new FileInputStream("config/resources/mainData");
 			FileChannel fc=is.getChannel();
 			System.out.println(fc.size());
 			mbb_data=fc.map(MapMode.READ_ONLY, 0, fc.size());
+			
+			byte[] dst1=new byte[BUFFER_SIZE];
+			byte[] dst2=new byte[(int) (fc.size()%BUFFER_SIZE)];
+			for(int i=0;i<fc.size();i+=BUFFER_SIZE){
+				if(fc.size()-i>BUFFER_SIZE){
+					mbb_data.get(dst1);
+				}
+				else{
+					mbb_data.get(dst2);
+				}
+			}
+			dst1=null;
+			dst2=null;
+			
 			long ttt2=System.currentTimeMillis();
 			System.out.println("获取数据时间"+(ttt2-ttt1));	
 			is.close();
 			FileInputStream is2=new FileInputStream("config/resources/mainPosition");
 			FileChannel fc2=is2.getChannel();
 			System.out.println(fc2.size());
+			
 			mbb_position=fc2.map(MapMode.READ_ONLY, 0, fc2.size());
+			
+			dst1=new byte[BUFFER_SIZE];
+			dst2=new byte[(int) (fc2.size()%BUFFER_SIZE)];
+			for(int i=0;i<fc2.size();i+=BUFFER_SIZE){
+				if(fc2.size()-i>BUFFER_SIZE){
+					mbb_position.get(dst1);
+				}
+				else{
+					mbb_position.get(dst2);
+				}
+			}
+			dst1=null;
+			dst2=null;
+			
 			long tttt2=System.currentTimeMillis();
 			System.out.println("获取数据时间"+(tttt2-ttt1));	
 			is2.close();
@@ -130,7 +163,7 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 				int month= (cal -year * 10000 ) / 100;
 				int day=cal - year * 10000 - month * 100;
 				datetree.add(year, month, day, code, count);
-//				stocktree.add(year, month, day, code, count);
+				stocktree.add(year, month, day, code, count);
 				count++;
 			}
 			br.close();
@@ -462,12 +495,14 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 	 * @throws NullDateException 缺少该天信息
 	 */
 	public void remain_forAllinfo(int date) throws NullDateException{
-		leaf_forDatetree=datetree.get(date);
-		datemap=leaf_forDatetree.getDateinfo();
+		leaf_forDatetree=datetree.get(date);	
 		if(!leaf_forDatetree.isLeaf()){
 			throw new NullDateException(date);
 		}
-		previousday=leaf_forDatetree.getCal();
+		else{
+			datemap=leaf_forDatetree.getDateinfo();
+			previousday=leaf_forDatetree.getCal();
+		}
 	}
 	/**
 	 * 将日期往后推一天（针对于汇总信息的表）
@@ -475,11 +510,14 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 	 */
 	public int nextDay_forAllinfo() throws NullDateException{
 		leaf_forDatetree=(DateLeaf) leaf_forDatetree.getNext();
-		datemap=leaf_forDatetree.getDateinfo();
-		if(!leaf_forDatetree.isLeaf()){
+		if(leaf_forDatetree==null){
 			throw new NullDateException(previousday);
 		}
-		return leaf_forDatetree.getCal();
+		else{
+			previousday=leaf_forDatetree.getCal();
+			datemap=leaf_forDatetree.getDateinfo();
+			return leaf_forDatetree.getCal();
+		}
 	}
 	/**
 	 * 将日期往前推一天（针对于汇总信息的表）
@@ -487,11 +525,14 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 	 */
 	public int previousDay_forAllinfo() throws NullDateException{
 		leaf_forDatetree=(DateLeaf) leaf_forDatetree.getPrevious();
-		datemap=leaf_forDatetree.getDateinfo();
-		if(!leaf_forDatetree.isLeaf()){
+		if(leaf_forDatetree==null){
 			throw new NullDateException(previousday);
 		}
-		return leaf_forDatetree.getCal();
+		else{
+			datemap=leaf_forDatetree.getDateinfo();
+			previousday=leaf_forDatetree.getCal();
+			return leaf_forDatetree.getCal();
+		}
 	}
 	/**
 	 * 获取某个软件自带的股票池的股票的某天信息
@@ -520,7 +561,9 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 		if(!leaf_forStocktree.isLeaf()){
 			throw new NullDateException(date);
 		}
-		previousday=leaf_forDatetree.getCal();
+		else{
+			previousday=leaf_forStocktree.getCal();
+		}
 	}
 	/**
 	 * 将日期往后推一天（针对于汇总信息的表）
@@ -528,10 +571,13 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 	 */
 	public int nextDay_forSingleinfo() throws NullDateException{
 		leaf_forStocktree=(StockLeaf) leaf_forStocktree.getNext();
-		if(!leaf_forDatetree.isLeaf()){
+		if(leaf_forStocktree==null){
 			throw new NullDateException(previousday);
 		}
-		return leaf_forStocktree.getCal();
+		else{
+			previousday=leaf_forStocktree.getCal();
+			return leaf_forStocktree.getCal();
+		}
 	}
 	/**
 	 * 获取某个的股票的某天信息（根据停留指针）

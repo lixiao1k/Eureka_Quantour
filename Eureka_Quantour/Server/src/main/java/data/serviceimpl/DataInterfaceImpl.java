@@ -25,11 +25,11 @@ public class DataInterfaceImpl implements IDataInterface
 	private StockDataController_2 stock2;
 	private StockSetDataController stockset;
 	public DataInterfaceImpl(){
-		stock=StockDataController.getInstance();
 		stock2=StockDataController_2.getInstance();
 		user=UserDataController.getInstance();
 		stockset=StockSetDataController.getInstance();
 	}
+//------------------------------------用户------------------------------------
 	/**
 	 * 判断用户是否注册成功，如果成功，登记用户的账号；如果失败，返回错误信息。
 	 * @param username String,用户的登录名
@@ -59,6 +59,7 @@ public class DataInterfaceImpl implements IDataInterface
 	public void signInCheck(String username, String password) throws LogErrorException {
 		user.signInCheck(username, password);
 	}
+//-------------------------------------股票池--------------------------------------
 	/**
 	 * 获取某个用户的自定义股票池
 	 * @param username 用户名
@@ -127,6 +128,7 @@ public class DataInterfaceImpl implements IDataInterface
 	public List<String>  getStockSetInfo(String stockSetName){
 		return stockset.getStockSetInfo(stockSetName);
 	}
+//----------------------------------查询单个股票-------------------------------------
 	/**
 	 * 获取股票某一天的数据
 	 * @param stockcode 股票编号
@@ -148,6 +150,50 @@ public class DataInterfaceImpl implements IDataInterface
 	public boolean isMarketDay(Calendar day){
 		return stock2.isMarketDay((Calendar) day.clone());
 	}
+	/**
+	 * 获取一只股票的最早日期
+	 * @param stockCode 股票编号
+	 * @return 最早日期
+	 * @throws NullStockIDException 该股票不存在时抛出异常
+	 */
+	public Calendar getMinDay(String stockCode) throws NullStockIDException{
+		return stock2.getMinDay(stockCode);
+		
+	}
+	/**
+	 * 获取一只股票的最晚日期
+	 * @param stockCode 股票编号
+	 * @return 最晚日期
+	 * @throws NullStockIDException 该股票不存在时抛出异常
+	 */
+	public Calendar getMaxDay(String stockCode) throws NullStockIDException{
+		return stock2.getMaxDay(stockCode);
+	}
+	
+	
+	/**
+	 * 获取一支股票从起点时间（交易日）往后推x个交易日的全部数据（x>=0）
+	 * @param stockcode String,股票编号
+	 * @param begin Calendar,起始时间
+	 * @param last int,长度
+	 * @return 一个股票信息的对象的列表
+	 * @throws NullStockIDException 该股票不存在时抛出异常
+	 */
+	public List<SingleStockInfoPO> getSingleStockInfo_byLast(String stockcode,Calendar begin,int last) throws NullStockIDException{
+		return stock2.getSingleStockInfo_byLast(stockcode, (Calendar) begin.clone(), last);
+	}
+	/**
+	 * 获取一支股票从起始时间到终止时间的所有信息
+	 * @param stockcode String,股票编号
+	 * @param begin Calendar,起始时间
+	 * @param end Calendar,终止时间
+	 * @return 一个股票信息的对象的列表
+	 * @throws NullStockIDException 该股票不存在时抛出异常
+	 */
+	public List<SingleStockInfoPO> getSingleStockInfo_byEnd(String stockcode, Calendar begin, Calendar end) throws NullStockIDException {
+		return stock2.getSingleStockInfo_ByEnd(stockcode,(Calendar) begin.clone(), (Calendar)end.clone());
+	}
+//----------------------------------------查询股票池----------------------------------
 	/**
 	 * 获取某个软件自带的股票池的股票的某天信息
 	 * @param set 股票池名称
@@ -251,49 +297,6 @@ public class DataInterfaceImpl implements IDataInterface
 		return stock2.getStockInfoinSet_forwardByLast(stocklist, (Calendar) date.clone(), last);
 	}
 	
-	/**
-	 * 获取一只股票的最早日期
-	 * @param stockCode 股票编号
-	 * @return 最早日期
-	 * @throws NullStockIDException 该股票不存在时抛出异常
-	 */
-	public Calendar getMinDay(String stockCode) throws NullStockIDException{
-		return stock2.getMinDay(stockCode);
-		
-	}
-	/**
-	 * 获取一只股票的最晚日期
-	 * @param stockCode 股票编号
-	 * @return 最晚日期
-	 * @throws NullStockIDException 该股票不存在时抛出异常
-	 */
-	public Calendar getMaxDay(String stockCode) throws NullStockIDException{
-		return stock2.getMaxDay(stockCode);
-	}
-	
-	
-	/**
-	 * 获取一支股票从起点时间（交易日）往后推x个交易日的全部数据（x>=0）
-	 * @param stockcode String,股票编号
-	 * @param begin Calendar,起始时间
-	 * @param last int,长度
-	 * @return 一个股票信息的对象的列表
-	 * @throws NullStockIDException 该股票不存在时抛出异常
-	 */
-	public List<SingleStockInfoPO> getSingleStockInfo_byLast(String stockcode,Calendar begin,int last) throws NullStockIDException{
-		return stock2.getSingleStockInfo_byLast(stockcode, begin, last);
-	}
-	/**
-	 * 获取一支股票从起始时间到终止时间的所有信息
-	 * @param stockcode String,股票编号
-	 * @param begin Calendar,起始时间
-	 * @param end Calendar,终止时间
-	 * @return 一个股票信息的对象的列表
-	 * @throws NullStockIDException 该股票不存在时抛出异常
-	 */
-	public List<SingleStockInfoPO> getSingleStockInfo_byEnd(String stockcode, Calendar begin, Calendar end) throws NullStockIDException {
-		return stock2.getSingleStockInfo_ByEnd(stockcode, begin, end);
-	}
 	
 //old
 

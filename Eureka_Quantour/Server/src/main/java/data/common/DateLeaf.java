@@ -3,6 +3,10 @@ package data.common;
 import java.util.HashMap;
 
 public class DateLeaf extends TrieNode{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -689936797450910210L;
 	private int cal;
 	private TrieNode previous;
 	private HashMap<Integer,Integer> dateinfo;

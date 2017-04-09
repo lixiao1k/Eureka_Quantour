@@ -1,6 +1,12 @@
 package data.common;
 
-public class DateTrie {
+import java.io.Serializable;
+
+public class DateTrie implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8358562782181512677L;
 	private TrieNode root;
 	private DateLeaf min;
 	private DateLeaf max;

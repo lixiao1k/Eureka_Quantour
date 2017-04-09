@@ -1,6 +1,10 @@
 package data.common;
 
 public class StockLeaf extends TrieNode{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3847097557621624415L;
 	private int cal;
 	private TrieNode previous;
 	private int dateinfo;

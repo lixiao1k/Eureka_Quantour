@@ -1,8 +1,13 @@
 package data.common;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class StockHashTree {
+public class StockHashTree implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5485773434826281556L;
 	private HashMap<Integer,StockTrie> hashtree;
 	public StockHashTree(){
 		setHashtree(new HashMap<Integer,StockTrie>());
