@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import data.parse.Parse;
 import vo.SingleStockInfoVO;
 /**
  * SingleStockInfo的PO类，用来维护SingleStock的持久对象
@@ -35,6 +36,7 @@ public class SingleStockInfoPO
 	private double rate;//未复权涨跌幅
 	private double subrate;//前复权涨跌幅
 	private double aftrate;//后复权涨跌幅
+	
 	
 	public SingleStockInfoPO(){
 	}
@@ -91,6 +93,25 @@ public class SingleStockInfoPO
 		setRate(_rate);
 		setSubrate(_subrate);
 		setAftrate(_aftrate);
+	}
+	public String toString(){
+		return "名字："+name+","+
+				"编号："+code+","+
+				"日期："+Parse.getInstance().getIntDate(date)+","+
+				"开盘："+open+","+
+				"最高："+high+","+
+				"最低："+low+","+
+				"交易量："+volume+","+
+				"收盘："+close+","+
+				"前复权收盘："+subClose+","+
+				"后复权收盘："+aftClose+","+
+				"昨日收盘："+lclose+","+
+				"昨日前复权收盘："+lsubClose+","+
+				"昨日后复权收盘："+laftClose+","+
+				"涨跌幅："+rate+","+
+				"前复权涨跌幅："+subrate+","+
+				"后复权涨跌幅："+aftrate+","
+				;
 	}
 	/**
 	 * 新的构造方法，其余的全作废

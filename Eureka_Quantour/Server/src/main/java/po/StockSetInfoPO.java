@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import data.parse.Parse;
+
 public class StockSetInfoPO {
 	private Calendar date;//该天日期
 	private List<String> haltList;//停牌股票的股票编号列表
@@ -41,7 +43,20 @@ public class StockSetInfoPO {
 		setHaltNumber(_haltnum);
 		setAllhalt(_allhalt);
 	}
-	
+	public String toString(){
+//		String result="";
+//		int size=0;
+//		if(stockList.size()>=30){
+//			size=30;
+//		}
+//		else{
+//			size=stockList.size();
+//		}
+//		for(int i=0;i<size;i++){
+//			result=result+stockList.get(i).toString()+"\n";
+//		}
+		return "日期"+Parse.getInstance().getIntDate(date)+"开盘股票个数"+stockList.size()+",停牌股票个数"+haltNumber;
+	}
 	/**
 	 * 不存在停牌股票时的构造方法
 	 * @param _date 日期

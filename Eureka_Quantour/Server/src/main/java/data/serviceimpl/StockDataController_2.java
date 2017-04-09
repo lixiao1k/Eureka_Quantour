@@ -96,19 +96,26 @@ public class StockDataController_2 {
 		String info;
 		int code;
 		StockSetInfoPO setinfo=new StockSetInfoPO(date);
+		long t1=0;
+		long t2=0;
+		long tota=0;
 		for(String strCode:set){
 			code=parse.strToint(strCode);
 			try {
+				t1=System.currentTimeMillis();
 				info=datahelper.getStockInfoinSet_throughRemain(code);
+				t2=System.currentTimeMillis();
 				setinfo.addStockInfo(info, strCode, translate.trans_codeToname(strCode));
 			} catch (StockHaltingException e) {
 				count++;
 				setinfo.addHalt(strCode,translate.trans_codeToname(strCode));
 			}
+			tota=tota+t2-t1;
 		}
 		if(count==size){
 			setinfo.allhalt();
 		}
+		System.out.println(tota);
 		return setinfo;
 	}
 
@@ -152,6 +159,7 @@ public class StockDataController_2 {
 		result.add(setinfo);
 		last--;
 		while(last>=0){
+			count=0;
 			int tempcal;
 			try{
 				tempcal=datahelper.nextDay_forAllinfo();
@@ -170,12 +178,13 @@ public class StockDataController_2 {
 					tempset.addStockInfo(datahelper.getStockInfoinSet_throughRemain(setlist.get(i)), set.get(i), namelist.get(i));
 				} catch (StockHaltingException e) {
 					count++;
-					setinfo.addHalt(set.get(i),namelist.get(i));
+					tempset.addHalt(set.get(i),namelist.get(i));
 				}
 			}
 			if(count==set.size()){
-				setinfo.allhalt();
+				tempset.allhalt();
 			}
+			result.add(tempset);
 			last--;
 		}
 		return result;
@@ -231,6 +240,7 @@ public class StockDataController_2 {
 		}
 		result.add(setinfo);
 		while(true){
+			count=0;
 			int nextday;
 			try{
 				nextday=datahelper.nextDay_forAllinfo();
@@ -252,12 +262,13 @@ public class StockDataController_2 {
 					tempset.addStockInfo(datahelper.getStockInfoinSet_throughRemain(setlist.get(i)), set.get(i), namelist.get(i));
 				} catch (StockHaltingException e) {
 					count++;
-					setinfo.addHalt(set.get(i),namelist.get(i));
+					tempset.addHalt(set.get(i),namelist.get(i));
 				}
 			}
 			if(count==set.size()){
-				setinfo.allhalt();
+				tempset.allhalt();
 			}
+			result.add(tempset);
 		}
 		return result;
 	}
@@ -321,12 +332,13 @@ public class StockDataController_2 {
 					tempset.addStockInfo(datahelper.getStockInfoinSet_throughRemain(setlist.get(i)), set.get(i), namelist.get(i));
 				} catch (StockHaltingException e) {
 					count++;
-					setinfo.addHalt(set.get(i),namelist.get(i));
+					tempset.addHalt(set.get(i),namelist.get(i));
 				}
 			}
 			if(count==set.size()){
-				setinfo.allhalt();
+				tempset.allhalt();
 			}
+			result.add(tempset);
 			last--;
 		}
 		return result;
@@ -371,7 +383,7 @@ public class StockDataController_2 {
 		String strCode;
 		try{
 			code=Integer.parseInt(stockCode);
-			if(translate.containsCode(parse.supCode(stockCode))){
+			if(!translate.containsCode(parse.supCode(stockCode))){
 				throw new NullStockIDException(stockCode);
 			}
 			else{
@@ -422,6 +434,7 @@ public class StockDataController_2 {
 			} catch (NullDateException e) {
 				break;
 			}
+			last--;
 		}
 		return result;
 	}

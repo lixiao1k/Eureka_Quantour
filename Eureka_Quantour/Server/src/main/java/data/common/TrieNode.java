@@ -1,9 +1,14 @@
 package data.common;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TrieNode {
+public class TrieNode implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8519107065167533342L;
 	private TrieNode parent;
 	private List<TrieNode> child;
 	private int childsize;
