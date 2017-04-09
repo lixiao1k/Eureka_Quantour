@@ -8,6 +8,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import vo.EMAInfoVO;
 
 /**
  * 
@@ -22,6 +23,7 @@ public class test extends Application{
     private List<Double> celuelist = new ArrayList<Double>();;
     private static ComparedChart comparedChart;
     private static SingleLineChart singleLineChart;
+    private static EMAChart emaChart;
     
     private void testComparedChart(){
     	Calendar cal = Calendar.getInstance();
@@ -68,19 +70,62 @@ public class test extends Application{
 		singleLineChart.setName("SingleLineChart");
     }
     
+    private void testEMAChart(){
+    	List<EMAInfoVO> emaList = new ArrayList<>();
+    	
+    	Calendar cal = Calendar.getInstance();	
+    	int j = 2;
+    	for(int i=0; i<20; i++,j++){
+    		cal.set(2014, 3, j);
+    		datelist.add( (Calendar)cal.clone() );
+    		jizhunlist.add( Math.random() ); 
+    	}
+    	EMAInfoVO emaVO1 = new EMAInfoVO(datelist, jizhunlist, 20);
+    	emaList.add(emaVO1);
+    	jizhunlist = new ArrayList<>();
+    	for( int k=0; k<20; k++){
+    		jizhunlist.add( Math.random() );
+    	}
+    	EMAInfoVO emaVO2 = new EMAInfoVO(datelist, jizhunlist, 20);
+    	emaList.add(emaVO2);
+    	jizhunlist = new ArrayList<>();
+    	for( int k=0; k<20; k++){
+    		jizhunlist.add( Math.random() );
+    	}
+    	EMAInfoVO emaVO3 = new EMAInfoVO(datelist, jizhunlist, 20);
+    	emaList.add(emaVO3);
+    	jizhunlist = new ArrayList<>();
+    	for( int k=0; k<20; k++){
+    		jizhunlist.add( Math.random() );
+    	}
+    	EMAInfoVO emaVO4 = new EMAInfoVO(datelist, jizhunlist, 20);
+    	emaList.add(emaVO4);
+    	jizhunlist = new ArrayList<>();
+    	for( int k=0; k<20; k++){
+    		jizhunlist.add( Math.random() );
+    	}
+    	EMAInfoVO emaVO5 = new EMAInfoVO(datelist, jizhunlist, 20);
+    	emaList.add(emaVO5);
+    	
+    	emaChart = new EMAChart(emaList);
+    	emaChart.setName("EMAChart");
+    }
+    
     @Override
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
-		new test().testComparedChart();
+//		new test().testComparedChart();
 //		new test().testSingleLineChart();
+    	new test().testEMAChart();
 		try{
 	        Stage dialogStage = new Stage();
 	        dialogStage.setTitle("Birthday Statistics");
 	        dialogStage.initModality(Modality.WINDOW_MODAL);
 	        dialogStage.initOwner(primaryStage);
 	        
-	        Scene scene = new Scene(comparedChart.getchart(334, 200));
+//	        Scene scene = new Scene(comparedChart.getchart(334, 200));
 //	        Scene scene = new Scene(singleLineChart.getchart(334, 200));
+	        Scene scene = new Scene(emaChart.getchart(334, 200));
 	        dialogStage.setScene(scene);
 
 	        dialogStage.show();

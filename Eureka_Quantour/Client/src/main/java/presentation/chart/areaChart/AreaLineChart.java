@@ -8,8 +8,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import presentation.chart.chartService;
-import presentation.chart.show.CatchMouseMove;
-import presentation.chart.show.CatchMouseMoveService;
+import presentation.chart.function.CatchMouseMove;
+import presentation.chart.function.CatchMouseMoveService;
 
 import java.text.NumberFormat;
 import java.util.HashMap;

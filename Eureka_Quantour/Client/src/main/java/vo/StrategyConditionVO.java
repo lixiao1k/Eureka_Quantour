@@ -4,10 +4,37 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Created by huihantao on 2017/3/27.
+ * Created by huihantao on 2017/4/6.
  */
-public abstract class StrategyConditionVO implements Serializable {
-    private static final long serialVersionUID=3607793986868423023L;
-    public String name;
-    public void sort(List<SingleStockInfoVO> list, int num){};
+public class StrategyConditionVO implements Serializable{
+    private static final long serialVersionUID = 3441219408241335848L;
+
+    private String name;
+    private List<Object> extra;
+    private int nums;
+
+    public int getNums() {
+        return nums;
+    }
+
+    public void setNums(int nums) {
+        this.nums = nums;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public List<Object> getExtra() {
+        return extra;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setExtra(List<Object> extra) {
+        this.extra = extra;
+    }
+
 }

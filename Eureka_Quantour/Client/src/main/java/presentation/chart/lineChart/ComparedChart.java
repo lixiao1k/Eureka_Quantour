@@ -9,8 +9,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import presentation.chart.chartService;
-import presentation.chart.show.CatchMouseMove;
-import presentation.chart.show.CatchMouseMoveService;
+import presentation.chart.function.CatchMouseMove;
+import presentation.chart.function.CatchMouseMoveService;
+import presentation.chart.function.ListToArray;
+import presentation.chart.function.ListToArrayService;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -27,7 +29,8 @@ import java.util.Map;
 public class ComparedChart implements chartService{
 
 	private CatchMouseMoveService catchMouseMove = new CatchMouseMove();
-
+	private ListToArrayService listToArray = new ListToArray();
+	
 	private AnchorPane pane = new AnchorPane();
 	private Label info = new Label();
 	private Label begin = new Label();
@@ -77,6 +80,7 @@ public class ComparedChart implements chartService{
 	        	if( j<datas.length && datas[j]!=0 && datas[j]!=Integer.MIN_VALUE ){
 	        		serie.getData().add( new XYChart.Data<>(dates[j], datas[j]) );
 	        		String dataFormat = NumberFormat.getPercentInstance().format(datas[j]);
+	        		
 	        		if( dataStrings[j]!=null )
 	        			dataStrings[j] += "/"+name+" : "+dataFormat;
 	        		else
@@ -119,8 +123,8 @@ public class ComparedChart implements chartService{
 
     	begin.setTextFill(Color.WHITE);
     	end.setTextFill(Color.WHITE);
-    	begin.setLayoutX(50);
-    	end.setLayoutX( Math.max(width, lineChart.getWidth())-70 );
+    	begin.setLayoutX(40);
+    	end.setLayoutX( Math.max(width, lineChart.getWidth())-60 );
     	begin.setLayoutY( Math.max(height, lineChart.getWidth())-15 );
     	end.setLayoutY( Math.max(height, lineChart.getWidth())-15 );
     	
