@@ -12,7 +12,5 @@ import javafx.scene.control.Label;
  * @time: 2017年4月6日
  */
 public interface CatchMouseMoveService {
-
-	Label createCursorGraphCoordsMonitorLabel( XYChart<String, Number> chart, Map<String, String> dataMap, String[] dates );
-	
+	Label catchMouseReturnInfo( XYChart<String, Number> chart, Map<String, String> dataMap, String[] dates, String name,int index );
 }

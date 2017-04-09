@@ -10,6 +10,10 @@ import javafx.scene.layout.Pane;
 import presentation.chart.chartService;
 import presentation.chart.function.CatchMouseMove;
 import presentation.chart.function.CatchMouseMoveService;
+import presentation.chart.function.CommonSet;
+import presentation.chart.function.CommonSetService;
+import presentation.chart.function.ListToArray;
+import presentation.chart.function.ListToArrayService;
 
 import java.text.NumberFormat;
 import java.util.HashMap;
@@ -24,9 +28,14 @@ import java.util.Map;
 public class AreaLineChart implements chartService {
 
 	private CatchMouseMoveService catchMouseMove = new CatchMouseMove();
-
+	private ListToArrayService listToArray = new ListToArray();
+	private CommonSetService commonSet = new CommonSet();
+	
 	private AnchorPane pane = new AnchorPane();
 	private Label info = new Label();
+	private Label begin = new Label();
+	private Label end = new Label();
+	
     private NumberAxis yAxis;
     private CategoryAxis xAxis;
 
@@ -34,27 +43,24 @@ public class AreaLineChart implements chartService {
     private Map<String, String> dataMap = new HashMap<String,String>();
     private String[] cycleSave;
 
-    public AreaLineChart(int[] cycles, double[] dataList, String dataName) {
+    public AreaLineChart(int[] cycles, Double[] dataList, String dataName) {
         xAxis = new CategoryAxis();
         xAxis.setGapStartAndEnd(false);
+        xAxis.setTickLabelsVisible(false);
         
         yAxis = new NumberAxis();
     	yAxis.autoRangingProperty().set(true);
         yAxis.setAnimated(true);
         yAxis.forceZeroInRangeProperty().setValue(false);
-        yAxis.setLowerBound(-1);
-        yAxis.setUpperBound(1);
         
         areaChart = new AreaChart<>(xAxis, yAxis);
         areaChart.setHorizontalGridLinesVisible(false);
         areaChart.setVerticalGridLinesVisible(false);
         areaChart.setCreateSymbols(false);
         
-        cycleSave = new String[cycles.length];
-        for(int i=0; i<cycles.length; i++)
-        	cycleSave[i] = String.valueOf( cycles[i] );
+        cycleSave = listToArray.formatInteger(cycles);
         
-        double[] datas = dataList;
+        Double[] datas = dataList;
         String[] dataStrings = new String[cycles.length];
         
         XYChart.Series<String, Number> serie = new XYChart.Series<>();
@@ -91,16 +97,26 @@ public class AreaLineChart implements chartService {
     		areaChart.setMinWidth(width);
     	}
     	if( height>0 ){
-    		areaChart.setMaxHeight(height);
-    		areaChart.setMaxHeight(height);
+    		areaChart.setMaxHeight(height-20);
+    		areaChart.setMaxHeight(height-20);
     	}
-    	info = catchMouseMove.createCursorGraphCoordsMonitorLabel(areaChart, dataMap, cycleSave);
+    	
+    	info = catchMouseMove.catchMouseReturnInfo(areaChart, dataMap, cycleSave, "周期", 0);
+    	begin = commonSet.beignData( cycleSave[0], (int)Math.max(height, areaChart.getWidth()) );
+    	end = commonSet.endData(cycleSave[cycleSave.length-1], 
+    			(int)Math.max(width, areaChart.getWidth()), 
+    			(int)Math.max(height, areaChart.getWidth()) );
+    	begin.setLayoutX(begin.getLayoutX()+7);
+    	end.setLayoutX(end.getLayoutX()+35);
     	
     	pane.getChildren().add(info);
     	pane.getChildren().add(areaChart);
-    	info.setLayoutX(5);
-    	AnchorPane.setTopAnchor(areaChart, 30.0);
+    	pane.getChildren().add(begin);
+    	pane.getChildren().add(end);
+    	AnchorPane.setTopAnchor(areaChart, 20.0);
     	
+    	info.getStylesheets().add(
+    			getClass().getResource("/styles/InfoLabel.css").toExternalForm() );
     	pane.getStylesheets().add(
     			getClass().getResource("/styles/SingleLineChart.css").toExternalForm() );
         return pane;

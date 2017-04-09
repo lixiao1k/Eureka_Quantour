@@ -8,12 +8,12 @@ import javafx.stage.Stage;
 public class test extends Application{
 
 	private int[] cycles;
-	private double[] dataList;
+	private Double[] dataList;
 	private static AreaLineChart areaLineChart;
 	
 	private void testAreaLineChart(){
 		cycles = new int[20];
-		dataList = new double[20];
+		dataList = new Double[20];
 		
 		int j=2;
 		for(int i=0; i<cycles.length; i++, j+=2){

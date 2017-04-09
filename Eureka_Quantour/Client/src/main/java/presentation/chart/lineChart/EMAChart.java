@@ -7,7 +7,6 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import presentation.chart.chartService;
 import presentation.chart.function.CatchMouseMove;
 import presentation.chart.function.CatchMouseMoveService;
@@ -125,10 +124,10 @@ public class EMAChart implements chartService {
     		lineChart.setMinWidth(width);
     	}
     	if( height>0 ){
-    		lineChart.setMaxHeight(height-10);
-    		lineChart.setMaxHeight(height-10);
+    		lineChart.setMaxHeight(height-20);
+    		lineChart.setMaxHeight(height-20);
     	}
-    	info = catchMouseMove.createCursorGraphCoordsMonitorLabel(lineChart, dataMap, dates);
+    	info = catchMouseMove.catchMouseReturnInfo(lineChart, dataMap, dates, "date", 0);
     	begin = commonSet.beignData( dates[0], (int)Math.max(height, lineChart.getWidth()) );
     	end = commonSet.endData(dates[dates.length-1], 
     			(int)Math.max(width, lineChart.getWidth()), 
@@ -138,7 +137,7 @@ public class EMAChart implements chartService {
     	pane.getChildren().add(lineChart);
     	pane.getChildren().add(begin);
     	pane.getChildren().add(end);
-    	AnchorPane.setTopAnchor(lineChart, 10.0);
+    	AnchorPane.setTopAnchor(lineChart, 20.0);
     	
     	info.getStylesheets().add(
     			getClass().getResource("/styles/InfoLabel.css").toExternalForm() );

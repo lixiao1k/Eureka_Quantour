@@ -1,5 +1,6 @@
 package presentation.chart.function;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.List;
 public class ListToArray implements ListToArrayService{
 
 	private SimpleDateFormat sdf = new SimpleDateFormat("yy:MM:dd");
+	private DecimalFormat df = new DecimalFormat("0.00000");   
 	
 	@Override
 	public Double[] changeDouble(List<Double> list) {
@@ -46,4 +48,40 @@ public class ListToArray implements ListToArrayService{
 		return cal;
 	}
 
+	@Override
+	public String[] formatInteger(int[] list) {
+		// TODO Auto-generated method stub
+		String[] str = new String[list.length];
+		for( int i=0; i<list.length; i++)
+			str[i] = String.valueOf( list[i] );
+		return str;
+	}
+	
+	@Override
+	public String[] formatDouble(List<Double> list) {
+		// TODO Auto-generated method stub
+		String[] str = new String[list.size()];
+		for( int i=0; i<list.size(); i++)
+			str[i] = df.format(list.get(i));
+		return str;
+	}
+
+	@Override
+	public double[] DTod(Double[] list) {
+		// TODO Auto-generated method stub
+		double[] d = new double[list.length];
+		for( int i=0; i<list.length; i++)
+			d[i] = list[i];
+		return d;
+	}
+
+	@Override
+	public Double[] dToD(double[] list) {
+		// TODO Auto-generated method stub
+		Double[] D = new Double[list.length];
+		for( int i=0; i<list.length; i++)
+			D[i] = list[i];
+		return D;
+	}
+	
 }

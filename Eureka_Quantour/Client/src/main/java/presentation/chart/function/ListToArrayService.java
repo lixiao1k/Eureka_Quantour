@@ -12,4 +12,12 @@ public interface ListToArrayService {
 	String[] formatCalendar(List<Calendar> list);
 	
 	String[] formatCalendar(Calendar[] list);
+	
+	String[] formatInteger(int[] list);
+	
+	String[] formatDouble(List<Double> list);
+	
+	double[] DTod(Double[] list);
+	
+	Double[] dToD(double[] list);
 }

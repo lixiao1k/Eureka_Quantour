@@ -1,5 +1,6 @@
 package presentation.chart.klineChart;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,8 +23,6 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.util.Duration;
 import vo.SingleStockInfoVO;
@@ -44,6 +43,7 @@ public class  CandleStickChart extends XYChart<String, Number> {
     protected NumberAxis yAxis;
     protected CategoryAxis xAxis;
     private SimpleDateFormat sdf = new SimpleDateFormat("yy:MM:dd");
+    private DecimalFormat df = new DecimalFormat("0.00000");   
     
     protected Map<String, String> dataMap = new HashMap<String,String>();
     protected String[] dates;
@@ -100,10 +100,10 @@ public class  CandleStickChart extends XYChart<String, Number> {
             String label = sdf.format(bar.getDate().getTime());
             series.getData().add( new XYChart.Data<>(label, bar.getOpen(),bar) );
             dates[i] = label;
-            String info = "open : "+bar.getOpen()+"\n"
-            		     +"close : "+bar.getClose()+"\n"
-            		     +"high : "+bar.getHigh()+"\n"
-            		     +"low : "+bar.getLow();
+            String info = "open : "+df.format( bar.getOpen() )+"\n"
+            		     +"close : "+df.format( bar.getClose() )+"\n"
+            		     +"high : "+df.format( bar.getHigh() )+"\n"
+            		     +"low : "+df.format( bar.getLow() );
             dataMap.put(label, info);
         }
 

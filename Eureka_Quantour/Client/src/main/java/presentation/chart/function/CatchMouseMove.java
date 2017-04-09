@@ -12,8 +12,8 @@ import javafx.scene.input.MouseEvent;
 public class CatchMouseMove implements CatchMouseMoveService{
 	
 	@Override
-	public Label createCursorGraphCoordsMonitorLabel(XYChart<String, Number> chart, Map<String, String> dataMap,
-			String[] dates) {
+	public Label catchMouseReturnInfo(XYChart<String, Number> chart, Map<String, String> dataMap,
+			String[] dates, String name, int index) {
 		// TODO Auto-generated method stub
 
 		Axis<String> xAxis = chart.getXAxis();
@@ -39,7 +39,7 @@ public class CatchMouseMove implements CatchMouseMoveService{
 	    chartBackground.setOnMouseMoved(new EventHandler<MouseEvent>() {
 	    	@Override 
 	    	public void handle(MouseEvent mouseEvent) {
-	    		double temp = mouseEvent.getX()*(dates.length-1)/xAxis.getWidth();
+	    		double temp = (mouseEvent.getX()-index)*(dates.length-1)/(xAxis.getWidth()-index);
 	    		
 	    		if( mouseEvent.getX()>chart.getXAxis().getWidth()/2 )
 	    			cursorCoords.setLayoutX(5);
@@ -66,7 +66,7 @@ public class CatchMouseMove implements CatchMouseMoveService{
 	    		if( index>-1){
 		    		String dataInfo = dataMap.get(dates[index]);
 		    		String infos[] = dataInfo.split("/");
-		    		String info = "date : "+dates[index]+"\n";
+		    		String info = name+" : "+dates[index]+"\n";
 		    		for(int i=0; i<infos.length; i++){
 		    			info += infos[i]+"\n";
 		    		}

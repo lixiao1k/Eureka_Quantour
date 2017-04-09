@@ -63,6 +63,7 @@ public class ComparedChart implements chartService{
         lineChart.setHorizontalGridLinesVisible(false);
         lineChart.setVerticalGridLinesVisible(false);
         lineChart.setCreateSymbols(false);
+        lineChart.setLegendVisible(true);
         
         dates = listToArray.formatCalendar(date);
         
@@ -116,14 +117,8 @@ public class ComparedChart implements chartService{
     	Calendar[] date = ci.getDate();
     	List<Double[]> doubleList = new ArrayList<>();
     	List<String> dataName = new ArrayList<>();
-    	double[] Ad = ci.getLogYieldA();
-    	double[] Bd = ci.getLogYieldB();
-    	Double[] dA = new Double[Ad.length];
-    	Double[] dB = new Double[Bd.length];
-    	for(int i=0; i<Ad.length; i++){
-    		dA[i] = Ad[i];
-    		dB[i] = Bd[i];
-    	}
+    	Double[] dA = listToArray.dToD(ci.getLogYieldA());
+    	Double[] dB = listToArray.dToD(ci.getLogYieldB());
     	doubleList.add(dA);
     	doubleList.add(dB);
     	dataName.add(ci.getNameA());
@@ -138,11 +133,11 @@ public class ComparedChart implements chartService{
     		lineChart.setMinWidth(width);
     	}
     	if( height>0 ){
-    		lineChart.setMaxHeight(height-10);
-    		lineChart.setMaxHeight(height-10);
+    		lineChart.setMaxHeight(height-20);
+    		lineChart.setMaxHeight(height-20);
     	}
     	
-    	info = catchMouseMove.createCursorGraphCoordsMonitorLabel(lineChart, dataMap, dates);
+    	info = catchMouseMove.catchMouseReturnInfo(lineChart, dataMap, dates, "date", 0);
     	begin = commonSet.beignData( dates[0], (int)Math.max(height, lineChart.getWidth()) );
     	end = commonSet.endData(dates[dates.length-1], 
     			(int)Math.max(width, lineChart.getWidth()), 
@@ -152,11 +147,10 @@ public class ComparedChart implements chartService{
     	pane.getChildren().add(lineChart);
     	pane.getChildren().add(begin);
     	pane.getChildren().add(end);
-    	AnchorPane.setTopAnchor(lineChart, 10.0);
+    	AnchorPane.setTopAnchor(lineChart, 20.0);
     	
     	info.getStylesheets().add(
     			getClass().getResource("/styles/InfoLabel.css").toExternalForm() );
-    	
     	pane.getStylesheets().add(
     			getClass().getResource("/styles/SingleLineChart.css").toExternalForm() );
     	return pane;
