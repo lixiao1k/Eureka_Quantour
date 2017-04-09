@@ -3,11 +3,8 @@ package data.datahelperimpl;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
@@ -15,8 +12,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Scanner;
 
 import data.common.DateTrie;
@@ -30,7 +25,6 @@ import data.parse.Parse;
 import exception.InternetdisconnectException;
 import exception.NullDateException;
 import exception.StockHaltingException;
-import po.StockSetInfoPO;
 /**
  * 股票模块数据的数据处理接口
  * @author 刘宇翔
@@ -41,7 +35,6 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 	private IStockDataFetch fetch;//爬取数据的接口
 	private MappedByteBuffer mbb_data;//全部数据的内存映射
 	private MappedByteBuffer mbb_position;//全部索引位置的内存映射
-	private HashMap<Integer,HashMap<Integer,Integer>> map;//储存的索引表地址的哈希表
 	private Parse parse;//一些数据转换的方法
 	private byte[] receive;//接受数据的容器（一次一行）
 	private byte[] doublereceive;//接受数据的容器（一次两行）
@@ -54,6 +47,8 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 	private StockLeaf leaf_forStocktree;//某只股票某天的叶子
 	
 	private int previousday;
+	
+	private InitEnvironment ie;
 	public static void main(String[] args){
 		new StockDataHelperImpl_2();
 	}
@@ -62,8 +57,6 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 	 * 初始化
 	 */
 	public StockDataHelperImpl_2(){
-		
-		
 		initContainer();
 		initFetchChannel();
 		
@@ -78,10 +71,11 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 	 * 初始化装载数据的容器
 	 */
 	private void initContainer(){
+		ie=InitEnvironment.getInstance();
+		
 		receive=new byte[13];
 		doublereceive=new byte[17];
 		datemap=new HashMap<Integer,Integer>();
-		map=new HashMap<Integer,HashMap<Integer,Integer>>();
 		
 		datetree=new DateTrie();
 		stocktree=new StockHashTree();
@@ -92,7 +86,8 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 	private void initFetchChannel(){
 		fetch=StockDataFetchImpl.getInstance();
 		parse=Parse.getInstance();
-		infopath=new File("config/stock/info");
+		infopath=new File(ie.getPath("stockinfo"));
+//		DailyFetchThread thread=new DailyFetchThread();
 		if(!infopath.exists()&&!infopath.isDirectory()){
 			try {
 				fetch.fetchAllStockSet();
@@ -100,7 +95,10 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 			} catch (InternetdisconnectException e) {
 				System.out.println(e.toString());
 			}
-			
+//			thread.waitoneday();
+		}
+		else{
+//			thread.start();
 		}
 	}
 	/**
@@ -337,10 +335,11 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 					while(br.ready()){
 						str=br.readLine()+","+br_adj.readLine()+","+br_adj1.readLine();
 						cal=str.substring(0, 10);
+						int a=parse.getIntDate(cal);
 						str=str.substring(11);
 						int row=0;
 						try{
-							row=map.get(cal).get(stock);
+							row=datetree.get(a).getDateinfo().get(Integer.parseInt(stock));
 							String str1=readPosition(row);
 							if(str1==null){
 								System.out.println(cal+":"+stock+":"+row+"\nnull!!!!!");
@@ -377,6 +376,9 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 		try{
 		BufferedReader br=new BufferedReader(new FileReader("config/resources/mainIndex"));
 		int count=0;
+		int day5=0;
+		int day6=0;
+		int day7=0;
 		while(br.ready()){
 			String out=br.readLine();
 			int cal=parse.getIntDate(out.substring(0, 10));
@@ -384,6 +386,15 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 			int year= cal / 10000;
 			int month= (cal -year * 10000 ) / 100;
 			int day=cal - year * 10000 - month * 100;
+			if(cal==20170405){
+				day5++;
+			}
+			if(cal==20170406){
+				day6++;
+			}
+			if(cal==20170407){
+				day7++;
+			}
 			if(datetree.get(year, month, day).getDateinfo().get(code)!=count){
 				System.out.println(cal+":"+code);
 				System.exit(0);
@@ -391,6 +402,9 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 			count++;
 		}
 		br.close();
+		System.out.println("2017-04-05:"+day5+
+				"2017-04-06:"+day6+
+				"2017-04-07:"+day7);
 		System.out.println("success");
 		}catch(IOException e){
 			

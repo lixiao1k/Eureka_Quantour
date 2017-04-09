@@ -2,13 +2,10 @@ package data.datahelperimpl;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
 import data.datahelperservice.IStockSetDataHelper;
-import data.parse.Translate;
 import exception.NullSetException;
 import exception.StockNameRepeatException;
 import exception.StockSetNameRepeatException;
@@ -16,20 +13,10 @@ import exception.StockSetNameRepeatException;
 public class StockSetDataHelperImpl implements IStockSetDataHelper {
 	private static IStockSetDataHelper datahelper;
 	private String userPath;
-	private Translate translate;
+	private InitEnvironment ie;
 	private StockSetDataHelperImpl(){
-		userPath="config/user/info";
-		translate=Translate.getInstance();
-		try {
-			userPath=URLDecoder.decode(userPath, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		File file=new File(userPath);
-		if(!file.exists()&&!file.isDirectory()){
-			file.mkdir();
-		}
+		ie=InitEnvironment.getInstance();
+		userPath=ie.getPath("userinfo");
 	}
 	public static IStockSetDataHelper getInstance(){
 		if(datahelper==null) datahelper=new StockSetDataHelperImpl();
@@ -115,9 +102,6 @@ public class StockSetDataHelperImpl implements IStockSetDataHelper {
 	public void deleteStockFromStockSet(String stockName, String stockSetName, String username){
 		File file=new File(userPath+"/"+username+"/"+stockSetName+"/"+stockName);
 		file.delete();
-	}
-	private void init_StockSet(){
-		
 	}
 	/**
 	 * 获取某个用户自定义股票池的股票编号

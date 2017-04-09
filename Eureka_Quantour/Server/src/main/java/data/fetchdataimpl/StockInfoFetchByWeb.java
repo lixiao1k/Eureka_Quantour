@@ -24,6 +24,7 @@ import java.util.Properties;
 
 import data.common.FileMethod;
 import data.common.WebMethod;
+import data.datahelperimpl.InitEnvironment;
 import exception.InternetdisconnectException;
 import exception.NoneMatchedMarketException;
 
@@ -42,19 +43,20 @@ public class StockInfoFetchByWeb {
 	private DecimalFormat df1;
 	private DecimalFormat df2;
 	private long total;
-	public static void main(String[] args){
-		new StockInfoFetchByWeb();
-	}
+	
+	private InitEnvironment ie;
 	public StockInfoFetchByWeb(){
+		ie=InitEnvironment.getInstance();
 		df1 = new DecimalFormat("0.00");
 		df2 = new DecimalFormat("0.0000");
 		sdf=new SimpleDateFormat("yyyy-MM-dd");
-		stockroot="config/stock/info";
+		stockroot=ie.getPath("stockinfo");
+		String resources=ie.getPath("resources");
 		log=new File("config/stocklog");
 		rightslog=new File("config/rightslog");
-		mainData=new File("config/resources/mainData");
-		mainPosition=new File("config/resources/mainPosition");
-		mainIndex=new File("config/resources/mainIndex");
+		mainData=new File(resources+"/mainData");
+		mainPosition=new File(resources+"/mainPosition");
+		mainIndex=new File(resources+"/mainIndex");
 		try {
 			log.createNewFile();
 			rightslog.createNewFile();
@@ -670,26 +672,33 @@ public class StockInfoFetchByWeb {
 		String resultdate="";
 		String str="";
 		bis.readLine();
+		boolean process=true;
 		if(bis.ready()){
 			str=bis.readLine();
-			while(str.indexOf("None")>=0){
-				str=bis.readLine();
+			try{
+				while(str.indexOf("None")>=0){
+					str=bis.readLine();
+				}
+			}catch(NullPointerException e){
+				process=false;
 			}
-			i=str.indexOf(",");
-			i_1=str.indexOf(",", i+1);
-			i_2=str.indexOf(",", i_1+1);
-			resultdate=str.substring(0,i)+":";
-			total=str.substring(0, i)+str.substring(i_2)+"\n"+total;
-			while(bis.ready()){
-	  			str=bis.readLine();
-	  			if(str.indexOf("None")<0){
-	  				i=str.indexOf(",");
-		  			i_1=str.indexOf(",", i+1);
-		  			i_2=str.indexOf(",", i_1+1);
-		  			total=str.substring(0, i)+str.substring(i_2)+"\n"+total;
-	  			}
+			if(process){
+				i=str.indexOf(",");
+				i_1=str.indexOf(",", i+1);
+				i_2=str.indexOf(",", i_1+1);
+				resultdate=str.substring(0,i)+":";
+				total=str.substring(0, i)+str.substring(i_2)+"\n"+total;
+				while(bis.ready()){
+		  			str=bis.readLine();
+		  			if(str.indexOf("None")<0){
+		  				i=str.indexOf(",");
+			  			i_1=str.indexOf(",", i+1);
+			  			i_2=str.indexOf(",", i_1+1);
+			  			total=str.substring(0, i)+str.substring(i_2)+"\n"+total;
+		  			}
+				}
+		  		resultdate=resultdate+total.substring(0,i);
 			}
-	  		resultdate=resultdate+total.substring(0,i);
 		}  	
   		fos.write(total);
   		fos.close();
