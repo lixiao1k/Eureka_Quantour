@@ -138,7 +138,7 @@ public class DataInterfaceImpl implements IDataInterface
 	 */
 	public SingleStockInfoPO getSingleStockInfo(String stockcode, Calendar date) 
 			throws StockHaltingException, NullStockIDException, NullDateException {
-		return stock2.getSingleStockInfo(stockcode, date);
+		return stock2.getSingleStockInfo(stockcode, (Calendar) date.clone());
 	}
 	/**
 	 * 判断是否是交易日
@@ -146,7 +146,7 @@ public class DataInterfaceImpl implements IDataInterface
 	 * @return	是交易日则返回true，否则返回false
 	 */
 	public boolean isMarketDay(Calendar day){
-		return stock2.isMarketDay(day);
+		return stock2.isMarketDay((Calendar) day.clone());
 	}
 	/**
 	 * 获取某个软件自带的股票池的股票的某天信息
@@ -157,7 +157,7 @@ public class DataInterfaceImpl implements IDataInterface
 	 */
 	public StockSetInfoPO getStockInfoinSet(String set,Calendar date) throws NullDateException{
 		List<String> stocklist=stockset.getStockSetInfo(set);
-		return stock2.getStockInfoinSet(stocklist, date);
+		return stock2.getStockInfoinSet(stocklist, (Calendar) date.clone());
 	}
 	/**
 	 * 获取某个用户自定义的股票池的股票的某天信息
@@ -169,55 +169,46 @@ public class DataInterfaceImpl implements IDataInterface
 	 */
 	public StockSetInfoPO getStockInfoinSet(String set,Calendar date,String userName) throws NullDateException{
 		List<String> stocklist=stockset.getStockSetInfo(set,userName);
-		return stock2.getStockInfoinSet(stocklist, date);
+		return stock2.getStockInfoinSet(stocklist, (Calendar) date.clone());
 	}
-	
-//old
-	@Override
-	public List<SingleStockInfoPO> getSingleStockInfo_byEnd(String stockcode, Calendar begin, Calendar end) {
-		return stock.getSingleStockInfo(stockcode, begin, end);
-	}
-
-	@Override
-	public List<SingleStockInfoPO> getMarketByDate(Calendar date) {
-		return stock.getMarketByDate(date);
-	}
-	
-	
-////uncompleted
-	
 	
 	/**
 	 * 获取某个软件自带的股票池的股票的某天信息
 	 * @param set 股票池名称
 	 * @param date 日期
-	 * @param last 持续时间（至少为1天）
+	 * @param last 持续时间（至少为0天）
 	 * @return List<StockSetInfoPO> 股票池信息的po的列表
+	 * @throws NullDateException 起始日期非交易日
 	 */
-	public List<StockSetInfoPO> getStockInfoinSet_StopByLast(String set,Calendar date,int last){
-		return null;
+	public List<StockSetInfoPO> getStockInfoinSet_StopByLast(String set,Calendar date,int last) throws NullDateException{
+		List<String> stocklist=stockset.getStockSetInfo(set);
+		return stock2.getStockInfoinSet_StopByLast(stocklist, (Calendar) date.clone(), last);
 	}
+	
 	
 	/**
 	 * 获取某个股票池的股票的某天即往后x天的信息
 	 * @param set 股票池名称
 	 * @param date 日期
 	 * @param userName 用户名
-	 * @param last 持续时间（至少为1天）
+	 * @param last 持续时间（至少为0天）
 	 * @return List<StockSetInfoPO> 股票池信息的po的列表
+	 * @throws NullDateException 起始日期非交易日
 	 */
-	public List<StockSetInfoPO> getStockInfoinSet_StopByLast(String set,Calendar date,String userName,int last){
-		return null;
+	public List<StockSetInfoPO> getStockInfoinSet_StopByLast(String set,Calendar date,String userName,int last) throws NullDateException{
+		List<String> stocklist=stockset.getStockSetInfo(set,userName);
+		return stock2.getStockInfoinSet_StopByLast(stocklist, (Calendar) date.clone(), last);
 	}
 	/**
 	 * 获取某个软件自带的股票池的股票的起始于终止日期之间的所有信息
 	 * @param set 股票池名称
 	 * @param startDate 起始日期
 	 * @param endDate 终止日期
-	 * @return List<StockSetInfoPO> 股票池信息的po的列表
+	 * @return List<StockSetInfoPO> 股票池信息的列表
 	 */
 	public List<StockSetInfoPO> getStockInfoinSet_StopByEnd(String set,Calendar startDate,Calendar endDate){
-		return null;
+		List<String> stocklist=stockset.getStockSetInfo(set);
+		return stock2.getStockInfoinSet_StopByEnd(stocklist, (Calendar) startDate.clone(),(Calendar) endDate.clone());
 	}
 	
 	/**
@@ -226,10 +217,58 @@ public class DataInterfaceImpl implements IDataInterface
 	 * @param startDate 起始日期
 	 * @param endDate 终止日期
 	 * @param userName 用户名
-	 * @return List<StockSetInfoPO> 股票池信息的po的列表
+	 * @return List<StockSetInfoPO> 股票池信息的列表
 	 */
 	public List<StockSetInfoPO> getStockInfoinSet_StopByEnd(String set,Calendar startDate,Calendar endDate,String userName){
-		return null;
+		List<String> stocklist=stockset.getStockSetInfo(set,userName);
+		return stock2.getStockInfoinSet_StopByEnd(stocklist, (Calendar) startDate.clone(),(Calendar) endDate.clone());
+	}
+	
+	/**
+	 * 获取某个股票池的股票的某天与往前x天的信息
+	 * @param set 股票池名称
+	 * @param date 日期
+	 * @param userName 用户名
+	 * @param last 往前推的交易日数（至少为0天）
+	 * @return List<StockSetInfoPO> 股票池信息的列表
+	 * @throws NullDateException 起始日期非交易日
+	 */
+	public List<StockSetInfoPO> getStockInfoinSet_forwardByLast(String set,Calendar date,String userName,int last) throws NullDateException{
+		List<String> stocklist=stockset.getStockSetInfo(set,userName);
+		return stock2.getStockInfoinSet_forwardByLast(stocklist, (Calendar) date.clone(), last);
+	}
+	
+	/**
+	 * 获取某个股票池的股票的某天与往前x天的信息
+	 * @param set 股票池名称
+	 * @param date 日期
+	 * @param last 往前推的交易日数（至少为0天）
+	 * @return List<StockSetInfoPO> 股票池信息的列表
+	 * @throws NullDateException 起始日期非交易日
+	 */
+	public List<StockSetInfoPO> getStockInfoinSet_forwardByLast(String set,Calendar date,int last) throws NullDateException{
+		List<String> stocklist=stockset.getStockSetInfo(set);
+		return stock2.getStockInfoinSet_forwardByLast(stocklist, (Calendar) date.clone(), last);
+	}
+	
+	/**
+	 * 获取一只股票的最早日期
+	 * @param stockCode 股票编号
+	 * @return 最早日期
+	 * @throws NullStockIDException 该股票不存在时抛出异常
+	 */
+	public Calendar getMinDay(String stockCode) throws NullStockIDException{
+		return stock2.getMinDay(stockCode);
+		
+	}
+	/**
+	 * 获取一只股票的最晚日期
+	 * @param stockCode 股票编号
+	 * @return 最晚日期
+	 * @throws NullStockIDException 该股票不存在时抛出异常
+	 */
+	public Calendar getMaxDay(String stockCode) throws NullStockIDException{
+		return stock2.getMaxDay(stockCode);
 	}
 	
 	
@@ -239,27 +278,33 @@ public class DataInterfaceImpl implements IDataInterface
 	 * @param begin Calendar,起始时间
 	 * @param last int,长度
 	 * @return 一个股票信息的对象的列表
+	 * @throws NullStockIDException 该股票不存在时抛出异常
 	 */
-	public List<SingleStockInfoPO> getSingleStockInfo_byLast(String stockcode,Calendar begin,int last){
-		return null;
-		
+	public List<SingleStockInfoPO> getSingleStockInfo_byLast(String stockcode,Calendar begin,int last) throws NullStockIDException{
+		return stock2.getSingleStockInfo_byLast(stockcode, begin, last);
 	}
 	/**
-	 * 获取一只股票的最早日期
-	 * @param stockCode 股票编号
-	 * @return 最早日期
+	 * 获取一支股票从起始时间到终止时间的所有信息
+	 * @param stockcode String,股票编号
+	 * @param begin Calendar,起始时间
+	 * @param end Calendar,终止时间
+	 * @return 一个股票信息的对象的列表
+	 * @throws NullStockIDException 该股票不存在时抛出异常
 	 */
-	public Calendar getMinDay(String stockCode){
-		return null;
-		
+	public List<SingleStockInfoPO> getSingleStockInfo_byEnd(String stockcode, Calendar begin, Calendar end) throws NullStockIDException {
+		return stock2.getSingleStockInfo_ByEnd(stockcode, begin, end);
 	}
-	/**
-	 * 获取一只股票的最晚日期
-	 * @param stockCode 股票编号
-	 * @return 最晚日期
-	 */
-	public Calendar getMaxDay(String stockCode){
-		return null;
-		
+	
+//old
+
+
+	@Override
+	public List<SingleStockInfoPO> getMarketByDate(Calendar date) {
+		return stock.getMarketByDate((Calendar) date.clone());
 	}
+	
+	
+////uncompleted
+	
+	
 }

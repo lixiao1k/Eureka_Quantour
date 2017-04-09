@@ -60,7 +60,7 @@ public class Translate {
 		return nameTocode_pro.getProperty(Parse.getInstance().chkHalf(name),null);
 	}
 	public String trans_codeToname(String code){
-		return codeToname_pro.getProperty(code,null);
+		return codeToname_pro.getProperty(Parse.getInstance().supCode(code),null);
 	}
 	public boolean containsCode(String code){
 		return codeToname_pro.containsKey(code);
