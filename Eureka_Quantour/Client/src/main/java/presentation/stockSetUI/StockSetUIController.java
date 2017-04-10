@@ -31,6 +31,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import logic.service.Stub;
+import presentation.mainScreen.MainScreenController;
 import vo.SingleStockInfoVO;
 
 public class StockSetUIController implements Initializable {
@@ -60,6 +61,8 @@ public class StockSetUIController implements Initializable {
 	
 	@FXML
 	AnchorPane menuAnchorPane;
+	
+	private MainScreenController controller;
 	
 	//关联与弹窗之间的controller
 	@FXML
@@ -145,14 +148,55 @@ public class StockSetUIController implements Initializable {
 		Label volumeLabel = getLabel(100, Pos.CENTER_RIGHT, Integer.toString(volume),Positive.ZERO);
 		root.getChildren().addAll(numLabel,codeLabel,nameLabel,closeLabel,RAFLabel,openLabel,highLabel,lowLabel,volumeLabel);
 		root.setStyle("-fx-background-color: #38424b");
-		//鼠标点击单条信息的效果
+		
+		/*
+		 * 单击股票时的效果，包括股票栏变色，以及显示详细信息
+		 */
 		root.addEventHandler(MouseEvent.MOUSE_CLICKED, (MouseEvent e)->{
-			root.setStyle("-fx-background-color:rgba(0,0,255,0.2)");
+			root.setStyle("-fx-background-color:rgba(0,0,255,0.2)");//鼠标点击单条信息的效果
 		});
+		
 		ContextMenu menu = new ContextMenu();
 		MenuItem delete = new MenuItem("移除");
 		MenuItem copy = new MenuItem("添至");
-		menu.getItems().addAll(delete,copy);
+		copy.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				// TODO Auto-generated method stub
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getClassLoader().getResource(
+					"presentation/singleStockUI/SingleStockUIPopup.fxml"));
+				Parent popUp = null;
+				try {
+					popUp = (AnchorPane)loader.load();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				Scene scene = new Scene(popUp);
+				Stage stage = new Stage();
+				stage.setScene(scene);
+				stage.initStyle(StageStyle.TRANSPARENT);
+				stage.show();
+			}
+		});
+		MenuItem look = new MenuItem("查看");
+		look.setOnAction(new EventHandler<ActionEvent>(){
+
+			@Override
+			public void handle(ActionEvent event) {
+				// TODO Auto-generated method stub
+                try {
+					controller.setSingleStockUI();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+		});
+		menu.getItems().addAll(delete,copy,look);
 		//menu的监听之后加
 		
 		//很冗余的代码，想不到解决的办法，因为HBox无法加入上下文菜单，用Button会是比HBox更好的选择，但是时间有限，有机会再改
@@ -168,6 +212,15 @@ public class StockSetUIController implements Initializable {
 		
 		return root;
 	}
+	/*
+	 *@description method for the eventHandler in stockInfo to show the chart
+	 *
+	 */
+	public void showDetailInfo(){
+		Stub stub = new Stub();
+		List<SingleStockInfoVO> list = stub.getSingleStockInfoList();
+	}
+	
 	public Positive isPositive(Double num){
 		if(num>0){
 			return Positive.POSITIVE;
@@ -223,6 +276,9 @@ public class StockSetUIController implements Initializable {
 	}
 
 	
+	public void setController(MainScreenController controller){
+		this.controller = controller;
+	}
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

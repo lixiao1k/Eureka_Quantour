@@ -1,15 +1,20 @@
 package presentation.marketUI;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import en_um.Positive;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
@@ -20,7 +25,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import logic.service.Stub;
+import presentation.mainScreen.MainScreenController;
+import presentation.singleStockUI.SingleStockUIPopupController;
 import vo.SingleStockInfoVO;
 
 public class MarketUIController implements Initializable {
@@ -56,6 +65,8 @@ public class MarketUIController implements Initializable {
 	
 	@FXML
 	AnchorPane menuAnchorPane;
+	
+	private MainScreenController controller;
 	
 	@FXML
 	protected void goSetHSButtons(ActionEvent e){
@@ -111,9 +122,44 @@ public class MarketUIController implements Initializable {
 			root.setStyle("-fx-background-color:rgba(0,0,255,0.1)");
 		});
 		ContextMenu menu = new ContextMenu();
-		MenuItem delete = new MenuItem("移除");
 		MenuItem copy = new MenuItem("添至");
-		menu.getItems().addAll(delete,copy);
+		copy.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				// TODO Auto-generated method stub
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getClassLoader().getResource(
+					"presentation/singleStockUI/SingleStockUIPopup.fxml"));
+				Parent popUp = null;
+				try {
+					popUp = (AnchorPane)loader.load();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				Scene scene = new Scene(popUp);
+				Stage stage = new Stage();
+				stage.setScene(scene);
+				stage.initStyle(StageStyle.TRANSPARENT);
+				stage.show();
+			}
+		});
+		MenuItem look = new MenuItem("查看");
+		look.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent event) {
+				// TODO Auto-generated method stub
+				try {
+					controller.setSingleStockUI();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		menu.getItems().addAll(copy,look);
 		//menu的监听之后加
 		
 		//很冗余的代码，想不到解决的办法，因为HBox无法加入上下文菜单，用Button会是比HBox更好的选择，但是时间有限，有机会再改
@@ -177,9 +223,44 @@ public class MarketUIController implements Initializable {
 			root.setStyle("-fx-background-color:rgba(0,0,255,0.2)");
 		});
 		ContextMenu menu = new ContextMenu();
-		MenuItem delete = new MenuItem("移除");
 		MenuItem copy = new MenuItem("添至");
-		menu.getItems().addAll(delete,copy);
+		copy.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				// TODO Auto-generated method stub
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getClassLoader().getResource(
+					"presentation/singleStockUI/SingleStockUIPopup.fxml"));
+				Parent popUp = null;
+				try {
+					popUp = (AnchorPane)loader.load();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				Scene scene = new Scene(popUp);
+				Stage stage = new Stage();
+				stage.setScene(scene);
+				stage.initStyle(StageStyle.TRANSPARENT);
+				stage.show();
+			}
+		});
+		MenuItem look = new MenuItem("查看");
+		look.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				// TODO Auto-generated method stub
+				try {
+					controller.setSingleStockUI();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		menu.getItems().addAll(copy,look);
 		//menu的监听之后加
 		
 		//很冗余的代码，想不到解决的办法，因为HBox无法加入上下文菜单，用Button会是比HBox更好的选择，但是时间有限，有机会再改
@@ -226,7 +307,9 @@ public class MarketUIController implements Initializable {
 		return label;
 	}
 	
-	
+	public void setController(MainScreenController controller){
+		this.controller = controller;
+	}
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
@@ -241,7 +324,7 @@ public class MarketUIController implements Initializable {
 		System.out.println(stub.getStockSetSortedInfo().size());
 		System.out.println(stub.getStockSetSortedInfo().size());
 		System.out.println(stub.getStockSetSortedInfo().size());
-		for(int i = 0;i<25;i++){
+		for(int i = 0;i<5;i++){
 			System.out.println(stub.getStockSetSortedInfo().size());
 		}
 		initialStocksFlowPane(stub.getStockSetSortedInfo());

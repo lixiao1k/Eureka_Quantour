@@ -66,8 +66,6 @@ public class SingleStockUIController implements Initializable{
 		loader.setLocation(getClass().getResource("SingleStockUIPopup.fxml"));
 		Parent popUp = (AnchorPane)loader.load();
 		SingleStockUIPopupController controller =loader.getController();
-		System.out.println(controller);
-		System.out.println(this);
 		controller.setController(this);
 		Scene scene = new Scene(popUp);
 		Stage stage = new Stage();

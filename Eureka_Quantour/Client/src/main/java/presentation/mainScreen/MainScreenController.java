@@ -20,6 +20,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import presentation.marketUI.MarketUIController;
+import presentation.stockSetUI.StockSetUIController;
 
 public class MainScreenController implements Initializable{
 	
@@ -54,23 +56,43 @@ public class MainScreenController implements Initializable{
 	AnchorPane mainAnchorPane;
 	
 	@FXML
-	protected void browseStockSet(ActionEvent e) throws IOException{
-		ObservableList<Node> nodeList = mainAnchorPane.getChildren();
-		nodeList.clear();
-		AnchorPane stockSetPane = (AnchorPane)FXMLLoader.load(getClass().getClassLoader().getResource("presentation/stockSetUI/StockSetUI.fxml"));
-		mainAnchorPane.getChildren().add(stockSetPane);
+	public void browseStockSet(ActionEvent e) throws IOException{
+		setStockSet();
 	}
 	
-	@FXML
-	protected void browseMarket(ActionEvent e) throws IOException{
+	public void setStockSet() throws IOException{
 		ObservableList<Node> nodeList = mainAnchorPane.getChildren();
 		nodeList.clear();
-		AnchorPane marketPane = (AnchorPane)FXMLLoader.load(getClass().getClassLoader().getResource("presentation/marketUI/MarketUI.fxml"));
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(getClass().getClassLoader().getResource("presentation/stockSetUI/StockSetUI.fxml"));
+		AnchorPane stockSetPane = (AnchorPane)loader.load();
+//		AnchorPane stockSetPane = (AnchorPane)FXMLLoader.load(getClass().getClassLoader().getResource("presentation/stockSetUI/StockSetUI.fxml"));
+		StockSetUIController controller = loader.getController();
+		controller.setController(this);
+		mainAnchorPane.getChildren().add(stockSetPane);
+	}
+	@FXML
+	protected void browseMarket(ActionEvent e) throws IOException{
+		setMarketUI();
+	}
+	
+	public void setMarketUI() throws IOException{
+		ObservableList<Node> nodeList = mainAnchorPane.getChildren();
+		nodeList.clear();
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(getClass().getClassLoader().getResource("presentation/marketUI/MarketUI.fxml"));
+		AnchorPane marketPane = (AnchorPane)loader.load();
+		MarketUIController controller = loader.getController();
+		controller.setController(this);
+//		AnchorPane marketPane = (AnchorPane)FXMLLoader.load(getClass().getClassLoader().getResource("presentation/marketUI/MarketUI.fxml"));
 		mainAnchorPane.getChildren().add(marketPane);
 	}
 	
 	@FXML
 	protected void browseSingleStock(ActionEvent e) throws IOException{
+		setSingleStockUI();
+	}
+	public void setSingleStockUI() throws IOException{
 		ObservableList<Node> nodeList = mainAnchorPane.getChildren();
 		nodeList.clear();
 		AnchorPane singleStockPane = (AnchorPane)FXMLLoader.load(getClass().getClassLoader().getResource("presentation/singleStockUI/SingleStockUI.fxml"));
@@ -79,12 +101,14 @@ public class MainScreenController implements Initializable{
 	
 	@FXML
 	protected void browseStrategy(ActionEvent e) throws IOException{
+		setBrowseStrategyUI();
+	}
+	public void setBrowseStrategyUI() throws IOException{
 		ObservableList<Node> nodeList = mainAnchorPane.getChildren();
 		nodeList.clear();
 		AnchorPane strategyPane = (AnchorPane)FXMLLoader.load(getClass().getClassLoader().getResource("presentation/strategyUI/StrategyUI.fxml"));
 		mainAnchorPane.getChildren().add(strategyPane);
 	}
-	
 	@FXML
 	protected void edit(ActionEvent e){
 		
