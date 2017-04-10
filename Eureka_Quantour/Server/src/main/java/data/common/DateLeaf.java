@@ -9,7 +9,7 @@ public class DateLeaf extends TrieNode{
 	private static final long serialVersionUID = -689936797450910210L;
 	private int cal;
 	private TrieNode previous;
-	private HashMap<Integer,StockLeaf> dateinfo;
+	private HashMap<Integer,Integer> dateinfo;
 	private TrieNode next;
 	private boolean isLeaf;
 	public DateLeaf(TrieNode _parent){
@@ -20,9 +20,8 @@ public class DateLeaf extends TrieNode{
 		
 		setLayer(4);
 		
-		dateinfo=new HashMap<Integer,StockLeaf>();
-		StockLeaf leaf=new StockLeaf(row,this);
-		dateinfo.put(code, leaf);
+		dateinfo=new HashMap<Integer,Integer>();
+		dateinfo.put(code, row);
 		
 		setParent(_parent);
 		
@@ -34,9 +33,8 @@ public class DateLeaf extends TrieNode{
 	public void activation(int code,int row,int year,int month,int day){
 		setLayer(4);
 		
-		dateinfo=new HashMap<Integer,StockLeaf>();
-		StockLeaf leaf=new StockLeaf(row,this);
-		dateinfo.put(code, leaf);
+		dateinfo=new HashMap<Integer,Integer>();
+		dateinfo.put(code, row);
 		
 		setChildsize(0);
 		setLeaf(true);
@@ -83,13 +81,13 @@ public class DateLeaf extends TrieNode{
 	/**
 	 * @return the dateinfo
 	 */
-	public HashMap<Integer,StockLeaf> getDateinfo() {
+	public HashMap<Integer,Integer> getDateinfo() {
 		return dateinfo;
 	}
 	/**
 	 * @param dateinfo the dateinfo to set
 	 */
-	public void setDateinfo(HashMap<Integer,StockLeaf> dateinfo) {
+	public void setDateinfo(HashMap<Integer,Integer> dateinfo) {
 		this.dateinfo = dateinfo;
 	}
 	public boolean compareTo(DateLeaf leaf){

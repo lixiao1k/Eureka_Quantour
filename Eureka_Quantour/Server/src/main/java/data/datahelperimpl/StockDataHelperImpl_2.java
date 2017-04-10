@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.Scanner;
 
 import data.common.DateTrie;
+import data.common.IndexTree;
 import data.common.StockHashTree;
 import data.common.StockLeaf;
 import data.common.DateLeaf;
@@ -39,7 +40,8 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 	private byte[] doublereceive;//接受数据的容器（一次两行）
 	
 	private DateTrie datetree;//以日期为主键的树
-	
+	private int datalength;
+	private int positionlength;
 	
 	private InitEnvironment ie;
 	public static void main(String[] args){
@@ -97,8 +99,10 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 	 */
 	private void loadData(){
 		try {
+			
+			//服务器中的算法
 			int BUFFER_SIZE=1024*1024*8;
-			long ttt1=System.currentTimeMillis();	
+			long ttt1=System.currentTimeMillis();										
 			FileInputStream is=new FileInputStream("config/resources/mainData");
 			FileChannel fc=is.getChannel();
 			System.out.println(fc.size());
@@ -140,9 +144,10 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 			
 			long tttt2=System.currentTimeMillis();
 			System.out.println("获取数据时间"+(tttt2-ttt1));	
-			is2.close();
+			is2.close();					
 			BufferedReader br=new BufferedReader(new FileReader("config/resources/mainIndex"));
 			int count=0;
+			IndexTree it=new IndexTree();
 			while(br.ready()){
 				String out=br.readLine();
 				int cal=parse.getIntDate(out.substring(0, 10));
@@ -150,10 +155,12 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 				int year= cal / 10000;
 				int month= (cal -year * 10000 ) / 100;
 				int day=cal - year * 10000 - month * 100;
-				datetree.add(year, month, day, code, count);
+				it.add(year, month, day, code, count);
+//				datetree.add(year, month, day, code, count);
 				count++;
 			}
-			datetree.clear();
+			it.end();
+//			datetree.clear();
 			br.close();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -329,7 +336,7 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 						str=str.substring(11);
 						int row=0;
 						try{
-							row=datetree.get(a).getDateinfo().get(Integer.parseInt(stock)).getDateinfo();
+							row=datetree.get(a).getDateinfo().get(Integer.parseInt(stock));
 							String str1=readPosition(row);
 							if(str1==null){
 								System.out.println(cal+":"+stock+":"+row+"\nnull!!!!!");
@@ -385,7 +392,7 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 			if(cal==20170407){
 				day7++;
 			}
-			if(datetree.get(year, month, day).getDateinfo().get(code).getDateinfo()!=count){
+			if(datetree.get(year, month, day).getDateinfo().get(code)!=count){
 				System.out.println(cal+":"+code);
 				System.exit(0);
 			}
@@ -413,10 +420,10 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 			int day=b1 - year * 10000 - month * 100;
 			int b2=Integer.parseInt(out[1]);
 			long ttt1=System.currentTimeMillis();
-			Collection<StockLeaf> it=datetree.get(b1).getDateinfo().values();
-			for(StockLeaf i:it){
-				readPosition(i.getDateinfo());
-			}
+//			Collection<StockLeaf> it=datetree.get(b1).values();
+//			for(StockLeaf i:it){
+//				readPosition(i.getDateinfo());
+//			}
 			long ttt2=System.currentTimeMillis();
 			System.out.println("读取时间"+(ttt2-ttt1));
 			
@@ -483,7 +490,7 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 	public String getSingleInfo(int a,int b) throws StockHaltingException, NullDateException{
 		int row;
 		try{
-			row=datetree.get(a).getDateinfo().get(b).getDateinfo();
+			row=datetree.get(a).getDateinfo().get(b);
 		}catch(NullPointerException e){
 			throw new NullDateException(a);
 		}
@@ -543,7 +550,7 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 	public String getStockInfoinSet_throughRemain(int code,DateLeaf leaf) throws StockHaltingException{	
 		try{
 			int row;
-			row=leaf.getDateinfo().get(code).getDateinfo();
+			row=leaf.getDateinfo().get(code);
 			return readPosition(row);
 		}catch(Exception e){
 			throw new StockHaltingException(code);
@@ -556,13 +563,14 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 	 * @throws NullDateException 缺少该天信息
 	 */
 	public StockLeaf remain_forSingleinfo(int code,int date) throws NullDateException{
-		StockLeaf leaf_forStocktree=datetree.get(date).getDateinfo().get(code);
-		if(!leaf_forStocktree.isLeaf()){
-			throw new NullDateException(date);
-		}
-		else{
-			return leaf_forStocktree;
-		}
+//		StockLeaf leaf_forStocktree=datetree.get(date).getDateinfo().get(code);
+//		if(!leaf_forStocktree.isLeaf()){
+//			throw new NullDateException(date);
+//		}
+//		else{
+//			return leaf_forStocktree;
+//		}
+		return null;
 	}
 	/**
 	 * 将日期往后推一天（针对于汇总信息的表）
@@ -592,8 +600,9 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 	 * @return 日期
 	 */
 	public int getMinDay(int code){
-		int index=datetree.getStockindex().get(code);
-		return ((DateLeaf)datetree.getStockmin().get(index).getParent()).getCal();
+//		int index=datetree.getStockindex().get(code);
+//		return ((DateLeaf)datetree.getStockmin().get(index).getParent()).getCal();
+		return 0 ;
 	}
 	/**
 	 * 获取某只股票最晚的一天
@@ -601,7 +610,8 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 	 * @return 日期
 	 */
 	public int getMaxDay(int code){
-		int index=datetree.getStockindex().get(code);
-		return ((DateLeaf)datetree.getStockmax().get(index).getParent()).getCal();
+//		int index=datetree.getStockindex().get(code);
+//		return ((DateLeaf)datetree.getStockmax().get(index).getParent()).getCal();
+		return 0;
 	}
 }
