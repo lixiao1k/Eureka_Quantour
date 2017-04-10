@@ -42,15 +42,15 @@
     -fx-text-fill: #FFFFFF;
     -fx-font-color: #FFFFFF;
     -fx-tick-label-fill: #FFFFFF;
-    -fx-font-size: 18pt;
+    -fx-font-size: 15pt;
     -fx-font-family: "Segoe UI Light";    
-    -fx-tick-length: 20;
-    -fx-minor-tick-length: 10;
+    -fx-tick-length: 10;
+    -fx-minor-tick-length: 5;
 }
 
 .chart-title {
      -fx-text-fill: #FFFFFF;
-    -fx-font-size: 20pt;
+    -fx-font-size: 10pt;
     -fx-font-family: "Segoe UI Light";    
 }
 
@@ -60,7 +60,7 @@
 
 .axis-tick-mark {
     -fx-stroke: #637040;
-    -fx-stroke-width: 3; 
+    -fx-stroke-width: 1; 
 }
 .axis-minor-tick-mark {
     -fx-stroke: #859656;

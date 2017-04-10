@@ -125,7 +125,7 @@ public class EMAChart implements chartService {
     	}
     	if( height>0 ){
     		lineChart.setMaxHeight(height-20);
-    		lineChart.setMaxHeight(height-20);
+    		lineChart.setMinHeight(height-20);
     	}
     	info = catchMouseMove.catchMouseReturnInfo(lineChart, dataMap, dates, "date", 0);
     	begin = commonSet.beignData( dates[0], (int)Math.max(height, lineChart.getWidth()) );

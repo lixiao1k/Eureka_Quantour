@@ -1,5 +1,6 @@
 package presentation.chart.barChart;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,11 +49,13 @@ public class YieldDistributeChart implements chartService{
         yAxis.autoRangingProperty().set(true);
         yAxis.setAnimated(true);
         yAxis.forceZeroInRangeProperty().setValue(false);
+        yAxis.setOpacity(0.5);
 	    
         barChart = new BarChart<>(xAxis, yAxis);
         barChart.setVerticalGridLinesVisible(false);
+//        barChart.setHorizontalGridLinesVisible(false);
 	    
-        yield = listToArray.formatDouble( ydhd.getYieldlist() );
+        yield = listToArray.formatDouble( sortDouble(ydhd.getYieldlist()) );
 	     
         String[] dataStrings = new String[yield.length];
 
@@ -88,7 +91,7 @@ public class YieldDistributeChart implements chartService{
     	if( height>0 ){
     		barChart.setPrefHeight( height-20 );
     		barChart.setMaxHeight( height-20 );
-    		barChart.setMaxHeight( height-20 );
+    		barChart.setMinHeight( height-20 );
     	}
     	
     	info = catchMouseMove.catchMouseReturnInfo(barChart, dataMap, yield, "收益率", 5);
@@ -116,5 +119,19 @@ public class YieldDistributeChart implements chartService{
 		
 	}
 	
-	
+	private List<Double> sortDouble(List<Double> list){
+		List<Double> listD = new ArrayList<>();
+		Double temp = 0.0;
+		int length = list.size();
+		for( int i=0; i<length; i++){
+			temp = list.get(0);
+			for( int j=1; j<list.size(); j++){
+				if( temp>list.get(j) )
+					temp = list.get(j);
+			}
+			list.remove(temp);
+			listD.add(temp);
+		}
+		return listD;
+	}
 }

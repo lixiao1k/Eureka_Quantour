@@ -98,7 +98,7 @@ public class AreaLineChart implements chartService {
     	}
     	if( height>0 ){
     		areaChart.setMaxHeight(height-20);
-    		areaChart.setMaxHeight(height-20);
+    		areaChart.setMinHeight(height-20);
     	}
     	
     	info = catchMouseMove.catchMouseReturnInfo(areaChart, dataMap, cycleSave, "周期", 0);

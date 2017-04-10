@@ -52,6 +52,7 @@ public class ComparedChart implements chartService{
         xAxis = new CategoryAxis();
         xAxis.setGapStartAndEnd(false);
         xAxis.setTickLabelsVisible(false);
+        xAxis.setStartMargin(5);
 
         yAxis = new NumberAxis();
         yAxis.autoRangingProperty().set(true);
@@ -134,10 +135,10 @@ public class ComparedChart implements chartService{
     	}
     	if( height>0 ){
     		lineChart.setMaxHeight(height-20);
-    		lineChart.setMaxHeight(height-20);
+    		lineChart.setMinHeight(height-20);
     	}
     	
-    	info = catchMouseMove.catchMouseReturnInfo(lineChart, dataMap, dates, "date", 0);
+    	info = catchMouseMove.catchMouseReturnInfo(lineChart, dataMap, dates, "date", 5);
     	begin = commonSet.beignData( dates[0], (int)Math.max(height, lineChart.getWidth()) );
     	end = commonSet.endData(dates[dates.length-1], 
     			(int)Math.max(width, lineChart.getWidth()), 

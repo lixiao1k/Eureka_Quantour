@@ -1,3 +1,25 @@
 .chart-plot-background{
 	-fx-background-color:transparent;
 }
+
+.axis {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-color: #FFFFFF;
+    -fx-tick-label-fill: #FFFFFF;
+    -fx-font-size: 15pt;
+    -fx-font-family: "Segoe UI Light";    
+    -fx-tick-length: 10;
+    -fx-minor-tick-length: 5;
+}
+
+.axis-label {
+    -fx-text-fill: #462300; 
+}
+
+.axis-tick-mark {
+    -fx-stroke: #637040;
+    -fx-stroke-width: 1; 
+}
+.axis-minor-tick-mark {
+    -fx-stroke: #859656;
+}
