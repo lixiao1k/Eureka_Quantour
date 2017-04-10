@@ -439,7 +439,7 @@ public class StockDataController_2 {
 			result.add(po);
 			try {
 				leaf=datahelper.nextDay_forSingleinfo(leaf);
-				cal=leaf.getCal();
+				cal=((DateLeaf)leaf.getParent()).getCal();
 			} catch (NullDateException e) {
 				break;
 			}
@@ -487,7 +487,7 @@ public class StockDataController_2 {
 			result.add(po);
 			try {
 				leaf=datahelper.nextDay_forSingleinfo(leaf);
-				cal=leaf.getCal();
+				cal=((DateLeaf)leaf.getParent()).getCal();
 			} catch (NullDateException e) {
 				break;
 			}
