@@ -2,6 +2,8 @@ package presentation.stockSetUI;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -27,10 +29,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import logic.service.Stub;
+import presentation.chart.klineChart.KLineChart;
 import presentation.mainScreen.MainScreenController;
 import vo.SingleStockInfoVO;
 
@@ -217,8 +221,41 @@ public class StockSetUIController implements Initializable {
 	 *
 	 */
 	public void showDetailInfo(){
-		Stub stub = new Stub();
-		List<SingleStockInfoVO> list = stub.getSingleStockInfoList();
+		/*
+		 * 测试代码K线图
+		 */
+	    KLineChart klineChart;
+	    List<SingleStockInfoVO> stocklist = new ArrayList<>();
+		SingleStockInfoVO ssi = new SingleStockInfoVO();
+    	Calendar cal = Calendar.getInstance();
+    	int j = 2;
+    	for(int i=0; i<20; i++, j++){
+    		ssi = new SingleStockInfoVO();
+    		cal.set(2014, 3, j);
+    		ssi.setDate( (Calendar)cal.clone() );
+    		double d = Math.random();
+    		if( d>0.5 ){
+    			ssi.setOpen(d*7);
+    			ssi.setClose(d*9);
+    			ssi.setHigh(d*10);
+    			ssi.setLow(d*6);
+    			ssi.setVolume((long)(d*8000));
+    		}
+    		else{
+    			ssi.setOpen(d*9);
+    			ssi.setClose(d*7);
+    			ssi.setHigh(d*11);
+    			ssi.setLow(d*5.5);
+    			ssi.setVolume((long)(d*11000));
+    		}
+    		stocklist.add(ssi);
+    	}
+    	klineChart = new KLineChart(stocklist);
+		Pane klinePane = klineChart.getchart(344,200);
+		kChartAnchorPane.getChildren().clear();
+		kChartAnchorPane.getChildren().add(klinePane);
+		
+		
 	}
 	
 	public Positive isPositive(Double num){
@@ -294,6 +331,7 @@ public class StockSetUIController implements Initializable {
 		addSet(stub.getStockSet("username"));
 		setStockSetSortedInfo(stub.getStockSetSortedInfo());
 		initialMenuAnchorPane();
+		showDetailInfo();
 
 	}
 

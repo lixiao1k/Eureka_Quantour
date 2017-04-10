@@ -110,18 +110,18 @@ public class test extends Application{
     @Override
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
-		new test().testComparedChart();
+//		new test().testComparedChart();
 //		new test().testSingleLineChart();
-//    	new test().testEMAChart();
+    	new test().testEMAChart();
 		try{
 	        Stage dialogStage = new Stage();
 	        dialogStage.setTitle("Birthday Statistics");
 	        dialogStage.initModality(Modality.WINDOW_MODAL);
 	        dialogStage.initOwner(primaryStage);
 	        
-	        Scene scene = new Scene(comparedChart.getchart(334, 200));
+//	        Scene scene = new Scene(comparedChart.getchart(334, 200));
 //	        Scene scene = new Scene(singleLineChart.getchart(334, 200));
-//	        Scene scene = new Scene(emaChart.getchart(334, 200));
+	        Scene scene = new Scene(emaChart.getchart(334, 200));
 	        dialogStage.setScene(scene);
 
 	        dialogStage.show();
