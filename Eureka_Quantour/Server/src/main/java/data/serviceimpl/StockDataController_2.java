@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import data.common.DateLeaf;
+import data.common.StockLeaf;
 import data.datahelperimpl.StockDataHelperImpl_2;
 import data.datahelperservice.IStockDataHelper_2;
 import data.parse.Parse;
@@ -90,7 +92,7 @@ public class StockDataController_2 {
 	 */
 	public StockSetInfoPO getStockInfoinSet(List<String> set,Calendar date) throws NullDateException{
 		int cal=date.get(Calendar.YEAR)*10000+date.get(Calendar.MONTH)*100+100+date.get(Calendar.DAY_OF_MONTH);
-		datahelper.remain_forAllinfo(cal);
+		DateLeaf leaf=datahelper.remain_forAllinfo(cal);
 		int count=0;
 		int size=set.size();
 		String info;
@@ -103,7 +105,7 @@ public class StockDataController_2 {
 			code=parse.strToint(strCode);
 			try {
 				t1=System.currentTimeMillis();
-				info=datahelper.getStockInfoinSet_throughRemain(code);
+				info=datahelper.getStockInfoinSet_throughRemain(code,leaf);
 				t2=System.currentTimeMillis();
 				setinfo.addStockInfo(info, strCode, translate.trans_codeToname(strCode));
 			} catch (StockHaltingException e) {
@@ -129,7 +131,7 @@ public class StockDataController_2 {
 	 */
 	public List<StockSetInfoPO> getStockInfoinSet_StopByLast(List<String> set,Calendar date,int last) throws NullDateException{
 		int cal=date.get(Calendar.YEAR)*10000+date.get(Calendar.MONTH)*100+100+date.get(Calendar.DAY_OF_MONTH);
-		datahelper.remain_forAllinfo(cal);
+		DateLeaf leaf=datahelper.remain_forAllinfo(cal);
 		List<Integer> setlist=new ArrayList<Integer>();
 		List<String> namelist=new ArrayList<String>();
 		List<StockSetInfoPO> result=new ArrayList<StockSetInfoPO>();
@@ -146,7 +148,7 @@ public class StockDataController_2 {
 			setlist.add(code);
 			namelist.add(name);
 			try {
-				info=datahelper.getStockInfoinSet_throughRemain(code);
+				info=datahelper.getStockInfoinSet_throughRemain(code,leaf);
 				setinfo.addStockInfo(info, strCode, name);
 			} catch (StockHaltingException e) {
 				count++;
@@ -162,7 +164,8 @@ public class StockDataController_2 {
 			count=0;
 			int tempcal;
 			try{
-				tempcal=datahelper.nextDay_forAllinfo();
+				leaf=datahelper.nextDay_forAllinfo(leaf);
+				tempcal=leaf.getCal();
 			}catch(NullDateException e){
 				break;
 			}
@@ -175,7 +178,7 @@ public class StockDataController_2 {
 			StockSetInfoPO tempset=new StockSetInfoPO(calendar);
 			for(int i=0;i<set.size();i++){
 				try {
-					tempset.addStockInfo(datahelper.getStockInfoinSet_throughRemain(setlist.get(i)), set.get(i), namelist.get(i));
+					tempset.addStockInfo(datahelper.getStockInfoinSet_throughRemain(setlist.get(i),leaf), set.get(i), namelist.get(i));
 				} catch (StockHaltingException e) {
 					count++;
 					tempset.addHalt(set.get(i),namelist.get(i));
@@ -200,8 +203,9 @@ public class StockDataController_2 {
 	public List<StockSetInfoPO> getStockInfoinSet_StopByEnd(List<String> set,Calendar startDate,Calendar endDate){
 		int cal=parse.getIntDate(startDate);
 		int end=parse.getIntDate(endDate);
+		DateLeaf leaf;
 		try {
-			datahelper.remain_forAllinfo(cal);
+			leaf=datahelper.remain_forAllinfo(cal);
 		} catch (NullDateException e) {
 			startDate.set(Calendar.DATE, startDate.get(Calendar.DATE)+1);
 			cal=parse.getIntDate(startDate);
@@ -228,7 +232,7 @@ public class StockDataController_2 {
 			setlist.add(code);
 			namelist.add(name);
 			try {
-				info=datahelper.getStockInfoinSet_throughRemain(code);
+				info=datahelper.getStockInfoinSet_throughRemain(code,leaf);
 				setinfo.addStockInfo(info, strCode, name);
 			} catch (StockHaltingException e) {
 				count++;
@@ -243,7 +247,8 @@ public class StockDataController_2 {
 			count=0;
 			int nextday;
 			try{
-				nextday=datahelper.nextDay_forAllinfo();
+				leaf=datahelper.nextDay_forAllinfo(leaf);
+				nextday=leaf.getCal();
 			}catch(NullDateException e){
 				break;
 			}
@@ -259,7 +264,7 @@ public class StockDataController_2 {
 			StockSetInfoPO tempset=new StockSetInfoPO(calendar);
 			for(int i=0;i<set.size();i++){
 				try {
-					tempset.addStockInfo(datahelper.getStockInfoinSet_throughRemain(setlist.get(i)), set.get(i), namelist.get(i));
+					tempset.addStockInfo(datahelper.getStockInfoinSet_throughRemain(setlist.get(i),leaf), set.get(i), namelist.get(i));
 				} catch (StockHaltingException e) {
 					count++;
 					tempset.addHalt(set.get(i),namelist.get(i));
@@ -284,7 +289,7 @@ public class StockDataController_2 {
 	 */
 	public List<StockSetInfoPO> getStockInfoinSet_forwardByLast(List<String> set,Calendar date,int last) throws NullDateException{
 		int cal=date.get(Calendar.YEAR)*10000+date.get(Calendar.MONTH)*100+100+date.get(Calendar.DAY_OF_MONTH);
-		datahelper.remain_forAllinfo(cal);
+		DateLeaf leaf=datahelper.remain_forAllinfo(cal);
 		List<Integer> setlist=new ArrayList<Integer>();
 		List<String> namelist=new ArrayList<String>();
 		List<StockSetInfoPO> result=new ArrayList<StockSetInfoPO>();
@@ -301,7 +306,7 @@ public class StockDataController_2 {
 			setlist.add(code);
 			namelist.add(name);
 			try {
-				info=datahelper.getStockInfoinSet_throughRemain(code);
+				info=datahelper.getStockInfoinSet_throughRemain(code,leaf);
 				setinfo.addStockInfo(info, strCode, name);
 			} catch (StockHaltingException e) {
 				count++;
@@ -316,7 +321,8 @@ public class StockDataController_2 {
 		while(last>=0){
 			int tempcal;
 			try{
-				tempcal=datahelper.previousDay_forAllinfo();
+				leaf=datahelper.previousDay_forAllinfo(leaf);
+				tempcal=leaf.getCal();
 			}catch(NullDateException e){
 				break;
 			}
@@ -329,7 +335,7 @@ public class StockDataController_2 {
 			StockSetInfoPO tempset=new StockSetInfoPO(calendar);
 			for(int i=0;i<set.size();i++){
 				try {
-					tempset.addStockInfo(datahelper.getStockInfoinSet_throughRemain(setlist.get(i)), set.get(i), namelist.get(i));
+					tempset.addStockInfo(datahelper.getStockInfoinSet_throughRemain(setlist.get(i),leaf), set.get(i), namelist.get(i));
 				} catch (StockHaltingException e) {
 					count++;
 					tempset.addHalt(set.get(i),namelist.get(i));
@@ -410,11 +416,13 @@ public class StockDataController_2 {
 	public List<SingleStockInfoPO> getSingleStockInfo_byLast(String stockcode,Calendar begin,int last) throws NullStockIDException{
 		int cal=parse.getIntDate(begin);
 		int code=transStockCode(stockcode);
+		StockLeaf leaf=null;
 		try {
-			datahelper.remain_forSingleinfo(code, cal);
+			leaf=datahelper.remain_forSingleinfo(code, cal);
 		} catch (NullDateException e) {
 			System.out.println(e.toString());
 			e.printStackTrace();
+			return null;
 		}
 		String name=translate.trans_codeToname(parse.supCode(String.valueOf(code)));
 		String strCode=parse.supCode(String.valueOf(code));
@@ -426,11 +434,12 @@ public class StockDataController_2 {
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
-			String info=datahelper.getSingleInfo_throughRemain();
+			String info=datahelper.getSingleInfo_throughRemain(leaf);
 			SingleStockInfoPO po=new SingleStockInfoPO(info,name,strCode,temp);
 			result.add(po);
 			try {
-				cal=datahelper.nextDay_forSingleinfo();
+				leaf=datahelper.nextDay_forSingleinfo(leaf);
+				cal=leaf.getCal();
 			} catch (NullDateException e) {
 				break;
 			}
@@ -450,8 +459,9 @@ public class StockDataController_2 {
 		int cal=parse.getIntDate(begin);
 		int endcal=parse.getIntDate(end);
 		int code=transStockCode(stockcode);
+		StockLeaf leaf;
 		try {
-			datahelper.remain_forSingleinfo(code, cal);
+			leaf=datahelper.remain_forSingleinfo(code, cal);
 		} catch (NullDateException e) {
 			begin.set(Calendar.DATE, begin.get(Calendar.DATE)+1);
 			cal=parse.getIntDate(begin);
@@ -472,11 +482,12 @@ public class StockDataController_2 {
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
-			String info=datahelper.getSingleInfo_throughRemain();
+			String info=datahelper.getSingleInfo_throughRemain(leaf);
 			SingleStockInfoPO po=new SingleStockInfoPO(info,name,strCode,temp);
 			result.add(po);
 			try {
-				cal=datahelper.nextDay_forSingleinfo();
+				leaf=datahelper.nextDay_forSingleinfo(leaf);
+				cal=leaf.getCal();
 			} catch (NullDateException e) {
 				break;
 			}

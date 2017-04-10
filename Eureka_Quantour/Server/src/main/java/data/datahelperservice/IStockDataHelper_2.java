@@ -1,5 +1,7 @@
 package data.datahelperservice;
 
+import data.common.DateLeaf;
+import data.common.StockLeaf;
 import exception.NullDateException;
 import exception.StockHaltingException;
 
@@ -26,25 +28,25 @@ public interface IStockDataHelper_2 {
 	 * @return StockSetInfoPO 股票池信息的po
 	 * @throws StockHaltingException 停牌时抛出该异常
 	 */
-	public String getStockInfoinSet_throughRemain(int code) throws StockHaltingException;
+	public String getStockInfoinSet_throughRemain(int code,DateLeaf leaf) throws StockHaltingException;
 	
 	/**
 	 * 将日期map停留在日期date上
 	 * @param date 日期
 	 * @throws NullDateException 不存在该日期时抛出该异常
 	 */
-	public void remain_forAllinfo(int date) throws NullDateException;
+	public DateLeaf remain_forAllinfo(int date) throws NullDateException;
 	/**
 	 * 将日期往后推一天（针对于汇总信息的表）
 	 * @return 
 	 * @throws NullDateException 如果已是最后一天抛出该异常
 	 */
-	public int nextDay_forAllinfo() throws NullDateException;
+	public DateLeaf nextDay_forAllinfo(DateLeaf leaf) throws NullDateException;
 	/**
 	 * 将日期往后前一天（针对于汇总信息的表）
 	 * @throws NullDateException 如果已是第一天抛出该异常
 	 */
-	public int previousDay_forAllinfo() throws NullDateException;
+	public DateLeaf previousDay_forAllinfo(DateLeaf leaf) throws NullDateException;
 	/**
 	 * 判断是否是交易日
 	 * @param day 需要判断的日期
@@ -57,17 +59,17 @@ public interface IStockDataHelper_2 {
 	 * @param date 日期
 	 * @throws NullDateException 缺少该天信息
 	 */
-	public void remain_forSingleinfo(int code,int date) throws NullDateException;
+	public StockLeaf remain_forSingleinfo(int code,int date) throws NullDateException;
 	/**
 	 * 将日期往后推一天（针对于汇总信息的表）
 	 * @throws NullDateException 如果已是最后一天抛出该异常
 	 */
-	public int nextDay_forSingleinfo() throws NullDateException;
+	public StockLeaf nextDay_forSingleinfo(StockLeaf leaf) throws NullDateException;
 	/**
 	 * 获取单支股票在停留处的数据
 	 * @return 数据 string
 	 */
-	public	String getSingleInfo_throughRemain();
+	public	String getSingleInfo_throughRemain(StockLeaf leaf);
 	
 	/**
 	 * 获取某只股票最早的一天

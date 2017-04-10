@@ -85,6 +85,9 @@ public class StockInfoFetchByWeb {
 		int i=stocklist.length;
 		int count=0;
 		Calendar cal=Calendar.getInstance();
+		if(cal.get(Calendar.HOUR_OF_DAY)<18){
+			cal.set(Calendar.DATE, cal.get(Calendar.DATE)-1);
+		}
 		String enddate=sdf.format(cal.getTime());
 		long time=System.currentTimeMillis();
 		for(String stock:stocklist){
@@ -121,6 +124,9 @@ public class StockInfoFetchByWeb {
 		}
 		int count=0;
 		Calendar cal=Calendar.getInstance();
+		if(cal.get(Calendar.HOUR_OF_DAY)<18){
+			cal.set(Calendar.DATE, cal.get(Calendar.DATE)-1);
+		}
 		String enddate=sdf.format(cal.getTime());
 		for(String stock:stocklist){
 			count++;
@@ -200,21 +206,30 @@ public class StockInfoFetchByWeb {
 			BufferedReader br1=new BufferedReader(new FileReader(codepath+"data"));
 			BufferedReader br2=new BufferedReader(new FileReader(codepath+"subscription"));
 			BufferedReader br3=new BufferedReader(new FileReader(codepath+"afterscription"));
+			AverageStackFactory asf=new AverageStackFactory(codepath,true);
+			asf.addstack(5);
+			asf.addstack(10);
+			asf.addstack(20);
+			asf.addstack(30);
+			asf.addstack(60);
+			asf.close();
+			asf.openReader();
 			while(br1.ready()){
-				String str=br1.readLine()+","+br2.readLine()+","+br3.readLine();
+				String str=br1.readLine()+","+br2.readLine()+","+br3.readLine()+asf.readline();
 				String cal=str.substring(0, 10);
 				str=str.substring(11);
 				int day=Integer.parseInt(encodeDate(cal));
 				if(day>startday){
 					bw_data.write(str+"\n");
 					bw_index.write(cal+","+code+"\n");
-					bw_position.write(String.format("%03d",str.length())+","+String.format("%09d", total)+"\n");
+					bw_position.write(String.format("%03d",str.length())+","+String.format("%010d", total)+"\n");
 					total=total+str.length()+1;
 				}
 			}
 			bw_data.flush();
 			bw_index.flush();
 			bw_position.flush();
+			asf.closeReader();
 			br1.close();
 			br2.close();
 			br3.close();

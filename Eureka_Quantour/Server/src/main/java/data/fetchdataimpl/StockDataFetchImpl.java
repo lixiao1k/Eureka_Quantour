@@ -6,10 +6,12 @@ import exception.InternetdisconnectException;
 public class StockDataFetchImpl implements IStockDataFetch{
 	private StockSetFetchByWeb setByweb;
 	private StockInfoFetchByWeb infoByweb;
+	private StockInfoCalculate infocalculate;
 	private static StockDataFetchImpl impl;
 	private StockDataFetchImpl(){
 		setByweb=new StockSetFetchByWeb();
 		infoByweb=new StockInfoFetchByWeb();
+		infocalculate=new StockInfoCalculate();
 	}
 	public static StockDataFetchImpl getInstance(){
 		if(impl==null) impl=new StockDataFetchImpl();
@@ -36,6 +38,9 @@ public class StockDataFetchImpl implements IStockDataFetch{
 		System.out.println("开始爬取股票复权信息");
 		infoByweb.fetchAllsubscription();
 		System.out.println("爬取股票复权信息完成");
+		System.out.println("开始计算均线");
+		infocalculate.processAverage();
+		System.out.println("计算均线完成");
 		System.out.println("开始汇总股票信息");
 		infoByweb.indexationAllDate(true);
 		System.out.println("汇总股票信息完成");
