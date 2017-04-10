@@ -5,18 +5,19 @@ public class StockLeaf extends TrieNode{
 	 * 
 	 */
 	private static final long serialVersionUID = -3847097557621624415L;
-	private int cal;
+	
 	private TrieNode previous;
 	private int dateinfo;
 	private TrieNode next;
 	private boolean isLeaf;
+	
 	public StockLeaf(TrieNode _parent){
 		setLeaf(false);	
 		setParent(_parent);
 	}
-	public StockLeaf(int row,int year,int month,int day,TrieNode _parent){
+	public StockLeaf(int row,TrieNode _parent){
 		
-		setLayer(4);
+		setLayer(5);
 		
 		dateinfo=row;
 		
@@ -24,18 +25,14 @@ public class StockLeaf extends TrieNode{
 		
 		setChildsize(0);
 		setLeaf(true);
-		
-		setCal(year * 10000 +month * 100 + day);
 	}
-	public void activation(int row,int year,int month,int day){
-		setLayer(4);
+	public void activation(int row,int day){
+		setLayer(5);
 		
 		dateinfo=row;
 		
 		setChildsize(0);
 		setLeaf(true);
-		
-		setCal(year * 10000 +month * 100 + day);
 		
 	}
 	/**
@@ -87,26 +84,14 @@ public class StockLeaf extends TrieNode{
 		this.dateinfo = row;
 	}
 	public boolean compareTo(StockLeaf leaf){
-		if(this.cal>leaf.getCal()){
+		if(((DateLeaf) this.getParent()).getCal()>((DateLeaf) leaf.getParent()).getCal()){
 			return false;
 		}
-		else if(this.cal<leaf.getCal()){
+		else if(((DateLeaf) this.getParent()).getCal()<((DateLeaf) leaf.getParent()).getCal()){
 			return true;
 		}
 		else{
 			throw new NullPointerException();
 		}
-	}
-	/**
-	 * @return the cal
-	 */
-	public int getCal() {
-		return cal;
-	}
-	/**
-	 * @param cal the cal to set
-	 */
-	public void setCal(int cal) {
-		this.cal = cal;
 	}
 }

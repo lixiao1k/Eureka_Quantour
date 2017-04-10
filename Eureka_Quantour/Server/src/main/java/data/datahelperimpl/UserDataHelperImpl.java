@@ -5,8 +5,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.Properties;
 
 import data.datahelperservice.IUserDataHelper;
@@ -27,18 +25,10 @@ public class UserDataHelperImpl implements IUserDataHelper {
 	private BufferedInputStream userinfo_in;
 	private BufferedInputStream userstatus_in;
 	private String path;
+	private InitEnvironment ie;
 	private UserDataHelperImpl(){
-		path="config/";
-		try {
-			path=URLDecoder.decode(path, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		File file=new File(path+"");
-		if(!file.exists()&&!file.isDirectory()){
-			file.mkdir();
-		}
+		ie=InitEnvironment.getInstance();
+		path=ie.getPath("config")+"/";
 		try {
 			userPath=new File(path+"user");
 			userLog=new File(path+"user/userLog.properties");

@@ -23,6 +23,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import data.common.FileMethod;
 import data.common.WebMethod;
+import data.datahelperimpl.InitEnvironment;
 import data.parse.Parse;
 import data.parse.Translate;
 import exception.InternetdisconnectException;
@@ -42,32 +43,22 @@ public class StockSetFetchByWeb{
 	private String ZXB;//中小板
 	private FileMethod filemethod;
 	private WebMethod webmethod;
+	private InitEnvironment ie;
 	public StockSetFetchByWeb(){
 		init();
 	}
 	//初始化
 	private void init(){
-		SHA="config/stock/stockset/SHA";
-		SHB="config/stock/stockset/SHB";
-		SZA="config/stock/stockset/SZA";
-		SZB="config/stock/stockset/SZB";
-		CYB="config/stock/stockset/CYB";
-		ZXB="config/stock/stockset/ZXB";
-		HS300="config/stock/stockset/HS300";
+		ie=InitEnvironment.getInstance();
+		SHA=ie.getPath("SHA");
+		SHB=ie.getPath("SHB");
+		SZA=ie.getPath("SZA");
+		SZB=ie.getPath("SZB");
+		CYB=ie.getPath("CYB");
+		ZXB=ie.getPath("ZXB");
+		HS300=ie.getPath("HS300");
 		filemethod=FileMethod.getInstance();
-		webmethod=WebMethod.getInstance();
-		filemethod.makepath("config/parse");
-		filemethod.makepath("config/backups");
-		filemethod.makepath("config/stock/stockset");
-		filemethod.makepath("config/stock/info");
-		filemethod.makepath(SHA);
-		filemethod.makepath(SHB);
-		filemethod.makepath(SZA);
-		filemethod.makepath(SZB);
-		filemethod.makepath(HS300);
-		filemethod.makepath(CYB);
-		filemethod.makepath(ZXB);
-		
+		webmethod=WebMethod.getInstance();	
 	}
 	/**
 	 * 从网上获取所有股票的名字与编号
@@ -75,12 +66,12 @@ public class StockSetFetchByWeb{
 	 */
 	public void getAllStockName() throws InternetdisconnectException{
 		try{
-			File backups=new File("config/backups/StringNameList_Backups");
+			File backups=new File(ie.getPath("backups")+"/StringNameList_Backups");
 			try {
 				System.out.println("get stock list");
 				webmethod.testInternet();
-				String str=webmethod.saveToFile_ByBufferedReader("http://quote.stockstar.com/stock/stock_index.htm"
-						,"config/backups/StringNameList_Backups");
+				String str=webmethod.saveToFile_ByBufferedReader("http://"+ie.getPath("StockNameListHtml")
+						,ie.getPath("backups")+"/StringNameList_Backups");
 				dealStringList(webmethod.match("<li>.*?</li>",str));
 				System.out.println("update by web");
 			} catch (InternetdisconnectException e) {
@@ -108,11 +99,11 @@ public class StockSetFetchByWeb{
 	 */
 	public void getHS300List() throws InternetdisconnectException{
 		try{
-			File backups_HS300=new File("config/backups/HS300List");
+			File backups_HS300=new File(ie.getPath("backups")+"/HS300List");
 			try {
 				System.out.println("get HS300 list");
 				webmethod.testInternet();
-				webmethod.saveToFile("115.29.204.48","webdata","000300cons.xls","config/backups/HS300List.xls");
+				webmethod.saveToFile("115.29.204.48","webdata","000300cons.xls",ie.getPath("backups")+"/HS300List.xls");
 				filemethod.dealdir(new File(HS300));
 				readXLS("config/backups/HS300List.xls", HS300);
 				System.out.println("update by web");

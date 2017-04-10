@@ -32,7 +32,7 @@ public class StockTrie implements Serializable{
 						return false;
 					}
 					else{
-						t.activation(row, year, month, day);
+						t.activation(row, day);
 						setPrevious(t);
 						bigflag=false;
 						return true;

@@ -24,6 +24,7 @@ import java.util.Properties;
 
 import data.common.FileMethod;
 import data.common.WebMethod;
+import data.datahelperimpl.InitEnvironment;
 import exception.InternetdisconnectException;
 import exception.NoneMatchedMarketException;
 
@@ -42,19 +43,20 @@ public class StockInfoFetchByWeb {
 	private DecimalFormat df1;
 	private DecimalFormat df2;
 	private long total;
-	public static void main(String[] args){
-		new StockInfoFetchByWeb();
-	}
+	
+	private InitEnvironment ie;
 	public StockInfoFetchByWeb(){
+		ie=InitEnvironment.getInstance();
 		df1 = new DecimalFormat("0.00");
 		df2 = new DecimalFormat("0.0000");
 		sdf=new SimpleDateFormat("yyyy-MM-dd");
-		stockroot="config/stock/info";
+		stockroot=ie.getPath("stockinfo");
+		String resources=ie.getPath("resources");
 		log=new File("config/stocklog");
 		rightslog=new File("config/rightslog");
-		mainData=new File("config/resources/mainData");
-		mainPosition=new File("config/resources/mainPosition");
-		mainIndex=new File("config/resources/mainIndex");
+		mainData=new File(resources+"/mainData");
+		mainPosition=new File(resources+"/mainPosition");
+		mainIndex=new File(resources+"/mainIndex");
 		try {
 			log.createNewFile();
 			rightslog.createNewFile();
@@ -83,6 +85,9 @@ public class StockInfoFetchByWeb {
 		int i=stocklist.length;
 		int count=0;
 		Calendar cal=Calendar.getInstance();
+		if(cal.get(Calendar.HOUR_OF_DAY)<18){
+			cal.set(Calendar.DATE, cal.get(Calendar.DATE)-1);
+		}
 		String enddate=sdf.format(cal.getTime());
 		long time=System.currentTimeMillis();
 		for(String stock:stocklist){
@@ -119,6 +124,9 @@ public class StockInfoFetchByWeb {
 		}
 		int count=0;
 		Calendar cal=Calendar.getInstance();
+		if(cal.get(Calendar.HOUR_OF_DAY)<18){
+			cal.set(Calendar.DATE, cal.get(Calendar.DATE)-1);
+		}
 		String enddate=sdf.format(cal.getTime());
 		for(String stock:stocklist){
 			count++;
@@ -198,21 +206,30 @@ public class StockInfoFetchByWeb {
 			BufferedReader br1=new BufferedReader(new FileReader(codepath+"data"));
 			BufferedReader br2=new BufferedReader(new FileReader(codepath+"subscription"));
 			BufferedReader br3=new BufferedReader(new FileReader(codepath+"afterscription"));
+			AverageStackFactory asf=new AverageStackFactory(codepath,true);
+			asf.addstack(5);
+			asf.addstack(10);
+			asf.addstack(20);
+			asf.addstack(30);
+			asf.addstack(60);
+			asf.close();
+			asf.openReader();
 			while(br1.ready()){
-				String str=br1.readLine()+","+br2.readLine()+","+br3.readLine();
+				String str=br1.readLine()+","+br2.readLine()+","+br3.readLine()+asf.readline();
 				String cal=str.substring(0, 10);
 				str=str.substring(11);
 				int day=Integer.parseInt(encodeDate(cal));
 				if(day>startday){
 					bw_data.write(str+"\n");
 					bw_index.write(cal+","+code+"\n");
-					bw_position.write(String.format("%03d",str.length())+","+String.format("%09d", total)+"\n");
+					bw_position.write(String.format("%03d",str.length())+","+String.format("%010d", total)+"\n");
 					total=total+str.length()+1;
 				}
 			}
 			bw_data.flush();
 			bw_index.flush();
 			bw_position.flush();
+			asf.closeReader();
 			br1.close();
 			br2.close();
 			br3.close();
@@ -670,26 +687,33 @@ public class StockInfoFetchByWeb {
 		String resultdate="";
 		String str="";
 		bis.readLine();
+		boolean process=true;
 		if(bis.ready()){
 			str=bis.readLine();
-			while(str.indexOf("None")>=0){
-				str=bis.readLine();
+			try{
+				while(str.indexOf("None")>=0){
+					str=bis.readLine();
+				}
+			}catch(NullPointerException e){
+				process=false;
 			}
-			i=str.indexOf(",");
-			i_1=str.indexOf(",", i+1);
-			i_2=str.indexOf(",", i_1+1);
-			resultdate=str.substring(0,i)+":";
-			total=str.substring(0, i)+str.substring(i_2)+"\n"+total;
-			while(bis.ready()){
-	  			str=bis.readLine();
-	  			if(str.indexOf("None")<0){
-	  				i=str.indexOf(",");
-		  			i_1=str.indexOf(",", i+1);
-		  			i_2=str.indexOf(",", i_1+1);
-		  			total=str.substring(0, i)+str.substring(i_2)+"\n"+total;
-	  			}
+			if(process){
+				i=str.indexOf(",");
+				i_1=str.indexOf(",", i+1);
+				i_2=str.indexOf(",", i_1+1);
+				resultdate=str.substring(0,i)+":";
+				total=str.substring(0, i)+str.substring(i_2)+"\n"+total;
+				while(bis.ready()){
+		  			str=bis.readLine();
+		  			if(str.indexOf("None")<0){
+		  				i=str.indexOf(",");
+			  			i_1=str.indexOf(",", i+1);
+			  			i_2=str.indexOf(",", i_1+1);
+			  			total=str.substring(0, i)+str.substring(i_2)+"\n"+total;
+		  			}
+				}
+		  		resultdate=resultdate+total.substring(0,i);
 			}
-	  		resultdate=resultdate+total.substring(0,i);
 		}  	
   		fos.write(total);
   		fos.close();

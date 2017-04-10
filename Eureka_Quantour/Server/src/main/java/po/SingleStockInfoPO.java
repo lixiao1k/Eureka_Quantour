@@ -37,6 +37,17 @@ public class SingleStockInfoPO
 	private double subrate;//前复权涨跌幅
 	private double aftrate;//后复权涨跌幅
 	
+	private double subavg_5;//前复权5日均线
+	private double subavg_10;//前复权10日均线
+	private double subavg_20;//前复权20日均线
+	private double subavg_30;//前复权30日均线
+	private double subavg_60;//前复权60日均线
+	
+	private double aftavg_5;//前复权5日均线
+	private double aftavg_10;//前复权10日均线
+	private double aftavg_20;//前复权20日均线
+	private double aftavg_30;//前复权30日均线
+	private double aftavg_60;//前复权60日均线
 	
 	public SingleStockInfoPO(){
 	}
@@ -70,7 +81,9 @@ public class SingleStockInfoPO
 			double _open,double _high,double _low,int _volume,
 			double _close,double _subclose,double _aftclose,
 			double _lclose,double _lsubclose,double _laftclose,
-			double _rate,double _subrate,double _aftrate)
+			double _rate,double _subrate,double _aftrate,
+			double _subavg_5,double _subavg_10,double _subavg_20,double _subavg_30,double _subavg_60,
+			double _aftavg_5,double _aftavg_10,double _aftavg_20,double _aftavg_30,double _aftavg_60)
 	{
 		setName(_name);
 		setCode(_code);
@@ -93,6 +106,18 @@ public class SingleStockInfoPO
 		setRate(_rate);
 		setSubrate(_subrate);
 		setAftrate(_aftrate);
+		
+		setSubavg_5(_subavg_5);
+		setSubavg_10(_subavg_10);
+		setSubavg_20(_subavg_20);
+		setSubavg_30(_subavg_30);
+		setSubavg_60(_subavg_60);
+		
+		setAftavg_5(_aftavg_5);
+		setAftavg_10(_aftavg_10);
+		setAftavg_20(_aftavg_20);
+		setAftavg_30(_aftavg_30);
+		setAftavg_60(_aftavg_60);
 	}
 	public String toString(){
 		return "名字："+name+","+
@@ -143,6 +168,18 @@ public class SingleStockInfoPO
 		setRate(strTodouble(input[5]));
 		setSubrate(strTodouble(input[9]));
 		setAftrate(strTodouble(input[12]));
+		
+		setSubavg_5(strTodouble(input[13]));
+		setSubavg_10(strTodouble(input[15]));
+		setSubavg_20(strTodouble(input[17]));
+		setSubavg_30(strTodouble(input[19]));
+		setSubavg_60(strTodouble(input[21]));
+		
+		setAftavg_5(strTodouble(input[14]));
+		setAftavg_10(strTodouble(input[16]));
+		setAftavg_20(strTodouble(input[18]));
+		setAftavg_30(strTodouble(input[20]));
+		setAftavg_60(strTodouble(input[22]));
 	}
 	public SingleStockInfoPO(String stockinfo){
 		String[] info=stockinfo.split("\t");
@@ -498,5 +535,125 @@ public class SingleStockInfoPO
 	 */
 	private double strTodouble(String str){
 		return Double.parseDouble(str);
+	}
+	/**
+	 * @return the subavg_5
+	 */
+	public double getSubavg_5() {
+		return subavg_5;
+	}
+	/**
+	 * @param subavg_5 the subavg_5 to set
+	 */
+	public void setSubavg_5(double subavg_5) {
+		this.subavg_5 = subavg_5;
+	}
+	/**
+	 * @return the subavg_10
+	 */
+	public double getSubavg_10() {
+		return subavg_10;
+	}
+	/**
+	 * @param subavg_10 the subavg_10 to set
+	 */
+	public void setSubavg_10(double subavg_10) {
+		this.subavg_10 = subavg_10;
+	}
+	/**
+	 * @return the subavg_20
+	 */
+	public double getSubavg_20() {
+		return subavg_20;
+	}
+	/**
+	 * @param subavg_20 the subavg_20 to set
+	 */
+	public void setSubavg_20(double subavg_20) {
+		this.subavg_20 = subavg_20;
+	}
+	/**
+	 * @return the subavg_30
+	 */
+	public double getSubavg_30() {
+		return subavg_30;
+	}
+	/**
+	 * @param subavg_30 the subavg_30 to set
+	 */
+	public void setSubavg_30(double subavg_30) {
+		this.subavg_30 = subavg_30;
+	}
+	/**
+	 * @return the subavg_60
+	 */
+	public double getSubavg_60() {
+		return subavg_60;
+	}
+	/**
+	 * @param subavg_60 the subavg_60 to set
+	 */
+	public void setSubavg_60(double subavg_60) {
+		this.subavg_60 = subavg_60;
+	}
+	/**
+	 * @return the aftavg_5
+	 */
+	public double getAftavg_5() {
+		return aftavg_5;
+	}
+	/**
+	 * @param aftavg_5 the aftavg_5 to set
+	 */
+	public void setAftavg_5(double aftavg_5) {
+		this.aftavg_5 = aftavg_5;
+	}
+	/**
+	 * @return the aftavg_10
+	 */
+	public double getAftavg_10() {
+		return aftavg_10;
+	}
+	/**
+	 * @param aftavg_10 the aftavg_10 to set
+	 */
+	public void setAftavg_10(double aftavg_10) {
+		this.aftavg_10 = aftavg_10;
+	}
+	/**
+	 * @return the aftavg_20
+	 */
+	public double getAftavg_20() {
+		return aftavg_20;
+	}
+	/**
+	 * @param aftavg_20 the aftavg_20 to set
+	 */
+	public void setAftavg_20(double aftavg_20) {
+		this.aftavg_20 = aftavg_20;
+	}
+	/**
+	 * @return the aftavg_30
+	 */
+	public double getAftavg_30() {
+		return aftavg_30;
+	}
+	/**
+	 * @param aftavg_30 the aftavg_30 to set
+	 */
+	public void setAftavg_30(double aftavg_30) {
+		this.aftavg_30 = aftavg_30;
+	}
+	/**
+	 * @return the aftavg_60
+	 */
+	public double getAftavg_60() {
+		return aftavg_60;
+	}
+	/**
+	 * @param aftavg_60 the aftavg_60 to set
+	 */
+	public void setAftavg_60(double aftavg_60) {
+		this.aftavg_60 = aftavg_60;
 	}
 }

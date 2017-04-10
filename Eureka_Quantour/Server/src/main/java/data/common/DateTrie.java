@@ -1,6 +1,9 @@
 package data.common;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class DateTrie implements Serializable{
 	/**
@@ -12,11 +15,29 @@ public class DateTrie implements Serializable{
 	private DateLeaf max;
 	private DateLeaf remain;
 	private boolean bigflag;
+	private HashMap<Integer,Integer> stockindex;
+	private List<StockLeaf> stockmax;
+	private List<StockLeaf> stockmin;
+	private List<StockLeaf> stockremain;
+	private List<Boolean> stockbigflag;
+	private int stocknumber;
 	public DateTrie(){
 		root=new TrieNode(1,null,true);
 		min=null;
 		remain=null;
 		bigflag=false;
+		setStocknumber(0);
+		setStockindex(new HashMap<Integer,Integer>());
+		setStockmax(new ArrayList<StockLeaf>());
+		setStockmin(new ArrayList<StockLeaf>());
+		setStockremain(new ArrayList<StockLeaf>());
+		setStockbigflag(new ArrayList<Boolean>());
+	}
+	public void clear(){
+		stockremain=null;
+		stockbigflag=null;
+		remain=null;
+		System.gc();
 	}
 	public boolean add(int year,int month,int day,int code,int row){
 		TrieNode temp;
@@ -27,12 +48,41 @@ public class DateTrie implements Serializable{
 				if(day>0){
 					DateLeaf t=(DateLeaf)temp.getChild().get(day-1);
 					if(t.isLeaf()){
-						t.getDateinfo().put(code, row);
+						StockLeaf leaf=new StockLeaf(row,t);
+//						Integer judge=stockindex.putIfAbsent(code, stocknumber);
+//						if(judge==null){
+//							stockmax.add(null);
+//							stockmin.add(null);
+//							stockremain.add(null);
+//							stockbigflag.add(false);
+//							stocknumber++;
+//						}
+//						int index=stockindex.get(code);
+//						StockLeaf remain=stockremain.get(index);
+//						StockLeaf min=stockmin.get(index);
+//						StockLeaf max=stockmax.get(index);
+//						boolean bigflag=stockbigflag.get(index);
+						t.getDateinfo().put(code, leaf);
+//						setLeafPrevious(remain,min,max,bigflag,leaf);
 						return true;
 					}
 					else{
 						t.activation(code, row, year, month, day);
+//						Integer judge=stockindex.putIfAbsent(code, stocknumber);
+//						if(judge==null){
+//							stockmax.add(null);
+//							stockmin.add(null);
+//							stockremain.add(null);
+//							stockbigflag.add(false);
+//							stocknumber++;
+//						}
 						setPrevious(t);
+//						int index=stockindex.get(code);
+//						StockLeaf remain=stockremain.get(index);
+//						StockLeaf min=stockmin.get(index);
+//						StockLeaf max=stockmax.get(index);
+//						boolean bigflag=stockbigflag.get(index);
+//						setLeafPrevious(remain,min,max,bigflag,t.getDateinfo().get(code));
 						bigflag=false;
 						return true;
 					}
@@ -74,8 +124,39 @@ public class DateTrie implements Serializable{
 			}
 		}
 	}
-	
-	
+	private void setLeafPrevious(StockLeaf remain,StockLeaf min,StockLeaf max,boolean bigflag,StockLeaf leaf){
+		if(remain==null){
+			remain=leaf;
+			min=leaf;
+			max=leaf;
+		}
+		else{
+			if(remain.compareTo(leaf)){
+				if(remain.getNext()==null){
+					remain.setNext(leaf);
+					leaf.setPrevious(remain);
+					max=leaf;
+				}
+				else{
+					remain=(StockLeaf) remain.getNext();
+					bigflag=true;
+					setLeafPrevious(remain,min,max,bigflag,leaf);
+				}
+			}
+			else{
+				if(bigflag){
+					leaf.setNext(remain);
+					leaf.setPrevious(remain.getPrevious());
+					((StockLeaf)remain.getPrevious()).setNext(leaf);
+					remain.setPrevious(leaf);
+				}
+				else{
+					remain=min;
+					setLeafPrevious(remain,min,max,bigflag,leaf);
+				}
+			}
+		}
+	}
 	
 	public DateLeaf get(int cal){
 		int year= cal / 10000;
@@ -117,5 +198,77 @@ public class DateTrie implements Serializable{
 	 */
 	public void setMax(DateLeaf max) {
 		this.max = max;
+	}
+	/**
+	 * @return the stockindex
+	 */
+	public HashMap<Integer,Integer> getStockindex() {
+		return stockindex;
+	}
+	/**
+	 * @param stockindex the stockindex to set
+	 */
+	public void setStockindex(HashMap<Integer,Integer> stockindex) {
+		this.stockindex = stockindex;
+	}
+	/**
+	 * @return the stockmax
+	 */
+	public List<StockLeaf> getStockmax() {
+		return stockmax;
+	}
+	/**
+	 * @param stockmax the stockmax to set
+	 */
+	public void setStockmax(List<StockLeaf> stockmax) {
+		this.stockmax = stockmax;
+	}
+	/**
+	 * @return the stockmin
+	 */
+	public List<StockLeaf> getStockmin() {
+		return stockmin;
+	}
+	/**
+	 * @param stockmin the stockmin to set
+	 */
+	public void setStockmin(List<StockLeaf> stockmin) {
+		this.stockmin = stockmin;
+	}
+	/**
+	 * @return the stockremain
+	 */
+	public List<StockLeaf> getStockremain() {
+		return stockremain;
+	}
+	/**
+	 * @param stockremain the stockremain to set
+	 */
+	public void setStockremain(List<StockLeaf> stockremain) {
+		this.stockremain = stockremain;
+	}
+	/**
+	 * @return the stocknumber
+	 */
+	public int getStocknumber() {
+		return stocknumber;
+	}
+	/**
+	 * @param stocknumber the stocknumber to set
+	 */
+	public void setStocknumber(int stocknumber) {
+		this.stocknumber = stocknumber;
+	}
+	/**
+	 * @return the stockbigflag
+	 */
+	public List<Boolean> getStockbigflag() {
+		return stockbigflag;
+	}
+	/**
+	 * @param stockbigflag the stockbigflag to set
+	 */
+	public void setStockbigflag(List<Boolean> stockbigflag) {
+		this.stockbigflag = stockbigflag;
 	}
 }
