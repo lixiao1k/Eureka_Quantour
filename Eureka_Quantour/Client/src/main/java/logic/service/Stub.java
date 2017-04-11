@@ -55,8 +55,13 @@ public class Stub {
 		vo4.setFudu(-14.030);
 		vo4.setVolume(69100);
 		list1.add(vo4);
+		for(int i=0;i<100;i++){
+			list1.add(vo1);
+			list1.add(vo2);
+			list1.add(vo3);
+			list1.add(vo4);
+		}
 		return list1;
-		
 	}
 	public List<SingleStockInfoVO> getSingleStockInfoList(){
 		List<SingleStockInfoVO> list = new ArrayList<>();

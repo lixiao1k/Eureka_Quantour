@@ -11,6 +11,20 @@
 	-fx-border-width: 1, 1.5;
 	-fx-border-insets: -1, 0; 
 }
+.pagination{
+	-fx-base:black;
+}
+.pagination .toggle-button , .mypage .button{
+	-fx-background-radius:15px;
+	-fx-padding: 0px;
+}
+.pagination .button{
+	-fx-padding: 5 15 5 16px;
+}
+.pagination .label {
+	-fx-text-fill:white;
+	-fx-font-size:10;
+}
 
 .scroll-pane > .viewport {
    -fx-background-color: transparent;

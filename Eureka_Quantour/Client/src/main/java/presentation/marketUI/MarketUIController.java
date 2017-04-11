@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import en_um.Positive;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -13,12 +15,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Pagination;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.input.MouseEvent;
@@ -27,6 +31,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Callback;
 import logic.service.Stub;
 import presentation.mainScreen.MainScreenController;
 import presentation.singleStockUI.SingleStockUIPopupController;
@@ -65,6 +70,9 @@ public class MarketUIController implements Initializable {
 	
 	@FXML
 	AnchorPane menuAnchorPane;
+	
+	@FXML
+	AnchorPane pagePane;
 	
 	private MainScreenController controller;
 	
@@ -195,8 +203,8 @@ public class MarketUIController implements Initializable {
 	}
 	
 	private void initialStocksFlowPane(List<SingleStockInfoVO> list){
+		stocksFlowPane.getChildren().clear();
 		int length = list.size();
-		System.out.println(length);
 		for(int i=0;i<length;i++){
 			SingleStockInfoVO vo = list.get(i);
 			HBox hb = getHBox(i+1, vo.getCode(), vo.getName(), vo.getClose(), vo.getFudu()
@@ -317,17 +325,21 @@ public class MarketUIController implements Initializable {
 //		downTenScrollPane.setStyle("-fx-background-color:transparent;");
 		initialMenuAnchorPane();
 		Stub stub = new Stub();
-		System.out.println(stub.getStockSetSortedInfo().size());
-		initialTenScroll(stub.getStockSetSortedInfo());
-		System.out.println(stub.getStockSetSortedInfo().size());
-		System.out.println(stub.getStockSetSortedInfo().size());
-		System.out.println(stub.getStockSetSortedInfo().size());
-		System.out.println(stub.getStockSetSortedInfo().size());
-		System.out.println(stub.getStockSetSortedInfo().size());
-		for(int i = 0;i<5;i++){
-			System.out.println(stub.getStockSetSortedInfo().size());
-		}
-		initialStocksFlowPane(stub.getStockSetSortedInfo());
+		List<SingleStockInfoVO> vo =stub.getStockSetSortedInfo();
+		int length =(int) Math.ceil(vo.size()/50);
+		Pagination pagination = new Pagination();
+		pagePane.getChildren().add(pagination);
+		pagination.setStyle("-fx-page-information-visible: false;");
+		pagination.setPageCount(length);
+		pagination.currentPageIndexProperty().addListener(new ChangeListener<Number>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				// TODO Auto-generated method stub
+				List<SingleStockInfoVO> list = vo.subList(newValue.intValue()*50, newValue.intValue()*50+50);
+				initialStocksFlowPane(list);
+			}
+		});
 	}
 
 }
