@@ -1,11 +1,18 @@
 package data.fetchdataimpl;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 
+import data.common.IndexTree;
 import data.datahelperimpl.InitEnvironment;
+import data.parse.Parse;
 
 public class StockInfoCalculate {
 	private String path;
@@ -13,7 +20,7 @@ public class StockInfoCalculate {
 	public StockInfoCalculate(){
 		ie=InitEnvironment.getInstance();
 		path=ie.getPath("stockinfo");
-		
+		IndexTree it=new IndexTree();
 	}
 	public void processAverage(){
 		File rootpath=new File(path);
@@ -59,5 +66,42 @@ public class StockInfoCalculate {
 //		br_data.close();
 		br_subadj.close();
 		br_aftadj.close();
+	}
+	public void processCalendarIndex() throws IOException{
+		BufferedReader br=new BufferedReader(new FileReader("config/resources/mainIndex"));
+		int count=0;
+		IndexTree it=new IndexTree();
+		while(br.ready()){
+			String out=br.readLine();
+			int cal=Parse.getInstance().getIntDate(out.substring(0, 10));
+			int code=Integer.parseInt(out.substring(11));
+			int year= cal / 10000;
+			int month= (cal -year * 10000 ) / 100;
+			int day=cal - year * 10000 - month * 100;
+			it.add(year, month, day, code, count);
+			count++;
+		}
+		it.end();
+		br.close();
+		
+		File file1=new File("config/resources/mainIndex1");
+		file1.createNewFile();
+		BufferedWriter bw=new BufferedWriter(new FileWriter("config/resources/mainIndex1"));
+		HashMap<Integer,Integer> map=it.stockindex;
+		List<HashMap<Integer,Integer>> list=it.i;
+		BufferedReader br1=new BufferedReader(new FileReader("config/resources/mainIndex"));
+		int count1=0;
+		while(br1.ready()){
+			String out=br1.readLine();
+			int cal=Parse.getInstance().getIntDate(out.substring(0, 10));
+			int code=Integer.parseInt(out.substring(11));
+			int year= cal / 10000;
+			int month= (cal -year * 10000 ) / 100;
+			int day=cal - year * 10000 - month * 100;
+			list.get(map.get(code)).get(cal);
+			count1++;
+		}
+		it.end();
+		br1.close();
 	}
 }

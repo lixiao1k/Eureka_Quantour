@@ -1,8 +1,10 @@
 package data.service;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.List;
 
+import exception.DateOverException;
 import exception.LogErrorException;
 import exception.NullDateException;
 import exception.NullStockIDException;
@@ -107,7 +109,7 @@ public interface IDataInterface
 	 * @throws StockHaltingException 该日期股票停牌时抛出该异常
 	 * @throws NullDateException 该日期不存在时抛出该异常
 	 */
-	public SingleStockInfoPO getSingleStockInfo(String stockcode,Calendar date) 
+	public SingleStockInfoPO getSingleStockInfo(String stockcode,LocalDate date) 
 			throws StockHaltingException, NullStockIDException, NullDateException;
 	/**
 	 * 获取一支股票从起始时间到终止时间的所有信息
@@ -133,15 +135,23 @@ public interface IDataInterface
 	 * @return 最早日期
 	 * @throws NullStockIDException 该股票不存在时抛出异常
 	 */
-	public Calendar getMinDay(String stockCode) throws NullStockIDException;
+	public LocalDate getMinDay(String stockCode) throws NullStockIDException;
 	/**
 	 * 获取一只股票的最晚日期
 	 * @param stockCode 股票编号
 	 * @return 最晚日期
 	 * @throws NullStockIDException 该股票不存在时抛出异常
 	 */
-	public Calendar getMaxDay(String stockCode) throws NullStockIDException;
+	public LocalDate getMaxDay(String stockCode) throws NullStockIDException;
 	
+	/**
+	 * 获取某一天起之后last个交易日之后的天数
+	 * @param date 起始日期
+	 * @param last 推移的天数
+	 * @return 交易日日期
+	 * @throws DateOverException
+	 */
+	public LocalDate addDays(LocalDate date,int last) throws DateOverException;
 	
 	//针对市场或股票池
 	/**
