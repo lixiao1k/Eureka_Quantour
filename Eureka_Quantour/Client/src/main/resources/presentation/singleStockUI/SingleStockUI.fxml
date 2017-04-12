@@ -9,7 +9,7 @@
    <children>
       <AnchorPane layoutY="-1.0" prefHeight="758.0" prefWidth="169.0" styleClass="left-segment" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <TextField layoutX="23.0" layoutY="14.0" prefHeight="15.0" prefWidth="102.0" promptText="股票搜索" />
+            <TextField fx:id="searchTextField" layoutX="23.0" layoutY="14.0" prefHeight="15.0" prefWidth="102.0" promptText="股票搜索" />
             <Button fx:id="searchButton" layoutX="125.0" layoutY="14.0" mnemonicParsing="false" onAction="#search" prefHeight="23.0" prefWidth="23.0" styleClass="transperantButton" />
             <Button fx:id="addButton" layoutX="29.0" layoutY="74.0" mnemonicParsing="false" onAction="#add2StockSet" styleClass="main-button" text="添加至股池" />
          </children></AnchorPane>

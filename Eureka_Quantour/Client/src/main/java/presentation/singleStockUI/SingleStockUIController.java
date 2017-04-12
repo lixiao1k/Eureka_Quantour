@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import dataController.DataContorller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -61,6 +63,13 @@ public class SingleStockUIController implements Initializable{
 	Label volumeLabel;
 	
 	@FXML
+	TextField searchTextField;
+	
+	private DataContorller dataController;
+	/*
+	 * @description添加至股池，弹出相应界面
+	 */
+	@FXML
 	protected void add2StockSet(ActionEvent e) throws IOException{
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("SingleStockUIPopup.fxml"));
@@ -73,12 +82,19 @@ public class SingleStockUIController implements Initializable{
 		stage.initStyle(StageStyle.TRANSPARENT);
 		stage.show();
 	}
-	
+	/*
+	 * @description搜索按钮的监听
+	 */
 	@FXML
 	protected void search(ActionEvent e){
-		
+		String name = searchTextField.getText();
+		if(true){
+			dataController.upDate("SingleStockNow", name);
+		}
 	}
-	
+	/*
+	 * @description初始化股票基本信息界面
+	 */
 	private void setStockInfoPane(String code,String name,double close,double RAF,double high
 			,double low,double open,long volume){
 		codeLabel.setText(code);
@@ -103,6 +119,9 @@ public class SingleStockUIController implements Initializable{
 	    addLabelColor(openLabel, open,0);
 	    volumeLabel.setText(Long.toString(volume));		
 	}
+	/*
+	 * @description设置字体颜色，为setStockInfoPane方法所调用
+	 */
 	public void addLabelColor(Label label,double num,int size){
 		if(size==0){
 			if(num>0){
@@ -130,6 +149,7 @@ public class SingleStockUIController implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
+		dataController = DataContorller.getInstance();
 		Image searchImage = new Image(getClass().getResourceAsStream("search.png"));
 		searchButton.setGraphic(new ImageView(searchImage));
 		Stub stub = new Stub();

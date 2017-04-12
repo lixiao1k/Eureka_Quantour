@@ -10,10 +10,11 @@
    <children>
       <AnchorPane layoutX="8.0" layoutY="1.0" prefHeight="73.0" prefWidth="1217.0" styleClass="top1-segment" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="1.0">
          <children>
-            <HBox fx:id="buttonHBox" layoutX="5.5" layoutY="42.5" prefHeight="31.0" prefWidth="194.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="4.0" AnchorPane.topAnchor="41.0" />
+            <HBox fx:id="buttonHBox" layoutX="290.0" layoutY="8.0" prefHeight="27.0" AnchorPane.bottomAnchor="42.0" AnchorPane.leftAnchor="290.0" AnchorPane.topAnchor="0.0" />
             <AnchorPane fx:id="pagePane" layoutX="468.5" layoutY="20.0" prefHeight="35.0" prefWidth="200.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="467.0" />
-            <Button layoutY="2.0" mnemonicParsing="false" onAction="#goSetHSButtons" prefHeight="35.0" prefWidth="100.0" styleClass="main-button" text="沪市" />
-            <Button layoutX="100.0" layoutY="2.0" mnemonicParsing="false" onAction="#goSetSSButtons" prefHeight="35.0" prefWidth="100.0" styleClass="main-button" text="深市" />
+            <Button layoutY="2.0" mnemonicParsing="false" onAction="#goSetHSButtons" prefHeight="35.0" prefWidth="100.0" styleClass="main-button" text="沪市" AnchorPane.topAnchor="0.0" />
+            <Button layoutX="100.0" layoutY="2.0" mnemonicParsing="false" onAction="#goSetSSButtons" prefHeight="35.0" prefWidth="100.0" styleClass="main-button" text="深市" AnchorPane.topAnchor="0.0" />
+            <Button layoutX="200.0" layoutY="2.0" mnemonicParsing="false" onAction="#goBrowseHS300" prefHeight="35.0" prefWidth="90.0" styleClass="main-button" text="沪深300" AnchorPane.topAnchor="0.0" />
          </children>
       </AnchorPane>
       <AnchorPane layoutX="281.0" layoutY="73.0" maxWidth="600.0" prefHeight="684.0" prefWidth="600.0" styleClass="left2-segment" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="281.0" AnchorPane.topAnchor="74.0">

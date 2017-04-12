@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 
 import javax.sound.midi.Sequence;
 
+import dataController.DataContorller;
 import en_um.Positive;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -66,9 +67,14 @@ public class StockSetUIController implements Initializable {
 	@FXML
 	AnchorPane menuAnchorPane;
 	
+	private DataContorller dataController;
+	
+	//关联与弹窗之间的controller,以便查看股票详细信息时跳转至个股界面	
 	private MainScreenController controller;
 	
-	//关联与弹窗之间的controller
+/*
+ * @description 新建股池时跳出相应界面
+ */
 	@FXML
 	protected void creatStockSet(ActionEvent e) throws IOException{
 		FXMLLoader loader = new FXMLLoader();
@@ -83,7 +89,9 @@ public class StockSetUIController implements Initializable {
 		stage.show();
 	}
 	
-	
+	/*
+	 * @description 初始化股池界面
+	 */
 	private void addSet(List<String> list){
 		for(String item:list){
             creatSet(item);
@@ -97,6 +105,17 @@ public class StockSetUIController implements Initializable {
         button.setMinWidth(244);
         button.getStylesheets().add(getClass().getClassLoader().getResource("styles/StockSetButton.css").toExternalForm());
         button.getProperties().put("NAME", button.getText());
+        button.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				// TODO Auto-generated method stub
+				String stockSetName = (String) button.getProperties().get("NAME");
+				System.out.println(stockSetName);
+				dataController.upDate("StockSetNow",stockSetName);
+				//....
+			}
+		});
         stockSetFlowPane.getChildren().add(button);
         //加入删除的上下文菜单
         final ContextMenu menu = new ContextMenu();
@@ -136,7 +155,7 @@ public class StockSetUIController implements Initializable {
 		}
 	}
 	/*
-	 * @description setStockSetSortedInfo的供方法
+	 * @description setStockSetSortedInfo的供方法，获取股票信息条组件
 	 */
 	public HBox getHBox(int num,String code,String name,double close,double RAF, double open,double high,double low,int volume){
 		HBox root = new HBox();
@@ -162,6 +181,18 @@ public class StockSetUIController implements Initializable {
 		
 		ContextMenu menu = new ContextMenu();
 		MenuItem delete = new MenuItem("移除");
+		MenuItem show = new MenuItem("细节");
+		show.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				// TODO Auto-generated method stub
+				dataController.upDate("StockNow", code);
+				setDetailInfo();
+				
+			}
+		});
+		
 		MenuItem copy = new MenuItem("添至");
 		copy.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -192,6 +223,7 @@ public class StockSetUIController implements Initializable {
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
                 try {
+                	dataController.upDate("SingleStockNow", code);
 					controller.setSingleStockUI();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -200,7 +232,7 @@ public class StockSetUIController implements Initializable {
 			}
 			
 		});
-		menu.getItems().addAll(delete,copy,look);
+		menu.getItems().addAll(delete,copy,look,show);
 		//menu的监听之后加
 		
 		//很冗余的代码，想不到解决的办法，因为HBox无法加入上下文菜单，用Button会是比HBox更好的选择，但是时间有限，有机会再改
@@ -257,7 +289,9 @@ public class StockSetUIController implements Initializable {
 		
 		
 	}
-	
+	/*
+	 * @description 判断正负性
+	 */
 	public Positive isPositive(Double num){
 		if(num>0){
 			return Positive.POSITIVE;
@@ -267,6 +301,9 @@ public class StockSetUIController implements Initializable {
 			return Positive.NEGATIVE;
 		}
 	}
+	/*
+	 * @description 获取股票信息条中的组件Label 为getHBox方法所调用
+	 */
 	public Label getLabel(double width, Pos alignment,String text,Positive positive){
 		Label label = new Label(text);
 		label.setPrefSize(width, 25);
@@ -282,7 +319,9 @@ public class StockSetUIController implements Initializable {
 		}
 		return label;
 	}
-	
+	/*
+	 * @description初始化股票列表的表头
+	 */
 	private void initialMenuAnchorPane(){
 		HBox hb = new HBox();
 		hb.setPrefSize(645, 25);
@@ -298,7 +337,9 @@ public class StockSetUIController implements Initializable {
 		hb.getChildren().addAll(numLabel,codeLabel,nameLabel,closeLabel,RAFLabel,openLabel,highLabel,lowLabel,volumeLabel);
 		menuAnchorPane.getChildren().add(hb);
 	}
-	
+	/*
+	 * @description提供表头组件的Label组件，为initialMenuAnchorPane所调用
+	 */
 	private Label getLabel4initialMenu(double width, Pos alignment,String text){
 		Label label = new Label(text);
 		label.setPrefSize(width, 25);
@@ -311,8 +352,16 @@ public class StockSetUIController implements Initializable {
 				+ "-fx-font-weight:bold");
 		return label;
 	}
-
-	
+	/*
+	 * @description 设置界面右侧的股票详细信息
+	 */
+   private void setDetailInfo(){
+	   String code = (String) dataController.get("StockNow");
+	   //...
+   }
+	/*
+	 * @description 设置主界面的Controller
+	 */
 	public void setController(MainScreenController controller){
 		this.controller = controller;
 	}
@@ -320,7 +369,7 @@ public class StockSetUIController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
-		
+		dataController = DataContorller.getInstance();
 //		javafx8之后这条语句单独使用没有效果，需要在css上加上
 //		.scroll-pane > .viewport {
 //		   -fx-background-color: transparent;
@@ -331,7 +380,7 @@ public class StockSetUIController implements Initializable {
 		addSet(stub.getStockSet("username"));
 		setStockSetSortedInfo(stub.getStockSetSortedInfo());
 		initialMenuAnchorPane();
-		showDetailInfo();
+//		showDetailInfo();
 
 	}
 

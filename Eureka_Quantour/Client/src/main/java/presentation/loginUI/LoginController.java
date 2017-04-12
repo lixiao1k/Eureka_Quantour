@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import dataController.DataContorller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,6 +31,8 @@ public class LoginController implements Initializable{
 	@FXML
 	ImageView logoImageView;
 	
+	private DataContorller dataController;
+	
 	@FXML
 	protected void logUp(ActionEvent e){
 		
@@ -37,18 +40,26 @@ public class LoginController implements Initializable{
 	
 	@FXML
 	protected void logIn(ActionEvent e) throws IOException{
-		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("presentation/mainScreen/MainScreen.fxml"));
-		Scene scene = new Scene(root);
-		Stage stage = new Stage();
-		stage.setScene(scene);
-		stage.show();
-		Stage stagenow = (Stage) usernameTextField.getScene().getWindow();
-		stagenow.close();
+		if(true){
+			String username = usernameTextField.getText();
+	        dataController.upDate("UserName", username);
+			Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("presentation/mainScreen/MainScreen.fxml"));
+			Scene scene = new Scene(root);
+			Stage stage = new Stage();
+			stage.setScene(scene);
+			stage.show();
+			Stage stagenow = (Stage) usernameTextField.getScene().getWindow();
+			stagenow.close();
+		}else{
+			System.out.println("");
+		}
+
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
+		dataController = DataContorller.getInstance();
 		Image image = new Image(getClass().getResourceAsStream("Title.png"));
 		logoImageView.setImage(image);
 	}
