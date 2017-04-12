@@ -2,10 +2,8 @@ package logic.utility;
 
 import data.service.IDataInterface;
 import data.serviceimpl.DataInterfaceImpl;
-import exception.BeginInvalidException;
-import exception.DateInvalidException;
-import exception.EndInvalidException;
-import exception.NullStockIDException;
+import exception.*;
+import po.SingleStockInfoPO;
 
 import java.text.DecimalFormat;
 import java.time.LocalDate;
@@ -94,5 +92,22 @@ public class Utility {
 //            calendarAdvance(cal);
 //        }
 //    }
+
+
+    public double getEMA(String stockCode,LocalDate time,int days) throws DateOverException, NullStockIDException {
+        double jieguo=0.0;
+        for (int i=1;i<=days;i++)
+        {
+            try {
+                SingleStockInfoPO po = idi.getSingleStockInfo(stockCode, idi.addDays(time, -i));
+                jieguo+=po.getAftClose();
+            }
+            catch (NullDateException e) {
+                continue;
+            }
+
+        }
+        return  jieguo/days;
+    }
 
 }

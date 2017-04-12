@@ -77,24 +77,15 @@ public class StockLogicImpl implements StockLogicInterface{
 		ArrayList<Double> shujulist=new ArrayList<>();
 
 		for (;start.compareTo(end)<0;start=idi.addDays(start,1)){
-			double zonghe=0.0;
-
-			try {
-				for (int i=0;i<days;i++){
-					SingleStockInfoPO po = idi.getSingleStockInfo(stockCode,idi.addDays(start,-i));
-					zonghe+=po.getAftClose();
-				}
-				zonghe=zonghe/days;
-				shujulist.add(zonghe);
-				timelist.add(start);
-			} catch (NullDateException e) {
-				continue;
-			}
+			shujulist.add(utility.getEMA(stockCode,start,days));
+			timelist.add(LocalDate.of(start.getYear(),start.getMonth(),start.getDayOfMonth()));
 
 		}
 		EMAInfoVO vo = new EMAInfoVO(timelist,shujulist,days);
 		return vo;
 	}
+
+
 
 //	@Override
 //	public ComparedInfoVO getComparedInfo(String stockCodeA, String stockCodeB, LocalDate begin, LocalDate end)

@@ -2,14 +2,12 @@ package logic.utility;
 
 import data.service.IDataInterface;
 import data.serviceimpl.DataInterfaceImpl;
-import exception.NullDateException;
-import exception.NullStockIDException;
-import exception.PriceTypeException;
-import exception.StockHaltingException;
+import exception.*;
 import po.SingleStockInfoPO;
 import vo.SaleVO;
 import vo.StrategyConditionVO;
 
+import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -21,14 +19,14 @@ public class Return {
 
 
     private List<String> stockcode;
-    private Calendar begin;
-    private Calendar end;
+    private LocalDate begin;
+    private LocalDate end;
     private SaleVO salevo;
     private StrategyConditionVO strategyConditionVO;
     private int days;
     private Comparator<SingleStockInfoPO> comparator;
 
-    public Return(List<String> stockcode, Calendar begin, Calendar end, SaleVO salevo, StrategyConditionVO strategyConditionVO) {
+    public Return(List<String> stockcode, LocalDate begin, LocalDate end, SaleVO salevo, StrategyConditionVO strategyConditionVO) {
         this.stockcode = stockcode;
         this.begin = begin;
         this.end = end;
@@ -40,75 +38,96 @@ public class Return {
         if (type.equals("均值策略")) comparator=new junzhicelue(strategyConditionVO.getExtra());
     }
 
-    public List<Double> getBasicReturn () throws PriceTypeException, StockHaltingException, NullStockIDException, NullDateException {
+    public Double getAlpha(){
+        return 0.0;
+    }
+    public Double getBeta(){
+        return 0.0;
+    }
+    
+
+    public List<Double> getBasicReturn ()
+            throws PriceTypeException, NullStockIDException, StragetyException
+    {
 
         List<Double> list=new ArrayList<>();
 
+        LocalDate iter=LocalDate.of(begin.getYear(),begin.getMonth(),begin.getDayOfMonth());
 
 
         double init=100.0;
-        for (Calendar beginclone=(Calendar) begin.clone();
-             beginclone.compareTo(end)<0;
-             utility.calendarAfter(beginclone,days))
-        {
-            double zheci=0;
-            double shangci=0;
+        try {
+            for (;
+                 iter.compareTo(end)<0;
+                 iter=idi.addDays(iter,days))
+            {
+                double zheci=0;
+                double shangci=0;
 
-            for (String name:stockcode) {
-                SingleStockInfoPO po1 = idi.getSingleStockInfo(name, beginclone);
-                Calendar shangciriqi=(Calendar) beginclone.clone();
-                utility.calendarAdvance(shangciriqi,days);
-                SingleStockInfoPO po2 = idi.getSingleStockInfo(name, shangciriqi);
-                zheci=zheci+getjiage(po1);
-                shangci=shangci+getjiage(po2);
+                    for (String name : stockcode) {
+                        try {
+                        SingleStockInfoPO po1 = idi.getSingleStockInfo(name, iter);
+                        SingleStockInfoPO po2 = idi.getSingleStockInfo(name, idi.addDays(iter, days));
+                        zheci = zheci + getjiage(po1);
+                        shangci = shangci + getjiage(po2);
+                        }
+                        catch (NullDateException e) {
+                            continue;
+                        }
+                    }
+                init=init*(zheci/shangci);
+                double rate=(init-100)/100;
+                list.add(rate);
 
             }
-            init=init*(zheci/shangci);
-            double rate=(init-100)/100;
-            list.add(rate);
-
+        } catch (DateOverException e) {
+            e.printStackTrace();
         }
 
         return list;
     }
 
-    public List<Double> getStragetyReturn ( ) throws StockHaltingException, NullStockIDException, NullDateException {
+    public List<Double> getStragetyReturn ( ) throws StockHaltingException, NullStockIDException, NullDateException, PriceTypeException {
         double init=100.0;
         List<Double> list=new ArrayList<>();
+        LocalDate iter=LocalDate.of(begin.getYear(),begin.getMonth(),begin.getDayOfMonth());
 
 
-        for (Calendar beginclone=(Calendar) begin.clone();
-             beginclone.compareTo(end)<0;
-             utility.calendarAfter(beginclone,days))
-        {
-            double zheci=0;
-            double shangci=0;
+        try {
+            for (;
+                 iter.compareTo(end)<0;
+                 iter=idi.addDays(iter,days))
+            {
+                double zheci=0;
+                double shangci=0;
 
-            List<SingleStockInfoPO> polist=new ArrayList<>();
-            List<SingleStockInfoPO> celuepolist=new ArrayList<>();
-            for(String name:stockcode){
-                polist.add(idi.getSingleStockInfo(name,beginclone));
+                List<SingleStockInfoPO> polist=new ArrayList<>();
+                for(String name:stockcode){
+                    polist.add(idi.getSingleStockInfo(name,iter));
+                }
+                Collections.sort(polist,comparator);
+                List<String> jilu=new ArrayList<>();
+                for (int i=0;i<strategyConditionVO.getNums();i++){
+                    zheci=zheci+getjiage(polist.get(i));
+                    jilu.add(polist.get(i).getCode());
+                }
+
+
+                for(String name:jilu){
+                    SingleStockInfoPO po=idi.getSingleStockInfo(name,idi.addDays(iter,-days));
+                    shangci+=getjiage(po);
+
+                }
+
+
+                init=init*(zheci/shangci);
+                double rate=(init-100)/100;
+                list.add(rate);
+
+
             }
-            Collections.sort(polist,comparator);
-            for (int i=0;i<strategyConditionVO.getNums();i++){
-                zheci=zheci+polist.get(i).getClose();
-            }
-
-            Calendar shangciriqi=(Calendar) beginclone.clone();
-            utility.calendarAdvance(shangciriqi,days);
-            for(String name:stockcode){
-                polist.add(idi.getSingleStockInfo(name,beginclone));
-            }
-            Collections.sort(polist,comparator);
-            for (int i=0;i<strategyConditionVO.getNums();i++){
-                shangci=shangci+polist.get(i).getClose();
-            }
-
-            init=init*(zheci/shangci);
-            double rate=(init-100)/100;
-            list.add(rate);
-
-
+        } catch (DateOverException e) {
+            e.printStackTrace();
         }
 
         return list;
@@ -125,7 +144,7 @@ public class Return {
     }
 
 
-    private static class junzhicelue implements Comparator<SingleStockInfoPO> {
+    private  class junzhicelue implements Comparator<SingleStockInfoPO> {
 
         private int days;
         private junzhicelue(List<Object> objects){
@@ -135,12 +154,29 @@ public class Return {
 
         @Override
         public int compare(SingleStockInfoPO o1, SingleStockInfoPO o2) {
+            String name1=o1.getCode();
+            String name2=o2.getCode();
+            LocalDate now=o1.getDate();
+            double junzhi1=0.0;
+            double junzhi2=0.0;
+            try {
+                junzhi1=utility.getEMA(name1,now,days);
+                junzhi2=utility.getEMA(name2,now,days);
+            } catch (DateOverException e) {
+                e.printStackTrace();
+            } catch (NullStockIDException e) {
+                e.printStackTrace();
+            }
+            double rate1=0.0;
+            double rate2=0.0;
+            try {
+                rate1=(getjiage(o1)-junzhi1)/junzhi1;
+                rate2=(getjiage(o1)-junzhi1)/junzhi1;
+            } catch (PriceTypeException e) {
+                e.printStackTrace();
+            }
 
-
-            
-
-
-            return 0;
+            return (int) (rate1-rate2)*100;
         }
     }
 
@@ -159,20 +195,35 @@ public class Return {
         @Override
         public int compare(SingleStockInfoPO o1, SingleStockInfoPO o2) {
 
-            String name1=o1.getName();
-            String name2=o2.getName();
+            String name1=o1.getCode();
+            String name2=o2.getCode();
 
-            Calendar now=o1.getDate();
-            Calendar before=(Calendar) now.clone();
-            utility.calendarAdvance(before,days);
+            LocalDate now=o1.getDate();
+            LocalDate before=now.minusDays(days);
+            try {
+                before = idi.addDays(now,-days);
+            } catch (DateOverException e) {
+                e.printStackTrace();
+            }
 
-            SingleStockInfoPO o3=idi.getSingleStockInfo(name1,before);
-            SingleStockInfoPO o4=idi.getSingleStockInfo(name2,before);
+            SingleStockInfoPO o3;
+            SingleStockInfoPO o4;
+            double rate1=0;
+            double rate2=0;
+            try {
+                o3 = idi.getSingleStockInfo(name1,before);
+                o4 = idi.getSingleStockInfo(name2,before);
+                rate1=(o3.getAftClose()-o1.getAftClose())/o3.getAftClose();
+                rate2=(o4.getAftClose()-o2.getAftClose())/o4.getAftClose();
+            } catch (NullStockIDException e) {
+                e.printStackTrace();
+            } catch (NullDateException e) {
+                e.printStackTrace();
+            }
 
-            double rate1=(o3.getAdjclose()-o1.getAdjclose())/o3.getAdjclose();
-            double rate2=(o4.getAdjclose()-o2.getAdjclose())/o4.getAdjclose();
 
-            return (int) (rate2-rate1)*100;
+
+            return (int) (rate1-rate2)*100;
 
         }
     }
