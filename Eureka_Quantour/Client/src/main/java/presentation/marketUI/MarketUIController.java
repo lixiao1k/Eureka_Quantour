@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import dataController.DataContorller;
 import en_um.Positive;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -74,8 +75,19 @@ public class MarketUIController implements Initializable {
 	@FXML
 	AnchorPane pagePane;
 	
+	private DataContorller dataController;
+	
+	//pagnition 是浏览股票信息时的分页组件
+	private Pagination pagination;
+	
+	/*
+	 * @param controller 获得主界面的Controller后以便之后跳转至个股界面浏览单只股票详细信息
+	 */
 	private MainScreenController controller;
 	
+	/*
+	 * @description 初始化沪市板块栏的组件
+	 */
 	@FXML
 	protected void goSetHSButtons(ActionEvent e){
 		buttonHBox.getChildren().clear();
@@ -85,10 +97,12 @@ public class MarketUIController implements Initializable {
 		Button HSBButton = new Button("沪市B股");
 		HSBButton.setPrefHeight(37);
 		HSBButton.getStylesheets().add(getClass().getClassLoader().getResource("styles/MarketButton.css").toExternalForm());
-		Separator separator = new Separator(Orientation.VERTICAL);
-		buttonHBox.getChildren().addAll(HSAButton,separator,HSBButton);
+		buttonHBox.getChildren().addAll(HSAButton,HSBButton);
 	}
 	
+	/*
+	 * @description 初始化深市板块栏的组件
+	 */	
 	@FXML
 	protected void goSetSSButtons(ActionEvent e){
 		buttonHBox.getChildren().clear();
@@ -98,10 +112,25 @@ public class MarketUIController implements Initializable {
 		Button HSBButton = new Button("深市B股");
 		HSBButton.setPrefHeight(37);
 		HSBButton.getStylesheets().add(getClass().getClassLoader().getResource("styles/MarketButton.css").toExternalForm());
-		Separator separator = new Separator(Orientation.VERTICAL);
-		buttonHBox.getChildren().addAll(HSAButton,separator,HSBButton);
+		Button CYBButton = new Button("创业板");
+		CYBButton.setPrefHeight(37);
+		CYBButton.getStylesheets().add(getClass().getClassLoader().getResource("styles/MarketButton.css").toExternalForm());
+		Button ZXBButton = new Button("中小板");
+		ZXBButton.setPrefHeight(37);
+		ZXBButton.getStylesheets().add(getClass().getClassLoader().getResource("styles/MarketButton.css").toExternalForm());
+		buttonHBox.getChildren().addAll(HSAButton,HSBButton,CYBButton,ZXBButton);
+	}
+	/*
+	 * @description 浏览沪深300的监听
+	 */
+	@FXML
+	protected void goBrowseHS300(ActionEvent e){
+		buttonHBox.getChildren().clear();
 	}
 	
+	/*
+	 * @description 初始化板块内排名前后十的界面
+	 */
 	private void initialTenScroll(List<SingleStockInfoVO> list){
 		int length = list.size();
 		for(int i =0;i<2;i++){
@@ -115,7 +144,9 @@ public class MarketUIController implements Initializable {
 			downTenFlowPane.getChildren().add(hb);
 		}
 	}
-	
+	/*
+	 * @description 获取前后十排名中单只股票信息的信息条
+	 */
 	public HBox getHBox4TenScoll(String code,String name,double close,double RAF){
 		HBox root = new HBox();
 		root.setPrefSize(250, 25);
@@ -167,7 +198,16 @@ public class MarketUIController implements Initializable {
 				}
 			}
 		});
-		menu.getItems().addAll(copy,look);
+		MenuItem show = new MenuItem("细节");
+		show.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				// TODO Auto-generated method stub
+				dataController.upDate("Market_StockNow", code);
+			}
+		});
+		menu.getItems().addAll(copy,look,show);
 		//menu的监听之后加
 		
 		//很冗余的代码，想不到解决的办法，因为HBox无法加入上下文菜单，用Button会是比HBox更好的选择，但是时间有限，有机会再改
@@ -177,6 +217,9 @@ public class MarketUIController implements Initializable {
 		RAFLabel.setContextMenu(menu);	
 		return root;
 	}
+	/*
+	 * @description 用以判断数的正负性
+	 */
 	public Positive isPositive(Double num){
 		if(num>0){
 			return Positive.POSITIVE;
@@ -186,12 +229,14 @@ public class MarketUIController implements Initializable {
 			return Positive.NEGATIVE;
 		}
 	}
+	/*
+	 *@description 获得单只股票信息条中的Label组件,为getHBox方法调用
+	 */
 	public Label getLabel(double width, Pos alignment,String text,Positive positive){
 		Label label = new Label(text);
 		label.setPrefSize(width, 25);
 		label.setMaxWidth(width);
 		label.setAlignment(alignment);
-		
 		if(Positive.ZERO==positive){
 			label.setStyle("-fx-border-width: 1;-fx-border-color: rgba(255,255,255,0.2);-fx-background-color:transparent;-fx-text-fill: rgb(255, 255, 255, 1);-fx-font-weight:bold");
 		}else if(Positive.POSITIVE==positive){
@@ -201,7 +246,9 @@ public class MarketUIController implements Initializable {
 		}
 		return label;
 	}
-	
+	/*
+	 * @description 初始化显示股市所有股票信息的界面
+	 */
 	private void initialStocksFlowPane(List<SingleStockInfoVO> list){
 		stocksFlowPane.getChildren().clear();
 		int length = list.size();
@@ -212,6 +259,9 @@ public class MarketUIController implements Initializable {
 			stocksFlowPane.getChildren().add(hb);
 		}
 	}
+	/*
+	 * @description 获取股票信息条组件
+	 */
 	public HBox getHBox(int num,String code,String name,double close,double RAF, double open,double high,double low,int volume){
 		HBox root = new HBox();
 		root.setPrefSize(645, 25);
@@ -268,7 +318,16 @@ public class MarketUIController implements Initializable {
 				}
 			}
 		});
-		menu.getItems().addAll(copy,look);
+		MenuItem show = new MenuItem("细节");
+		show.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				// TODO Auto-generated method stub
+				dataController.upDate("Market_StockNow", code);
+			}
+		});
+		menu.getItems().addAll(copy,look,show);
 		//menu的监听之后加
 		
 		//很冗余的代码，想不到解决的办法，因为HBox无法加入上下文菜单，用Button会是比HBox更好的选择，但是时间有限，有机会再改
@@ -285,7 +344,9 @@ public class MarketUIController implements Initializable {
 		return root;
 	}
 
-	
+	/*
+	 * @description 初始化股票信息表的表头
+	 */
 	private void initialMenuAnchorPane(){
 		HBox hb = new HBox();
 		hb.setPrefSize(597, 25);
@@ -301,7 +362,9 @@ public class MarketUIController implements Initializable {
 		hb.getChildren().addAll(numLabel,codeLabel,nameLabel,closeLabel,RAFLabel,openLabel,highLabel,lowLabel,volumeLabel);
 		menuAnchorPane.getChildren().add(hb);
 	}
-	
+	/*
+	 * @description 获取表头组件中的Label组件 为initialMenuAnchorPane调用
+	 */
 	private Label getLabel4initialMenu(double width, Pos alignment,String text){
 		Label label = new Label(text);
 		label.setPrefSize(width, 25);
@@ -314,13 +377,26 @@ public class MarketUIController implements Initializable {
 				+ "-fx-font-weight:bold");
 		return label;
 	}
-	
+	/*
+	 * @description 初始化分页控件
+	 */
+	private void initialPagination(){
+		pagination = new Pagination();
+		pagePane.getChildren().clear();
+		pagePane.getChildren().add(pagination);
+		pagination.setStyle("-fx-page-information-visible: false;");
+	}
+	/*
+	 * @description 设置主界面的Controller
+	 */
 	public void setController(MainScreenController controller){
 		this.controller = controller;
 	}
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
+		dataController = DataContorller.getInstance();
 //		upTenScrollPane.setStyle("-fx-background-color:transparent;");
 //		downTenScrollPane.setStyle("-fx-background-color:transparent;");
 		initialMenuAnchorPane();
@@ -332,7 +408,6 @@ public class MarketUIController implements Initializable {
 		pagination.setStyle("-fx-page-information-visible: false;");
 		pagination.setPageCount(length);
 		pagination.currentPageIndexProperty().addListener(new ChangeListener<Number>() {
-
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				// TODO Auto-generated method stub
