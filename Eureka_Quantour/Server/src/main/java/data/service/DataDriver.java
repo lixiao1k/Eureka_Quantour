@@ -2,6 +2,7 @@ package data.service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Scanner;
 
@@ -120,14 +121,7 @@ public class DataDriver {
 			else if(mode.equals("get single stock")){
 				String stockcode=sc.nextLine();
 				String cal=sc.nextLine();
-				Calendar date=Calendar.getInstance();
-				
-				try {
-					date.setTime(sdf.parse(cal));
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				LocalDate date=LocalDate.parse(cal);
 				inputtime=System.currentTimeMillis();
 				try {
 					System.out.println(data.getSingleStockInfo(stockcode, date).toString());
@@ -155,7 +149,7 @@ public class DataDriver {
 				String stockcode=sc.nextLine();
 				inputtime=System.currentTimeMillis();
 				try {
-					System.out.println(sdf.format(data.getMinDay(stockcode).getTime()));
+					System.out.println(data.getMinDay(stockcode));
 				} catch (NullStockIDException e) {
 					System.out.println(e.toString());
 				}
@@ -165,7 +159,7 @@ public class DataDriver {
 				String stockcode=sc.nextLine();
 				inputtime=System.currentTimeMillis();
 				try {
-					System.out.println(sdf.format(data.getMaxDay(stockcode).getTime()));
+					System.out.println(data.getMaxDay(stockcode));
 				} catch (NullStockIDException e) {
 					System.out.println(e.toString());
 				}

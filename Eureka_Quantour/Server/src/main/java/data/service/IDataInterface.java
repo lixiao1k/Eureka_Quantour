@@ -106,11 +106,10 @@ public interface IDataInterface
 	 * @param date 日期
 	 * @return 股票信息
 	 * @throws NullStockIDException 不存在该支股票时抛出该异常
-	 * @throws StockHaltingException 该日期股票停牌时抛出该异常
 	 * @throws NullDateException 该日期不存在时抛出该异常
 	 */
 	public SingleStockInfoPO getSingleStockInfo(String stockcode,LocalDate date) 
-			throws StockHaltingException, NullStockIDException, NullDateException;
+			throws  NullStockIDException, NullDateException;
 	/**
 	 * 获取一支股票从起始时间到终止时间的所有信息
 	 * @param stockcode String,股票编号
