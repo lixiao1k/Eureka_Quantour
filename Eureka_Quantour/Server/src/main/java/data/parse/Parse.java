@@ -1,5 +1,6 @@
 package data.parse;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 
 /**
@@ -67,6 +68,10 @@ public class Parse {
 	}
 	public int getIntDate(Calendar date){
 		int cal=date.get(Calendar.YEAR)*10000+date.get(Calendar.MONTH)*100+100+date.get(Calendar.DAY_OF_MONTH);
+		return cal;
+	}
+	public int getIntDate(LocalDate date){
+		int cal=date.getYear()*10000+date.getMonthValue()*100+date.getDayOfMonth();
 		return cal;
 	}
 }

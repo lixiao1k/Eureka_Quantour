@@ -11,13 +11,15 @@ public class IndexTree {
 	private List<List<List<Integer>>> datetrie;
 	private List<HashMap<Integer,Integer>> dateinfomap;
 	private int mapnumber;
-	private List<Integer> datesort;
+	public List<Integer> datesort;
 	private Integer remain;
 	
-	private HashMap<Integer,Integer> stockindex;
-	private List<List<Integer>> stockLinkedList;
+	public HashMap<Integer,Integer> stockindex;
+	public List<List<Integer>> stockLinkedList;
 	private List<Integer> stockremain;
 	private int stocknumber;
+	
+	public List<HashMap<Integer,Integer>> i;
 	
 	public IndexTree(){
 		mapnumber=0;
@@ -54,6 +56,14 @@ public class IndexTree {
 			datetrie.get(year-2005).get(month-1).add(day-1,i);
 		}
 		dateinfomap=copy;
+		i=new ArrayList<HashMap<Integer,Integer>>();
+		for(int k=0;k<stockLinkedList.size();k++){
+			HashMap<Integer,Integer> temp=new HashMap<Integer,Integer>();
+			for(int m=0;m<stockLinkedList.get(k).size();m++){
+				temp.put(stockLinkedList.get(k).get(m), m);
+			}
+			i.add(temp);
+		}
 	}
 	public void add(int year,int month,int day,int code,int row){
 		int cal=year * 10000 + month * 100 + day;

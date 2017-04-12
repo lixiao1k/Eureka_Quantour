@@ -1,9 +1,7 @@
 package po;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import data.parse.Parse;
@@ -18,7 +16,7 @@ public class SingleStockInfoPO
 	private String name;//这支股票的名字
 	private String code;//这支股票的编号
 	
-	private Calendar date;//这条股票信息的时间
+	private LocalDate date;//这条股票信息的时间
 	
 	private double open;//这支股票当天的开盘价格
 	private double high;//这支股票当天的最高价格
@@ -77,7 +75,7 @@ public class SingleStockInfoPO
 	 */
 	public SingleStockInfoPO(
 			String _name,String _code,
-			Calendar _date,
+			LocalDate _date,
 			double _open,double _high,double _low,int _volume,
 			double _close,double _subclose,double _aftclose,
 			double _lclose,double _lsubclose,double _laftclose,
@@ -145,7 +143,7 @@ public class SingleStockInfoPO
 	 * @param _code
 	 * @param _date
 	 */
-	public SingleStockInfoPO(String info,String _name,String _code,Calendar _date){
+	public SingleStockInfoPO(String info,String _name,String _code,LocalDate _date){
 		setName(_name);
 		setCode(_code);
 		
@@ -184,14 +182,7 @@ public class SingleStockInfoPO
 	public SingleStockInfoPO(String stockinfo){
 		String[] info=stockinfo.split("\t");
 		setName(info[9]);
-		SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yy");
-		Calendar cal=Calendar.getInstance();
-		try {
-			cal.setTime(sdf.parse(info[1]));
-		} catch (ParseException e) {
-			e.printStackTrace();
-			System.out.println("日期格式有错");
-		}
+		LocalDate cal=LocalDate.parse(info[1]);
 		setDate(cal);
 		setCode(info[8]);
 		setOpen(Double.parseDouble(info[2]));
@@ -203,14 +194,7 @@ public class SingleStockInfoPO
 	public SingleStockInfoPO(String stockinfo,double flag,double flag1){
 		String[] info=stockinfo.split("\t");
 		setName(info[9]);
-		SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yy");
-		Calendar cal=Calendar.getInstance();
-		try {
-			cal.setTime(sdf.parse(info[1]));
-		} catch (ParseException e) {
-			e.printStackTrace();
-			System.out.println("日期格式有错");
-		}
+		LocalDate cal=LocalDate.parse(info[1]);
 		setDate(cal);
 		setCode(info[8]);
 		setOpen(Double.parseDouble(info[2]));
@@ -227,14 +211,7 @@ public class SingleStockInfoPO
 	public SingleStockInfoPO(String stockinfo,int flag){
 		String[] info=stockinfo.split("\t");
 		setName(info[9]);
-		SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yy");
-		Calendar cal=Calendar.getInstance();
-		try {
-			cal.setTime(sdf.parse(info[1]));
-		} catch (ParseException e) {
-			e.printStackTrace();
-			System.out.println("日期格式有错");
-		}
+		LocalDate cal=LocalDate.parse(info[1]);
 		setDate(cal);
 		setCode(info[8]);
 		setOpen(Double.parseDouble(info[2]));
@@ -260,7 +237,7 @@ public class SingleStockInfoPO
 	 * 获得SingleStockInfoPO中的日期
 	 * @return the date
 	 */
-	public Calendar getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 	
@@ -318,7 +295,7 @@ public class SingleStockInfoPO
 	 * 设置SingleStockInfoPO中的日期
 	 * @param _date the date to set
 	 */
-	private void setDate(Calendar _date) {
+	private void setDate(LocalDate _date) {
 		date = _date;
 	}
 	
@@ -373,7 +350,7 @@ public class SingleStockInfoPO
 			return null;
 		SingleStockInfoVO ssiVO = new SingleStockInfoVO();
 		ssiVO.setName(ssiPO.getName());
-		ssiVO.setDate(ssiPO.getDate());
+//		ssiVO.setDate(ssiPO.getDate());
 		ssiVO.setCode(ssiPO.getCode());
 		ssiVO.setOpen(ssiPO.getOpen());
 		ssiVO.setClose(ssiPO.getClose());

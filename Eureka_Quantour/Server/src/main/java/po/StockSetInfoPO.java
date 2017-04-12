@@ -1,13 +1,13 @@
 package po;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import data.parse.Parse;
 
 public class StockSetInfoPO {
-	private Calendar date;//该天日期
+	private LocalDate date;//该天日期
 	private List<String> haltList;//停牌股票的股票编号列表
 	private List<String> haltNameList;//停牌股票的股票编号列表
 	private List<SingleStockInfoPO> stockList;//股票池中股票当天的信息
@@ -17,7 +17,7 @@ public class StockSetInfoPO {
 	 * 构造方法
 	 * @param _date 日期
 	 */
-	public StockSetInfoPO(Calendar _date){
+	public StockSetInfoPO(LocalDate _date){
 		setDate(_date);
 		setHaltList(null);
 		setHaltNameList(null);
@@ -33,7 +33,7 @@ public class StockSetInfoPO {
 	 * @param _stocklist 股票池中股票信息的列表
 	 * @param _haltnum 股票池中停牌股票的数量
 	 */
-	public StockSetInfoPO(Calendar _date,
+	public StockSetInfoPO(LocalDate _date,
 			List<String> _haltlist,List<String> _haltnamelist,
 			List<SingleStockInfoPO> _stocklist,int _haltnum,boolean _allhalt){
 		setDate(_date);
@@ -62,7 +62,7 @@ public class StockSetInfoPO {
 	 * @param _date 日期
 	 * @param _stocklist 股票池中股票信息的列表
 	 */
-	public StockSetInfoPO(Calendar _date,List<SingleStockInfoPO> _stocklist){
+	public StockSetInfoPO(LocalDate _date,List<SingleStockInfoPO> _stocklist){
 		setDate(_date);
 		setHaltList(null);
 		setHaltNameList(null);
@@ -90,7 +90,7 @@ public class StockSetInfoPO {
 	 *获取日期
 	 * @return the date
 	 */
-	public Calendar getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 
@@ -98,7 +98,7 @@ public class StockSetInfoPO {
 	 * 设置日期
 	 * @param date the date to set
 	 */
-	private void setDate(Calendar date) {
+	private void setDate(LocalDate date) {
 		this.date = date;
 	}
 
