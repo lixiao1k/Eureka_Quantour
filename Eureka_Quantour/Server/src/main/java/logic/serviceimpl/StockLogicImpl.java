@@ -9,6 +9,7 @@ import data.service.IDataInterface;
 import data.serviceimpl.DataInterfaceImpl;
 import exception.*;
 import logic.service.StockLogicInterface;
+import logic.utility.Return;
 import logic.utility.Utility;
 import po.SingleStockInfoPO;
 import vo.*;
@@ -23,6 +24,7 @@ public class StockLogicImpl implements StockLogicInterface{
   
 	private IDataInterface idi = new DataInterfaceImpl();
 	private Utility utility=Utility.getInstance();
+	private Return stragety;
 
 	@Override
 	public List<SingleStockInfoVO> getSingleStockInfoByTime(String stockCode, LocalDate begin, LocalDate end )
@@ -361,17 +363,50 @@ public class StockLogicImpl implements StockLogicInterface{
 	@Override
 	public void setStrategy(StrategyConditionVO strategyConditionVO, SaleVO s, LocalDate begin, LocalDate now, String stockSetName,int num,String username) {
 		//TODO
-		List <String> list=idi.getStockSetInfo(username,stockSetName);
-		
+		List<String> stocklistname=idi.getStockSetInfo(stockSetName,username);
+
+		stragety=new Return(stocklistname,begin,now,s,strategyConditionVO);
 	}
 
 	@Override
 	public YieldChartDataVO getYieldChartData() {
+
+		try {
+			return new YieldChartDataVO(stragety.getTimelist(),stragety.getBasicReturn(),stragety.getStragetyReturn());
+		} catch (PriceTypeException e) {
+			e.printStackTrace();
+		} catch (NullStockIDException e) {
+			e.printStackTrace();
+		} catch (NullDateException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 
 	@Override
 	public YieldDistributionHistogramDataVO getYieldDistributionHistogramData() {
+
+		Set<Double> x=new TreeSet<>();
+		List<LocalDate> timelist=stragety.getTimelist();
+		try {
+			List<Double> jizhunlist=stragety.getBasicReturn();
+			List<Double> celuelist=stragety.getStragetyReturn();
+			for (int i=0;i<timelist.size();i++){
+
+				x.add(jizhunlist.get(i));
+
+			}
+
+		} catch (PriceTypeException e) {
+			e.printStackTrace();
+		} catch (NullStockIDException e) {
+			e.printStackTrace();
+		} catch (NullDateException e) {
+			e.printStackTrace();
+		}
+
+
+
 		return null;
 	}
 

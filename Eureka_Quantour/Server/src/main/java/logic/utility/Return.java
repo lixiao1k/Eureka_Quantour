@@ -25,6 +25,7 @@ public class Return {
     private StrategyConditionVO strategyConditionVO;
     private int days;
     private Comparator<SingleStockInfoPO> comparator;
+    private List<LocalDate> timelist;
 
     public Return(List<String> stockcode, LocalDate begin, LocalDate end, SaleVO salevo, StrategyConditionVO strategyConditionVO) {
         this.stockcode = stockcode;
@@ -36,6 +37,17 @@ public class Return {
         String type=strategyConditionVO.getName();
         if (type.equals("动量策略")) comparator=new dongliangcelue(strategyConditionVO.getExtra());
         if (type.equals("均值策略")) comparator=new junzhicelue(strategyConditionVO.getExtra());
+        LocalDate iter=LocalDate.of(begin.getYear(),begin.getMonth(),begin.getDayOfMonth());
+
+        try {
+            for (;
+                 iter.compareTo(end)<0;
+                 iter=idi.addDays(iter,days)){
+                timelist.add(LocalDate.of(iter.getYear(),iter.getMonth(),iter.getDayOfMonth()));
+            }
+        } catch (DateOverException e) {
+            e.printStackTrace();
+        }
     }
 
     public Double getAlpha(){
@@ -44,16 +56,19 @@ public class Return {
     public Double getBeta(){
         return 0.0;
     }
-    
+
+    public List<LocalDate> getTimelist() {
+        return timelist;
+    }
 
     public List<Double> getBasicReturn ()
-            throws PriceTypeException, NullStockIDException, StragetyException
+            throws PriceTypeException, NullStockIDException
     {
 
         List<Double> list=new ArrayList<>();
 
-        LocalDate iter=LocalDate.of(begin.getYear(),begin.getMonth(),begin.getDayOfMonth());
 
+        LocalDate iter=LocalDate.of(begin.getYear(),begin.getMonth(),begin.getDayOfMonth());
 
         double init=100.0;
         try {
@@ -87,7 +102,10 @@ public class Return {
         return list;
     }
 
-    public List<Double> getStragetyReturn ( ) throws StockHaltingException, NullStockIDException, NullDateException, PriceTypeException {
+
+
+
+    public List<Double> getStragetyReturn ( ) throws  NullStockIDException, NullDateException, PriceTypeException {
         double init=100.0;
         List<Double> list=new ArrayList<>();
         LocalDate iter=LocalDate.of(begin.getYear(),begin.getMonth(),begin.getDayOfMonth());
@@ -227,6 +245,8 @@ public class Return {
 
         }
     }
+
+
 
 
 
