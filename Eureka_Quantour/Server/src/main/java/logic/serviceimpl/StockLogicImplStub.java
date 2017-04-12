@@ -63,96 +63,10 @@ public class StockLogicImplStub implements StockLogicInterface{
 	}
 
 	@Override
-	public List<List<EMAInfoVO>> getEMAInfo( String stockCode, Calendar begin, Calendar end )
-			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException {
-		// TODO Auto-generated method stub
-		
-		// 判断日期是否有效
-		try{
-			ifDateValid((Calendar)begin.clone(), (Calendar)end.clone());
-		}catch( BeginInvalidException e ){
-			throw new BeginInvalidException();
-		}catch( EndInvalidException e ){
-			throw new EndInvalidException();
-		}
-		
-		// 日期格式化
-		Calendar beginTemp = Calendar.getInstance();
-		Calendar endTemp = Calendar.getInstance();
-		try {
-			beginTemp.setTime(sdf.parse( formateCalendar((Calendar)begin.clone()) ));
-			endTemp.setTime(sdf.parse( formateCalendar((Calendar)end.clone()) ));
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			System.out.println("日期转换出错");
-			e.printStackTrace();
-		}
-		List<SingleStockInfoPO> lssi = idi.getSingleStockInfo_byEnd(stockCode, beginTemp, endTemp);
-		
-		// 如果都没有数据，抛出日期无效异常
-		if( lssi==null )
-			throw new DateInvalidException();
-		else{
-			// methods用于存储日均线计算的方式
-			int methods[] = { 5, 10, 20, 30, 60 };
-			
-			// 用于暂存前method天的股票数据
-			Calendar lastBegin = (Calendar)begin.clone();
-			Calendar lastEnd = calendarAdvance( (Calendar)begin.clone() );
-			int circleCount = methods[methods.length-1]+5; //用于表示往前取多少天
-			for( int i=0; i<circleCount; i++)
-				lastBegin = calendarAdvance( (Calendar)lastBegin.clone() );
-			try {
-				lastBegin.setTime(sdf.parse( formateCalendar((Calendar)lastBegin.clone()) ));
-				lastEnd.setTime(sdf.parse( formateCalendar((Calendar)lastEnd.clone()) ));
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				System.out.println("日期转换出错");
-				e.printStackTrace();
-			}
-			List<SingleStockInfoPO> lssiTemp = idi.getSingleStockInfo_byEnd(stockCode, lastBegin, lastEnd);
-			// 用于存放List，并且作为返回变量
-			List<List<EMAInfoVO>> llemai = new ArrayList<List<EMAInfoVO>>();
-			// 用于暂存取到的每一个Stock数据
-			SingleStockInfoPO ssi = new SingleStockInfoPO();
-			
-			for( int j=0; j<methods.length; j++){
-				int method = methods[j];
-				double close = 0.0;
-				List<EMAInfoVO> lemai = new ArrayList<EMAInfoVO>();
-	
-				double tempDouble = 0.0;
-				List<Double> closes = new ArrayList<Double>();
-				// 先叠加前（method-1）天的数据
-				if( lssiTemp.size()>0 ){
-					int maxIndex= lssiTemp.size()-1;
-					circleCount = Math.min( method-1, maxIndex+1 );
-					for( int k=0; k<circleCount; k++){
-						if( lssiTemp.get(maxIndex-k).getClose()>0 ){
-							tempDouble += lssiTemp.get(maxIndex-k).getClose();
-							closes.add( 0, lssiTemp.get(maxIndex-k).getClose() );
-						}
-						else{
-							if( circleCount<(maxIndex+1) )
-								circleCount++;
-						}
-					}
-				}
-				// 平均的基数
-				method = closes.size()+1;
-				for( int i=0; i<lssi.size(); i++){
-					ssi = lssi.get(i);
-					close = ssi.getClose();
-					tempDouble += close;
-					closes.add(close);
-					lemai.add( new EMAInfoVO(ssi.getDate(), formatDoubleSaveTwo(tempDouble/method)) );
-					tempDouble -= closes.remove(0);
-				}
-				llemai.add(lemai);
-			}
-			return llemai;
-		}
+	public List<EMAInfoVO> getEMAInfo(String stockCode, Calendar begin, Calendar end) throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException {
+		return null;
 	}
+
 
 	@Override
 	public ComparedInfoVO getComparedInfo(String stockCodeA, String stockCodeB, Calendar begin, Calendar end)
@@ -430,16 +344,10 @@ public class StockLogicImplStub implements StockLogicInterface{
 	}
 
 	@Override
-	public List<SingleStockInfoVO> getStockSetSortedInfo(String stockSetName, Calendar now) {
-		SingleStockInfoVO q=new SingleStockInfoVO();
-		SingleStockInfoVO p=new SingleStockInfoVO();
-		p.initObject("蜜汁股票",now,"10",15,20,25,10,10000,13,"SZ",0.5);
-		q.initObject("蜜汁股票2",now,"11",16,21,26,11,11000,14,"SZ",-05);
-		ArrayList<SingleStockInfoVO> list=new ArrayList<>();
-		list.add(p);
-		list.add(q);
-		return list;
+	public List<SingleStockInfoVO> getStockSetSortedInfo(String stockSetName, Calendar now, String username) {
+		return null;
 	}
+
 
 	@Override
 	public SingleStockInfoVO getStockBasicInfo(String code, Calendar now) {
@@ -449,21 +357,12 @@ public class StockLogicImplStub implements StockLogicInterface{
 	}
 
 	@Override
-	public List<SingleStockInfoVO> getStockSorted(String stockSetName, Calendar now) {
-		SingleStockInfoVO q=new SingleStockInfoVO();
-		SingleStockInfoVO p=new SingleStockInfoVO();
-		p.initObject("蜜汁股票",now,"10",15,20,25,10,10000,13,"SZ",-0.5);
-		q.initObject("蜜汁股票2",now,"11",16,21,26,11,11000,14,"SZ",0.5);
-		ArrayList<SingleStockInfoVO> list=new ArrayList<>();
-		list.add(p);
-		list.add(q);
-		return list;
-	}
-
-	@Override
-	public void setStrategy(StrategyConditionVO sc, SaleVO s, Calendar begin, Calendar now, String stockSetName) {
+	public void setStrategy(StrategyConditionVO strategyConditionVO, SaleVO s, Calendar begin, Calendar now, String stockSetName, int num, String username) {
 
 	}
+
+
+
 
 	@Override
 	public YieldChartDataVO getYieldChartData() {

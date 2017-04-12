@@ -2,7 +2,10 @@ package logic.utility;
 
 import data.service.IDataInterface;
 import data.serviceimpl.DataInterfaceImpl;
+import exception.NullDateException;
+import exception.NullStockIDException;
 import exception.PriceTypeException;
+import exception.StockHaltingException;
 import po.SingleStockInfoPO;
 import vo.SaleVO;
 import vo.StrategyConditionVO;
@@ -37,7 +40,7 @@ public class Return {
         if (type.equals("均值策略")) comparator=new junzhicelue(strategyConditionVO.getExtra());
     }
 
-    public List<Double> getBasicReturn () throws PriceTypeException {
+    public List<Double> getBasicReturn () throws PriceTypeException, StockHaltingException, NullStockIDException, NullDateException {
 
         List<Double> list=new ArrayList<>();
 
@@ -69,7 +72,7 @@ public class Return {
         return list;
     }
 
-    public List<Double> getStragetyReturn ( )  {
+    public List<Double> getStragetyReturn ( ) throws StockHaltingException, NullStockIDException, NullDateException {
         double init=100.0;
         List<Double> list=new ArrayList<>();
 
