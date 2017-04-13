@@ -7,7 +7,6 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import presentation.chart.chartService;
 import presentation.chart.function.CatchMouseMove;
 import presentation.chart.function.CatchMouseMoveService;
@@ -70,6 +69,7 @@ public class SingleLineChart implements chartService{
         
         XYChart.Series<String, Number> serie = new XYChart.Series<>();
         serie.setName(dataName);
+
         for(int j=0; j<date.length; j++){
 	        if( j<datas.length && datas[j]!=0 && datas[j]!=Integer.MIN_VALUE ){
 	        	serie.getData().add( new XYChart.Data<>(dates[j], datas[j]) );

@@ -83,14 +83,15 @@ public class  CandleStickChart extends XYChart<String, Number> {
         this.xAxis = xAxis;
         this.xAxis.setGapStartAndEnd(false);
         this.yAxis = yAxis;
-        yAxis.autoRangingProperty().set(true);
-        yAxis.setPrefWidth(1);
+        xAxis.setAnimated(true);
         xAxis.setPrefHeight(0);
         xAxis.setStartMargin(10);
+        xAxis.setOpacity(0);
+        
+        yAxis.autoRangingProperty().set(true);
+        yAxis.setPrefWidth(1);
         yAxis.forceZeroInRangeProperty().setValue(Boolean.FALSE);
         setAnimated(true);
-        xAxis.setAnimated(true);
-        xAxis.setOpacity(0);
         yAxis.setAnimated(true);
         yAxis.setOpacity(0.5);
         yAxis.setTickLabelsVisible(false);

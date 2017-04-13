@@ -13,8 +13,8 @@ public class CommonSet implements CommonSetService{
 		Label begin = new Label();
 		begin.setTextFill(Color.WHITE);
 		begin.setText(content);
-		begin.setLayoutX(10);
-		begin.setLayoutY(height-15);
+		begin.setLayoutX(20);
+		begin.setLayoutY(height-18);
 		return begin;
 	}
 
@@ -25,7 +25,7 @@ public class CommonSet implements CommonSetService{
 		end.setTextFill(Color.WHITE);
 		end.setText(content);
 		end.setLayoutX(width-60);
-		end.setLayoutY(height-15);
+		end.setLayoutY(height-18);
 		return end;
 	}
 

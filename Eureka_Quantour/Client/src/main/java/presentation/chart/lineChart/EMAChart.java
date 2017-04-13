@@ -62,18 +62,19 @@ public class EMAChart implements chartService {
         xAxis.setOpacity(0.7);
         
         yAxis = new NumberAxis();
-        yAxis.setPrefWidth(1);
         yAxis.autoRangingProperty().set(true);
         yAxis.setAnimated(true);
         yAxis.forceZeroInRangeProperty().setValue(false);
-        yAxis.setOpacity(0.5);
         yAxis.setTickLabelsVisible(false);
-
+        yAxis.setPrefWidth(1);
+        yAxis.setOpacity(0.7);
+        
         lineChart = new LineChart<>(xAxis, yAxis);
         lineChart.setHorizontalGridLinesVisible(false);
         lineChart.setVerticalGridLinesVisible(false);
         lineChart.setCreateSymbols(false);
         lineChart.setLegendVisible(false);
+        lineChart.setOpacity(0.8);
         
         dates = listToArray.formatCalendar(EMAList.get(0).getDate());
     	
@@ -143,7 +144,7 @@ public class EMAChart implements chartService {
     	
     	chartPane.getChildren().add(lineChart);
     	chartPane.getChildren().add(info);
-    	
+
     	pane.getChildren().add(chartPane);
     	pane.getChildren().add(begin);
     	pane.getChildren().add(end);

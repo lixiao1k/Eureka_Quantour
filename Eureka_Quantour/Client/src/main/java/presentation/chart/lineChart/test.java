@@ -45,7 +45,7 @@ public class test extends Application{
     	
     	YieldChartDataVO ycd = new YieldChartDataVO(datelist,jizhunlist, celuelist);
 		comparedChart = new ComparedChart().setData(ycd);
-		comparedChart.setName("ComparedChart");
+//		comparedChart.setName("ComparedChart");
     }
     
     private void testSingleLineChart(){
