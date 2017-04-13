@@ -39,4 +39,6 @@
     -fx-tick-label-fill: #f2eada ;
     -fx-font-family: Tahoma;
     -fx-tick-label-font-size: 0.9em;
+    -fx-tick-length: 5;
+    -fx-minor-tick-length: 5;
 }

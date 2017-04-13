@@ -44,12 +44,12 @@
     -fx-tick-label-fill: #FFFFFF;
     -fx-font-size: 15pt;
     -fx-font-family: "Segoe UI Light";    
-    -fx-tick-length: 10;
-    -fx-minor-tick-length: 5;
+    -fx-tick-length: 0;
+    -fx-minor-tick-length: 0;
 }
 
 .chart-title {
-     -fx-text-fill: #FFFFFF;
+    -fx-text-fill: #FFFFFF;
     -fx-font-size: 10pt;
     -fx-font-family: "Segoe UI Light";    
 }
@@ -68,14 +68,15 @@
 
 
 .chart {
-    -fx-background-color: #657F92;
+	-fx-background-color:transparent;
+    -fx-padding: 10px;
+}
+.chart-content {
+    -fx-padding: 5px; 
 }
 .fx-background-color {
   -fx-background-color: red;
 }
 .chart-plot-background {
     -fx-background-color: transparent;
-}
-.chart{
-	-fx-background-color:transparent;
 }

@@ -8,8 +8,15 @@
     -fx-tick-label-fill: #FFFFFF;
     -fx-font-size: 15pt;
     -fx-font-family: "Segoe UI Light";    
-    -fx-tick-length: 10;
-    -fx-minor-tick-length: 5;
+    -fx-tick-length: 0;
+    -fx-minor-tick-length: 0;
+}
+
+.chart {
+	-fx-padding: 10px;
+}
+.chart-content {
+    -fx-padding: 5px; 
 }
 
 .axis-label {

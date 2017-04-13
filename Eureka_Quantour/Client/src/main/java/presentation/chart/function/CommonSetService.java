@@ -4,8 +4,12 @@ import javafx.scene.control.Label;
 
 public interface CommonSetService {
 
-	Label beignData(String content, int height);
+	Label beignDataForAnchorPane(String content, int height);
 	
-	Label endData(String content, int width, int height);
+	Label endDataForAnchorPane(String content, int width, int height);
+	
+	Label beignDataForStackPane(String content, int height);
+	
+	Label endDataForStackPane(String content, int width, int height);
 	
 }

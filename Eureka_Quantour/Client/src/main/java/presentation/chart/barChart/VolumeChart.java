@@ -29,10 +29,11 @@ public class VolumeChart {
         xAxis.setStartMargin(10);
         
         yAxis=new NumberAxis();
-        yAxis.setPrefWidth(30);
+        yAxis.setPrefWidth(1);
         yAxis.autoRangingProperty().set(true);
         yAxis.forceZeroInRangeProperty().setValue(Boolean.FALSE);
         yAxis.setOpacity(0.5);
+        yAxis.setTickLabelsVisible(false);
 
         volumechart=new BarChart<>(xAxis,yAxis);
         volumechart.setHorizontalGridLinesVisible(false);

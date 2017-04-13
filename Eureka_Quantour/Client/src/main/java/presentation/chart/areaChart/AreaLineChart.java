@@ -101,9 +101,9 @@ public class AreaLineChart implements chartService {
     		areaChart.setMinHeight(height-20);
     	}
     	
-    	info = catchMouseMove.catchMouseReturnInfo(areaChart, dataMap, cycleSave, "周期", 0);
-    	begin = commonSet.beignData( cycleSave[0], (int)Math.max(height, areaChart.getWidth()) );
-    	end = commonSet.endData(cycleSave[cycleSave.length-1], 
+    	info = catchMouseMove.catchMouseReturnInfoForAnchorPane(areaChart, dataMap, cycleSave, "周期", 0);
+    	begin = commonSet.beignDataForAnchorPane( cycleSave[0], (int)Math.max(height, areaChart.getWidth()) );
+    	end = commonSet.endDataForAnchorPane(cycleSave[cycleSave.length-1], 
     			(int)Math.max(width, areaChart.getWidth()), 
     			(int)Math.max(height, areaChart.getWidth()) );
     	begin.setLayoutX(begin.getLayoutX()+7);

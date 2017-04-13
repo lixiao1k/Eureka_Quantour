@@ -104,7 +104,7 @@ public class test extends Application{
     	emaList.add(emaVO5);
     	
     	emaChart = new EMAChart(emaList);
-    	emaChart.setName("EMAChart");
+//    	emaChart.setName("EMAChart");
     }
     
     @Override

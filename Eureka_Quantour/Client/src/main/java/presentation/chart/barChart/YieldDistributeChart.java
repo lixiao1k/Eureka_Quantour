@@ -94,9 +94,9 @@ public class YieldDistributeChart implements chartService{
     		barChart.setMinHeight( height-20 );
     	}
     	
-    	info = catchMouseMove.catchMouseReturnInfo(barChart, dataMap, yield, "收益率", 5);
-    	begin = commonSet.beignData( yield[0], (int)Math.max(height, barChart.getWidth()) );
-    	end = commonSet.endData( yield[yield.length-1], 
+    	info = catchMouseMove.catchMouseReturnInfoForAnchorPane(barChart, dataMap, yield, "收益率", 5);
+    	begin = commonSet.beignDataForAnchorPane( yield[0], (int)Math.max(height, barChart.getWidth()) );
+    	end = commonSet.endDataForAnchorPane( yield[yield.length-1], 
     			(int)Math.max(width, barChart.getWidth()), 
     			(int)Math.max(height, barChart.getWidth()) );
     	

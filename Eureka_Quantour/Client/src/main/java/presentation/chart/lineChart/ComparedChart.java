@@ -138,9 +138,9 @@ public class ComparedChart implements chartService{
     		lineChart.setMinHeight(height-20);
     	}
     	
-    	info = catchMouseMove.catchMouseReturnInfo(lineChart, dataMap, dates, "date", 5);
-    	begin = commonSet.beignData( dates[0], (int)Math.max(height, lineChart.getWidth()) );
-    	end = commonSet.endData(dates[dates.length-1], 
+    	info = catchMouseMove.catchMouseReturnInfoForAnchorPane(lineChart, dataMap, dates, "date", 5);
+    	begin = commonSet.beignDataForAnchorPane( dates[0], (int)Math.max(height, lineChart.getWidth()) );
+    	end = commonSet.endDataForAnchorPane(dates[dates.length-1], 
     			(int)Math.max(width, lineChart.getWidth()), 
     			(int)Math.max(height, lineChart.getWidth()) );
     	
