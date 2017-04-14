@@ -386,16 +386,29 @@ public class StockLogicImpl implements StockLogicInterface{
 	@Override
 	public YieldDistributionHistogramDataVO getYieldDistributionHistogramData() {
 
-		Set<Double> x=new TreeSet<>();
+		Map<Double,List<Integer>> zuhe=new HashMap<>();
 		List<LocalDate> timelist=stragety.getTimelist();
 		try {
 			List<Double> jizhunlist=stragety.getBasicReturn();
 			List<Double> celuelist=stragety.getStragetyReturn();
 			for (int i=0;i<timelist.size();i++){
+				double hengzhou=Math.rint(jizhunlist.get(i));
 
-				x.add(jizhunlist.get(i));
+				if (zuhe.get(hengzhou)==null)
+					zuhe.put(hengzhou,Arrays.asList(0,0));
+				if(celuelist.get(i)>=hengzhou){
+					int shuzi=zuhe.get(hengzhou).get(0);
+					zuhe.get(hengzhou).set(0,shuzi++);
+				}
+				else{
+					int shuzi=zuhe.get(hengzhou).get(1);
+					zuhe.get(hengzhou).set(1,shuzi++);
+				}
+
+
 
 			}
+
 
 		} catch (PriceTypeException e) {
 			e.printStackTrace();
