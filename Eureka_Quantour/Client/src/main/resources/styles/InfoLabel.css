@@ -1,11 +1,12 @@
+
 .label{
 	-fx-background-radius: 10;
-	-fx-background-color: #1d1626;
+	-fx-background-color: 	rgba(29, 22, 38, 0.6);
 	-fx-font-family: "Arial";
 	-fx-font-size:11;
     -fx-text-fill: #90d7ec;
     
-    -fx-border-width: 2;
+    -fx-border-width: 1;
 	-fx-border-color: #130c0e;
 	
 	-fx-opacity: 1;

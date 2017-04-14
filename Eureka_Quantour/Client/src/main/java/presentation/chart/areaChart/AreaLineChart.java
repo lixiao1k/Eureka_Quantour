@@ -1,5 +1,7 @@
 package presentation.chart.areaChart;
 
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
@@ -7,6 +9,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import presentation.chart.chartService;
 import presentation.chart.function.CatchMouseMove;
 import presentation.chart.function.CatchMouseMoveService;
@@ -32,6 +35,7 @@ public class AreaLineChart implements chartService {
 	private CommonSetService commonSet = new CommonSet();
 	
 	private AnchorPane pane = new AnchorPane();
+	private StackPane chartpane = new StackPane();
 	private Label info = new Label();
 	private Label begin = new Label();
 	private Label end = new Label();
@@ -47,16 +51,21 @@ public class AreaLineChart implements chartService {
         xAxis = new CategoryAxis();
         xAxis.setGapStartAndEnd(false);
         xAxis.setTickLabelsVisible(false);
+        xAxis.setStartMargin(10);
+        xAxis.setOpacity(0.7);
         
         yAxis = new NumberAxis();
     	yAxis.autoRangingProperty().set(true);
         yAxis.setAnimated(true);
         yAxis.forceZeroInRangeProperty().setValue(false);
+        yAxis.setPrefWidth(1);
+        yAxis.setOpacity(0.7);
         
         areaChart = new AreaChart<>(xAxis, yAxis);
         areaChart.setHorizontalGridLinesVisible(false);
         areaChart.setVerticalGridLinesVisible(false);
         areaChart.setCreateSymbols(false);
+        areaChart.setPadding(new Insets(10,10,10,10));
         
         cycleSave = listToArray.formatInteger(cycles);
         
@@ -97,23 +106,25 @@ public class AreaLineChart implements chartService {
     		areaChart.setMinWidth(width);
     	}
     	if( height>0 ){
-    		areaChart.setMaxHeight(height-20);
-    		areaChart.setMinHeight(height-20);
+    		areaChart.setMaxHeight(height);
+    		areaChart.setMinHeight(height);
     	}
     	
-    	info = catchMouseMove.catchMouseReturnInfo(areaChart, dataMap, cycleSave, "周期", 0);
-    	begin = commonSet.beignData( cycleSave[0], (int)Math.max(height, areaChart.getWidth()) );
-    	end = commonSet.endData(cycleSave[cycleSave.length-1], 
+    	info = catchMouseMove.catchMouseReturnInfoForStackPane(areaChart, dataMap, cycleSave, "周期", 10);
+    	begin = commonSet.beignDataForAnchorPane( cycleSave[0], (int)Math.max(height, areaChart.getWidth()) );
+    	end = commonSet.endDataForAnchorPane(cycleSave[cycleSave.length-1], 
     			(int)Math.max(width, areaChart.getWidth()), 
     			(int)Math.max(height, areaChart.getWidth()) );
-    	begin.setLayoutX(begin.getLayoutX()+7);
-    	end.setLayoutX(end.getLayoutX()+35);
+    	begin.setLayoutX(begin.getLayoutX()+10);
+    	end.setLayoutX(end.getLayoutX()+25);
     	
-    	pane.getChildren().add(info);
-    	pane.getChildren().add(areaChart);
+    	chartpane.getChildren().add(areaChart);
+    	chartpane.getChildren().add(info);
+    	
+    	pane.getChildren().add(chartpane);
     	pane.getChildren().add(begin);
     	pane.getChildren().add(end);
-    	AnchorPane.setTopAnchor(areaChart, 20.0);
+    	StackPane.setAlignment(chartpane, Pos.CENTER);
     	
     	info.getStylesheets().add(
     			getClass().getResource("/styles/InfoLabel.css").toExternalForm() );

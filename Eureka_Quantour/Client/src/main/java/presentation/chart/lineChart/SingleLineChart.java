@@ -47,12 +47,15 @@ public class SingleLineChart implements chartService{
         xAxis = new CategoryAxis();
         xAxis.setGapStartAndEnd(false);
         xAxis.setTickLabelsVisible(false);
+//        xAxis.setPrefHeight(0);
+//        xAxis.setOpacity(0);
         
         yAxis = new NumberAxis();
     	yAxis.autoRangingProperty().set(true);
         yAxis.setAnimated(true);
         yAxis.forceZeroInRangeProperty().setValue(false);
         yAxis.setUpperBound(1.25);
+        yAxis.setOpacity(0.5);
         
         lineChart = new LineChart<>(xAxis, yAxis);
         lineChart.setHorizontalGridLinesVisible(false);
@@ -66,6 +69,7 @@ public class SingleLineChart implements chartService{
         
         XYChart.Series<String, Number> serie = new XYChart.Series<>();
         serie.setName(dataName);
+
         for(int j=0; j<date.length; j++){
 	        if( j<datas.length && datas[j]!=0 && datas[j]!=Integer.MIN_VALUE ){
 	        	serie.getData().add( new XYChart.Data<>(dates[j], datas[j]) );
@@ -103,14 +107,14 @@ public class SingleLineChart implements chartService{
     		lineChart.setMinHeight(height-20);
     	}
     	
-    	info = catchMouseMove.catchMouseReturnInfo(lineChart, dataMap, dates, "date", 0);
-    	begin = commonSet.beignData( dates[0], (int)Math.max(height, lineChart.getWidth()) );
-    	end = commonSet.endData( dates[dates.length-1], 
+    	info = catchMouseMove.catchMouseReturnInfoForAnchorPane(lineChart, dataMap, dates, "date", 0);
+    	begin = commonSet.beignDataForAnchorPane( dates[0], (int)Math.max(height, lineChart.getWidth()) );
+    	end = commonSet.endDataForAnchorPane( dates[dates.length-1], 
     			(int)Math.max(width, lineChart.getWidth()), 
     			(int)Math.max(height, lineChart.getWidth()) );
     	
-    	pane.getChildren().add(info);
     	pane.getChildren().add(lineChart);
+    	pane.getChildren().add(info);
     	pane.getChildren().add(begin);
     	pane.getChildren().add(end);
     	AnchorPane.setTopAnchor(lineChart, 20.0);

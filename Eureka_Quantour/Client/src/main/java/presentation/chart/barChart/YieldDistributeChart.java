@@ -1,10 +1,12 @@
 package presentation.chart.barChart;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javafx.geometry.Insets;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
@@ -12,22 +14,21 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import presentation.chart.chartService;
 import presentation.chart.function.CatchMouseMove;
 import presentation.chart.function.CatchMouseMoveService;
 import presentation.chart.function.CommonSet;
 import presentation.chart.function.CommonSetService;
-import presentation.chart.function.ListToArray;
-import presentation.chart.function.ListToArrayService;
 import vo.YieldDistributionHistogramDataVO;
 
 public class YieldDistributeChart implements chartService{
 	
 	private CatchMouseMoveService catchMouseMove = new CatchMouseMove();
-	private ListToArrayService listToArray = new ListToArray();
 	private CommonSetService commonSet = new CommonSet();
 	
 	private AnchorPane pane = new AnchorPane();
+	private StackPane chartpane = new StackPane();
 	private Label info = new Label();
 	private Label begin = new Label();
 	private Label end = new Label();
@@ -43,19 +44,29 @@ public class YieldDistributeChart implements chartService{
 		xAxis = new CategoryAxis();
         xAxis.setTickMarkVisible(false);
         xAxis.setTickLabelsVisible(false);
-        xAxis.setStartMargin(5);
+        xAxis.setStartMargin(10);
+        xAxis.setOpacity(0.7);
 	        
         yAxis = new NumberAxis();
         yAxis.autoRangingProperty().set(true);
         yAxis.setAnimated(true);
         yAxis.forceZeroInRangeProperty().setValue(false);
-        yAxis.setOpacity(0.5);
+//        yAxis.setTickLabelsVisible(false);
+        yAxis.setPrefWidth(1);
+        yAxis.setOpacity(0.7);
 	    
         barChart = new BarChart<>(xAxis, yAxis);
         barChart.setVerticalGridLinesVisible(false);
 //        barChart.setHorizontalGridLinesVisible(false);
+        barChart.setBarGap(0);
+        barChart.setPadding(new Insets(10,10,10,10));
 	    
-        yield = listToArray.formatDouble( sortDouble(ydhd.getYieldlist()) );
+        List<Double> yieldL = sortDouble( ydhd.getYieldlist() );
+        yield = new String[yieldL.size()];
+//        yield = listToArray.formatDouble( sortDouble(ydhd.getYieldlist()) );
+        for(int i =0; i<yieldL.size(); i++){
+        	yield[i] = NumberFormat.getPercentInstance().format( yieldL.get(i) );
+        }
 	     
         String[] dataStrings = new String[yield.length];
 
@@ -73,10 +84,10 @@ public class YieldDistributeChart implements chartService{
         barChart.getData().add(seriep);
         barChart.getData().add(seriem);
         
-        for(int i=0; i<yield.length; i++){
-        	if( dataStrings[i].length()!=0 )
+        for(int i=0; i<yield.length; i++)
+        	if( dataStrings[i].length()!=0 ){
         		dataMap.put(yield[i], dataStrings[i]);
-        }
+        	}
 	}
 
 	@Override
@@ -85,26 +96,26 @@ public class YieldDistributeChart implements chartService{
 		if( width>0 ){
     		barChart.setMaxWidth(width);
     		barChart.setMinWidth(width);
-    		barChart.setMaxWidth(width);
-    		barChart.setMinWidth(width);
     	}
     	if( height>0 ){
-    		barChart.setPrefHeight( height-20 );
-    		barChart.setMaxHeight( height-20 );
-    		barChart.setMinHeight( height-20 );
+    		barChart.setMaxHeight(height);
+    		barChart.setMinHeight(height);
     	}
     	
-    	info = catchMouseMove.catchMouseReturnInfo(barChart, dataMap, yield, "收益率", 5);
-    	begin = commonSet.beignData( yield[0], (int)Math.max(height, barChart.getWidth()) );
-    	end = commonSet.endData( yield[yield.length-1], 
+    	info = catchMouseMove.catchMouseReturnInfoForStackPane(barChart, dataMap, yield, "收益率", 10);
+    	begin = commonSet.beignDataForAnchorPane( yield[0], (int)Math.max(height, barChart.getWidth()) );
+    	end = commonSet.endDataForAnchorPane( yield[yield.length-1], 
     			(int)Math.max(width, barChart.getWidth()), 
     			(int)Math.max(height, barChart.getWidth()) );
+    	begin.setLayoutX(begin.getLayoutX()+10);
+    	end.setLayoutX(end.getLayoutX()+10);
     	
-    	pane.getChildren().add(info);
-    	pane.getChildren().add(barChart);
+    	chartpane.getChildren().add(barChart);
+    	chartpane.getChildren().add(info);
+    	
+    	pane.getChildren().add(chartpane);
     	pane.getChildren().add(begin);
     	pane.getChildren().add(end);
-    	AnchorPane.setTopAnchor(barChart, 20.0);
     	
     	info.getStylesheets().add(
     			getClass().getResource("/styles/InfoLabel.css").toExternalForm() );

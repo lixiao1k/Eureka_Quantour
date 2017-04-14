@@ -12,5 +12,7 @@ import javafx.scene.control.Label;
  * @time: 2017年4月6日
  */
 public interface CatchMouseMoveService {
-	Label catchMouseReturnInfo( XYChart<String, Number> chart, Map<String, String> dataMap, String[] dates, String name,int index );
+	Label catchMouseReturnInfoForAnchorPane( XYChart<String, Number> chart, Map<String, String> dataMap, String[] dates, String name,int index );
+
+	Label catchMouseReturnInfoForStackPane( XYChart<String, Number> chart, Map<String, String> dataMap, String[] dates, String name,int index );
 }
