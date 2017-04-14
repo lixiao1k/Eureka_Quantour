@@ -39,7 +39,13 @@ public class DateTrie implements Serializable{
 		remain=null;
 		System.gc();
 	}
-	public boolean add(int year,int month,int day,int code,int row){
+	public void add(int cal,int code,String row){
+		int year= cal / 10000;
+		int month= (cal -year * 10000 ) / 100;
+		int day=cal - year * 10000 - month * 100;
+		add(year,month,day,code,row);
+	}
+	public boolean add(int year,int month,int day,int code,String row){
 		TrieNode temp;
 		int cal=year * 10000 + month * 100 + day;
 		if(year>2004){
@@ -60,7 +66,7 @@ public class DateTrie implements Serializable{
 						Integer remain=stockremain.get(index);
 						List<Integer> datelist=stockLinkedList.get(index);
 						boolean bigflag=stockbigflag.get(index);
-						t.getDateinfo().put(code, row);
+						t.addstock(code, row);
 						setLeafPrevious(remain,datelist,bigflag,cal);
 						return true;
 					}
@@ -74,12 +80,12 @@ public class DateTrie implements Serializable{
 							stocknumber++;
 						}
 						setPrevious(t);
+						bigflag=false;
 						int index=stockindex.get(code);
 						Integer remain=stockremain.get(index);
 						List<Integer> datelist=stockLinkedList.get(index);
 						boolean bigflag=stockbigflag.get(index);
 						setLeafPrevious(remain,datelist,bigflag,cal);
-						bigflag=false;
 						return true;
 					}
 				}

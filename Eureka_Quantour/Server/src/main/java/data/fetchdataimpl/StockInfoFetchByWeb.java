@@ -9,6 +9,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -22,9 +23,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
+import data.common.DateLeaf;
+import data.common.DateTrie;
 import data.common.FileMethod;
 import data.common.WebMethod;
 import data.datahelperimpl.InitEnvironment;
+import data.parse.Parse;
 import exception.InternetdisconnectException;
 import exception.NoneMatchedMarketException;
 
@@ -45,6 +49,9 @@ public class StockInfoFetchByWeb {
 	private long total;
 	
 	private InitEnvironment ie;
+	public static void main(String[] args){
+		new StockInfoFetchByWeb();
+	}
 	public StockInfoFetchByWeb(){
 		ie=InitEnvironment.getInstance();
 		df1 = new DecimalFormat("0.00");
@@ -70,6 +77,7 @@ public class StockInfoFetchByWeb {
 			e1.printStackTrace();
 		}
 		total=mainData.length();
+		
 		filemethod=FileMethod.getInstance();
 		webmethod=WebMethod.getInstance();
 		filemethod.makepath(stockroot);
@@ -90,6 +98,24 @@ public class StockInfoFetchByWeb {
 		}
 		String enddate=sdf.format(cal.getTime());
 		long time=System.currentTimeMillis();
+		
+		try{
+			Properties pro=new Properties();
+			File profile=new File("config/stock/dataconfig.properties");
+			if(!profile.exists()){
+				profile.createNewFile();
+			}
+			InputStream is=new FileInputStream("config/stock/dataconfig.properties");
+			pro.load(is);
+			is.close();
+			OutputStream os=new FileOutputStream("config/stock/dataconfig.properties");
+			pro.setProperty("lastday", enddate);
+			pro.store(os, "update personalSize");
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+		
+		
 		for(String stock:stocklist){
 			count++;
 			System.out.println("正在处理第"+count+"个，总共"+i+"个"+"剩余"+(i-count)+"个。");
@@ -182,12 +208,15 @@ public class StockInfoFetchByWeb {
 			pro.load(is);
 			is.close();
 			if(pro.containsKey("last_day")){
-				if(pro.containsKey("last_indexationDate")){
-					int dateday=Integer.parseInt(encodeDate(pro.getProperty("last_day")));
-					int indexday=Integer.parseInt(encodeDate(pro.getProperty("last_indexationDate")));
-					if(dateday>indexday){
-						gatherDate(code,indexday,bw_data,bw_index,bw_position);
-					}
+//				if(pro.containsKey("last_indexationDate")){
+//					int dateday=Integer.parseInt(encodeDate(pro.getProperty("last_day")));
+//					int indexday=Integer.parseInt(encodeDate(pro.getProperty("last_indexationDate")));
+//					if(dateday>indexday){
+//						gatherDate(code,indexday,bw_data,bw_index,bw_position);
+//					}
+//				}
+				if(false){
+					
 				}
 				else{
 					gatherDate(code,-1,bw_data,bw_index,bw_position);
@@ -200,36 +229,197 @@ public class StockInfoFetchByWeb {
 			e.printStackTrace();
 		}
 	}
+	public void indexationStockDate(boolean isAddition){
+		try{
+			File root=new File(stockroot);
+			int count=0;
+			String[] list=root.list();
+			int i=list.length;
+			Properties pro=new Properties();
+			File profile=new File("config/stock/dataconfig.properties");
+			if(!profile.exists()){
+				profile.createNewFile();
+			}
+			BufferedWriter bw=new BufferedWriter(new FileWriter("config/resources/mainData",isAddition));
+			InputStream is=new FileInputStream("config/stock/dataconfig.properties");
+			pro.load(is);
+			is.close();
+			boolean update=true;
+			DateTrie trie=new DateTrie();
+			int lastday=Parse.getInstance().getIntDate(pro.getProperty("lastday","2005-02-01"));
+			if(!pro.containsKey("lastIndexationDay")){
+				for(String code:list){
+					count++;
+					System.out.println("正在处理第"+count+"个，总共"+i+"个"+"剩余"+(i-count)+"个。");
+					gatherDate(code,-1,bw,trie);
+				}
+			}
+			else{
+				int indexDay=Parse.getInstance().getIntDate(pro.getProperty("lastIndexationDay"));
+				if(indexDay<lastday){
+					for(String code:list){
+						count++;
+						System.out.println("正在处理第"+count+"个，总共"+i+"个"+"剩余"+(i-count)+"个。");
+						gatherDate(code,indexDay,bw,trie);
+					}
+				}
+				else{
+					update=false;
+				}
+			}
+			bw.close();
+			if(update){
+				int presize=Integer.valueOf(pro.getProperty("daynumber", "0"));
+				int pretotal=Integer.valueOf(pro.getProperty("nowrow", "0"));
+				int[] receive=generateCalendarIndex(presize,pretotal,trie,isAddition);	
+				OutputStream os=new FileOutputStream("config/stock/dataconfig.properties");
+				pro.setProperty("daynumber", String.valueOf(receive[1]));
+				pro.setProperty("nowrow", String.valueOf(receive[0]));
+				pro.setProperty("lastIndexationDay", Parse.getInstance().intTocal(trie.getMax().getCal()));
+				pro.setProperty("lastday", Parse.getInstance().intTocal(trie.getMax().getCal()));
+				pro.store(os, "update personalSize");
+				count=0;
+				for(String code:list){
+					count++;
+					System.out.println("正在处理第"+count+"个，总共"+i+"个"+"剩余"+(i-count)+"个。");
+					generateStockIndex(presize,code,trie,isAddition);
+				}
+			}
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+	}
+	private void gatherDate(String code,int startday,BufferedWriter bw_data,DateTrie trie){
+		try{
+			String codepath=stockroot+"/"+code+"/";
+			BufferedReader br1=new BufferedReader(new FileReader(codepath+"data"));
+			BufferedReader br2=new BufferedReader(new FileReader(codepath+"subscription"));
+			BufferedReader br3=new BufferedReader(new FileReader(codepath+"afterscription"));
+			while(br1.ready()){
+				String str=br1.readLine()+","+br2.readLine()+","+br3.readLine();//+asf.readline()
+				String cal=str.substring(0, 10);
+				str=str.substring(11);
+				int day=Integer.parseInt(encodeDate(cal));
+				if(day>startday){
+					bw_data.write(str+"\n");
+					trie.add(day, Integer.valueOf(code), String.format("%03d",str.length())+String.format("%09d", total));
+					total=total+str.length()+1;
+				}
+			}
+			br1.close();
+			br2.close();
+			br3.close();
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+	}
+	private int[] generateCalendarIndex(int presize,int pretotal,DateTrie trie,boolean isAddition){
+		try{
+			String codepath=ie.getPath("resources")+"/date/";
+			BufferedWriter bw_ps=new BufferedWriter(new FileWriter(codepath+"mainPosition",isAddition));
+			BufferedWriter bw_tc=new BufferedWriter(new FileWriter(codepath+"totalCalendar",isAddition));
+			DateLeaf p;
+			int total=pretotal;
+			int size=presize;
+			p=trie.getMin();
+			while(p!=null){
+				bw_tc.write(p.getCal()+""+total+"\n");
+				for(int i=0;i<p.getStockinfo().size();i++){
+					bw_ps.write(p.getNamelist().get(i)+p.getStockinfo().get(i)+"\n");
+				}
+				total=total+p.getStockinfo().size();
+				size=size+1;
+				p=(DateLeaf) p.getNext();
+			}
+			bw_ps.close();
+			bw_tc.close();
+			int[] info=new int[2];
+			info[0]=total;
+			info[1]=size;
+			return info;
+		}catch(IOException e){
+			e.printStackTrace();
+			return null;
+		}
+	}
+	private void generateStockIndex(int premainsize,String code,DateTrie trie,boolean isAddition){
+		try{
+			String codepath=stockroot+"/"+code+"/";
+			File psIndex=new File(codepath+"psIndex");
+			if(!psIndex.exists()){
+				psIndex.createNewFile();
+			}
+			File file=new File(codepath+"calendar");
+			file.delete();
+			File mainIndex=new File(codepath+"mainIndex");
+			if(!mainIndex.exists()){
+				mainIndex.createNewFile();
+			}
+			int size=premainsize;
+			BufferedWriter bw_main=new BufferedWriter(new FileWriter(codepath+"mainIndex",isAddition));
+			BufferedWriter bw_ps=new BufferedWriter(new FileWriter(codepath+"psIndex",isAddition));
+			Properties pro=new Properties();
+			InputStream is=new FileInputStream(codepath+"config.properties");
+			pro.load(is);
+			is.close();
+			int prepssize=Integer.valueOf(pro.getProperty("personalSize", "0"));
+			DateLeaf p=trie.getMin();
+			int code1=Integer.valueOf(code);
+			while(p!=null){
+				int i=p.getDateinfo().getOrDefault(code1, 9999);
+				bw_main.write(String.format("%04d", i));
+				if(i!=9999){
+					bw_ps.write(String.format("%04d", size)+"\n");
+					bw_main.write(String.format("%04d", prepssize));
+					prepssize++;
+				}
+				else{
+					bw_main.write("9999");
+				}
+				bw_main.write("\n");
+				size++;
+				p=(DateLeaf) p.getNext();
+			}
+			OutputStream os=new FileOutputStream(codepath+"config.properties");
+			pro.setProperty("personalSize", String.valueOf(prepssize));
+			pro.store(os, "update personalSize");
+			bw_main.close();
+			bw_ps.close();
+			os.close();
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+	}
 	private void gatherDate(String code,int startday, BufferedWriter bw_data, BufferedWriter bw_index, BufferedWriter bw_position){
 		try{
 			String codepath=stockroot+"/"+code+"/";
 			BufferedReader br1=new BufferedReader(new FileReader(codepath+"data"));
 			BufferedReader br2=new BufferedReader(new FileReader(codepath+"subscription"));
 			BufferedReader br3=new BufferedReader(new FileReader(codepath+"afterscription"));
-			AverageStackFactory asf=new AverageStackFactory(codepath,true);
-			asf.addstack(5);
-			asf.addstack(10);
-			asf.addstack(20);
-			asf.addstack(30);
-			asf.addstack(60);
-			asf.close();
-			asf.openReader();
+//			AverageStackFactory asf=new AverageStackFactory(codepath,true);
+//			asf.addstack(5);
+//			asf.addstack(10);
+//			asf.addstack(20);
+//			asf.addstack(30);
+//			asf.addstack(60);
+//			asf.close();
+//			asf.openReader();
 			while(br1.ready()){
-				String str=br1.readLine()+","+br2.readLine()+","+br3.readLine()+asf.readline();
+				String str=br1.readLine()+","+br2.readLine()+","+br3.readLine();//+asf.readline()
 				String cal=str.substring(0, 10);
 				str=str.substring(11);
 				int day=Integer.parseInt(encodeDate(cal));
 				if(day>startday){
 					bw_data.write(str+"\n");
 					bw_index.write(cal+","+code+"\n");
-					bw_position.write(String.format("%03d",str.length())+","+String.format("%010d", total)+"\n");
+					bw_position.write(String.format("%03d",str.length())+","+String.format("%09d", total)+"\n");
 					total=total+str.length()+1;
 				}
 			}
 			bw_data.flush();
 			bw_index.flush();
 			bw_position.flush();
-			asf.closeReader();
+//			asf.closeReader();
 			br1.close();
 			br2.close();
 			br3.close();
