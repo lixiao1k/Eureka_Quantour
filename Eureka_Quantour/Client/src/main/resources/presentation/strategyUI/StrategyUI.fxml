@@ -13,6 +13,7 @@
             <Label layoutX="626.0" layoutY="13.0" text="开始日期" />
             <Button fx:id="editButton" layoutX="855.0" layoutY="10.0" mnemonicParsing="false" onAction="#edit" styleClass="transperantButton" />
             <Button fx:id="saveButton" layoutX="891.0" layoutY="10.0" mnemonicParsing="false" onAction="#saveTime" styleClass="transperantButton" />
+            <Label fx:id="timeLabel" layoutX="528.0" layoutY="13.0" prefHeight="17.0" prefWidth="98.0" />
          </children>
       </AnchorPane>
       <AnchorPane layoutX="-1.0" layoutY="42.0" prefHeight="715.0" prefWidth="305.0" styleClass="left-segment" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">

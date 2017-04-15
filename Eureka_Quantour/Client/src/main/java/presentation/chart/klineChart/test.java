@@ -27,7 +27,7 @@ public class test extends Application{
     	SingleStockInfoVO ssi = new SingleStockInfoVO();
     	Calendar cal = Calendar.getInstance();
     	int j = 2;
-    	for(int i=0; i<20; i++, j++){
+    	for(int i=0; i<100; i++, j++){
     		ssi = new SingleStockInfoVO();
     		cal.set(2014, 3, j);
     		ssi.setDate( (Calendar)cal.clone() );
@@ -55,7 +55,7 @@ public class test extends Application{
     	SingleStockInfoVO ssi = new SingleStockInfoVO();
     	Calendar cal = Calendar.getInstance();
     	int j = 2;
-    	for(int i=0; i<20; i++, j++){
+    	for(int i=0; i<100; i++, j++){
     		ssi = new SingleStockInfoVO();
     		cal.set(2014, 3, j);
     		ssi.setDate( (Calendar)cal.clone() );
