@@ -280,38 +280,38 @@ public class StockSetUIController implements Initializable {
 		/*
 		 * 测试代码K线图
 		 */
-	    KLineChart klineChart;
-	    List<SingleStockInfoVO> stocklist = new ArrayList<>();
-		SingleStockInfoVO ssi = new SingleStockInfoVO();
-    	Calendar cal = Calendar.getInstance();
-    	int j = 2;
-    	for(int i=0; i<20; i++, j++){
-    		ssi = new SingleStockInfoVO();
-    		cal.set(2014, 3, j);
-    		ssi.setDate( (Calendar)cal.clone() );
-    		double d = Math.random();
-    		if( d>0.5 ){
-    			ssi.setOpen(d*7);
-    			ssi.setClose(d*9);
-    			ssi.setHigh(d*10);
-    			ssi.setLow(d*6);
-    			ssi.setVolume((long)(d*8000));
-    		}
-    		else{
-    			ssi.setOpen(d*9);
-    			ssi.setClose(d*7);
-    			ssi.setHigh(d*11);
-    			ssi.setLow(d*5.5);
-    			ssi.setVolume((long)(d*11000));
-    		}
-    		stocklist.add(ssi);
-    	}
-    	klineChart = new KLineChart(stocklist);
-		Pane klinePane = klineChart.getchart(344,200);
-		kChartAnchorPane.getChildren().clear();
-		kChartAnchorPane.getChildren().add(klinePane);
-		
-		
+//	    KLineChart klineChart;
+//	    List<SingleStockInfoVO> stocklist = new ArrayList<>();
+//		SingleStockInfoVO ssi = new SingleStockInfoVO();
+//    	Calendar cal = Calendar.getInstance();
+//    	int j = 2;
+//    	for(int i=0; i<20; i++, j++){
+//    		ssi = new SingleStockInfoVO();
+//    		cal.set(2014, 3, j);
+//    		ssi.setDate( (Calendar)cal.clone() );
+//    		double d = Math.random();
+//    		if( d>0.5 ){
+//    			ssi.setOpen(d*7);
+//    			ssi.setClose(d*9);
+//    			ssi.setHigh(d*10);
+//    			ssi.setLow(d*6);
+//    			ssi.setVolume((long)(d*8000));
+//    		}
+//    		else{
+//    			ssi.setOpen(d*9);
+//    			ssi.setClose(d*7);
+//    			ssi.setHigh(d*11);
+//    			ssi.setLow(d*5.5);
+//    			ssi.setVolume((long)(d*11000));
+//    		}
+//    		stocklist.add(ssi);
+//    	}
+//    	klineChart = new KLineChart(stocklist);
+//		Pane klinePane = klineChart.getchart(344,200);
+//		kChartAnchorPane.getChildren().clear();
+//		kChartAnchorPane.getChildren().add(klinePane);
+//		
+//		
 	}
 	/*
 	 * @description 判断正负性
@@ -457,6 +457,7 @@ public class StockSetUIController implements Initializable {
 		setStockSetSortedInfo(stub.getStockSetSortedInfo());
 		initialMenuAnchorPane();
 		SingleStockInfoVO vo = stub.getStockSetSortedInfo().get(0);
+		System.out.println(vo.getCode());
 		setStockInfoPane(vo.getCode(), vo.getName(), vo.getClose(), vo.getFudu(), vo.getHigh()
 				, vo.getLow(), vo.getOpen(), vo.getVolume());
 //		showDetailInfo();

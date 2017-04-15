@@ -1,5 +1,6 @@
 package logic.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -76,7 +77,7 @@ public class Stub {
 		vo1.setHigh(8.560);
 		vo1.setLow(8.560);
 		vo1.setVolume(45100);
-		vo1.setDate(Calendar.getInstance());
+		vo1.setDate(LocalDate.now());
 		list.add(vo1);
 		SingleStockInfoVO vo2 = new SingleStockInfoVO();
 		vo2.setCode("600500");
@@ -87,7 +88,7 @@ public class Stub {
 		vo2.setHigh(8.800);
 		vo2.setLow(8.500);
 		vo2.setVolume(43100);
-		vo2.setDate(Calendar.getInstance());
+		vo2.setDate(LocalDate.now());
 		list.add(vo2);
 		SingleStockInfoVO vo3 = new SingleStockInfoVO();
 		vo3.setCode("600500");
@@ -98,7 +99,7 @@ public class Stub {
 		vo3.setHigh(8.560);
 		vo3.setLow(8.560);
 		vo3.setVolume(45100);
-		vo3.setDate(Calendar.getInstance());
+		vo3.setDate(LocalDate.now());
 		list.add(vo3);
 		SingleStockInfoVO vo4 = new SingleStockInfoVO();
 		vo4.setCode("600500");
@@ -109,7 +110,7 @@ public class Stub {
 		vo4.setHigh(8.560);
 		vo4.setLow(8.560);
 		vo4.setVolume(45100);
-		vo4.setDate(Calendar.getInstance());
+		vo4.setDate(LocalDate.now());
 		list.add(vo4);
 		for (int i=0;i<10;i++){
 			list.add(vo1);
@@ -117,59 +118,4 @@ public class Stub {
 		
 		return list;
 	}
-	private static KLineChart KLineChart;
-    private static VolumeChart volumeChart;
-    private List<SingleStockInfoVO> stocklist = new ArrayList<>();
-    
-    private void testKLineChart(){
-    	SingleStockInfoVO ssi = new SingleStockInfoVO();
-    	Calendar cal = Calendar.getInstance();
-    	int j = 2;
-    	for(int i=0; i<100; i++, j++){
-    		ssi = new SingleStockInfoVO();
-    		cal.set(2014, 3, j);
-    		ssi.setDate( (Calendar)cal.clone() );
-    		double d = Math.random();
-    		if( d>0.5 ){
-    			ssi.setOpen(d*7);
-    			ssi.setClose(d*9);
-    			ssi.setHigh(d*10);
-    			ssi.setLow(d*6);
-    			ssi.setVolume((long)(d*8000));
-    		}
-    		else{
-    			ssi.setOpen(d*9);
-    			ssi.setClose(d*7);
-    			ssi.setHigh(d*11);
-    			ssi.setLow(d*5.5);
-    			ssi.setVolume((long)(d*11000));
-    		}
-    		stocklist.add(ssi);
-    	}
-    	KLineChart = new KLineChart(stocklist);
-    }
-    
-    private void testVolumeChart(){
-    	SingleStockInfoVO ssi = new SingleStockInfoVO();
-    	Calendar cal = Calendar.getInstance();
-    	int j = 2;
-    	for(int i=0; i<100; i++, j++){
-    		ssi = new SingleStockInfoVO();
-    		cal.set(2014, 3, j);
-    		ssi.setDate( (Calendar)cal.clone() );
-    		double d = Math.random();
-    		if( d>0.5 ){
-    			ssi.setOpen(d*7);
-    			ssi.setClose(d*9);
-    			ssi.setVolume((long)(d*8000));
-    		}
-    		else{
-    			ssi.setOpen(d*9);
-    			ssi.setClose(d*7);
-    			ssi.setVolume((long)(d*11000));
-    		}
-    		stocklist.add(ssi);
-    	}
-    	volumeChart = new VolumeChart(stocklist);
-    }
 }
