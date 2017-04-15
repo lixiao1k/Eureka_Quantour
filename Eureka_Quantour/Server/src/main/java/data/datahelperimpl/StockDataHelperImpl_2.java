@@ -82,7 +82,7 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 //		check2();
 //		check();
 //	    
-		test();
+//		test();
 	}
 	/**
 	 * 初始化装载数据的容器
