@@ -2,7 +2,6 @@ package presentation.chart.lineChart;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import javafx.application.Application;

@@ -126,18 +126,18 @@ public class ComparedChart implements chartService{
     	return new ComparedChart( date, doubleList, dataName );
     }
     
-    public ComparedChart setData(ComparedInfoVO ci){
-    	LocalDate[] date = ci.getDate();
-    	List<Double[]> doubleList = new ArrayList<>();
-    	List<String> dataName = new ArrayList<>();
-    	Double[] dA = listToArray.dToD(ci.getLogYieldA());
-    	Double[] dB = listToArray.dToD(ci.getLogYieldB());
-    	doubleList.add(dA);
-    	doubleList.add(dB);
-    	dataName.add(ci.getNameA());
-    	dataName.add(ci.getNameB());
-    	return new ComparedChart( date, doubleList, dataName );
-    }
+//    public ComparedChart setData(ComparedInfoVO ci){
+//    	LocalDate[] date = ci.getDate();
+//    	List<Double[]> doubleList = new ArrayList<>();
+//    	List<String> dataName = new ArrayList<>();
+//    	Double[] dA = listToArray.dToD(ci.getLogYieldA());
+//    	Double[] dB = listToArray.dToD(ci.getLogYieldB());
+//    	doubleList.add(dA);
+//    	doubleList.add(dB);
+//    	dataName.add(ci.getNameA());
+//    	dataName.add(ci.getNameB());
+//    	return new ComparedChart( date, doubleList, dataName );
+//    }
     
     @Override
     public Pane getchart(int width, int height) {
