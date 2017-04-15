@@ -14,7 +14,6 @@ public class DateLeaf extends TrieNode{
 	private int cal;
 	private TrieNode previous;
 	private HashMap<Integer,Integer> dateinfo;
-	private List<String> stockinfo;
 	private List<String> namelist;
 	private int nownumber;
 	private TrieNode next;
@@ -30,10 +29,8 @@ public class DateLeaf extends TrieNode{
 		
 		dateinfo=new HashMap<Integer,Integer>();
 		dateinfo.put(code, nownumber);
-		stockinfo=new ArrayList<String>();
 		namelist=new ArrayList<String>();
 		namelist.add(Parse.getInstance().supCode(code));
-		stockinfo.add(row);
 		setParent(_parent);
 		nownumber=1;
 		setChildsize(0);
@@ -41,13 +38,11 @@ public class DateLeaf extends TrieNode{
 		
 		setCal(year * 10000 +month * 100 + day);
 	}
-	public void activation(int code,String row,int year,int month,int day){
+	public void activation(int code,int year,int month,int day){
 		setLayer(4);
 		
 		dateinfo=new HashMap<Integer,Integer>();
 		dateinfo.put(code, nownumber);
-		stockinfo=new ArrayList<String>();
-		stockinfo.add(row);
 		namelist=new ArrayList<String>();
 		namelist.add(Parse.getInstance().supCode(code));
 		nownumber=1;
@@ -57,9 +52,8 @@ public class DateLeaf extends TrieNode{
 		setCal(year * 10000 +month * 100 + day);
 		
 	}
-	public void addstock(int code,String row){
+	public void addstock(int code){
 		dateinfo.put(code, nownumber);
-		stockinfo.add(row);
 		namelist.add(Parse.getInstance().supCode(code));
 		nownumber++;
 	}
@@ -133,18 +127,6 @@ public class DateLeaf extends TrieNode{
 	 */
 	public void setCal(int cal) {
 		this.cal = cal;
-	}
-	/**
-	 * @return the stockinfo
-	 */
-	public List<String> getStockinfo() {
-		return stockinfo;
-	}
-	/**
-	 * @param stockinfo the stockinfo to set
-	 */
-	public void setStockinfo(List<String> stockinfo) {
-		this.stockinfo = stockinfo;
 	}
 	/**
 	 * @return the nownumber

@@ -76,8 +76,6 @@ public class StockInfoFetchByWeb {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		total=mainData.length();
-		
 		filemethod=FileMethod.getInstance();
 		webmethod=WebMethod.getInstance();
 		filemethod.makepath(stockroot);
@@ -240,7 +238,6 @@ public class StockInfoFetchByWeb {
 			if(!profile.exists()){
 				profile.createNewFile();
 			}
-			BufferedWriter bw=new BufferedWriter(new FileWriter("config/resources/mainData",isAddition));
 			InputStream is=new FileInputStream("config/stock/dataconfig.properties");
 			pro.load(is);
 			is.close();
@@ -251,7 +248,7 @@ public class StockInfoFetchByWeb {
 				for(String code:list){
 					count++;
 					System.out.println("正在处理第"+count+"个，总共"+i+"个"+"剩余"+(i-count)+"个。");
-					gatherDate(code,-1,bw,trie);
+					gatherDate(code,-1,trie);
 				}
 			}
 			else{
@@ -260,14 +257,13 @@ public class StockInfoFetchByWeb {
 					for(String code:list){
 						count++;
 						System.out.println("正在处理第"+count+"个，总共"+i+"个"+"剩余"+(i-count)+"个。");
-						gatherDate(code,indexDay,bw,trie);
+						gatherDate(code,indexDay,trie);
 					}
 				}
 				else{
 					update=false;
 				}
 			}
-			bw.close();
 			if(update){
 				int presize=Integer.valueOf(pro.getProperty("daynumber", "0"));
 				int pretotal=Integer.valueOf(pro.getProperty("nowrow", "0"));
@@ -279,17 +275,17 @@ public class StockInfoFetchByWeb {
 				pro.setProperty("lastday", Parse.getInstance().intTocal(trie.getMax().getCal()));
 				pro.store(os, "update personalSize");
 				count=0;
-				for(String code:list){
-					count++;
-					System.out.println("正在处理第"+count+"个，总共"+i+"个"+"剩余"+(i-count)+"个。");
-					generateStockIndex(presize,code,trie,isAddition);
-				}
+//				for(String code:list){
+//					count++;
+//					System.out.println("正在处理第"+count+"个，总共"+i+"个"+"剩余"+(i-count)+"个。");
+//					generateStockIndex(presize,code,trie,isAddition);
+//				}
 			}
 		}catch(IOException e){
 			e.printStackTrace();
 		}
 	}
-	private void gatherDate(String code,int startday,BufferedWriter bw_data,DateTrie trie){
+	private void gatherDate(String code,int startday,DateTrie trie){
 		try{
 			String codepath=stockroot+"/"+code+"/";
 			BufferedReader br1=new BufferedReader(new FileReader(codepath+"data"));
@@ -301,9 +297,14 @@ public class StockInfoFetchByWeb {
 				str=str.substring(11);
 				int day=Integer.parseInt(encodeDate(cal));
 				if(day>startday){
-					bw_data.write(str+"\n");
-					trie.add(day, Integer.valueOf(code), String.format("%03d",str.length())+String.format("%09d", total));
-					total=total+str.length()+1;
+//					File file=new File("config/resources/date/calendarDate/");
+//					if(!file.exists()&&!file.isDirectory()){
+//						file.mkdir();
+//					}
+//					BufferedWriter bw=new BufferedWriter(new FileWriter("config/resources/date/calendarDate/"+day,true));
+					trie.add(day, Integer.valueOf(code));
+//					bw.write(str+"\n");
+//					bw.close();
 				}
 			}
 			br1.close();
@@ -318,19 +319,28 @@ public class StockInfoFetchByWeb {
 			String codepath=ie.getPath("resources")+"/date/";
 			BufferedWriter bw_ps=new BufferedWriter(new FileWriter(codepath+"mainPosition",isAddition));
 			BufferedWriter bw_tc=new BufferedWriter(new FileWriter(codepath+"totalCalendar",isAddition));
+			BufferedWriter bw=new BufferedWriter(new FileWriter("config/resources/mainData",isAddition));
 			DateLeaf p;
 			int total=pretotal;
+			total=0;
 			int size=presize;
 			p=trie.getMin();
 			while(p!=null){
+				System.out.println(p.getCal());
 				bw_tc.write(p.getCal()+""+total+"\n");
-				for(int i=0;i<p.getStockinfo().size();i++){
-					bw_ps.write(p.getNamelist().get(i)+p.getStockinfo().get(i)+"\n");
+				BufferedReader br1=new BufferedReader(new FileReader("config/resources/date/calendarDate/"+p.getCal()));
+				int temptotal=0;
+				for(int i=0;i<p.getNamelist().size();i++){
+					String str=br1.readLine();
+					bw_ps.write(p.getNamelist().get(i)+String.format("%03d",str.length())+String.format("%06d", temptotal)+"\n");
+					temptotal=temptotal+str.length()+1;
 				}
-				total=total+p.getStockinfo().size();
+				br1.close();
+				total=total+p.getNamelist().size();
 				size=size+1;
 				p=(DateLeaf) p.getNext();
 			}
+			bw.close();
 			bw_ps.close();
 			bw_tc.close();
 			int[] info=new int[2];
