@@ -3,7 +3,6 @@ package rmi;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDate;
-import java.util.Calendar;
 import java.util.List;
 
 import exception.*;
@@ -59,12 +58,12 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 //	}
 
 	@Override
-	public List<String> getStockSet(String username) {
+	public List<String> getStockSet(String username) throws RemoteException {
 		return sli.getStockSet(username);
 	}
 
 	@Override
-	public List<SingleStockInfoVO> getStockSetSortedInfo(String stockSetName, LocalDate now, String username) {
+	public List<SingleStockInfoVO> getStockSetSortedInfo(String stockSetName, LocalDate now, String username) throws RemoteException {
 		return sli.getStockSetSortedInfo(stockSetName,now,username);
 	}
 
@@ -74,12 +73,12 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 //	}
 
 	@Override
-	public SingleStockInfoVO getStockBasicInfo(String code, LocalDate now) throws NullStockIDException, NullDateException {
+	public SingleStockInfoVO getStockBasicInfo(String code, LocalDate now) throws NullStockIDException, NullDateException, RemoteException {
 		return sli.getStockBasicInfo(code,now);
 	}
 
 	@Override
-	public void setStrategy(StrategyConditionVO strategyConditionVO, SaleVO s, LocalDate begin, LocalDate now, String stockSetName, String username) {
+	public void setStrategy(StrategyConditionVO strategyConditionVO, SaleVO s, LocalDate begin, LocalDate now, String stockSetName, String username) throws RemoteException {
 		sli.setStrategy(strategyConditionVO, s, begin, now, stockSetName, username);
 	}
 
@@ -94,32 +93,32 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 //	}
 
 	@Override
-	public YieldChartDataVO getYieldChartData() {
+	public YieldChartDataVO getYieldChartData() throws RemoteException {
 		return sli.getYieldChartData();
 	}
 
 	@Override
-	public YieldDistributionHistogramDataVO getYieldDistributionHistogramData() {
+	public YieldDistributionHistogramDataVO getYieldDistributionHistogramData() throws RemoteException {
 		return sli.getYieldDistributionHistogramData();
 	}
 
 	@Override
-	public void addStockSet(String stockSetName, String username) throws StockSetNameRepeatException {
+	public void addStockSet(String stockSetName, String username) throws StockSetNameRepeatException, RemoteException {
 		sli.addStockSet(stockSetName,username);
 	}
 
 	@Override
-	public void deleteStockSet(String stockSetName, String username) {
+	public void deleteStockSet(String stockSetName, String username) throws RemoteException {
 		sli.deleteStockSet(stockSetName,username);
 	}
 
 	@Override
-	public void addStockToStockSet(String stockName, String stockSetName, String username) throws StockNameRepeatException {
+	public void addStockToStockSet(String stockName, String stockSetName, String username) throws StockNameRepeatException, RemoteException {
 		sli.addStockToStockSet(stockName, stockSetName, username);
 	}
 
 	@Override
-	public void deleteStockFromStockSet(String stockName, String stockSetName, String username) {
+	public void deleteStockFromStockSet(String stockName, String stockSetName, String username) throws RemoteException {
 		sli.deleteStockFromStockSet(stockName, stockSetName, username);
 	}
 

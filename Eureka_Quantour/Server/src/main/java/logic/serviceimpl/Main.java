@@ -1,9 +1,12 @@
 package logic.serviceimpl;
 
-import exception.NullDateException;
+import exception.DateOverException;
 import exception.NullStockIDException;
+import logic.utility.Utility;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by huihantao on 2017/4/15.
@@ -11,15 +14,35 @@ import java.time.LocalDate;
 public class Main {
     public static void main(String [] args){
         StockLogicImpl s =new StockLogicImpl();
+        Utility utility=Utility.getInstance();
         LocalDate now =LocalDate.of(2017,03,28);
-        try {
-            System.out.println("sefgrd");
-            System.out.println(s.getStockBasicInfo("1",now).getClose());
-        } catch (NullStockIDException e) {
-            e.printStackTrace();
-        } catch (NullDateException e) {
-            e.printStackTrace();
+        List<Double> A=new ArrayList<>();
+        A.add(Math.random()*100);
+        A.add(Math.random()*100);
+        A.add(Math.random()*100);
+        A.add(Math.random()*100);
+        A.add(Math.random()*100);
+        A.add(Math.random()*100);
+        A.add(Math.random()*100);
+        A.add(Math.random()*100);
+        List<Double> B=new ArrayList<>();
+        B.add(Math.random()*100);
+        B.add(Math.random()*100);
+        B.add(Math.random()*100);
+        B.add(Math.random()*100);
+        B.add(Math.random()*100);
+        B.add(Math.random()*100);
+        B.add(Math.random()*100);
+        B.add(Math.random()*100);
+        for (int i=0;i<8;i++){
+            System.out.print(A.get(i)+",");
         }
+        System.out.println();
+        for (int i=0;i<8;i++){
+            System.out.print(B.get(i)+",");
+        }
+            System.out.println(utility.getCorvariance(A,B));
+
 
 
     }
