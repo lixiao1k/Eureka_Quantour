@@ -1,0 +1,11 @@
+
+.label{
+	-fx-background-radius: 10;
+	-fx-background-color: transparent;
+	-fx-font-family: "Arial";
+	-fx-font-size:11;
+    -fx-text-fill: #90d7ec;
+    -fx-text-alignment: center;
+	
+	-fx-opacity: 1;
+}

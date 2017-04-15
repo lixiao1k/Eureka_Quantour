@@ -9,6 +9,7 @@ import javafx.scene.chart.Axis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
 public class CatchMouseMove implements CatchMouseMoveService{
@@ -96,11 +97,26 @@ public class CatchMouseMove implements CatchMouseMoveService{
 	public Label catchMouseReturnInfoForStackPane(XYChart<String, Number> chart, Map<String, String> dataMap,
 			String[] dates, String name, int index) {
 		// TODO Auto-generated method stub
-		Label label = catchMouseReturnInfoForAnchorPane(chart, dataMap, dates, name, index);
 		
 		Axis<String> xAxis = chart.getXAxis();
-	    
-		final Node chartBackground = chart.lookup(".chart-plot-background");
+	    Axis<Number> yAxis = chart.getYAxis();
+	
+	    Label cursorCoords = new Label();
+	    cursorCoords.setVisible(false);
+	
+	    final Node chartBackground = chart.lookup(".chart-plot-background");
+	    for( Node n: chartBackground.getParent().getChildrenUnmodifiable() ) {
+	    	if ( n!=chartBackground && n!=xAxis && n!=yAxis) {
+	    		n.setMouseTransparent(true);
+	    	}
+	    }
+
+	    chartBackground.setOnMouseEntered(new EventHandler<MouseEvent>() {
+	    	@Override 
+	    	public void handle(MouseEvent mouseEvent) {
+	    		cursorCoords.setVisible(true);
+	    	}
+	    });
 		    
 		chartBackground.setOnMouseMoved(new EventHandler<MouseEvent>() {
 			
@@ -108,9 +124,9 @@ public class CatchMouseMove implements CatchMouseMoveService{
 	    		double temp = (mouseEvent.getX()-index)*(dates.length-1)/(xAxis.getWidth()-index);
 	    		
 	    		if( mouseEvent.getX()>chart.getXAxis().getWidth()/2 )
-	    			StackPane.setAlignment(label, Pos.TOP_LEFT);			
+	    			StackPane.setAlignment(cursorCoords, Pos.TOP_LEFT);			
 	    		else
-	    			StackPane.setAlignment(label, Pos.TOP_RIGHT);
+	    			StackPane.setAlignment(cursorCoords, Pos.TOP_RIGHT);
 	    		
 	    		int index = 0;
 	    		if( xAxis.getWidth()/(dates.length-1)<8 ){
@@ -136,17 +152,31 @@ public class CatchMouseMove implements CatchMouseMoveService{
 		    		for(int i=0; i<infos.length; i++){
 		    			info += infos[i]+"\n";
 		    		}
-		    		label.setVisible(true);
-		    		label.setText(info);
+		    		cursorCoords.setVisible(true);
+		    		cursorCoords.setText(info);
 	    		}
 	    		else{
-	    			label.setVisible(false);
-	    			label.setText("");
+	    			cursorCoords.setVisible(false);
+	    			cursorCoords.setText("");
 	    		}
 	    	}
 	    });
 		
-		return label;
+		 chartBackground.setOnMouseExited(new EventHandler<MouseEvent>() {
+		    	@Override 
+		    	public void handle(MouseEvent mouseEvent) {
+		    		cursorCoords.setVisible(false);
+		    	}
+		    });
+			
+		return cursorCoords;
 	}
 
+//	@Override
+//	public Pane catchMouseReturnInfoForYieldComparedChart(XYChart<String, Number> chart, Map<String, String> dataMap,
+//			String[] dates, int index) {
+//		// TODO Auto-generated method stub
+//		
+//		return null;
+//	}
 }

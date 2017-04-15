@@ -98,26 +98,26 @@ public class SingleLineChart implements chartService{
     
     @Override
     public Pane getchart(int width, int height) {
-    	if( width>0 ){
-    		lineChart.setMaxWidth(width);
-    		lineChart.setMinWidth(width);
-    	}
-    	if( height>0 ){
-    		lineChart.setMaxHeight(height-20);
-    		lineChart.setMinHeight(height-20);
-    	}
+    	double space = 20;
+    	int heightT = (int)(height-space);
+    	
+    	if( width<=0 )
+    		width = 334;
+    	if( height<=0 )
+    		height = 200;
+    	
+    	lineChart.setMaxSize(width, heightT);
+    	lineChart.setMinSize(width, heightT);
     	
     	info = catchMouseMove.catchMouseReturnInfoForAnchorPane(lineChart, dataMap, dates, "date", 0);
-    	begin = commonSet.beignDataForAnchorPane( dates[0], (int)Math.max(height, lineChart.getWidth()) );
-    	end = commonSet.endDataForAnchorPane( dates[dates.length-1], 
-    			(int)Math.max(width, lineChart.getWidth()), 
-    			(int)Math.max(height, lineChart.getWidth()) );
+    	begin = commonSet.beignDataForAnchorPane(dates[0], height);
+    	end = commonSet.endDataForAnchorPane(dates[dates.length-1], width, height);
     	
     	pane.getChildren().add(lineChart);
     	pane.getChildren().add(info);
     	pane.getChildren().add(begin);
     	pane.getChildren().add(end);
-    	AnchorPane.setTopAnchor(lineChart, 20.0);
+    	AnchorPane.setTopAnchor(lineChart, space);
     	
     	info.getStylesheets().add(
     			getClass().getResource("/styles/InfoLabel.css").toExternalForm() );

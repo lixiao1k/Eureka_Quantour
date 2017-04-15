@@ -45,14 +45,12 @@ public class ExtremeValueComparedChart implements chartService {
 
     @Override
     public Pane getchart(int width, int height) {
-    	if( width>0 ){
-    		bc.setMaxWidth(width);
-    		bc.setMinWidth(width);
-    	}
-    	if( height>0 ){
-    		bc.setMaxHeight(height);
-    		bc.setMaxHeight(height);
-    	}
+    	if( width<=0 )
+    		width = 334;
+    	if( height<=0 )
+    		height = 200;
+    	bc.setMaxSize(width, height);
+    	bc.setMinSize(width, height);
     	
     	pane.getChildren().add(bc);
         return pane;

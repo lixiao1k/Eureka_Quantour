@@ -128,19 +128,16 @@ public class EMAChart implements chartService {
 
     @Override
     public Pane getchart(int width, int height) {
-    	if( width>0 ){
-    		lineChart.setMaxWidth(width);
-    		lineChart.setMinWidth(width);
-    	}
-    	if( height>0 ){
-    		lineChart.setMaxHeight(height);
-    		lineChart.setMinHeight(height);
-    	}
+    	if( width<=0 )
+    		width = 334;
+    	if( height<=0 )
+    		height = 200;
+    	lineChart.setMaxSize(width, height);
+    	lineChart.setMinSize(width, height);
+    	
     	info = catchMouseMove.catchMouseReturnInfoForStackPane(lineChart, dataMap, dates, "date", 10);
-    	begin = commonSet.beignDataForAnchorPane( dates[0], (int)Math.max(height, lineChart.getWidth()) );
-    	end = commonSet.endDataForAnchorPane(dates[dates.length-1], 
-    			(int)Math.max(width, lineChart.getWidth()), 
-    			(int)Math.max(height, lineChart.getWidth()) );
+    	begin = commonSet.beignDataForAnchorPane(dates[0], height);
+    	end = commonSet.endDataForAnchorPane(dates[dates.length-1], width, height);
     	
     	chartPane.getChildren().add(lineChart);
     	chartPane.getChildren().add(info);

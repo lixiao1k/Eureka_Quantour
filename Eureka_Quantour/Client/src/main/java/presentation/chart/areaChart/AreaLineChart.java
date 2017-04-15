@@ -101,20 +101,16 @@ public class AreaLineChart implements chartService {
     
     @Override
     public Pane getchart(int width, int height) {
-    	if( width>0 ){
-    		areaChart.setMaxWidth(width);
-    		areaChart.setMinWidth(width);
-    	}
-    	if( height>0 ){
-    		areaChart.setMaxHeight(height);
-    		areaChart.setMinHeight(height);
-    	}
+    	if( width<=0 )
+    		width = 334;
+    	if( height<=0 )
+    		height = 200;
+    	areaChart.setMaxSize(width, height);
+    	areaChart.setMinSize(width, height);
     	
     	info = catchMouseMove.catchMouseReturnInfoForStackPane(areaChart, dataMap, cycleSave, "周期", 10);
-    	begin = commonSet.beignDataForAnchorPane( cycleSave[0], (int)Math.max(height, areaChart.getWidth()) );
-    	end = commonSet.endDataForAnchorPane(cycleSave[cycleSave.length-1], 
-    			(int)Math.max(width, areaChart.getWidth()), 
-    			(int)Math.max(height, areaChart.getWidth()) );
+    	begin = commonSet.beignDataForAnchorPane( cycleSave[0], height);
+    	end = commonSet.endDataForAnchorPane(cycleSave[cycleSave.length-1], width, height);
     	begin.setLayoutX(begin.getLayoutX()+10);
     	end.setLayoutX(end.getLayoutX()+25);
     	

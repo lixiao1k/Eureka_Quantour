@@ -73,14 +73,12 @@ public class VolumeChart {
     }
 
     public XYChart<String, Number> getchart(int width, int height) {
-    	if( width>0 ){
-    		volumechart.setMaxWidth(width);
-    		volumechart.setMinWidth(width);
-    	}
-    	if( height>0 ){
-    		volumechart.setMaxHeight(height);
-    		volumechart.setMinHeight(height);
-    	}
+    	if( width<=0 )
+    		width = 334;
+    	if( height<=0 )
+    		height = 200;
+    	volumechart.setMaxSize(width, height);
+    	volumechart.setMinSize(width, height);
     	
         return volumechart;
     }

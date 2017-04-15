@@ -10,16 +10,16 @@
 }
 
 .chart-title {
-  -fx-text-fill: #cde6c7;
-  -fx-font-size: 1.6em;
+  	-fx-text-fill: #cde6c7;
+ 	 -fx-font-size: 1.6em;
 } 
 .axis-label {
-  -fx-background-color:transparent;
-  -fx-text-fill: #65c294;
+ 	 -fx-background-color:transparent;
+  	-fx-text-fill: #65c294;
 }
 .chart-legend {
- -fx-background-color: transparent;
-   -fx-padding: 20px;
+	-fx-background-color: transparent;
+	-fx-padding: 0px;
 } 
 
 .chart-legend-item-symbol{
