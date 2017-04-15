@@ -28,8 +28,7 @@ import java.util.Map;
  */
 
 /**
- * 
- * @Description: TODO
+ * @Description: owing to EMAChart's special situation, draw a LineChart for it individually
  * @author: hzp
  * @time: 2017年4月6日
  */
@@ -49,7 +48,13 @@ public class EMAChart implements chartService {
     protected CategoryAxis xAxis;
 
     private LineChart<String, Number> lineChart;
+    /**
+     * dataMap: store every point's information and key is its abscissa which has been format
+     */
     private Map<String, String> dataMap = new HashMap<String,String>();
+    /**
+     * dates: store xAxis's value which has been format
+     */
     private String[] dates = new String[0];
 
     public EMAChart(List<EMAInfoVO> EMAList) {

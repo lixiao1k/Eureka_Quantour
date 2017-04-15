@@ -9,7 +9,6 @@ import javafx.scene.chart.Axis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
 public class CatchMouseMove implements CatchMouseMoveService{
@@ -172,11 +171,4 @@ public class CatchMouseMove implements CatchMouseMoveService{
 		return cursorCoords;
 	}
 
-//	@Override
-//	public Pane catchMouseReturnInfoForYieldComparedChart(XYChart<String, Number> chart, Map<String, String> dataMap,
-//			String[] dates, int index) {
-//		// TODO Auto-generated method stub
-//		
-//		return null;
-//	}
 }

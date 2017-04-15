@@ -55,8 +55,17 @@ public class ComparedChart implements chartService{
 
     private static int kind = -1;
     private LineChart<String, Number> lineChart;
+    /**
+     * dataMap: store every point's information and key is its abscissa which has been format
+     */
     private Map<String, String> dataMap = new HashMap<String,String>();
+    /**
+     * dates: store xAxis's value which has been format
+     */
     private String[] dates;
+    /**
+     * if chart is YieldComparedChart, it stores chart's extra information
+     */
     private double[] infodata = new double[8];
 
     public ComparedChart(){
@@ -124,6 +133,12 @@ public class ComparedChart implements chartService{
         
     }
     
+    /**
+     * @Description: input a YieldChartDataVO and draw a ComparedChart with α etc
+     * @author: hzp
+     * @time: 2017年4月3日
+     * @return: ComparedChart
+     */
     public ComparedChart setData(YieldChartDataVO ycd){
     	kind = 0;
     	LocalDate[] date = listToArray.changeLocalDate(ycd.getDatelist());
@@ -146,6 +161,12 @@ public class ComparedChart implements chartService{
     	return chart;
     }
     
+    /**
+     * @Description: input a ComparedInfoVO and draw a ComparedChart to compare two stock's situation
+     * @author: hzp
+     * @time: 2017年4月3日
+     * @return: ComparedChart
+     */
 //    public ComparedChart setData(ComparedInfoVO ci){
 //    	this.kind = 1;
 //    	LocalDate[] date = ci.getDate();
@@ -160,22 +181,24 @@ public class ComparedChart implements chartService{
 //    	return new ComparedChart( date, doubleList, dataName );
 //    }
     
-    /*
-     * 如果是基准收益率和策略收益率比较图
-     * 则需要初始化其他信息的值
+    /**
+     * @Description: if chart is YieldComparedChart, it needs to initialize other information
+     * @author: hzp
+     * @time: 2017年4月15日
+     * @return: void
+     * @param: layout: to set the label's width
+     * @param: space: to set the label's height
+     * @param: yearyield:年化收益率
+     * @param: basicyearyield:基准年化收益率
+     * @param: α:阿尔法
+     * @param: β:贝塔
+     * @param: sharpe:夏普比率
+     * @param: yieldbodong:收益波动率
+     * @param: infobilve:信息比率
+     * @param: maxre:最大回撤
      */
     private void initInfo(double layout, double space){
     	infopane.setPrefSize(layout*8, space);
-    	/**
-    	 * @param yearyield:年化收益率
-    	 * @param basicyearyield:基准年化收益率
-    	 * @param α:阿尔法
-    	 * @param β:贝塔
-    	 * @param sharpe:夏普比率
-    	 * @param yieldbodong:收益波动率
-    	 * @param infobilve:信息比率
-    	 * @param maxre:最大回撤
-    	 */
     	Label yearyield = new Label();
     	Label basicyearyield = new Label();
     	Label alpha = new Label();
