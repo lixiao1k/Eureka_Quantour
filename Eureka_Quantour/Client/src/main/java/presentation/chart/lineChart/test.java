@@ -1,5 +1,6 @@
 package presentation.chart.lineChart;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -19,7 +20,7 @@ import vo.YieldChartDataVO;
  */
 public class test extends Application{
 	
-	private List<Calendar> datelist = new ArrayList<Calendar>();
+	private List<LocalDate> datelist = new ArrayList<LocalDate>();
     private List<Double> jizhunlist = new ArrayList<Double>();;
     private List<Double> celuelist = new ArrayList<Double>();;
     private static ComparedChart comparedChart;
@@ -27,12 +28,10 @@ public class test extends Application{
     private static EMAChart emaChart;
     
     private void testComparedChart(){
-    	Calendar cal = Calendar.getInstance();
     	List<String> dataName = new ArrayList<String>();
     	int j = 2;
     	for(int i=0; i<40; i++,j++){
-    		cal.set(2014, 3, j);
-    		datelist.add( (Calendar)cal.clone() );
+    		datelist.add( LocalDate.of(2014, 3, j) );
     		jizhunlist.add( Math.random() );
     		celuelist.add( Math.random() ); 
     	}
@@ -49,14 +48,12 @@ public class test extends Application{
     }
     
     private void testSingleLineChart(){
-    	Calendar cal = Calendar.getInstance();
     	int j = 2;
     	for(int i=0; i<20; i++,j++){
-    		cal.set(2014, 3, j);
-    		datelist.add( (Calendar)cal.clone() );
+    		datelist.add( LocalDate.of(2014, 3, j));
     		jizhunlist.add( Math.random() ); 
     	}
-    	Calendar[] dates = new Calendar[datelist.size()];
+    	LocalDate[] dates = new LocalDate[datelist.size()];
     	Double[] d1 = new Double[jizhunlist.size()];
     	for(int i=0; i<datelist.size(); i++){
     		dates[i] = datelist.get(i);
@@ -68,12 +65,10 @@ public class test extends Application{
     
     private void testEMAChart(){
     	List<EMAInfoVO> emaList = new ArrayList<>();
-    	
-    	Calendar cal = Calendar.getInstance();	
+
     	int j = 2;
     	for(int i=0; i<20; i++,j++){
-    		cal.set(2014, 3, j);
-    		datelist.add( (Calendar)cal.clone() );
+    		datelist.add( LocalDate.of(2014, 3, j));
     		jizhunlist.add( Math.random() ); 
     	}
     	EMAInfoVO emaVO1 = new EMAInfoVO(datelist, jizhunlist, 20);

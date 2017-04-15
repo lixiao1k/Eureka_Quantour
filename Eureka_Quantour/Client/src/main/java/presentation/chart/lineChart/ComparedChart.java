@@ -22,6 +22,7 @@ import vo.ComparedInfoVO;
 import vo.YieldChartDataVO;
 
 import java.text.NumberFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -53,7 +54,7 @@ public class ComparedChart implements chartService{
     private String[] dates;
 
     public ComparedChart(){};
-    private ComparedChart(Calendar[] date, List<Double[]> doubleList, List<String> dataName) {
+    private ComparedChart(LocalDate[] date, List<Double[]> doubleList, List<String> dataName) {
         xAxis = new CategoryAxis();
         xAxis.setTickLabelsVisible(false);
         xAxis.setTickMarkVisible(false);
@@ -76,7 +77,7 @@ public class ComparedChart implements chartService{
         lineChart.setOpacity(0.9);
         lineChart.setPadding(new Insets(10,10,10,10));
         
-        dates = listToArray.formatCalendar(date);
+        dates = listToArray.formatLocalDate(date);
         
         String[] dataStrings = new String[date.length];
         for(int i=0; i<doubleList.size(); i++){
@@ -115,7 +116,7 @@ public class ComparedChart implements chartService{
     }
     
     public ComparedChart setData(YieldChartDataVO ycd){
-    	Calendar[] date = listToArray.changeCalendar(ycd.getDatelist());
+    	LocalDate[] date = listToArray.changeLocalDate(ycd.getDatelist());
     	List<Double[]> doubleList = new ArrayList<>();
     	List<String> dataName = new ArrayList<>();
     	doubleList.add( listToArray.changeDouble(ycd.getJizhunlist()) );
@@ -126,7 +127,7 @@ public class ComparedChart implements chartService{
     }
     
     public ComparedChart setData(ComparedInfoVO ci){
-    	Calendar[] date = ci.getDate();
+    	LocalDate[] date = ci.getDate();
     	List<Double[]> doubleList = new ArrayList<>();
     	List<String> dataName = new ArrayList<>();
     	Double[] dA = listToArray.dToD(ci.getLogYieldA());

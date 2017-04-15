@@ -1,13 +1,11 @@
 package presentation.chart.function;
 
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.time.LocalDate;
 import java.util.List;
 
 public class ListToArray implements ListToArrayService{
 
-	private SimpleDateFormat sdf = new SimpleDateFormat("yy:MM:dd");
 	private DecimalFormat df = new DecimalFormat("0.00000");   
 	
 	@Override
@@ -20,31 +18,31 @@ public class ListToArray implements ListToArrayService{
 	}
 
 	@Override
-	public Calendar[] changeCalendar(List<Calendar> list) {
+	public LocalDate[] changeLocalDate(List<LocalDate> list) {
 		// TODO Auto-generated method stub
-		Calendar[] cal = new Calendar[list.size()];
+		LocalDate[] cal = new LocalDate[list.size()];
 		for( int i=0; i<cal.length; i++){
-			cal[i] = Calendar.getInstance();
-			cal[i] = (Calendar)list.get(i).clone();
+			LocalDate date = list.get(i);
+			cal[i] = LocalDate.of(date.getYear(), date.getMonth(), date.getDayOfMonth());
 		}
 		return cal;
 	}
 
 	@Override
-	public String[] formatCalendar(List<Calendar> list) {
+	public String[] formatLocalDate(List<LocalDate> list) {
 		// TODO Auto-generated method stub
 		String[] cal = new String[list.size()];
 		for( int i=0; i<cal.length; i++)
-			cal[i] = sdf.format(list.get(i).getTime());
+			cal[i] = list.get(i).toString();
 		return cal;
 	}
 
 	@Override
-	public String[] formatCalendar(Calendar[] list) {
+	public String[] formatLocalDate(LocalDate[] list) {
 		// TODO Auto-generated method stub
 		String[] cal = new String[list.length];
 		for( int i=0; i<cal.length; i++)
-			cal[i] = sdf.format(list[i].getTime());
+			cal[i] = list[i].toString();
 		return cal;
 	}
 
