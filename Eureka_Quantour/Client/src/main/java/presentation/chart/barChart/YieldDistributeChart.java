@@ -99,20 +99,16 @@ public class YieldDistributeChart implements chartService{
 	@Override
 	public Pane getchart(int width, int height) {
 		// TODO Auto-generated method stub
-		if( width>0 ){
-    		barChart.setMaxWidth(width);
-    		barChart.setMinWidth(width);
-    	}
-    	if( height>0 ){
-    		barChart.setMaxHeight(height);
-    		barChart.setMinHeight(height);
-    	}
+		if( width<=0 )
+    		width = 334;
+    	if( height<=0 )
+    		height = 200;
+    	barChart.setMaxSize(width, height);
+    	barChart.setMinSize(width, height);
     	
     	info = catchMouseMove.catchMouseReturnInfoForStackPane(barChart, dataMap, yield, "收益率", 10);
-    	begin = commonSet.beignDataForAnchorPane( yield[0], (int)Math.max(height, barChart.getWidth()) );
-    	end = commonSet.endDataForAnchorPane( yield[yield.length-1], 
-    			(int)Math.max(width, barChart.getWidth()), 
-    			(int)Math.max(height, barChart.getWidth()) );
+    	begin = commonSet.beignDataForAnchorPane( yield[0], height);
+    	end = commonSet.endDataForAnchorPane( yield[yield.length-1], width, height );
     	begin.setLayoutX(begin.getLayoutX()+10);
     	end.setLayoutX(end.getLayoutX()+10);
     	

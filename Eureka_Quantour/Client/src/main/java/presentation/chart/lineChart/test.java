@@ -26,11 +26,15 @@ public class test extends Application{
     private static SingleLineChart singleLineChart;
     private static EMAChart emaChart;
     
-    private void testComparedChart(){
-    	List<String> dataName = new ArrayList<String>();
+    private void testYieldComparedChart(){
     	int j = 2;
+    	int k = 3;
     	for(int i=0; i<40; i++,j++){
-    		datelist.add( LocalDate.of(2014, 3, j) );
+    		if( k==3 && j==31 ){
+    			k = 4;
+    			j = 1;
+    		}
+    		datelist.add( LocalDate.of(2014, k, j) );
     		jizhunlist.add( Math.random() );
     		celuelist.add( Math.random() ); 
     	}
@@ -42,6 +46,10 @@ public class test extends Application{
     	}
     	
     	YieldChartDataVO ycd = new YieldChartDataVO(datelist,jizhunlist, celuelist);
+		ycd.setYearreturn(0.357);
+		ycd.setAlpha(0.146);
+		ycd.setBeta(0.97);
+		ycd.setSharpe(1.29);
 		comparedChart = new ComparedChart().setData(ycd);
 //		comparedChart.setName("ComparedChart");
     }
@@ -104,18 +112,18 @@ public class test extends Application{
     @Override
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
-//		new test().testComparedChart();
+		new test().testYieldComparedChart();
 //		new test().testSingleLineChart();
-    	new test().testEMAChart();
+//    	new test().testEMAChart();
 		try{
 	        Stage dialogStage = new Stage();
 	        dialogStage.setTitle("Birthday Statistics");
 	        dialogStage.initModality(Modality.WINDOW_MODAL);
 	        dialogStage.initOwner(primaryStage);
 	        
-//	        Scene scene = new Scene(comparedChart.getchart(334, 200));
+	        Scene scene = new Scene(comparedChart.getchart(500, 400));
 //	        Scene scene = new Scene(singleLineChart.getchart(334, 200));
-	        Scene scene = new Scene(emaChart.getchart(334, 200));
+//	        Scene scene = new Scene(emaChart.getchart(334, 200));
 	        dialogStage.setScene(scene);
 
 	        dialogStage.show();

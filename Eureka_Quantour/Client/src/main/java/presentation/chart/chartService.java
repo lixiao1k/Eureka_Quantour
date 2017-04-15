@@ -16,7 +16,13 @@ public interface chartService {
 	 */
     Pane getchart(int width, int height);
 
+    /**
+     * 
+     * @Description: you can set the chart's title by input name
+     * @author: hzp
+     * @time: 2017年4月3日
+     * @return: void
+     * @exception:
+     */
     void setName(String name);
-
-
 }
