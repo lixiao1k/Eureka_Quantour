@@ -57,9 +57,12 @@ public class Return {
     }
 
     public Double getAlpha(){
+        double rp=gerYearReturn();
+        double rm=gerBasicYearReturn();
+        double rf=0.04;
+        return rp-(rf+(rm-rf)*getBeta());
 
 
-        return 0.0;
     }
     public Double getBeta(){
 
@@ -73,8 +76,20 @@ public class Return {
 
         return Math.pow((1+shuzi),365/days)-1;
     }
+    public Double gerBasicYearReturn(){
+        double shuzi=jizhunshouyilv.get(jizhunshouyilv.size()-1);
+        int days=begin.until(end).getDays();
+
+        return Math.pow((1+shuzi),365/days)-1;
+    }
+
 
     public Double getSharpe(){
+        double ri=gerYearReturn();
+        double rf=0.04;
+        double seta=utility.getCorvariance(celueshouyilv,celueshouyilv);
+        return (ri-rf)/seta;
+
         
     }
 

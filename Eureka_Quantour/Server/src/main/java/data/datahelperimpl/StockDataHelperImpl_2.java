@@ -84,7 +84,7 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 		long t2=System.currentTimeMillis();
 		System.out.println("映射到内存的时间"+(t2-t1));
 //	    
-		test();
+//		test();
 	}
 	/**
 	 * 初始化装载数据的容器

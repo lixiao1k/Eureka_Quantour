@@ -2,12 +2,12 @@ package logic.service;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.List;
 
-import exception.BeginInvalidException;
-import exception.DateInvalidException;
-import exception.EndInvalidException;
+import exception.*;
 import vo.*;
 
 /**
@@ -21,49 +21,48 @@ public interface StockLogicInterface extends Remote {
 	 *               invoke getSingleStockInfo() in data layer
 	 * @return: Iterator<SingleStockInfoVO>
 	 */
-	 List<SingleStockInfoVO> getSingleStockInfoByTime ( String stockCode, Calendar begin, Calendar end )
-			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException;
+	 List<SingleStockInfoVO> getSingleStockInfoByTime (String stockCode, LocalDate begin, LocalDate end )
+			 throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException;
 	/**
 	 * @Description: to get all stocks' EMA between "begin" and "end",
 	 *               invoke getSingleStockInfo() in data layer
 	 * @return: Iterator<Double>
 	 */
-	 List<List<EMAInfoVO>> getEMAInfo ( String stockCode, Calendar begin, Calendar end )
-			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException;
+	 List<EMAInfoVO> getEMAInfo ( String stockCode, LocalDate begin, LocalDate end )
+			 throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException, DateOverException;
 	/**
 	 * @Description: to get stock A and B's compared information between "begin" and "end",
 	 *               invoke getSingleStockInfo() in data layer
 	 * @return: ComparedInfoVO
 	 */
-	 ComparedInfoVO getComparedInfo ( String stockCodeA, String stockCodeB, Calendar begin, Calendar end )
-			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException;
+//	 ComparedInfoVO getComparedInfo ( String stockCodeA, String stockCodeB, LocalDate begin, LocalDate end )
+//			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException;
 	/**
 	 * @Description: to get market's information by date,
 	 *               invoke getMarketByDate() in data layer
 	 * @return: MarketInfoVO
 	 */
-	 MarketInfoVO getMarketInfo ( Calendar date )
-			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException;
+//	 MarketInfoVO getMarketInfo ( Calendar date )
+//			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException;
 
 
 	 List<String> getStockSet(String username);
 
-	 List<SingleStockInfoVO> getStockSetSortedInfo(String stockSetName, Calendar now);
+	 List<SingleStockInfoVO> getStockSetSortedInfo(String stockSetName, LocalDate now,String username);
 
-	 SingleStockInfoVO getStockBasicInfo(String code, Calendar now);
+	 SingleStockInfoVO getStockBasicInfo(String code, LocalDate now) throws NullStockIDException, NullDateException;
 
-	 void setStrategy(StrategyConditionVO sc, SaleVO s, Calendar begin, Calendar now, String
-			stockSetName);
+	 void setStrategy(StrategyConditionVO strategyConditionVO, SaleVO s, LocalDate begin, LocalDate now, String stockSetName,String username);
 
 	 YieldChartDataVO getYieldChartData();
 
 	 YieldDistributionHistogramDataVO getYieldDistributionHistogramData();
 
-	 void addStockSet(String stockSetName, String username);
+	 void addStockSet(String stockSetName, String username) throws StockSetNameRepeatException;
 
 	 void deleteStockSet(String stockSetName, String username);
 
-	 void addStockToStockSet(String stockName, String stockSetName, String username) ;
+	 void addStockToStockSet(String stockName, String stockSetName, String username) throws StockNameRepeatException;
 
 	 void deleteStockFromStockSet(String stockName, String stockSetName, String username);
 

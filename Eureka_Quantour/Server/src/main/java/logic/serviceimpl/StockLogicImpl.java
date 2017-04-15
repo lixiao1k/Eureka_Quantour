@@ -361,7 +361,7 @@ public class StockLogicImpl implements StockLogicInterface{
 	}
 
 	@Override
-	public void setStrategy(StrategyConditionVO strategyConditionVO, SaleVO s, LocalDate begin, LocalDate now, String stockSetName,int num,String username) {
+	public void setStrategy(StrategyConditionVO strategyConditionVO, SaleVO s, LocalDate begin, LocalDate now, String stockSetName,String username) {
 		//TODO
 		List<String> stocklistname=idi.getStockSetInfo(stockSetName,username);
 
