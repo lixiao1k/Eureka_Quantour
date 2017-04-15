@@ -235,7 +235,9 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 			int count=0;
 			while(br.ready()){
 				String out=br.readLine();
-				int cal=Integer.valueOf(out);
+				int cal=Integer.valueOf(out.substring(0, 8));
+				int row=Integer.parseInt(out.substring(8));
+				pointerToposition.add(row);
 				dateIndex.put(cal, count);
 				datesort.add(cal);
 				datesize++;
@@ -470,13 +472,13 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 			int k=100000;
 			long ttt1=System.currentTimeMillis();
 			File path=new File("config/stock/info");
-//			for(String code:path.list()){
+			for(String code:path.list()){
 				for(int i=0;i<1;i++)
 					try {
-						System.out.println(getSingleInfo(b1, out[1]));
+						getSingleInfo(b1, out[1]);
 					} catch (StockHaltingException | NullDateException e) {
 					}
-//			}
+			}
 			
 //			Collection<StockLeaf> it=datetree.get(b1).values();
 //			for(StockLeaf i:it){
@@ -679,6 +681,7 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 			throw new NullDateException(cal);
 		}
 		else{
+			int pointer=pointerToposition.get(index);
 			MappedByteBuffer mbb=indexBuffer.getMbb(Integer.valueOf(code), stockInfo+"/"+code+"/mainIndex");
 			MappedByteBuffer mbb_data=indexBuffer.getMbb(cal, "config/resources/date/calendarDate/"+cal);
 			String str=getIndexByMbb(mbb,index);
@@ -700,7 +703,7 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 //				// TODO Auto-generated catch block
 //				e.printStackTrace();
 //			}
-			return readPosition(relative, mbb_position, mbb_data);
+			return readPosition(pointer+relative, mbb_position, mbb_data);
 		}
 	}
 	/**
