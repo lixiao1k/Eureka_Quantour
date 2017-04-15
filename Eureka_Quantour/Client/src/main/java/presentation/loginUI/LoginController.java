@@ -50,7 +50,7 @@ public class LoginController implements Initializable{
 		ClientLogicInterface clientLogicInterface = remote.getClientLogic();
 		try {
 			clientLogicInterface.signUp(username, password);
-			Notifications.create().title("登录提示").text("登录成功！").showInformation();
+			Notifications.create().title("注册提示").text("注册成功！").showInformation();
 		} catch (RemoteException e1) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("注册异常").text(e1.toString()).showError();
