@@ -6,6 +6,7 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class StockIndexBuffer {
 	private static int BUFFER_SIZE=1024*1024*2;
@@ -71,5 +72,11 @@ public class StockIndexBuffer {
 		}
 		is.close();
 		return mbb;
+	}
+	public void print(){
+		Iterator<Integer> it=index.keySet().iterator();
+		while(it.hasNext()){
+			System.out.println(it.next());
+		}
 	}
 }

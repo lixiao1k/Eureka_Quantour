@@ -473,13 +473,13 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 			int k=100000;
 			long ttt1=System.currentTimeMillis();
 			File path=new File("config/stock/info");
-//			for(String code:path.list()){
+			for(String code:path.list()){
 				for(int i=0;i<1;i++)
 					try {
-						System.out.println(getSingleInfo(b1, out[1]));
+						getSingleInfo(b1, code);
 					} catch (StockHaltingException | NullDateException e) {
 					}
-//			}
+			}
 			
 //			Collection<StockLeaf> it=datetree.get(b1).values();
 //			for(StockLeaf i:it){
@@ -683,9 +683,8 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 		}
 		else{
 			int pointer=pointerToposition.get(index);
-			System.out.println(pointer);
 			MappedByteBuffer mbb=indexBuffer.getMbb(Integer.valueOf(code), stockInfo+"/"+code+"/mainIndex");
-			MappedByteBuffer mbb_data=indexBuffer.getMbb(cal, "config/resources/date/calendarDate/"+cal);
+			MappedByteBuffer mbb_data=dataBuffer.getMbb(cal, "config/resources/date/calendarDate/"+cal);
 			String str=getIndexByMbb(mbb,index);
 			int relative=Integer.valueOf(str.substring(0,4));
 			if(relative==9999){
