@@ -1,7 +1,5 @@
 package vo;
 
-import po.SingleStockInfoPO;
-
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -35,7 +33,6 @@ public class SingleStockInfoVO implements Serializable, Comparable<SingleStockIn
 	private double low = 0.0;
 	private long volume = 0;
 	private double adjclose = 0.0;
-	private String market = "";
 	private double fudu=0.0;
 	
 	public String getName(){
@@ -116,18 +113,6 @@ public class SingleStockInfoVO implements Serializable, Comparable<SingleStockIn
 		return ssi;
 	}
 	public SingleStockInfoVO(){}
-	public SingleStockInfoVO(SingleStockInfoPO po){
-		this.setAdjclose(po.getAftClose());
-		this.setClose(po.getClose());
-		this.setCode(po.getCode());
-		this.setDate(po.getDate());
-		this.setFudu(po.getAftrate());
-		this.setHigh(po.getHigh());
-		this.setLow(po.getLow());
-		this.setName(po.getName());
-		this.setOpen(po.getOpen());
-		this.setVolume(po.getVolume());
-	}
 	public SingleStockInfoVO(String name){
 		this.name=name;
 	}
