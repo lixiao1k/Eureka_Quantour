@@ -4,9 +4,9 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.BufferUnderflowException;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
@@ -14,7 +14,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
@@ -22,9 +21,6 @@ import java.util.Scanner;
 
 import data.common.DateTrie;
 import data.common.IndexTree;
-import data.common.StockHashTree;
-import data.common.StockLeaf;
-import data.common.DateLeaf;
 import data.datahelperservice.IStockDataHelper_2;
 import data.fetchdataimpl.StockDataFetchImpl;
 import data.fetchdataservice.IStockDataFetch;
@@ -83,6 +79,7 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 		loadData2();
 		long t2=System.currentTimeMillis();
 		System.out.println("映射到内存的时间"+(t2-t1));
+//		check2();
 //		check();
 //	    
 //		test();
@@ -103,7 +100,7 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 		
 		dst_MainIndex=new byte[8];
 		
-		receive=new byte[19];
+		receive=new byte[16];
 		doublereceive=new byte[17];
 		
 		datetree=new DateTrie();
@@ -408,9 +405,14 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 						int a=parse.getIntDate(cal);
 						str=str.substring(11);
 						int row=0;
-						try{
-							row=datetree.get(a).getDateinfo().get(Integer.parseInt(stock));
-							String str1=readPosition(row,mbb_position,mbb_data);
+						{
+							String str1="";
+							try {
+								str1 = getSingleInfo(a, stock);
+							} catch (StockHaltingException | NullDateException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 							if(str1==null){
 								System.out.println(cal+":"+stock+":"+row+"\nnull!!!!!");
 								System.exit(0);
@@ -419,10 +421,6 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 								System.out.println(cal+":"+stock+":"+row);
 								System.exit(0);
 							}
-						}catch(Exception e){
-								System.out.println(cal+":"+stock+":"+row+"\nnull!!!!!");
-								System.exit(0);
-							
 						}
 						
 					}	
@@ -455,15 +453,6 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 			int year= cal / 10000;
 			int month= (cal -year * 10000 ) / 100;
 			int day=cal - year * 10000 - month * 100;
-			if(cal==20170405){
-				day5++;
-			}
-			if(cal==20170406){
-				day6++;
-			}
-			if(cal==20170407){
-				day7++;
-			}
 			if(datetree.get(year, month, day).getDateinfo().get(code)!=count){
 				System.out.println(cal+":"+code);
 				System.exit(0);
@@ -491,10 +480,10 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 			String[] t=path.list();
 			long ttt1=System.currentTimeMillis();
 			
-			for(String code:t){
+			for(int cal :datesort){
 				for(int i=0;i<1;i++)
 					try {
-						getSingleInfo(b1, code);
+						getSingleInfo(cal, out[1]);
 					} catch (StockHaltingException | NullDateException e) {
 					}
 			}
@@ -546,6 +535,7 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 //			}
 //			long a2=System.currentTimeMillis();
 //			System.out.println("读取时间"+(a2-a1));
+			System.gc();
 		}
 		sc.close();
 	}
@@ -769,7 +759,11 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 	private String readPosition(int row,MappedByteBuffer mbb_position,MappedByteBuffer mbb_data){
 		int position=row*16;
 		mbb_position.position(position);
+		try{
 		mbb_position.get(receive);
+		}catch(BufferUnderflowException e){
+			System.out.println(position);
+		}
 		int b=Integer.parseInt(new String(receive,6,3));
 		int c=Integer.parseInt(new String(receive,9,6));
 		return read(c,b,mbb_data);
