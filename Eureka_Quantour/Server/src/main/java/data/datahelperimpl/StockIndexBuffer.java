@@ -60,15 +60,15 @@ public class StockIndexBuffer {
 		FileInputStream is=new FileInputStream(path);
 		FileChannel fc=is.getChannel();
 		MappedByteBuffer mbb=fc.map(MapMode.READ_ONLY, 0, fc.size());
-//		byte[] tempdst=new byte[(int) (fc.size()%BUFFER_SIZE)];
-//		for(int i=0;i<fc.size();i+=BUFFER_SIZE){
-//			if(fc.size()-i>BUFFER_SIZE){
-//				mbb.get(dst_BUFFERSIZE);
-//			}
-//			else{
-//				mbb.get(tempdst);
-//			}
-//		}
+		byte[] tempdst=new byte[(int) (fc.size()%BUFFER_SIZE)];
+		for(int i=0;i<fc.size();i+=BUFFER_SIZE){
+			if(fc.size()-i>BUFFER_SIZE){
+				mbb.get(dst_BUFFERSIZE);
+			}
+			else{
+				mbb.get(tempdst);
+			}
+		}
 		is.close();
 		return mbb;
 	}
