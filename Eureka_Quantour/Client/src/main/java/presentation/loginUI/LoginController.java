@@ -3,9 +3,16 @@ package presentation.loginUI;
 import java.awt.Label;
 import java.io.IOException;
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 
+import javax.management.Notification;
+
+import org.controlsfx.control.Notifications;
+
 import dataController.DataContorller;
+import exception.LogErrorException;
+import exception.UserNameRepeatException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -41,24 +48,46 @@ public class LoginController implements Initializable{
 		char[] password = passwordTextField.getText().toCharArray();
 		RemoteHelper remote = RemoteHelper.getInstance();
 		ClientLogicInterface clientLogicInterface = remote.getClientLogic();
+		try {
+			clientLogicInterface.signUp(username, password);
+			Notifications.create().title("登录提示").text("登录成功！").showInformation();
+		} catch (RemoteException e1) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("注册异常").text(e1.toString()).showError();
+		} catch (UserNameRepeatException e1) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("注册异常").text(e1.toString()).showError();
+		}
+		
 		
 	}
 	
 	@FXML
 	protected void logIn(ActionEvent e) throws IOException{
-		if(true){
-			String username = usernameTextField.getText();
-	        dataController.upDate("UserName", username);
-			Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("presentation/mainScreen/MainScreen.fxml"));
-			Scene scene = new Scene(root);
-			Stage stage = new Stage();
-			stage.setScene(scene);
-			stage.show();
-			Stage stagenow = (Stage) usernameTextField.getScene().getWindow();
-			stagenow.close();
-		}else{
-			System.out.println("");
+		String name = usernameTextField.getText();
+		char[] password= passwordTextField.getText().toCharArray();
+		RemoteHelper remote = RemoteHelper.getInstance();
+		ClientLogicInterface clientLogicInterface = remote.getClientLogic();
+		try {
+			clientLogicInterface.signIn(name,password);
+			Notifications.create().title("登录提示").text("登录成功！").showInformation();
+		} catch (LogErrorException e1) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("登录异常").text(e1.toString()).showError();
 		}
+//		if(true){
+//			String username = usernameTextField.getText();
+//	        dataController.upDate("UserName", username);
+//			Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("presentation/mainScreen/MainScreen.fxml"));
+//			Scene scene = new Scene(root);
+//			Stage stage = new Stage();
+//			stage.setScene(scene);
+//			stage.show();
+//			Stage stagenow = (Stage) usernameTextField.getScene().getWindow();
+//			stagenow.close();
+//		}else{
+//			System.out.println("");
+//		}
 
 	}
 
