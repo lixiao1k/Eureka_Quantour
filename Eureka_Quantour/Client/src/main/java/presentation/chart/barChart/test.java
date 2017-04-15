@@ -1,7 +1,9 @@
 package presentation.chart.barChart;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -13,19 +15,18 @@ public class test extends Application{
 	
 	private static YieldDistributeChart yieldDistuributeChart;
 	
-	private List<Double> yieldlist = new ArrayList<>();
-    private List<Integer> minuslist = new ArrayList<>();
-    private List<Integer> pluslist = new ArrayList<>();
+	private Map<Double,List<Integer>> zuhe = new HashMap<Double,List<Integer>>();
+    private List<Integer> pandm = new ArrayList<>();
     
 	private void testYieldDistributeChart(){
 		YieldDistributionHistogramDataVO ydhd;
 		
 		for( int i=0; i<10; i++){
-			yieldlist.add( Math.random() );
-			minuslist.add( (int)(Math.random()*60) );
-			pluslist.add( (int)(Math.random()*60) );
+			pandm.add( (int)(Math.random()*60) );
+			pandm.add( (int)(Math.random()*60) );
+			zuhe.put(Math.random() , pandm);
 		}
-		ydhd = new YieldDistributionHistogramDataVO(yieldlist, minuslist, pluslist);
+		ydhd = new YieldDistributionHistogramDataVO( zuhe );
 		
 		yieldDistuributeChart = new YieldDistributeChart(ydhd);
 	}
