@@ -15,6 +15,11 @@ public class YieldChartDataVO implements Serializable{
     private List<Double> jizhunlist;
     private List<Double> celuelist;
 
+    private double alpha;
+    private double beta;
+    private double sharpe;
+    private double yearreturn;
+
     public YieldChartDataVO(List<LocalDate> datelist, List<Double> jizhunlist, List<Double> celuelist) {
         this.datelist = datelist;
         this.jizhunlist = jizhunlist;

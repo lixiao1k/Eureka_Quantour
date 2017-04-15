@@ -8,6 +8,7 @@ import po.SingleStockInfoPO;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by huihantao on 2017/4/4.
@@ -108,6 +109,30 @@ public class Utility {
 
         }
         return  jieguo/days;
+    }
+
+    public double getCorvariance(List<Double> A,List<Double> B){
+        double avejizhun=0;
+        double avecelue=0;
+        double p=0;
+        for (int i=0;i<A.size();i++){
+            avejizhun+=A.get(i);
+        }
+        avejizhun=avejizhun/A.size();
+
+        for (int i=0;i<B.size();i++){
+            avecelue+=B.get(i);
+        }
+        avecelue=avecelue/B.size();
+
+        for (int i=0;i<B.size();i++){
+            p+=A.get(i)*B.get(i);
+        }
+        p=p/A.size();
+        return p-avecelue*avejizhun;
+
+
+
     }
 
 }

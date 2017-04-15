@@ -1,6 +1,7 @@
 package vo;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.List;
 
@@ -9,36 +10,17 @@ import java.util.List;
  */
 public class YieldChartDataVO implements Serializable{
 
-    public List<Calendar> getDatelist() {
-		return datelist;
-	}
-
-	public void setDatelist(List<Calendar> datelist) {
-		this.datelist = datelist;
-	}
-
-	public List<Double> getJizhunlist() {
-		return jizhunlist;
-	}
-
-	public void setJizhunlist(List<Double> jizhunlist) {
-		this.jizhunlist = jizhunlist;
-	}
-
-	public List<Double> getCeluelist() {
-		return celuelist;
-	}
-
-	public void setCeluelist(List<Double> celuelist) {
-		this.celuelist = celuelist;
-	}
-
-	private static final long serialVersionUID=3607793986865623023L;
-    private List<Calendar> datelist;
+    private static final long serialVersionUID=3607793986865623023L;
+    private List<LocalDate> datelist;
     private List<Double> jizhunlist;
     private List<Double> celuelist;
 
-    public YieldChartDataVO(List<Calendar> datelist, List<Double> jizhunlist, List<Double> celuelist) {
+    private double alpha;
+    private double beta;
+    private double sharpe;
+    private double yearreturn;
+
+    public YieldChartDataVO(List<LocalDate> datelist, List<Double> jizhunlist, List<Double> celuelist) {
         this.datelist = datelist;
         this.jizhunlist = jizhunlist;
         this.celuelist = celuelist;
