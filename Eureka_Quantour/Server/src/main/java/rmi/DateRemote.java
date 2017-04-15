@@ -123,16 +123,17 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 	}
 
 	@Override
-	public void signUp(String username, char[] password) throws RemoteException {
+	public void signUp(String username, char[] password) throws RemoteException, UserNameRepeatException {
+		cli.signUp(username,password);
 	}
 
 	@Override
-	public void signIn(String username, char[] password) throws RemoteException {
-
+	public void signIn(String username, char[] password) throws RemoteException, LogErrorException {
+		cli.signIn(username,password);
 	}
 
 	@Override
 	public void signOut(String username) throws RemoteException {
-
+		cli.signOut(username);
 	}
 }
