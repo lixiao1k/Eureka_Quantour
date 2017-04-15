@@ -17,6 +17,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import logic.service.ClientLogicInterface;
+import rmi.RemoteHelper;
 
 public class LoginController implements Initializable{
 	@FXML
@@ -35,6 +37,10 @@ public class LoginController implements Initializable{
 	
 	@FXML
 	protected void logUp(ActionEvent e){
+		String username = usernameTextField.getText();
+		char[] password = passwordTextField.getText().toCharArray();
+		RemoteHelper remote = RemoteHelper.getInstance();
+		ClientLogicInterface clientLogicInterface = remote.getClientLogic();
 		
 	}
 	
