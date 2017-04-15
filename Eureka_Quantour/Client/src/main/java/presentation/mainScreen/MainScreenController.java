@@ -2,9 +2,11 @@ package presentation.mainScreen;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import dataController.DataContorller;
 import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -54,6 +56,11 @@ public class MainScreenController implements Initializable{
 	
 	@FXML
 	AnchorPane mainAnchorPane;
+	
+	@FXML
+	Label timeLabel;
+	
+	private DataContorller dataController;
 	
 	@FXML
 	public void browseStockSet(ActionEvent e) throws IOException{
@@ -116,7 +123,13 @@ public class MainScreenController implements Initializable{
 	
 	@FXML
 	protected void saveTime(ActionEvent e){
-		
+		LocalDate date = nowDatePicker.getValue();
+		if(date!=null){
+			dataController.upDate("SystemTime", date);
+			timeLabel.setText(date.toString());
+		}else{
+			System.out.println("NoTime");
+		}
 	}
 	
 	@FXML
@@ -128,6 +141,7 @@ public class MainScreenController implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
+		dataController = DataContorller.getInstance();
 		Image editImage = new Image(getClass().getResourceAsStream("edit.png"));
 		editButton.setGraphic(new ImageView(editImage));
 		Image exitImage = new Image(getClass().getResourceAsStream("exit.png"));
@@ -138,8 +152,11 @@ public class MainScreenController implements Initializable{
 		marketButton.setText("市场");
 		singleStockButton.setText("个股");
 		strategyButton.setText("策略");
+		
 		Locale.setDefault(Locale.ENGLISH);
 		
+		timeLabel.setText(LocalDate.now().toString());
+		dataController.upDate("SystemTime", LocalDate.now());
 	}
 
 }

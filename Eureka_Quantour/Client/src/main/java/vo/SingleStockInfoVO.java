@@ -1,8 +1,7 @@
 package vo;
 
-
 import java.io.Serializable;
-import java.util.Calendar;
+import java.time.LocalDate;
 
 /**
  * 
@@ -26,7 +25,7 @@ public class SingleStockInfoVO implements Serializable, Comparable<SingleStockIn
 	 *@param: market: the name of where stock list
 	 */
 	private String name = "";
-	private Calendar date ;
+	private LocalDate date ;
 	private String code = "";
 	private double open = 0.0;
 	private double close = 0.0;
@@ -34,13 +33,12 @@ public class SingleStockInfoVO implements Serializable, Comparable<SingleStockIn
 	private double low = 0.0;
 	private long volume = 0;
 	private double adjclose = 0.0;
-	private String market = "";
 	private double fudu=0.0;
 	
 	public String getName(){
 		return this.name;
 	}
-	public Calendar getDate(){
+	public LocalDate getDate(){
 		return this.date;
 	}
 	public String getCode(){
@@ -64,14 +62,11 @@ public class SingleStockInfoVO implements Serializable, Comparable<SingleStockIn
 	public double getAdjclose(){
 		return this.adjclose;
 	}
-	public String getMarket(){
-		return this.market;
-	}
-	
+
 	public void setName(String name){
 		this.name = name;
 	}
-	public void setDate(Calendar date){
+	public void setDate(LocalDate date){
 		this.date = date;
 	}
 	public void setCode(String code){
@@ -95,9 +90,6 @@ public class SingleStockInfoVO implements Serializable, Comparable<SingleStockIn
 	public void setAdjclose(double adjclose){
 		this.adjclose = adjclose;
 	}
-	public void setMarket(String market){
-		this.market = market;
-	}
 	public double getFudu() {
 		return fudu;
 	}
@@ -105,7 +97,7 @@ public class SingleStockInfoVO implements Serializable, Comparable<SingleStockIn
 		this.fudu = fudu;
 	}
 
-	public SingleStockInfoVO initObject(String name, Calendar date, String code, double open, double close,
+	public SingleStockInfoVO initObject(String name, LocalDate date, String code, double open, double close,
 										double high, double low, int volume, double adjclose, String market,double fudu){
 		SingleStockInfoVO ssi = new SingleStockInfoVO();
 		ssi.setName(name);
@@ -117,11 +109,13 @@ public class SingleStockInfoVO implements Serializable, Comparable<SingleStockIn
 		ssi.setLow(low);
 		ssi.setVolume(volume);
 		ssi.setAdjclose(adjclose);
-		ssi.setMarket(market);
 		ssi.setFudu(fudu);
 		return ssi;
 	}
 	public SingleStockInfoVO(){}
+	public SingleStockInfoVO(String name){
+		this.name=name;
+	}
 
 
 	@Override

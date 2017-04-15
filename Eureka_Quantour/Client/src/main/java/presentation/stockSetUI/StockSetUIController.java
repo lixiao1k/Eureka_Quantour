@@ -56,7 +56,7 @@ public class StockSetUIController implements Initializable {
 	FlowPane stocksFlowPane;
 	
 	@FXML
-	AnchorPane stockBasicInfoAnchorPane;
+	AnchorPane basicInfoAnchorPane;
 	
 	@FXML
 	AnchorPane kChartAnchorPane;
@@ -66,6 +66,30 @@ public class StockSetUIController implements Initializable {
 	
 	@FXML
 	AnchorPane menuAnchorPane;
+	
+	@FXML
+	Label codeLabel;
+	
+	@FXML
+	Label nameLabel;
+	
+	@FXML
+	Label closeLabel;
+	
+	@FXML
+	Label RAFLabel;
+	
+	@FXML
+	Label highLabel;
+	
+	@FXML
+	Label openLabel;
+	
+	@FXML
+	Label lowLabel;
+	
+	@FXML
+	Label volumeLabel;
 	
 	private DataContorller dataController;
 	
@@ -256,38 +280,38 @@ public class StockSetUIController implements Initializable {
 		/*
 		 * 测试代码K线图
 		 */
-	    KLineChart klineChart;
-	    List<SingleStockInfoVO> stocklist = new ArrayList<>();
-		SingleStockInfoVO ssi = new SingleStockInfoVO();
-    	Calendar cal = Calendar.getInstance();
-    	int j = 2;
-    	for(int i=0; i<20; i++, j++){
-    		ssi = new SingleStockInfoVO();
-    		cal.set(2014, 3, j);
-    		ssi.setDate( (Calendar)cal.clone() );
-    		double d = Math.random();
-    		if( d>0.5 ){
-    			ssi.setOpen(d*7);
-    			ssi.setClose(d*9);
-    			ssi.setHigh(d*10);
-    			ssi.setLow(d*6);
-    			ssi.setVolume((long)(d*8000));
-    		}
-    		else{
-    			ssi.setOpen(d*9);
-    			ssi.setClose(d*7);
-    			ssi.setHigh(d*11);
-    			ssi.setLow(d*5.5);
-    			ssi.setVolume((long)(d*11000));
-    		}
-    		stocklist.add(ssi);
-    	}
-    	klineChart = new KLineChart(stocklist);
-		Pane klinePane = klineChart.getchart(344,200);
-		kChartAnchorPane.getChildren().clear();
-		kChartAnchorPane.getChildren().add(klinePane);
-		
-		
+//	    KLineChart klineChart;
+//	    List<SingleStockInfoVO> stocklist = new ArrayList<>();
+//		SingleStockInfoVO ssi = new SingleStockInfoVO();
+//    	Calendar cal = Calendar.getInstance();
+//    	int j = 2;
+//    	for(int i=0; i<20; i++, j++){
+//    		ssi = new SingleStockInfoVO();
+//    		cal.set(2014, 3, j);
+//    		ssi.setDate( (Calendar)cal.clone() );
+//    		double d = Math.random();
+//    		if( d>0.5 ){
+//    			ssi.setOpen(d*7);
+//    			ssi.setClose(d*9);
+//    			ssi.setHigh(d*10);
+//    			ssi.setLow(d*6);
+//    			ssi.setVolume((long)(d*8000));
+//    		}
+//    		else{
+//    			ssi.setOpen(d*9);
+//    			ssi.setClose(d*7);
+//    			ssi.setHigh(d*11);
+//    			ssi.setLow(d*5.5);
+//    			ssi.setVolume((long)(d*11000));
+//    		}
+//    		stocklist.add(ssi);
+//    	}
+//    	klineChart = new KLineChart(stocklist);
+//		Pane klinePane = klineChart.getchart(344,200);
+//		kChartAnchorPane.getChildren().clear();
+//		kChartAnchorPane.getChildren().add(klinePane);
+//		
+//		
 	}
 	/*
 	 * @description 判断正负性
@@ -365,7 +389,59 @@ public class StockSetUIController implements Initializable {
 	public void setController(MainScreenController controller){
 		this.controller = controller;
 	}
-	
+	/*
+	 * @description初始化股票基本信息界面
+	 */
+	private void setStockInfoPane(String code,String name,double close,double RAF,double high
+			,double low,double open,long volume){
+		codeLabel.setText(code);
+		codeLabel.setStyle("-fx-text-fill: rgb(255, 255, 255, 1);-fx-font-weight:bold; -fx-font-size: 18;");
+		nameLabel.setText(name);
+		nameLabel.setStyle("-fx-text-fill: rgb(255, 255, 255, 1);-fx-font-weight:bold; -fx-font-size: 18;");
+		closeLabel.setText(Double.toString(close));
+		addLabelColor(closeLabel, close,28);
+		if(RAF>0){
+			RAFLabel.setText("+"+Double.toString(RAF)+"%");
+		}else if(RAF<0){
+			RAFLabel.setText("-"+Double.toString(RAF)+"%");
+		}else{
+			RAFLabel.setText(Double.toString(RAF)+"%");
+		}
+	    addLabelColor(RAFLabel, RAF,0);
+	    highLabel.setText(Double.toString(high));
+	    addLabelColor(highLabel, high,0);
+	    lowLabel.setText(Double.toString(low));
+	    addLabelColor(lowLabel, -1,0);
+	    openLabel.setText(Double.toString(open));
+	    addLabelColor(openLabel, open,0);
+	    volumeLabel.setText(Long.toString(volume));		
+	}
+	/*
+	 * @description设置字体颜色，为setStockInfoPane方法所调用
+	 */
+	public void addLabelColor(Label label,double num,int size){
+		if(size==0){
+			if(num>0){
+				label.setStyle("-fx-text-fill: rgb(255, 0, 0, 1);-fx-font-weight:bold");
+			}else if(num<0){
+				label.setStyle("-fx-text-fill: rgb(0, 255, 0, 1);-fx-font-weight:bold");
+			}else{
+				label.setStyle("-fx-text-fill: rgb(255, 255, 255, 1);-fx-font-weight:bold");
+			}
+		}else{
+			if(num>0){
+				label.setStyle("-fx-text-fill: rgb(255, 0, 0, 1);-fx-font-weight:bold"
+						+ ";-fx-font-size:28");
+			}else if(num<0){
+				label.setStyle("-fx-text-fill: rgb(0, 255, 0, 1);-fx-font-weight:bold"
+						+ ";-fx-font-size:28");
+			}else{
+				label.setStyle("-fx-text-fill: rgb(255, 255, 255, 1);-fx-font-weight:bold"
+						+ ";-fx-font-size:28");
+			}
+		}
+
+	}
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
@@ -380,6 +456,10 @@ public class StockSetUIController implements Initializable {
 		addSet(stub.getStockSet("username"));
 		setStockSetSortedInfo(stub.getStockSetSortedInfo());
 		initialMenuAnchorPane();
+		SingleStockInfoVO vo = stub.getStockSetSortedInfo().get(0);
+		System.out.println(vo.getCode());
+		setStockInfoPane(vo.getCode(), vo.getName(), vo.getClose(), vo.getFudu(), vo.getHigh()
+				, vo.getLow(), vo.getOpen(), vo.getVolume());
 //		showDetailInfo();
 
 	}

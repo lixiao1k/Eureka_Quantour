@@ -26,6 +26,12 @@ public class Return {
     private int days;
     private Comparator<SingleStockInfoPO> comparator;
     private List<LocalDate> timelist;
+    private List<Double> jizhunfudu;
+    private List<Double> celuefudu;
+
+    private List<Double> jizhunshouyilv;
+    private List<Double> celueshouyilv;
+
 
     public Return(List<String> stockcode, LocalDate begin, LocalDate end, SaleVO salevo, StrategyConditionVO strategyConditionVO) {
         this.stockcode = stockcode;
@@ -51,11 +57,27 @@ public class Return {
     }
 
     public Double getAlpha(){
+
+
         return 0.0;
     }
     public Double getBeta(){
-        return 0.0;
+
+
+        return utility.getCorvariance(jizhunfudu,celuefudu)/utility.getCorvariance(jizhunfudu,jizhunfudu);
     }
+
+    public Double gerYearReturn(){
+        double shuzi=celueshouyilv.get(celueshouyilv.size()-1);
+        int days=begin.until(end).getDays();
+
+        return Math.pow((1+shuzi),365/days)-1;
+    }
+
+    public Double getSharpe(){
+        
+    }
+
 
     public List<LocalDate> getTimelist() {
         return timelist;
@@ -82,7 +104,7 @@ public class Return {
                     for (String name : stockcode) {
                         try {
                         SingleStockInfoPO po1 = idi.getSingleStockInfo(name, iter);
-                        SingleStockInfoPO po2 = idi.getSingleStockInfo(name, idi.addDays(iter, days));
+                        SingleStockInfoPO po2 = idi.getSingleStockInfo(name, idi.addDays(iter, -days));
                         zheci = zheci + getjiage(po1);
                         shangci = shangci + getjiage(po2);
                         }
@@ -90,6 +112,7 @@ public class Return {
                             continue;
                         }
                     }
+                jizhunfudu.add(zheci/shangci);
                 init=init*(zheci/shangci);
                 double rate=(init-100)/100;
                 list.add(rate);
@@ -98,8 +121,9 @@ public class Return {
         } catch (DateOverException e) {
             e.printStackTrace();
         }
+        jizhunshouyilv=list;
 
-        return list;
+        return jizhunshouyilv;
     }
 
 
@@ -137,7 +161,7 @@ public class Return {
 
                 }
 
-
+                jizhunfudu.add(zheci/shangci);
                 init=init*(zheci/shangci);
                 double rate=(init-100)/100;
                 list.add(rate);
@@ -147,7 +171,7 @@ public class Return {
         } catch (DateOverException e) {
             e.printStackTrace();
         }
-
+        celueshouyilv=list;
         return list;
     }
 
@@ -189,7 +213,7 @@ public class Return {
             double rate2=0.0;
             try {
                 rate1=(getjiage(o1)-junzhi1)/junzhi1;
-                rate2=(getjiage(o1)-junzhi1)/junzhi1;
+                rate2=(getjiage(o2)-junzhi2)/junzhi2;
             } catch (PriceTypeException e) {
                 e.printStackTrace();
             }

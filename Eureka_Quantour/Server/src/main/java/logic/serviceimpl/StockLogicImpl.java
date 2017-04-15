@@ -406,8 +406,8 @@ public class StockLogicImpl implements StockLogicInterface{
 				}
 
 
-
 			}
+			return new YieldDistributionHistogramDataVO(zuhe);
 
 
 		} catch (PriceTypeException e) {
