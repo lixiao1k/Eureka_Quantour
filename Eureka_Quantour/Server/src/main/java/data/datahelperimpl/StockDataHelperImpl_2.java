@@ -83,6 +83,7 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 		loadData2();
 		long t2=System.currentTimeMillis();
 		System.out.println("映射到内存的时间"+(t2-t1));
+		check();
 //	    
 //		test();
 	}
@@ -345,30 +346,37 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 	 */
 	public void check(){
 		try{
-			BufferedReader br1=new BufferedReader(new FileReader("config/resources/mainData"));
-			BufferedReader br2=new BufferedReader(new FileReader("config/resources/mainPosition"));
+			BufferedReader br1=new BufferedReader(new FileReader("config/resources/date/totalCalendar"));
+			BufferedReader br2=new BufferedReader(new FileReader("config/resources/date/mainPosition"));
 			int count =0;
 			int total = 0;
 			while(br1.ready()){
-				count++;
-				String t1=br1.readLine();
-				int size1=t1.length();
-				String[] t2=br2.readLine().split(",");
-				int size2=Integer.parseInt(t2[0]);
-				int t=Integer.parseInt(t2[1]);
-				if(size1!=size2){
-					System.out.println(count+":   size1="+size1+",size2="+(size2)+"\n"+t1);
+				String str=br1.readLine();
+				int cal=Integer.valueOf(str.substring(0, 8));
+				total=0;
+				BufferedReader br3=new BufferedReader(new FileReader("config/resources/date/calendarDate/"+cal));
+				while(br3.ready()){
+					String info=br3.readLine();
+					str=br2.readLine();
+					String code=str.substring(0,6);
+					int length=Integer.valueOf(str.substring(6,9));
+					int total2=Integer.valueOf(str.substring(9));
+					int length2=info.length();
+					if(length!=length2){
+						System.out.println(code+""+cal+""+info);
+						System.exit(0);
+					}
+					if(total!=total2){
+						System.out.println(code+""+cal+""+info);
+						System.exit(0);
+					}
+					total=total+length+1;
+				}
+				if(br3.ready()){
+					System.out.println("overflow"+cal+""+br3.readLine());
 					System.exit(0);
 				}
-				if(t!=total){
-					System.out.println(count+"::"+total+t1);
-					System.exit(0);
-				}
-				if(!read(total,size2,mbb_data).equals(t1)){
-					System.out.println(count+":"+total+t1);
-					System.exit(0);
-				}
-				total=total+size1+1;
+				br3.close();
 			}
 			br1.close();
 			br2.close();
@@ -415,7 +423,6 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 								System.exit(0);
 							
 						}
-						
 						
 					}	
 					br_adj.close();
