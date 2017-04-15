@@ -159,7 +159,7 @@ public class StockDataController_2 {
 		try {
 			return datahelper.addDays(cal, last);
 		} catch (NullDateException e) {
-			if(last>0){
+			if(last>=0){
 				LocalDate temp=LocalDate.of(date.getYear(), date.getMonthValue(), date.getDayOfMonth());
 				temp=temp.plusDays(1);
 				if(temp.isAfter(LocalDate.now())){

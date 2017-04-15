@@ -83,7 +83,7 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 		loadData2();
 		long t2=System.currentTimeMillis();
 		System.out.println("映射到内存的时间"+(t2-t1));
-		check();
+//		check();
 //	    
 //		test();
 	}
@@ -247,6 +247,11 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 			File path=new File("config/stock/info");
 			String[] t=path.list();
 			for(String code:t){
+				try{
+					Integer.valueOf(code);
+				}catch(NumberFormatException e){
+					continue;
+				}
 				try {
 					getSingleInfo(20170328, code);
 				} catch (StockHaltingException | NullDateException e) {
@@ -371,10 +376,6 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 						System.exit(0);
 					}
 					total=total+length+1;
-				}
-				if(br3.ready()){
-					System.out.println("overflow"+cal+""+br3.readLine());
-					System.exit(0);
 				}
 				br3.close();
 			}
