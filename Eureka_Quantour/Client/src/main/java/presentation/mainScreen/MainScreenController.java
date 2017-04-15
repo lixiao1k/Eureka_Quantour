@@ -31,9 +31,6 @@ public class MainScreenController implements Initializable{
 	DatePicker nowDatePicker;
 	
 	@FXML
-	Button editButton;
-	
-	@FXML
 	Button saveButton;
 	
 	@FXML
@@ -116,11 +113,7 @@ public class MainScreenController implements Initializable{
 		AnchorPane strategyPane = (AnchorPane)FXMLLoader.load(getClass().getClassLoader().getResource("presentation/strategyUI/StrategyUI.fxml"));
 		mainAnchorPane.getChildren().add(strategyPane);
 	}
-	@FXML
-	protected void edit(ActionEvent e){
-		
-	}
-	
+
 	@FXML
 	protected void saveTime(ActionEvent e){
 		LocalDate date = nowDatePicker.getValue();
@@ -142,8 +135,6 @@ public class MainScreenController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
 		dataController = DataContorller.getInstance();
-		Image editImage = new Image(getClass().getResourceAsStream("edit.png"));
-		editButton.setGraphic(new ImageView(editImage));
 		Image exitImage = new Image(getClass().getResourceAsStream("exit.png"));
 		exitButton.setGraphic(new ImageView(exitImage));
 		Image saveImage = new Image(getClass().getResourceAsStream("save.png"));

@@ -51,9 +51,6 @@ public class StrategyUIController implements Initializable{
 	Button makeStrategyButton;
 	
 	@FXML
-	Button editButton;
-	
-	@FXML
 	Button saveButton;
 
 	@FXML
@@ -82,15 +79,14 @@ public class StrategyUIController implements Initializable{
 	}
 
 	
-	@FXML
-	protected void edit(ActionEvent e){
-		
-	}
 	
 	@FXML
 	protected void saveTime(ActionEvent e){
 		LocalDate begin = beginTimeDatePicker.getValue();
-		if(begin.isBefore((LocalDate)dataController.get("SystemTime"))){
+		if(begin==null){
+			System.out.println("NoTime");
+		}
+		else if(begin.isBefore((LocalDate)dataController.get("SystemTime"))){
 			timeLabel.setText(begin.toString());
 			dataController.upDate("BeginTime", begin);
 		}else{
@@ -103,8 +99,6 @@ public class StrategyUIController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
 		dataController = DataContorller.getInstance();
-		Image editImage = new Image(getClass().getResourceAsStream("edit.png"));
-		editButton.setGraphic(new ImageView(editImage));
 		Image saveImage = new Image(getClass().getResourceAsStream("save.png"));
 		saveButton.setGraphic(new ImageView(saveImage));
 		beginTimeDatePicker.setShowWeekNumbers(false);

@@ -76,7 +76,7 @@ public class EMAChart implements chartService {
         lineChart.setLegendVisible(false);
         lineChart.setOpacity(0.8);
         
-        dates = listToArray.formatCalendar(EMAList.get(0).getDate());
+        dates = listToArray.formatLocalDate(EMAList.get(0).getDate());
     	
     	List<Double[]> doubleList = new ArrayList<>();
     	String[] dataName = {"1", "2", "3", "4", "5"};

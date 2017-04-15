@@ -42,7 +42,6 @@ public class  CandleStickChart extends XYChart<String, Number> {
     protected ObservableList<XYChart.Series<String, Number>> dataSeries;
     protected NumberAxis yAxis;
     protected CategoryAxis xAxis;
-    private SimpleDateFormat sdf = new SimpleDateFormat("yy:MM:dd");
     private DecimalFormat df = new DecimalFormat("0.00000");   
     
     protected Map<String, String> dataMap = new HashMap<String,String>();
@@ -100,7 +99,7 @@ public class  CandleStickChart extends XYChart<String, Number> {
         dates = new String[bars.size()];
         for(int i=0; i<bars.size(); i++){
         	SingleStockInfoVO bar = bars.get(i);
-            String label = sdf.format(bar.getDate().getTime());
+            String label = bar.getDate().toString();
             series.getData().add( new XYChart.Data<>(label, bar.getOpen(),bar) );
             dates[i] = label;
             String info = "open : "+df.format( bar.getOpen() )+"\n"

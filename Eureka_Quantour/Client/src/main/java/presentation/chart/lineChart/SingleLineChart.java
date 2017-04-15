@@ -16,7 +16,7 @@ import presentation.chart.function.ListToArray;
 import presentation.chart.function.ListToArrayService;
 
 import java.text.NumberFormat;
-import java.util.Calendar;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,7 +43,7 @@ public class SingleLineChart implements chartService{
     private Map<String, String> dataMap = new HashMap<String,String>();
     private String[] dates;
 
-    public SingleLineChart(Calendar[] date, Double[] doubleList, String dataName) {
+    public SingleLineChart(LocalDate[] date, Double[] doubleList, String dataName) {
         xAxis = new CategoryAxis();
         xAxis.setGapStartAndEnd(false);
         xAxis.setTickLabelsVisible(false);
@@ -62,7 +62,7 @@ public class SingleLineChart implements chartService{
         lineChart.setVerticalGridLinesVisible(false);
         lineChart.setCreateSymbols(false);
         
-        dates = listToArray.formatCalendar(date);
+        dates = listToArray.formatLocalDate(date);
         
         Double[] datas = doubleList;
         String[] dataStrings = new String[date.length];

@@ -243,6 +243,14 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 				datesize++;
 				count++;
 			}
+			File path=new File("config/stock/info");
+			String[] t=path.list();
+			for(String code:t){
+				try {
+					getSingleInfo(20170328, code);
+				} catch (StockHaltingException | NullDateException e) {
+				}
+			}
 			br.close();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -471,9 +479,11 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 			String[] out=str.split(",");
 			int b1=parse.getIntDate(out[0]);
 			int k=100000;
-			long ttt1=System.currentTimeMillis();
 			File path=new File("config/stock/info");
-			for(String code:path.list()){
+			String[] t=path.list();
+			long ttt1=System.currentTimeMillis();
+			
+			for(String code:t){
 				for(int i=0;i<1;i++)
 					try {
 						getSingleInfo(b1, code);
