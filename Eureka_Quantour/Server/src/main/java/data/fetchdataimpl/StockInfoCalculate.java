@@ -7,9 +7,11 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
+import data.common.DateLeaf;
+import data.common.DateTrie;
 import data.common.IndexTree;
 import data.datahelperimpl.InitEnvironment;
 import data.parse.Parse;
@@ -17,6 +19,8 @@ import data.parse.Parse;
 public class StockInfoCalculate {
 	private String path;
 	private InitEnvironment ie;
+	public static void main(String[] args){
+	}
 	public StockInfoCalculate(){
 		ie=InitEnvironment.getInstance();
 		path=ie.getPath("stockinfo");
@@ -67,41 +71,50 @@ public class StockInfoCalculate {
 		br_subadj.close();
 		br_aftadj.close();
 	}
-	public void processCalendarIndex() throws IOException{
-		BufferedReader br=new BufferedReader(new FileReader("config/resources/mainIndex"));
-		int count=0;
-		IndexTree it=new IndexTree();
-		while(br.ready()){
-			String out=br.readLine();
-			int cal=Parse.getInstance().getIntDate(out.substring(0, 10));
-			int code=Integer.parseInt(out.substring(11));
-			int year= cal / 10000;
-			int month= (cal -year * 10000 ) / 100;
-			int day=cal - year * 10000 - month * 100;
-			it.add(year, month, day, code, count);
-			count++;
+}
+class List{
+	ArrayList<Integer> list;
+	ArrayList<HashMap<Integer,Integer>> map;
+	public List(){
+		list=new ArrayList<Integer>();
+		map=new ArrayList<HashMap<Integer,Integer>>();
+	}
+	public void add(int cal,int code,int row){
+		if(list.size()==0){
+			HashMap<Integer,Integer> temp=new HashMap<Integer,Integer>();
+			temp.put(code, row);
+			list.add(cal);
+			map.add(temp);
 		}
-		it.end();
-		br.close();
-		
-		File file1=new File("config/resources/mainIndex1");
-		file1.createNewFile();
-		BufferedWriter bw=new BufferedWriter(new FileWriter("config/resources/mainIndex1"));
-		HashMap<Integer,Integer> map=it.stockindex;
-		List<HashMap<Integer,Integer>> list=it.i;
-		BufferedReader br1=new BufferedReader(new FileReader("config/resources/mainIndex"));
-		int count1=0;
-		while(br1.ready()){
-			String out=br1.readLine();
-			int cal=Parse.getInstance().getIntDate(out.substring(0, 10));
-			int code=Integer.parseInt(out.substring(11));
-			int year= cal / 10000;
-			int month= (cal -year * 10000 ) / 100;
-			int day=cal - year * 10000 - month * 100;
-			list.get(map.get(code)).get(cal);
-			count1++;
+		else if(list.get(list.size()-1)<cal){
+			HashMap<Integer,Integer> temp=new HashMap<Integer,Integer>();
+			temp.put(code, row);
+			list.add(cal);
+			map.add(temp);
 		}
-		it.end();
-		br1.close();
+		else if(list.get(list.size()-1)==cal){
+			map.get(list.size()-1).put(code, row);
+		}
+		else{
+			for(int i=0;i<list.size()-1;i++){
+				if(list.get(i)<=cal&&cal<list.get(i+1)){
+					if(list.get(i)==cal){
+						map.get(i).put(code, row);
+					}
+					else{
+						HashMap<Integer,Integer> temp=new HashMap<Integer,Integer>();
+						temp.put(code, row);
+						list.add(i+1,cal);
+						map.add(i+1,temp);
+					}
+				}
+			}
+		}
+	}
+	public int get(int i){
+		return list.get(i);
+	}
+	public int size(){
+		return list.size();
 	}
 }

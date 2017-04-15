@@ -57,13 +57,13 @@ public class IndexTree {
 		}
 		dateinfomap=copy;
 		i=new ArrayList<HashMap<Integer,Integer>>();
-		for(int k=0;k<stockLinkedList.size();k++){
-			HashMap<Integer,Integer> temp=new HashMap<Integer,Integer>();
-			for(int m=0;m<stockLinkedList.get(k).size();m++){
-				temp.put(stockLinkedList.get(k).get(m), m);
-			}
-			i.add(temp);
-		}
+//		for(int k=0;k<stockLinkedList.size();k++){
+//			HashMap<Integer,Integer> temp=new HashMap<Integer,Integer>();
+//			for(int m=0;m<stockLinkedList.get(k).size();m++){
+//				temp.put(stockLinkedList.get(k).get(m), m);
+//			}
+//			i.add(temp);
+//		}
 	}
 	public void add(int year,int month,int day,int code,int row){
 		int cal=year * 10000 + month * 100 + day;

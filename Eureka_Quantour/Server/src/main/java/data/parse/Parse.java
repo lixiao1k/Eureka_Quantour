@@ -1,6 +1,8 @@
 package data.parse;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 
 /**
@@ -45,6 +47,10 @@ public class Parse {
 		}
 		return code;
 	}
+	public String supCode(int code){
+		String result=String.valueOf(code);
+		return supCode(result);
+	}
 	
 	/**
 	 * 将XXXX-XX-XX的日期形式转为XXXXXXXX
@@ -73,5 +79,20 @@ public class Parse {
 	public int getIntDate(LocalDate date){
 		int cal=date.getYear()*10000+date.getMonthValue()*100+date.getDayOfMonth();
 		return cal;
+	}
+	public LocalDate getlocalDate(int date){
+		int year= date / 10000;
+		int month= (date -year * 10000 ) / 100;
+		int day=date - year * 10000 - month * 100;
+		LocalDate cal=LocalDate.of(year, month, day);
+		return cal;
+	}
+	public String intTocal(int date){
+		int year= date / 10000;
+		int month= (date -year * 10000 ) / 100;
+		int day=date - year * 10000 - month * 100;
+		LocalDate cal=LocalDate.of(year, month, day);
+		DateTimeFormatter dtf=DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		return cal.format(dtf);
 	}
 }

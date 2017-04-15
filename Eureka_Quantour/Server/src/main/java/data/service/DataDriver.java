@@ -125,168 +125,166 @@ public class DataDriver {
 				inputtime=System.currentTimeMillis();
 				try {
 					System.out.println(data.getSingleStockInfo(stockcode, date).toString());
-				} catch (StockHaltingException e) {
-					System.out.println(e.toString());
 				} catch (NullStockIDException e) {
 					System.out.println(e.toString());
 				} catch (NullDateException e) {
 					System.out.println(e.toString());
 				}
 			}
-			else if(mode.equals("judge market day")){
-				String cal=sc.nextLine();
-				Calendar day=Calendar.getInstance();
-				try {
-					day.setTime(sdf.parse(cal));
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				inputtime=System.currentTimeMillis();
-				System.out.println(data.isMarketDay(day));
-			}
-			else if(mode.equals("get min day")){
-				String stockcode=sc.nextLine();
-				inputtime=System.currentTimeMillis();
-				try {
-					System.out.println(data.getMinDay(stockcode));
-				} catch (NullStockIDException e) {
-					System.out.println(e.toString());
-				}
-				
-			}
-			else if(mode.equals("get max day")){
-				String stockcode=sc.nextLine();
-				inputtime=System.currentTimeMillis();
-				try {
-					System.out.println(data.getMaxDay(stockcode));
-				} catch (NullStockIDException e) {
-					System.out.println(e.toString());
-				}
-			}
-			else if(mode.equals("get singleinfo by end")){
-				String stockcode=sc.nextLine();
-				String cal1=sc.nextLine();
-				String cal2=sc.nextLine();
-				Calendar day1=Calendar.getInstance();
-				Calendar day2=Calendar.getInstance();
-				try {
-					day1.setTime(sdf.parse(cal1));
-					day2.setTime(sdf.parse(cal2));
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				inputtime=System.currentTimeMillis();
-				try {
-					for(SingleStockInfoPO po:data.getSingleStockInfo_byEnd(stockcode, day1, day2)){
-						System.out.println(po.toString());
-					}
-				} catch (NullStockIDException e) {
-					System.out.println(e.toString());
-				}catch (NullPointerException e) {
-					System.out.println("null");
-				}
-			}
-			else if(mode.equals("get singleinfo by last")){
-				String stockcode=sc.nextLine();
-				String cal1=sc.nextLine();
-				Calendar day1=Calendar.getInstance();
-				int last=sc.nextInt();
-				try {
-					day1.setTime(sdf.parse(cal1));
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				inputtime=System.currentTimeMillis();
-				try {
-					for(SingleStockInfoPO po:data.getSingleStockInfo_byLast(stockcode, day1, last)){
-						System.out.println(po.toString());
-					}
-				} catch (NullStockIDException e) {
-					System.out.println(e.toString());
-				}
-			}
-			else if(mode.equals("get setinfo by end")){
-				String stockcode=sc.nextLine();
-				String cal1=sc.nextLine();
-				String cal2=sc.nextLine();
-				Calendar day1=Calendar.getInstance();
-				Calendar day2=Calendar.getInstance();
-				try {
-					day1.setTime(sdf.parse(cal1));
-					day2.setTime(sdf.parse(cal2));
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				inputtime=System.currentTimeMillis();
-				try{
-					for(StockSetInfoPO po:data.getStockInfoinSet_StopByEnd(stockcode, day1, day2)){
-						System.out.println(po.toString());
-					}
-				}catch (NullPointerException e) {
-					System.out.println("null");
-				}
-			}
-			else if(mode.equals("get setinfo by last")){
-				String stockcode=sc.nextLine();
-				String cal1=sc.nextLine();
-				Calendar day1=Calendar.getInstance();
-				int last=sc.nextInt();
-				try {
-					day1.setTime(sdf.parse(cal1));
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				inputtime=System.currentTimeMillis();
-				try {
-					for(StockSetInfoPO po:data.getStockInfoinSet_StopByLast(stockcode, day1, last)){
-						System.out.println(po.toString());
-					}
-				} catch (NullDateException e) {
-					System.out.println(e.toString());
-				}
-			}
-			else if(mode.equals("get setinfo")){
-				String stockcode=sc.nextLine();
-				String cal1=sc.nextLine();
-				Calendar day1=Calendar.getInstance();
-				try {
-					day1.setTime(sdf.parse(cal1));
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				inputtime=System.currentTimeMillis();
-				try {
-					System.out.println(data.getStockInfoinSet(stockcode, day1).toString());
-				} catch (NullDateException e) {
-					System.out.println(e.toString());
-				}
-			}
-			else if(mode.equals("get setinfo forward by last")){
-				String stockcode=sc.nextLine();
-				String cal1=sc.nextLine();
-				Calendar day1=Calendar.getInstance();
-				int last=sc.nextInt();
-				try {
-					day1.setTime(sdf.parse(cal1));
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				inputtime=System.currentTimeMillis();
-				try {
-					for(StockSetInfoPO po:data.getStockInfoinSet_forwardByLast(stockcode, day1, last)){
-						System.out.println(po.toString());
-					}
-				} catch (NullDateException e) {
-					System.out.println(e.toString());
-				}
-			}
+//			else if(mode.equals("judge market day")){
+//				String cal=sc.nextLine();
+//				Calendar day=Calendar.getInstance();
+//				try {
+//					day.setTime(sdf.parse(cal));
+//				} catch (ParseException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//				inputtime=System.currentTimeMillis();
+//				System.out.println(data.isMarketDay(day));
+//			}
+//			else if(mode.equals("get min day")){
+//				String stockcode=sc.nextLine();
+//				inputtime=System.currentTimeMillis();
+//				try {
+//					System.out.println(data.getMinDay(stockcode));
+//				} catch (NullStockIDException e) {
+//					System.out.println(e.toString());
+//				}
+//				
+//			}
+//			else if(mode.equals("get max day")){
+//				String stockcode=sc.nextLine();
+//				inputtime=System.currentTimeMillis();
+//				try {
+//					System.out.println(data.getMaxDay(stockcode));
+//				} catch (NullStockIDException e) {
+//					System.out.println(e.toString());
+//				}
+//			}
+//			else if(mode.equals("get singleinfo by end")){
+//				String stockcode=sc.nextLine();
+//				String cal1=sc.nextLine();
+//				String cal2=sc.nextLine();
+//				Calendar day1=Calendar.getInstance();
+//				Calendar day2=Calendar.getInstance();
+//				try {
+//					day1.setTime(sdf.parse(cal1));
+//					day2.setTime(sdf.parse(cal2));
+//				} catch (ParseException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//				inputtime=System.currentTimeMillis();
+//				try {
+//					for(SingleStockInfoPO po:data.getSingleStockInfo_byEnd(stockcode, day1, day2)){
+//						System.out.println(po.toString());
+//					}
+//				} catch (NullStockIDException e) {
+//					System.out.println(e.toString());
+//				}catch (NullPointerException e) {
+//					System.out.println("null");
+//				}
+//			}
+//			else if(mode.equals("get singleinfo by last")){
+//				String stockcode=sc.nextLine();
+//				String cal1=sc.nextLine();
+//				Calendar day1=Calendar.getInstance();
+//				int last=sc.nextInt();
+//				try {
+//					day1.setTime(sdf.parse(cal1));
+//				} catch (ParseException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//				inputtime=System.currentTimeMillis();
+//				try {
+//					for(SingleStockInfoPO po:data.getSingleStockInfo_byLast(stockcode, day1, last)){
+//						System.out.println(po.toString());
+//					}
+//				} catch (NullStockIDException e) {
+//					System.out.println(e.toString());
+//				}
+//			}
+//			else if(mode.equals("get setinfo by end")){
+//				String stockcode=sc.nextLine();
+//				String cal1=sc.nextLine();
+//				String cal2=sc.nextLine();
+//				Calendar day1=Calendar.getInstance();
+//				Calendar day2=Calendar.getInstance();
+//				try {
+//					day1.setTime(sdf.parse(cal1));
+//					day2.setTime(sdf.parse(cal2));
+//				} catch (ParseException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//				inputtime=System.currentTimeMillis();
+//				try{
+//					for(StockSetInfoPO po:data.getStockInfoinSet_StopByEnd(stockcode, day1, day2)){
+//						System.out.println(po.toString());
+//					}
+//				}catch (NullPointerException e) {
+//					System.out.println("null");
+//				}
+//			}
+//			else if(mode.equals("get setinfo by last")){
+//				String stockcode=sc.nextLine();
+//				String cal1=sc.nextLine();
+//				Calendar day1=Calendar.getInstance();
+//				int last=sc.nextInt();
+//				try {
+//					day1.setTime(sdf.parse(cal1));
+//				} catch (ParseException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//				inputtime=System.currentTimeMillis();
+//				try {
+//					for(StockSetInfoPO po:data.getStockInfoinSet_StopByLast(stockcode, day1, last)){
+//						System.out.println(po.toString());
+//					}
+//				} catch (NullDateException e) {
+//					System.out.println(e.toString());
+//				}
+//			}
+//			else if(mode.equals("get setinfo")){
+//				String stockcode=sc.nextLine();
+//				String cal1=sc.nextLine();
+//				Calendar day1=Calendar.getInstance();
+//				try {
+//					day1.setTime(sdf.parse(cal1));
+//				} catch (ParseException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//				inputtime=System.currentTimeMillis();
+//				try {
+//					System.out.println(data.getStockInfoinSet(stockcode, day1).toString());
+//				} catch (NullDateException e) {
+//					System.out.println(e.toString());
+//				}
+//			}
+//			else if(mode.equals("get setinfo forward by last")){
+//				String stockcode=sc.nextLine();
+//				String cal1=sc.nextLine();
+//				Calendar day1=Calendar.getInstance();
+//				int last=sc.nextInt();
+//				try {
+//					day1.setTime(sdf.parse(cal1));
+//				} catch (ParseException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//				inputtime=System.currentTimeMillis();
+//				try {
+//					for(StockSetInfoPO po:data.getStockInfoinSet_forwardByLast(stockcode, day1, last)){
+//						System.out.println(po.toString());
+//					}
+//				} catch (NullDateException e) {
+//					System.out.println(e.toString());
+//				}
+//			}
 			long endtime=System.currentTimeMillis();
 			System.out.println("花费时间:" + (endtime-inputtime)+"ms");
 			System.out.println("success");
