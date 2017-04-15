@@ -119,6 +119,9 @@ public class DataInterfaceImpl implements IDataInterface
 	 */
 	@Override
 	public List<String> getStockSetInfo(String stockSetName, String userName) {
+		if(userName==null){
+			return stockset.getStockSetInfo(stockSetName);
+		}
 		return stockset.getStockSetInfo(stockSetName, userName);
 	}
 	/**
