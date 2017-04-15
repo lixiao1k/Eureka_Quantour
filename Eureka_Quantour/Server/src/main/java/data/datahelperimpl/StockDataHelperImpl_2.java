@@ -61,6 +61,8 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 	
 	private StockIndexBuffer indexBuffer;
 	private StockIndexBuffer dataBuffer;
+	private DataBuffer_ByInputStream dataBuffer_is;
+	private DataBuffer_ByInputStream indexBuffer_is;
 	private byte[] dst_MainIndex;
 	
 	private InitEnvironment ie;
@@ -82,7 +84,7 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 //		check2();
 //		check();
 //	    
-//		test();
+		test();
 	}
 	/**
 	 * 初始化装载数据的容器
@@ -92,7 +94,8 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 		
 		indexBuffer=new StockIndexBuffer(3300);
 		dataBuffer=new StockIndexBuffer(100);
-		
+		indexBuffer_is=new DataBuffer_ByInputStream(3300);
+		dataBuffer_is=new DataBuffer_ByInputStream(100);
 		
 		stockInfo=ie.getPath("stockinfo");
 		
@@ -481,13 +484,13 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 			long ttt1=System.currentTimeMillis();
 			
 			for(int cal :datesort){
-				for(int i=0;i<1;i++)
+				for(int i=0;i<100;i++)
 					try {
 						getSingleInfo(cal, out[1]);
 					} catch (StockHaltingException | NullDateException e) {
 					}
 			}
-			
+			Runtime.getRuntime().gc();
 //			Collection<StockLeaf> it=datetree.get(b1).values();
 //			for(StockLeaf i:it){
 //				readPosition(i.getDateinfo());
@@ -535,7 +538,6 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 //			}
 //			long a2=System.currentTimeMillis();
 //			System.out.println("读取时间"+(a2-a1));
-			System.gc();
 		}
 		sc.close();
 	}
@@ -715,6 +717,32 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 			return readPosition(pointer+relative, mbb_position, mbb_data);
 		}
 	}
+	
+	/**
+	 * 获取指定股票指定日期的信息
+	 * @param cal 日期，形如XXXXXXXX,20170328
+	 * @param code 股票编号，形如000001,1
+	 * @return 股票信息，不存在时抛出异常
+	 * @throws StockHaltingException 不存在股票数据时抛出该异常
+	 * @throws NullDateException 不存在该日期时抛出该异常
+	 */
+	public String getSingleInfo2(int cal,String code) throws StockHaltingException, NullDateException{
+		int index=dateIndex.getOrDefault(cal, -1);
+		if(index<0){
+			throw new NullDateException(cal);
+		}
+		else{
+			int pointer=pointerToposition.get(index);
+			MappedByteBuffer mbb=indexBuffer.getMbb(Integer.valueOf(code), stockInfo+"/"+code+"/mainIndex");
+			byte[] mbb_data=dataBuffer_is.getMbb(cal, "config/resources/date/calendarDate/"+cal);
+			String str=getIndexByMbb(mbb,index);
+			int relative=Integer.valueOf(str.substring(0,4));
+			if(relative==9999){
+				throw new NullDateException(cal);
+			}
+			return readPosition(pointer+relative, mbb_position, mbb_data);
+		}
+	}
 	/**
 	 * 获取某一天起之后last个交易日之后的天数
 	 * @param date 起始日期
@@ -752,11 +780,40 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 		return t;
 	}
 	/**
+	 * 读取数据文件
+	 * @param start 数据的起始位置
+	 * @param size 数据的字节
+	 * @return 需要读的数据
+	 */
+	private String read(int start,int size,byte[] mbb_data){
+		byte[] dst=new byte [size];
+		System.arraycopy(dst, 0, mbb_data, start, size);
+		String t=new String(dst);
+		return t;
+	}
+	/**
 	 * 读取索引文件(常规方式)
 	 * @param row 索引所处的行数
 	 * @return 数据文件的索引
 	 */
 	private String readPosition(int row,MappedByteBuffer mbb_position,MappedByteBuffer mbb_data){
+		int position=row*16;
+		mbb_position.position(position);
+		try{
+		mbb_position.get(receive);
+		}catch(BufferUnderflowException e){
+			System.out.println(position);
+		}
+		int b=Integer.parseInt(new String(receive,6,3));
+		int c=Integer.parseInt(new String(receive,9,6));
+		return read(c,b,mbb_data);
+	}
+	/**
+	 * 读取索引文件(常规方式)
+	 * @param row 索引所处的行数
+	 * @return 数据文件的索引
+	 */
+	private String readPosition(int row,MappedByteBuffer mbb_position,byte[] mbb_data){
 		int position=row*16;
 		mbb_position.position(position);
 		try{
