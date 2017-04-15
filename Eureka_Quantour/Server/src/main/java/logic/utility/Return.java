@@ -26,8 +26,8 @@ public class Return {
     private int days;
     private Comparator<SingleStockInfoPO> comparator;
     private List<LocalDate> timelist;
-    private List<Double> jizhunfudu;
-    private List<Double> celuefudu;
+    private List<Double> jizhunfudu=new ArrayList<>();
+    private List<Double> celuefudu=new ArrayList<>();
 
     private List<Double> jizhunshouyilv;
     private List<Double> celueshouyilv;
@@ -40,6 +40,7 @@ public class Return {
         this.salevo = salevo;
         this.strategyConditionVO = strategyConditionVO;
         this.days=salevo.getTiaocangqi();
+        this.timelist=new ArrayList<>();
         String type=strategyConditionVO.getName();
         if (type.equals("动量策略")) comparator=new dongliangcelue(strategyConditionVO.getExtra());
         if (type.equals("均值策略")) comparator=new junzhicelue(strategyConditionVO.getExtra());
@@ -127,7 +128,10 @@ public class Return {
                             continue;
                         }
                     }
+
+                    if(zheci==0) continue;
                 jizhunfudu.add(zheci/shangci);
+                System.out.println(zheci+"  "+shangci);
                 init=init*(zheci/shangci);
                 double rate=(init-100)/100;
                 list.add(rate);
@@ -144,12 +148,11 @@ public class Return {
 
 
 
-    public List<Double> getStragetyReturn ( ) throws  NullStockIDException, NullDateException, PriceTypeException {
+    public List<Double> getStragetyReturn ( ) throws  NullStockIDException, PriceTypeException {
         double init=100.0;
         List<Double> list=new ArrayList<>();
         LocalDate iter=LocalDate.of(begin.getYear(),begin.getMonth(),begin.getDayOfMonth());
-
-
+        System.out.println("end "+end);
         try {
             for (;
                  iter.compareTo(end)<0;
@@ -157,11 +160,18 @@ public class Return {
             {
                 double zheci=0;
                 double shangci=0;
-
+                System.out.println(iter);
                 List<SingleStockInfoPO> polist=new ArrayList<>();
+
                 for(String name:stockcode){
-                    polist.add(idi.getSingleStockInfo(name,iter));
+                    try {
+
+                        polist.add(idi.getSingleStockInfo(name,iter));
+                    } catch (NullDateException e) {
+                        continue;
+                    }
                 }
+                if(polist.size()==0) continue;
                 Collections.sort(polist,comparator);
                 List<String> jilu=new ArrayList<>();
                 for (int i=0;i<strategyConditionVO.getNums();i++){
@@ -171,11 +181,16 @@ public class Return {
 
 
                 for(String name:jilu){
-                    SingleStockInfoPO po=idi.getSingleStockInfo(name,idi.addDays(iter,-days));
+                    SingleStockInfoPO po= null;
+                    try {
+                        po = idi.getSingleStockInfo(name,idi.addDays(iter,-days));
+                    } catch (NullDateException e) {
+                        continue;
+                    }
                     shangci+=getjiage(po);
 
                 }
-
+                if(zheci==0) continue;
                 jizhunfudu.add(zheci/shangci);
                 init=init*(zheci/shangci);
                 double rate=(init-100)/100;
@@ -275,7 +290,7 @@ public class Return {
             } catch (NullStockIDException e) {
                 e.printStackTrace();
             } catch (NullDateException e) {
-                e.printStackTrace();
+//                e.printStackTrace();
             }
 
 

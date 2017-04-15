@@ -32,12 +32,12 @@ public class StockLogicImpl implements StockLogicInterface{
 
 		// 判断日期是否有效
 		utility.ifDateValid(begin, end,stockCode);
-
-
+		LocalDate x=LocalDate.of(begin.getYear(),begin.getMonth(),begin.getDayOfMonth());
 
 		List<SingleStockInfoVO> lssi = new ArrayList<>();
-		for (LocalDate x=LocalDate.now();x.compareTo(end)<0;x.plusDays(1)){
+		for (;x.compareTo(end)<0;x=x.plusDays(1)){
 			SingleStockInfoPO po= null;
+			System.out.println(x);
 			try {
 				po = idi.getSingleStockInfo(stockCode,x);
 			}catch (NullDateException e) {
@@ -372,12 +372,12 @@ public class StockLogicImpl implements StockLogicInterface{
 	public YieldChartDataVO getYieldChartData() {
 
 		try {
-			return new YieldChartDataVO(stragety.getTimelist(),stragety.getBasicReturn(),stragety.getStragetyReturn());
+			YieldChartDataVO p= new YieldChartDataVO(stragety.getTimelist(),stragety.getBasicReturn(),stragety.getStragetyReturn());
+			System.out.println("asgr");
+			return  p;
 		} catch (PriceTypeException e) {
 			e.printStackTrace();
 		} catch (NullStockIDException e) {
-			e.printStackTrace();
-		} catch (NullDateException e) {
 			e.printStackTrace();
 		}
 		return null;
@@ -413,8 +413,6 @@ public class StockLogicImpl implements StockLogicInterface{
 		} catch (PriceTypeException e) {
 			e.printStackTrace();
 		} catch (NullStockIDException e) {
-			e.printStackTrace();
-		} catch (NullDateException e) {
 			e.printStackTrace();
 		}
 
