@@ -1,17 +1,17 @@
 package presentation.chart.function;
 
-import java.util.Calendar;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface ListToArrayService {
 	
 	Double[] changeDouble(List<Double> list);
 
-	Calendar[] changeCalendar(List<Calendar> list);
+	LocalDate[] changeLocalDate(List<LocalDate> list);
 	
-	String[] formatCalendar(List<Calendar> list);
+	String[] formatLocalDate(List<LocalDate> list);
 	
-	String[] formatCalendar(Calendar[] list);
+	String[] formatLocalDate(LocalDate[] list);
 	
 	String[] formatInteger(int[] list);
 	
