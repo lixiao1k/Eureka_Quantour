@@ -46,24 +46,25 @@ public interface StockLogicInterface extends Remote {
 //			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException;
 
 
-	 List<String> getStockSet(String username);
+	 List<String> getStockSet(String username) throws  RemoteException;
 
-	 List<SingleStockInfoVO> getStockSetSortedInfo(String stockSetName, LocalDate now,String username);
+	 List<SingleStockInfoVO> getStockSetSortedInfo(String stockSetName, LocalDate now,String username) throws  RemoteException;
 
-	 SingleStockInfoVO getStockBasicInfo(String code, LocalDate now) throws NullStockIDException, NullDateException;
+	 SingleStockInfoVO getStockBasicInfo(String code, LocalDate now) throws NullStockIDException, NullDateException, RemoteException;
 
-	 void setStrategy(StrategyConditionVO strategyConditionVO, SaleVO s, LocalDate begin, LocalDate now, String stockSetName,String username);
+	 void setStrategy(StrategyConditionVO strategyConditionVO, SaleVO s, LocalDate begin, LocalDate now, String stockSetName,String username)
+		throws  RemoteException;
 
-	 YieldChartDataVO getYieldChartData();
+	 YieldChartDataVO getYieldChartData()throws  RemoteException;;
 
-	 YieldDistributionHistogramDataVO getYieldDistributionHistogramData();
+	 YieldDistributionHistogramDataVO getYieldDistributionHistogramData() throws  RemoteException;;
 
-	 void addStockSet(String stockSetName, String username) throws StockSetNameRepeatException;
+	 void addStockSet(String stockSetName, String username) throws StockSetNameRepeatException,RemoteException;
 
-	 void deleteStockSet(String stockSetName, String username);
+	 void deleteStockSet(String stockSetName, String username)throws  RemoteException;
 
-	 void addStockToStockSet(String stockName, String stockSetName, String username) throws StockNameRepeatException;
+	 void addStockToStockSet(String stockName, String stockSetName, String username) throws StockNameRepeatException,RemoteException;
 
-	 void deleteStockFromStockSet(String stockName, String stockSetName, String username);
+	 void deleteStockFromStockSet(String stockName, String stockSetName, String username)throws  RemoteException;
 
 }

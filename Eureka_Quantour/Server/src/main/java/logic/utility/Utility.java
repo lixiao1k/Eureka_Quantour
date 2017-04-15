@@ -3,6 +3,7 @@ package logic.utility;
 import data.service.IDataInterface;
 import data.serviceimpl.DataInterfaceImpl;
 import exception.*;
+import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 import po.SingleStockInfoPO;
 
 import java.text.DecimalFormat;
@@ -100,6 +101,7 @@ public class Utility {
         for (int i=1;i<=days;i++)
         {
             try {
+                System.out.println(idi.addDays(time, -i));
                 SingleStockInfoPO po = idi.getSingleStockInfo(stockCode, idi.addDays(time, -i));
                 jieguo+=po.getAftClose();
             }
