@@ -14,11 +14,13 @@ public class UserNameRepeatException extends Exception{
 	/**
 	 * 
 	 */
-	public UserNameRepeatException(){
+	String str;
+	public UserNameRepeatException(String _str){
 		super();
+		str=_str;
 	}
 	
 	public String toString(){
-		return "该用户名已存在";
+		return str;
 	}
 }
