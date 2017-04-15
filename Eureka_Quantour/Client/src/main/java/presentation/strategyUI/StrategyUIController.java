@@ -83,7 +83,10 @@ public class StrategyUIController implements Initializable{
 	@FXML
 	protected void saveTime(ActionEvent e){
 		LocalDate begin = beginTimeDatePicker.getValue();
-		if(begin.isBefore((LocalDate)dataController.get("SystemTime"))){
+		if(begin==null){
+			System.out.println("NoTime");
+		}
+		else if(begin.isBefore((LocalDate)dataController.get("SystemTime"))){
 			timeLabel.setText(begin.toString());
 			dataController.upDate("BeginTime", begin);
 		}else{
