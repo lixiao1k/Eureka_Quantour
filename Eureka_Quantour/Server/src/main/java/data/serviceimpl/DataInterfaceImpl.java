@@ -206,13 +206,13 @@ public class DataInterfaceImpl implements IDataInterface
 			LocalDate temp=LocalDate.of(date.getYear(), date.getMonth(), date.getDayOfMonth());
 			temp=temp.plusDays(1);
 			last--;
-			return stock2.addDays(temp, last);
+			return stock2.addDays(temp, last,true);
 		}
 		else{
 			LocalDate temp=LocalDate.of(date.getYear(), date.getMonth(), date.getDayOfMonth());
 			temp=temp.minusDays(1);
 			last--;
-			return stock2.addDays(temp, last);
+			return stock2.addDays(temp, last,false);
 		}
 	}
 	
