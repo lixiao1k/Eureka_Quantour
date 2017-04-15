@@ -397,6 +397,7 @@ public class MarketUIController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
 		dataController = DataContorller.getInstance();
+		
 //		upTenScrollPane.setStyle("-fx-background-color:transparent;");
 //		downTenScrollPane.setStyle("-fx-background-color:transparent;");
 		initialMenuAnchorPane();

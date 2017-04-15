@@ -2,12 +2,15 @@ package presentation.stockSetUI;
 
 import java.io.IOException;
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.sound.midi.Sequence;
+
+import org.controlsfx.control.Notifications;
 
 import dataController.DataContorller;
 import en_um.Positive;
@@ -34,9 +37,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import logic.service.StockLogicInterface;
 import logic.service.Stub;
 import presentation.chart.klineChart.KLineChart;
 import presentation.mainScreen.MainScreenController;
+import rmi.RemoteHelper;
 import vo.SingleStockInfoVO;
 
 public class StockSetUIController implements Initializable {
@@ -117,9 +122,12 @@ public class StockSetUIController implements Initializable {
 	 * @description 初始化股池界面
 	 */
 	private void addSet(List<String> list){
-		for(String item:list){
-            creatSet(item);
-		}	
+		if(list!=null){
+			for(String item:list){
+	            creatSet(item);
+			}
+		}
+	
 	}
 	
 	//用户新建股池,给StockSetPopupController的供接口
@@ -159,8 +167,16 @@ public class StockSetUIController implements Initializable {
 			    		break;
 			    	}
 			    }
-			    //之后加入更新保存数据
-			    
+			    RemoteHelper remote = RemoteHelper.getInstance();
+			    StockLogicInterface stockLogicInterface = remote.getStockLogic();
+			    try {
+					stockLogicInterface.deleteStockSet(button.getText(), (String)dataController.get("UserName"));
+					Notifications.create().title("成功").text(button.getText()+"--股池删除成功！").showInformation();
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
+					e.printStackTrace();
+				}
 			}
 		});
         
@@ -453,7 +469,17 @@ public class StockSetUIController implements Initializable {
 		stockSetScrollPane.setStyle("-fx-background-color:transparent;");
 		stocksScrollPane.setStyle("-fx-background-color:transparent;");
 		Stub stub = new Stub();
-		addSet(stub.getStockSet("username"));
+		String username = (String)dataController.get("UserName");
+		RemoteHelper remote = RemoteHelper.getInstance();
+		StockLogicInterface stockLogicInterface = remote.getStockLogic();
+		try {
+			List<String> stocksets = stockLogicInterface.getStockSet(username);
+			addSet(stocksets);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("网络连接提示").text(e.toString()).showWarning();
+			e.printStackTrace();
+		}
 		setStockSetSortedInfo(stub.getStockSetSortedInfo());
 		initialMenuAnchorPane();
 		SingleStockInfoVO vo = stub.getStockSetSortedInfo().get(0);

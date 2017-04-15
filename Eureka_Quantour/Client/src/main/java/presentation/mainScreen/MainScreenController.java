@@ -135,6 +135,8 @@ public class MainScreenController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
 		dataController = DataContorller.getInstance();
+		String username = (String)dataController.get("UserName");
+		nameLabel.setText(username);
 		Image exitImage = new Image(getClass().getResourceAsStream("exit.png"));
 		exitButton.setGraphic(new ImageView(exitImage));
 		Image saveImage = new Image(getClass().getResourceAsStream("save.png"));

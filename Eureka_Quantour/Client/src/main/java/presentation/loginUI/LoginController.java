@@ -64,30 +64,26 @@ public class LoginController implements Initializable{
 	
 	@FXML
 	protected void logIn(ActionEvent e) throws IOException{
-		String name = usernameTextField.getText();
+		String username = usernameTextField.getText();
 		char[] password= passwordTextField.getText().toCharArray();
 		RemoteHelper remote = RemoteHelper.getInstance();
 		ClientLogicInterface clientLogicInterface = remote.getClientLogic();
 		try {
-			clientLogicInterface.signIn(name,password);
+			clientLogicInterface.signIn(username,password);
+	        dataController.upDate("UserName", username);
+			Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("presentation/mainScreen/MainScreen.fxml"));
 			Notifications.create().title("登录提示").text("登录成功！").showInformation();
+			Scene scene = new Scene(root);
+			Stage stage = new Stage();
+			stage.setScene(scene);
+			stage.show();
+			Stage stagenow = (Stage) usernameTextField.getScene().getWindow();
+			stagenow.close();
+
 		} catch (LogErrorException e1) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("登录异常").text(e1.toString()).showError();
 		}
-//		if(true){
-//			String username = usernameTextField.getText();
-//	        dataController.upDate("UserName", username);
-//			Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("presentation/mainScreen/MainScreen.fxml"));
-//			Scene scene = new Scene(root);
-//			Stage stage = new Stage();
-//			stage.setScene(scene);
-//			stage.show();
-//			Stage stagenow = (Stage) usernameTextField.getScene().getWindow();
-//			stagenow.close();
-//		}else{
-//			System.out.println("");
-//		}
 
 	}
 
