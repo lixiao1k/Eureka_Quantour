@@ -1,7 +1,7 @@
 package vo;
 
 import java.io.Serializable;
-import java.util.Calendar;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -14,17 +14,17 @@ public class EMAInfoVO implements Serializable{
 
 	private static final long serialVersionUID = -3607793986868403023L;
 
-	private List<Calendar> date;
+	private List<LocalDate> date;
 	private List<Double> EMA;
 	private int tianshu;
 
-	public EMAInfoVO(List<Calendar> date, List<Double> EMA, int tianshu) {
+	public EMAInfoVO(List<LocalDate> date, List<Double> EMA, int tianshu) {
 		this.date = date;
 		this.EMA = EMA;
 		this.tianshu = tianshu;
 	}
 
-	public void setDate(List<Calendar> date) {
+	public void setDate(List<LocalDate> date) {
 		this.date = date;
 	}
 
@@ -40,7 +40,7 @@ public class EMAInfoVO implements Serializable{
 		this.tianshu = tianshu;
 	}
 
-	public List<Calendar> getDate() {
+	public List<LocalDate> getDate() {
 		return date;
 	}
 
