@@ -110,9 +110,12 @@ public class UserDataHelperImpl implements IUserDataHelper {
 	 */
 	@Override
 	public void containName(String username) throws UserNameRepeatException {
+		if(username.equals("")){
+			throw new UserNameRepeatException("用户名错误");
+		}
 		if(prop_userstatus.containsKey(username)){	
-			System.out.println(new UserNameRepeatException().toString());
-			throw new UserNameRepeatException();
+			System.out.println(new UserNameRepeatException("用户名重复").toString());
+			throw new UserNameRepeatException("用户名重复");
 		}
 		else{
 			return ;

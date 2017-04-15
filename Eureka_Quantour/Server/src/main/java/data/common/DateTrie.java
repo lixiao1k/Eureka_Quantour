@@ -39,13 +39,13 @@ public class DateTrie implements Serializable{
 		remain=null;
 		System.gc();
 	}
-	public void add(int cal,int code,String row){
+	public void add(int cal,int code){
 		int year= cal / 10000;
 		int month= (cal -year * 10000 ) / 100;
 		int day=cal - year * 10000 - month * 100;
-		add(year,month,day,code,row);
+		add(year,month,day,code);
 	}
-	public boolean add(int year,int month,int day,int code,String row){
+	public boolean add(int year,int month,int day,int code){
 		TrieNode temp;
 		int cal=year * 10000 + month * 100 + day;
 		if(year>2004){
@@ -55,37 +55,13 @@ public class DateTrie implements Serializable{
 				if(day>0){
 					DateLeaf t=(DateLeaf)temp.getChild().get(day-1);
 					if(t.isLeaf()){
-						Integer judge=stockindex.putIfAbsent(code, stocknumber);
-						if(judge==null){
-							stockLinkedList.add(null);
-							stockremain.add(null);
-							stockbigflag.add(false);
-							stocknumber++;
-						}
-						int index=stockindex.get(code);
-						Integer remain=stockremain.get(index);
-						List<Integer> datelist=stockLinkedList.get(index);
-						boolean bigflag=stockbigflag.get(index);
-						t.addstock(code, row);
-						setLeafPrevious(remain,datelist,bigflag,cal);
+						t.addstock(code);
 						return true;
 					}
 					else{
-						t.activation(code, row, year, month, day);
-						Integer judge=stockindex.putIfAbsent(code, stocknumber);
-						if(judge==null){
-							stockLinkedList.add(null);
-							stockremain.add(null);
-							stockbigflag.add(false);
-							stocknumber++;
-						}
+						t.activation(code, year, month, day);
 						setPrevious(t);
 						bigflag=false;
-						int index=stockindex.get(code);
-						Integer remain=stockremain.get(index);
-						List<Integer> datelist=stockLinkedList.get(index);
-						boolean bigflag=stockbigflag.get(index);
-						setLeafPrevious(remain,datelist,bigflag,cal);
 						return true;
 					}
 				}

@@ -1,6 +1,7 @@
 package vo;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.List;
 
@@ -9,11 +10,21 @@ import java.util.List;
  */
 public class YieldChartDataVO implements Serializable{
 
-    public List<Calendar> getDatelist() {
+    private static final long serialVersionUID=3607793986865623023L;
+    private List<LocalDate> datelist;
+    private List<Double> jizhunlist;
+    private List<Double> celuelist;
+
+    private double alpha;
+    private double beta;
+    private double sharpe;
+    private double yearreturn;
+
+    public List<LocalDate> getDatelist() {
 		return datelist;
 	}
 
-	public void setDatelist(List<Calendar> datelist) {
+	public void setDatelist(List<LocalDate> datelist) {
 		this.datelist = datelist;
 	}
 
@@ -33,12 +44,39 @@ public class YieldChartDataVO implements Serializable{
 		this.celuelist = celuelist;
 	}
 
-	private static final long serialVersionUID=3607793986865623023L;
-    private List<Calendar> datelist;
-    private List<Double> jizhunlist;
-    private List<Double> celuelist;
+	public double getAlpha() {
+		return alpha;
+	}
 
-    public YieldChartDataVO(List<Calendar> datelist, List<Double> jizhunlist, List<Double> celuelist) {
+	public void setAlpha(double alpha) {
+		this.alpha = alpha;
+	}
+
+	public double getBeta() {
+		return beta;
+	}
+
+	public void setBeta(double beta) {
+		this.beta = beta;
+	}
+
+	public double getSharpe() {
+		return sharpe;
+	}
+
+	public void setSharpe(double sharpe) {
+		this.sharpe = sharpe;
+	}
+
+	public double getYearreturn() {
+		return yearreturn;
+	}
+
+	public void setYearreturn(double yearreturn) {
+		this.yearreturn = yearreturn;
+	}
+
+	public YieldChartDataVO(List<LocalDate> datelist, List<Double> jizhunlist, List<Double> celuelist) {
         this.datelist = datelist;
         this.jizhunlist = jizhunlist;
         this.celuelist = celuelist;

@@ -1,9 +1,12 @@
 package logic.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import presentation.chart.barChart.VolumeChart;
+import presentation.chart.klineChart.KLineChart;
 import vo.SingleStockInfoVO;
 
 public class Stub {
@@ -74,7 +77,7 @@ public class Stub {
 		vo1.setHigh(8.560);
 		vo1.setLow(8.560);
 		vo1.setVolume(45100);
-		vo1.setDate(Calendar.getInstance());
+		vo1.setDate(LocalDate.now());
 		list.add(vo1);
 		SingleStockInfoVO vo2 = new SingleStockInfoVO();
 		vo2.setCode("600500");
@@ -85,7 +88,7 @@ public class Stub {
 		vo2.setHigh(8.800);
 		vo2.setLow(8.500);
 		vo2.setVolume(43100);
-		vo2.setDate(Calendar.getInstance());
+		vo2.setDate(LocalDate.now());
 		list.add(vo2);
 		SingleStockInfoVO vo3 = new SingleStockInfoVO();
 		vo3.setCode("600500");
@@ -96,7 +99,7 @@ public class Stub {
 		vo3.setHigh(8.560);
 		vo3.setLow(8.560);
 		vo3.setVolume(45100);
-		vo3.setDate(Calendar.getInstance());
+		vo3.setDate(LocalDate.now());
 		list.add(vo3);
 		SingleStockInfoVO vo4 = new SingleStockInfoVO();
 		vo4.setCode("600500");
@@ -107,11 +110,12 @@ public class Stub {
 		vo4.setHigh(8.560);
 		vo4.setLow(8.560);
 		vo4.setVolume(45100);
-		vo4.setDate(Calendar.getInstance());
+		vo4.setDate(LocalDate.now());
 		list.add(vo4);
 		for (int i=0;i<10;i++){
 			list.add(vo1);
 		}
+		
 		return list;
 	}
 }

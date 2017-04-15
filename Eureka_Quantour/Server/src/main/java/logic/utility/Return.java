@@ -26,6 +26,12 @@ public class Return {
     private int days;
     private Comparator<SingleStockInfoPO> comparator;
     private List<LocalDate> timelist;
+    private List<Double> jizhunfudu=new ArrayList<>();
+    private List<Double> celuefudu=new ArrayList<>();
+
+    private List<Double> jizhunshouyilv;
+    private List<Double> celueshouyilv;
+
 
     public Return(List<String> stockcode, LocalDate begin, LocalDate end, SaleVO salevo, StrategyConditionVO strategyConditionVO) {
         this.stockcode = stockcode;
@@ -34,6 +40,7 @@ public class Return {
         this.salevo = salevo;
         this.strategyConditionVO = strategyConditionVO;
         this.days=salevo.getTiaocangqi();
+        this.timelist=new ArrayList<>();
         String type=strategyConditionVO.getName();
         if (type.equals("动量策略")) comparator=new dongliangcelue(strategyConditionVO.getExtra());
         if (type.equals("均值策略")) comparator=new junzhicelue(strategyConditionVO.getExtra());
@@ -51,11 +58,42 @@ public class Return {
     }
 
     public Double getAlpha(){
-        return 0.0;
+        double rp=gerYearReturn();
+        double rm=gerBasicYearReturn();
+        double rf=0.04;
+        return rp-(rf+(rm-rf)*getBeta());
+
+
     }
     public Double getBeta(){
-        return 0.0;
+
+
+        return utility.getCorvariance(jizhunfudu,celuefudu)/utility.getCorvariance(jizhunfudu,jizhunfudu);
     }
+
+    public Double gerYearReturn(){
+        double shuzi=celueshouyilv.get(celueshouyilv.size()-1);
+        int days=begin.until(end).getDays();
+
+        return Math.pow((1+shuzi),365/days)-1;
+    }
+    public Double gerBasicYearReturn(){
+        double shuzi=jizhunshouyilv.get(jizhunshouyilv.size()-1);
+        int days=begin.until(end).getDays();
+
+        return Math.pow((1+shuzi),365/days)-1;
+    }
+
+
+    public Double getSharpe(){
+        double ri=gerYearReturn();
+        double rf=0.04;
+        double seta=utility.getCorvariance(celueshouyilv,celueshouyilv);
+        return (ri-rf)/seta;
+
+        
+    }
+
 
     public List<LocalDate> getTimelist() {
         return timelist;
@@ -82,7 +120,7 @@ public class Return {
                     for (String name : stockcode) {
                         try {
                         SingleStockInfoPO po1 = idi.getSingleStockInfo(name, iter);
-                        SingleStockInfoPO po2 = idi.getSingleStockInfo(name, idi.addDays(iter, days));
+                        SingleStockInfoPO po2 = idi.getSingleStockInfo(name, idi.addDays(iter, -days));
                         zheci = zheci + getjiage(po1);
                         shangci = shangci + getjiage(po2);
                         }
@@ -90,6 +128,10 @@ public class Return {
                             continue;
                         }
                     }
+
+                    if(zheci==0) continue;
+                jizhunfudu.add(zheci/shangci);
+                System.out.println(zheci+"  "+shangci);
                 init=init*(zheci/shangci);
                 double rate=(init-100)/100;
                 list.add(rate);
@@ -98,19 +140,19 @@ public class Return {
         } catch (DateOverException e) {
             e.printStackTrace();
         }
+        jizhunshouyilv=list;
 
-        return list;
+        return jizhunshouyilv;
     }
 
 
 
 
-    public List<Double> getStragetyReturn ( ) throws  NullStockIDException, NullDateException, PriceTypeException {
+    public List<Double> getStragetyReturn ( ) throws  NullStockIDException, PriceTypeException {
         double init=100.0;
         List<Double> list=new ArrayList<>();
         LocalDate iter=LocalDate.of(begin.getYear(),begin.getMonth(),begin.getDayOfMonth());
-
-
+        System.out.println("end "+end);
         try {
             for (;
                  iter.compareTo(end)<0;
@@ -118,11 +160,18 @@ public class Return {
             {
                 double zheci=0;
                 double shangci=0;
-
+                System.out.println(iter);
                 List<SingleStockInfoPO> polist=new ArrayList<>();
+
                 for(String name:stockcode){
-                    polist.add(idi.getSingleStockInfo(name,iter));
+                    try {
+
+                        polist.add(idi.getSingleStockInfo(name,iter));
+                    } catch (NullDateException e) {
+                        continue;
+                    }
                 }
+                if(polist.size()==0) continue;
                 Collections.sort(polist,comparator);
                 List<String> jilu=new ArrayList<>();
                 for (int i=0;i<strategyConditionVO.getNums();i++){
@@ -132,12 +181,17 @@ public class Return {
 
 
                 for(String name:jilu){
-                    SingleStockInfoPO po=idi.getSingleStockInfo(name,idi.addDays(iter,-days));
+                    SingleStockInfoPO po= null;
+                    try {
+                        po = idi.getSingleStockInfo(name,idi.addDays(iter,-days));
+                    } catch (NullDateException e) {
+                        continue;
+                    }
                     shangci+=getjiage(po);
 
                 }
-
-
+                if(zheci==0) continue;
+                jizhunfudu.add(zheci/shangci);
                 init=init*(zheci/shangci);
                 double rate=(init-100)/100;
                 list.add(rate);
@@ -147,7 +201,7 @@ public class Return {
         } catch (DateOverException e) {
             e.printStackTrace();
         }
-
+        celueshouyilv=list;
         return list;
     }
 
@@ -189,7 +243,7 @@ public class Return {
             double rate2=0.0;
             try {
                 rate1=(getjiage(o1)-junzhi1)/junzhi1;
-                rate2=(getjiage(o1)-junzhi1)/junzhi1;
+                rate2=(getjiage(o2)-junzhi2)/junzhi2;
             } catch (PriceTypeException e) {
                 e.printStackTrace();
             }
@@ -236,7 +290,7 @@ public class Return {
             } catch (NullStockIDException e) {
                 e.printStackTrace();
             } catch (NullDateException e) {
-                e.printStackTrace();
+//                e.printStackTrace();
             }
 
 

@@ -10,7 +10,7 @@ public class StrategyConditionVO implements Serializable{
     private static final long serialVersionUID = 3441219408241335848L;
 
     private String name;
-    private List<Object> extra;
+    private List<Object> extra;//动量策略、均值策略
     private int nums;
 
     public int getNums() {

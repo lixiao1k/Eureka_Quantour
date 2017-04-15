@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Scanner;
 
 import data.serviceimpl.DataInterfaceImpl;
+import exception.DateOverException;
 import exception.LogErrorException;
 import exception.NullDateException;
 import exception.NullStockIDException;
@@ -129,6 +130,19 @@ public class DataDriver {
 					System.out.println(e.toString());
 				} catch (NullDateException e) {
 					System.out.println(e.toString());
+				}
+			}
+			else if(mode.equals("add")){
+				String cal=sc.nextLine();
+				LocalDate date=LocalDate.parse(cal);
+				String lasti=sc.nextLine();
+				int last=Integer.valueOf(lasti);
+				inputtime=System.currentTimeMillis();
+				try {
+					System.out.println(data.addDays(date, last));
+				} catch (DateOverException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 //			else if(mode.equals("judge market day")){

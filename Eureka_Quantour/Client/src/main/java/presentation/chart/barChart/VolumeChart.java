@@ -7,7 +7,6 @@ import javafx.scene.chart.*;
 import javafx.scene.control.Tooltip;
 import vo.SingleStockInfoVO;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -17,7 +16,6 @@ public class VolumeChart {
 	
     protected NumberAxis yAxis;
     protected CategoryAxis xAxis;
-    SimpleDateFormat sdf = new SimpleDateFormat("yy:MM:dd");
 
     private BarChart<String, Number> volumechart ;
 
@@ -42,7 +40,7 @@ public class VolumeChart {
         XYChart.Series<String,Number> series =new XYChart.Series<>();
 
         for (SingleStockInfoVO info:list){ 
-            String label =sdf.format(info.getDate().getTime());
+            String label = info.getDate().toString();
             XYChart.Data<String,Number> s= new XYChart.Data<>(label,info.getVolume());
             s.nodeProperty().addListener(new ChangeListener<Node>() {
                 @Override
@@ -75,14 +73,12 @@ public class VolumeChart {
     }
 
     public XYChart<String, Number> getchart(int width, int height) {
-    	if( width>0 ){
-    		volumechart.setMaxWidth(width);
-    		volumechart.setMinWidth(width);
-    	}
-    	if( height>0 ){
-    		volumechart.setMaxHeight(height);
-    		volumechart.setMinHeight(height);
-    	}
+    	if( width<=0 )
+    		width = 334;
+    	if( height<=0 )
+    		height = 200;
+    	volumechart.setMaxSize(width, height);
+    	volumechart.setMinSize(width, height);
     	
         return volumechart;
     }

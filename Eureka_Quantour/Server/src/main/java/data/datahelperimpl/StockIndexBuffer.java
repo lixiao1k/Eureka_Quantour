@@ -2,12 +2,16 @@ package data.datahelperimpl;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.reflect.Method;
+import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
-import java.util.HashMap;
 
-public class StockIndexBuffer {
+import java.util.HashMap;
+import java.util.Iterator;
+
+public class StockIndexBuffer{
 	private static int BUFFER_SIZE=1024*1024*2;
 	private MappedByteBuffer[] queue;
 	private HashMap<Integer,Integer> index;
@@ -27,6 +31,16 @@ public class StockIndexBuffer {
 		int removeCode=codequeue[nextClear];
 		index.remove(removeCode);
 		queue[nextClear]=mbb;
+		codequeue[nextClear]=code;
+		index.put(code, nextClear);
+		nextClear++;
+		if(nextClear==size){
+			nextClear=0;
+		}
+	}
+	public void addBuffer(int code){
+		int removeCode=codequeue[nextClear];
+		index.remove(removeCode);
 		codequeue[nextClear]=code;
 		index.put(code, nextClear);
 		nextClear++;
@@ -56,20 +70,67 @@ public class StockIndexBuffer {
 			return queue[index];
 		}
 	}
+	public MappedByteBuffer getMbb1(int code,String path){
+		int index=getIndex(code);
+		if(getIndex(code)==-1){
+			try {
+				if(queue[nextClear]==null){
+					MappedByteBuffer mbb=loadStockDateIndex(path);
+					addBuffer(mbb,code);
+					return mbb;
+				}
+				else{
+					loadStockDateIndex(path,queue[nextClear]);
+					addBuffer(code);
+					return queue[nextClear];
+				}
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+		else{
+			return queue[index];
+		}
+	}
 	private MappedByteBuffer loadStockDateIndex(String path) throws IOException{
 		FileInputStream is=new FileInputStream(path);
 		FileChannel fc=is.getChannel();
 		MappedByteBuffer mbb=fc.map(MapMode.READ_ONLY, 0, fc.size());
-//		byte[] tempdst=new byte[(int) (fc.size()%BUFFER_SIZE)];
-//		for(int i=0;i<fc.size();i+=BUFFER_SIZE){
-//			if(fc.size()-i>BUFFER_SIZE){
-//				mbb.get(dst_BUFFERSIZE);
-//			}
-//			else{
-//				mbb.get(tempdst);
-//			}
-//		}
+		
+		byte[] tempdst=new byte[(int) (fc.size()%BUFFER_SIZE)];
+		for(int i=0;i<fc.size();i+=BUFFER_SIZE){
+			if(fc.size()-i>BUFFER_SIZE){
+				mbb.get(dst_BUFFERSIZE);
+			}
+			else{
+				mbb.get(tempdst);
+			}
+		}
 		is.close();
 		return mbb;
+	}
+	private MappedByteBuffer loadStockDateIndex(String path,MappedByteBuffer mbb) throws IOException{
+		FileInputStream is=new FileInputStream(path);
+		FileChannel fc=is.getChannel();
+		mbb=fc.map(MapMode.READ_ONLY, 0, fc.size());
+		byte[] tempdst=new byte[(int) (fc.size()%BUFFER_SIZE)];
+		for(int i=0;i<fc.size();i+=BUFFER_SIZE){
+			if(fc.size()-i>BUFFER_SIZE){
+				mbb.get(dst_BUFFERSIZE);
+			}
+			else{
+				mbb.get(tempdst);
+			}
+		}
+		is.close();
+		return mbb;
+	}
+	public void print(){
+		Iterator<Integer> it=index.keySet().iterator();
+		while(it.hasNext()){
+			System.out.println(it.next());
+		}
 	}
 }

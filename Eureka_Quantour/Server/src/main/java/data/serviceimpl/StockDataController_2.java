@@ -154,18 +154,18 @@ public class StockDataController_2 {
 	 * @return 交易日日期
 	 * @throws DateOverException
 	 */
-	public LocalDate addDays(LocalDate date,int last) throws DateOverException{
+	public LocalDate addDays(LocalDate date,int last,boolean zheng) throws DateOverException{
 		int cal=parse.getIntDate(date);
 		try {
 			return datahelper.addDays(cal, last);
 		} catch (NullDateException e) {
-			if(last>0){
+			if(zheng){
 				LocalDate temp=LocalDate.of(date.getYear(), date.getMonthValue(), date.getDayOfMonth());
 				temp=temp.plusDays(1);
 				if(temp.isAfter(LocalDate.now())){
 					throw new DateOverException(cal,last);
 				}
-				return addDays(date,last);
+				return addDays(temp,last,zheng);
 			}
 			else{
 				LocalDate temp=LocalDate.of(date.getYear(), date.getMonthValue(), date.getDayOfMonth());
@@ -173,7 +173,7 @@ public class StockDataController_2 {
 				if(temp.isBefore(LocalDate.of(2005, 2, 1))){
 					throw new DateOverException(cal,last);
 				}
-				return addDays(date,last);
+				return addDays(temp,last,zheng);
 			}
 		}
 	}

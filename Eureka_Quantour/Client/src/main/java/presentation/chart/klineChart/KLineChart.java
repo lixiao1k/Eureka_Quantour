@@ -46,26 +46,21 @@ public class KLineChart implements chartService {
 
     @Override
     public Pane getchart(int width, int height) {
+    	if( width<=0 )
+    		width = 334;
+    	if( height<=0 )
+    		height = 200;
+    	
     	volumeBarChart = (BarChart<String, Number>)volumeChart.getchart(width, height/8*3);
-    	if( width>0 ){
-    		candlestickchart.setMaxWidth(width);
-    		candlestickchart.setMinWidth(width);
-    		pane.setMaxWidth(width);
-    	}
-    	if( height>0 ){
-    		candlestickchart.setMaxHeight( height/8*6 );
-    		candlestickchart.setMinHeight( height/8*6 );
-    		pane.setMaxHeight(height);
-    	}
+    	candlestickchart.setMaxSize(width, height/8*6);
+    	candlestickchart.setMinSize(width, height/8*6);
     	
     	info = catchMouseMove.catchMouseReturnInfoForStackPane(
     			candlestickchart, candlestickchart.dataMap, candlestickchart.dates, "date", 10);
     	infoD = catchMouseMove.catchMouseReturnInfoForStackPane(
     			volumeBarChart, candlestickchart.dataMap, candlestickchart.dates, "date", 10);
-    	begin = commonSet.beignDataForStackPane( candlestickchart.dates[0], (int)Math.max(height, candlestickchart.getWidth()) );
-    	end = commonSet.endDataForStackPane(candlestickchart.dates[candlestickchart.dates.length-1], 
-    			(int)Math.max(width, candlestickchart.getWidth()), 
-    			(int)Math.max(height, candlestickchart.getWidth()) );
+    	begin = commonSet.beignDataForStackPane( candlestickchart.dates[0], height);
+    	end = commonSet.endDataForStackPane(candlestickchart.dates[candlestickchart.dates.length-1], width, height);
     	
     	chart1.getChildren().add(candlestickchart);
     	StackPane.setAlignment(candlestickchart, Pos.BOTTOM_CENTER);

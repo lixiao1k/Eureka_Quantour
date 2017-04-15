@@ -28,8 +28,7 @@ import java.util.Map;
  */
 
 /**
- * 
- * @Description: TODO
+ * @Description: owing to EMAChart's special situation, draw a LineChart for it individually
  * @author: hzp
  * @time: 2017年4月6日
  */
@@ -49,7 +48,13 @@ public class EMAChart implements chartService {
     protected CategoryAxis xAxis;
 
     private LineChart<String, Number> lineChart;
+    /**
+     * dataMap: store every point's information and key is its abscissa which has been format
+     */
     private Map<String, String> dataMap = new HashMap<String,String>();
+    /**
+     * dates: store xAxis's value which has been format
+     */
     private String[] dates = new String[0];
 
     public EMAChart(List<EMAInfoVO> EMAList) {
@@ -76,7 +81,7 @@ public class EMAChart implements chartService {
         lineChart.setLegendVisible(false);
         lineChart.setOpacity(0.8);
         
-        dates = listToArray.formatCalendar(EMAList.get(0).getDate());
+        dates = listToArray.formatLocalDate(EMAList.get(0).getDate());
     	
     	List<Double[]> doubleList = new ArrayList<>();
     	String[] dataName = {"1", "2", "3", "4", "5"};
@@ -128,19 +133,16 @@ public class EMAChart implements chartService {
 
     @Override
     public Pane getchart(int width, int height) {
-    	if( width>0 ){
-    		lineChart.setMaxWidth(width);
-    		lineChart.setMinWidth(width);
-    	}
-    	if( height>0 ){
-    		lineChart.setMaxHeight(height);
-    		lineChart.setMinHeight(height);
-    	}
+    	if( width<=0 )
+    		width = 334;
+    	if( height<=0 )
+    		height = 200;
+    	lineChart.setMaxSize(width, height);
+    	lineChart.setMinSize(width, height);
+    	
     	info = catchMouseMove.catchMouseReturnInfoForStackPane(lineChart, dataMap, dates, "date", 10);
-    	begin = commonSet.beignDataForAnchorPane( dates[0], (int)Math.max(height, lineChart.getWidth()) );
-    	end = commonSet.endDataForAnchorPane(dates[dates.length-1], 
-    			(int)Math.max(width, lineChart.getWidth()), 
-    			(int)Math.max(height, lineChart.getWidth()) );
+    	begin = commonSet.beignDataForAnchorPane(dates[0], height);
+    	end = commonSet.endDataForAnchorPane(dates[dates.length-1], width, height);
     	
     	chartPane.getChildren().add(lineChart);
     	chartPane.getChildren().add(info);

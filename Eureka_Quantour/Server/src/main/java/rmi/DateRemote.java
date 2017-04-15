@@ -2,14 +2,14 @@ package rmi;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Calendar;
+import java.time.LocalDate;
 import java.util.List;
 
 import exception.*;
 import logic.service.ClientLogicInterface;
 import logic.service.StockLogicInterface;
 import logic.serviceimpl.ClientLogicImpl;
-import logic.serviceimpl.StockLogicImplstub;
+import logic.serviceimpl.StockLogicImpl;
 import vo.*;
 
 /**
@@ -26,103 +26,114 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 	private StockLogicInterface sli;
 	protected DateRemote() throws RemoteException {
 		cli = new ClientLogicImpl();
-		sli = new StockLogicImplstub();
+		sli = new StockLogicImpl();
 	}
 
 	@Override
-	public List<SingleStockInfoVO> getSingleStockInfoByTime(String stockCode, Calendar begin, Calendar end)
-			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException {
+	public List<SingleStockInfoVO> getSingleStockInfoByTime(String stockCode, LocalDate begin, LocalDate end)
+			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException {
 		// TODO Auto-generated method stub
 		return sli.getSingleStockInfoByTime(stockCode, begin, end);
 	}
 
 	@Override
-	public List<List<EMAInfoVO>> getEMAInfo(String stockCode, Calendar begin, Calendar end)
-			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException {
+	public List<EMAInfoVO> getEMAInfo(String stockCode, LocalDate begin, LocalDate end)
+			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException, DateOverException {
 		// TODO Auto-generated method stub
 		return sli.getEMAInfo(stockCode, begin, end);
 	}
 
-	@Override
-	public ComparedInfoVO getComparedInfo(String stockCodeA, String stockCodeB, Calendar begin, Calendar end)
-			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException {
-		// TODO Auto-generated method stub
-		return sli.getComparedInfo(stockCodeA, stockCodeB, begin, end);
-	}
+//	@Override
+//	public ComparedInfoVO getComparedInfo(String stockCodeA, String stockCodeB, LocalDate begin, LocalDate end)
+//			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException {
+//		// TODO Auto-generated method stub
+//		return sli.getComparedInfo(stockCodeA, stockCodeB, begin, end);
+//	}
+
+//	@Override
+//	public MarketInfoVO getMarketInfo(Calendar date)
+//			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException {
+//		// TODO Auto-generated method stub
+//		return sli.getMarketInfo(date);
+//	}
 
 	@Override
-	public MarketInfoVO getMarketInfo(Calendar date) 
-			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException {
-		// TODO Auto-generated method stub
-		return sli.getMarketInfo(date);
-	}
-
-	@Override
-	public List<String> getStockSet(String username) {
+	public List<String> getStockSet(String username) throws RemoteException {
 		return sli.getStockSet(username);
 	}
 
 	@Override
-	public List<SingleStockInfoVO> getStockSetSortedInfo(String stockSetName, Calendar now) {
-		return sli.getStockSetSortedInfo(stockSetName,now);
+	public List<SingleStockInfoVO> getStockSetSortedInfo(String stockSetName, LocalDate now, String username) throws RemoteException {
+		return sli.getStockSetSortedInfo(stockSetName,now,username);
 	}
 
+//	@Override
+//	public List<SingleStockInfoVO> getStockSetSortedInfo(String stockSetName, LocalDate now) {
+//		return sli.getStockSetSortedInfo(stockSetName,now);
+//	}
+
 	@Override
-	public SingleStockInfoVO getStockBasicInfo(String code, Calendar now) {
+	public SingleStockInfoVO getStockBasicInfo(String code, LocalDate now) throws NullStockIDException, NullDateException, RemoteException {
 		return sli.getStockBasicInfo(code,now);
 	}
 
 	@Override
-	public List<SingleStockInfoVO> getStockSorted(String stockSetName, Calendar now) {
-		return sli.getStockSorted(stockSetName, now);
+	public void setStrategy(StrategyConditionVO strategyConditionVO, SaleVO s, LocalDate begin, LocalDate now, String stockSetName, String username) throws RemoteException {
+		sli.setStrategy(strategyConditionVO, s, begin, now, stockSetName, username);
 	}
 
-	@Override
-	public void setStrategy(StrategyConditionVO sc, SaleVO s, Calendar begin, Calendar now, String stockSetName) {
-		sli.setStrategy(sc, s, begin, now, stockSetName);
-	}
+//	@Override
+//	public List<SingleStockInfoVO> getStockSorted(String stockSetName, LocalDate now) {
+//		return sli.getStockSorted(stockSetName, now);
+//	}
+
+//	@Override
+//	public void setStrategy(StrategyConditionVO sc, SaleVO s, LocalDate begin, LocalDate now, String stockSetName) {
+//		sli.setStrategy(sc, s, begin, now, stockSetName);
+//	}
 
 	@Override
-	public YieldChartDataVO getYieldChartData() {
+	public YieldChartDataVO getYieldChartData() throws RemoteException {
 		return sli.getYieldChartData();
 	}
 
 	@Override
-	public YieldDistributionHistogramDataVO getYieldDistributionHistogramData() {
+	public YieldDistributionHistogramDataVO getYieldDistributionHistogramData() throws RemoteException {
 		return sli.getYieldDistributionHistogramData();
 	}
 
 	@Override
-	public void addStockSet(String stockSetName, String username) throws StockSetNameRepeatException {
+	public void addStockSet(String stockSetName, String username) throws StockSetNameRepeatException, RemoteException {
 		sli.addStockSet(stockSetName,username);
 	}
 
 	@Override
-	public void deleteStockSet(String stockSetName, String username) {
+	public void deleteStockSet(String stockSetName, String username) throws RemoteException {
 		sli.deleteStockSet(stockSetName,username);
 	}
 
 	@Override
-	public void addStockToStockSet(String stockName, String stockSetName, String username) throws StockNameRepeatException {
+	public void addStockToStockSet(String stockName, String stockSetName, String username) throws StockNameRepeatException, RemoteException {
 		sli.addStockToStockSet(stockName, stockSetName, username);
 	}
 
 	@Override
-	public void deleteStockFromStockSet(String stockName, String stockSetName, String username) {
+	public void deleteStockFromStockSet(String stockName, String stockSetName, String username) throws RemoteException {
 		sli.deleteStockFromStockSet(stockName, stockSetName, username);
 	}
 
 	@Override
-	public void signUp(String username, char[] password) throws RemoteException {
+	public void signUp(String username, char[] password) throws RemoteException, UserNameRepeatException {
+		cli.signUp(username,password);
 	}
 
 	@Override
-	public void signIn(String username, char[] password) throws RemoteException {
-
+	public void signIn(String username, char[] password) throws RemoteException, LogErrorException {
+		cli.signIn(username,password);
 	}
 
 	@Override
 	public void signOut(String username) throws RemoteException {
-
+		cli.signOut(username);
 	}
 }

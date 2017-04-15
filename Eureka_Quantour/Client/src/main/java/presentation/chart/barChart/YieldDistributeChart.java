@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javafx.geometry.Insets;
 import javafx.scene.chart.BarChart;
@@ -39,8 +40,12 @@ public class YieldDistributeChart implements chartService{
     private BarChart<String, Number> barChart;
     private Map<String, String> dataMap = new HashMap<String,String>();
     private String[] yield;
+    private Map<Double,List<Integer>> zuhe;
 	
 	public YieldDistributeChart(YieldDistributionHistogramDataVO ydhd){
+		zuhe = ydhd.getZuhe();
+		Set<Double> keySet = zuhe.keySet();
+		
 		xAxis = new CategoryAxis();
         xAxis.setTickMarkVisible(false);
         xAxis.setTickLabelsVisible(false);
@@ -61,25 +66,26 @@ public class YieldDistributeChart implements chartService{
         barChart.setBarGap(0);
         barChart.setPadding(new Insets(10,10,10,10));
 	    
-        List<Double> yieldL = sortDouble( ydhd.getYieldlist() );
+        List<Double> yieldL = new ArrayList<>( keySet );
+        yieldL = sortDouble(yieldL);
+        
         yield = new String[yieldL.size()];
-//        yield = listToArray.formatDouble( sortDouble(ydhd.getYieldlist()) );
         for(int i =0; i<yieldL.size(); i++){
         	yield[i] = NumberFormat.getPercentInstance().format( yieldL.get(i) );
         }
 	     
         String[] dataStrings = new String[yield.length];
 
-        List<Integer> plist = ydhd.getPluslist();
-        List<Integer> mlist = ydhd.getMinuslist();
+        List<Integer> pandm = new ArrayList<>();
 	     
         XYChart.Series<String, Number> seriem = new XYChart.Series<>();
         XYChart.Series<String, Number> seriep = new XYChart.Series<>();
         String namep = "正收益",  namem= "负收益";
         for( int i=0; i<yield.length; i++){
-        	seriep.getData().add( new XYChart.Data<>(yield[i], Math.abs(plist.get(i))) );
-        	seriem.getData().add( new XYChart.Data<>(yield[i], -Math.abs(mlist.get(i))) );
-        	dataStrings[i] = namep+" : "+plist.get(i)+"/"+namem+" : "+mlist.get(i);
+        	pandm = zuhe.get(yieldL.get(i));
+        	seriep.getData().add( new XYChart.Data<>(yield[i], Math.abs(pandm.get(0))) );
+        	seriem.getData().add( new XYChart.Data<>(yield[i], -Math.abs(pandm.get(1))) );
+        	dataStrings[i] = namep+" : "+pandm.get(0)+"/"+namem+" : "+pandm.get(1);
         }
         barChart.getData().add(seriep);
         barChart.getData().add(seriem);
@@ -93,20 +99,16 @@ public class YieldDistributeChart implements chartService{
 	@Override
 	public Pane getchart(int width, int height) {
 		// TODO Auto-generated method stub
-		if( width>0 ){
-    		barChart.setMaxWidth(width);
-    		barChart.setMinWidth(width);
-    	}
-    	if( height>0 ){
-    		barChart.setMaxHeight(height);
-    		barChart.setMinHeight(height);
-    	}
+		if( width<=0 )
+    		width = 334;
+    	if( height<=0 )
+    		height = 200;
+    	barChart.setMaxSize(width, height);
+    	barChart.setMinSize(width, height);
     	
     	info = catchMouseMove.catchMouseReturnInfoForStackPane(barChart, dataMap, yield, "收益率", 10);
-    	begin = commonSet.beignDataForAnchorPane( yield[0], (int)Math.max(height, barChart.getWidth()) );
-    	end = commonSet.endDataForAnchorPane( yield[yield.length-1], 
-    			(int)Math.max(width, barChart.getWidth()), 
-    			(int)Math.max(height, barChart.getWidth()) );
+    	begin = commonSet.beignDataForAnchorPane( yield[0], height);
+    	end = commonSet.endDataForAnchorPane( yield[yield.length-1], width, height );
     	begin.setLayoutX(begin.getLayoutX()+10);
     	end.setLayoutX(end.getLayoutX()+10);
     	
