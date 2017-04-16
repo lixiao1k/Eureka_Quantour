@@ -49,9 +49,6 @@ public class StockInfoFetchByWeb {
 	private long total;
 	
 	private InitEnvironment ie;
-	public static void main(String[] args){
-		new StockInfoFetchByWeb();
-	}
 	public StockInfoFetchByWeb(){
 		ie=InitEnvironment.getInstance();
 		df1 = new DecimalFormat("0.00");
@@ -125,16 +122,15 @@ public class StockInfoFetchByWeb {
 				}
 			}
 		}
+		OutputStream os=new FileOutputStream("config/stock/dataconfig.properties");
 		if(flag){
-			OutputStream os=new FileOutputStream("config/stock/dataconfig.properties");
 			pro.setProperty("lastday", lastday);
-			pro.store(os, "update personalSize");
 		}
-		else{
-			OutputStream os=new FileOutputStream("config/stock/dataconfig.properties");
+		else{	
 			pro.setProperty("lastday", enddate);
-			pro.store(os, "update personalSize");
 		}
+		pro.setProperty("lastUpdateDay", enddate);
+		pro.store(os, "update personalSize");
 		}catch(IOException e){
 			e.printStackTrace();
 		}
@@ -341,7 +337,6 @@ public class StockInfoFetchByWeb {
 			BufferedWriter bw=new BufferedWriter(new FileWriter("config/resources/mainData",isAddition));
 			DateLeaf p;
 			int total=pretotal;
-			total=0;
 			int size=presize;
 			p=trie.getMin();
 			while(p!=null){

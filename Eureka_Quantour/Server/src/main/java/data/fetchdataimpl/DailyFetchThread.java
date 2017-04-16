@@ -29,7 +29,7 @@ public class DailyFetchThread {
 			is.close();
 		}catch(IOException e){
 		}
-		String lastday=pro.getProperty("lastday");
+		String lastday=pro.getProperty("lastUpdateDay","2017-04-13");
 		int day=Parse.getInstance().getIntDate(lastday);
 		Runnable runnable = new Runnable() {  
         public void run() {  
@@ -45,6 +45,13 @@ public class DailyFetchThread {
         if(now==day){
         	min=min+1440;
         }
+        else{
+        	if(min<0){
+        		min=0;
+        	}
+        }
+        System.out.println(min);
+        System.out.println(LocalDateTime.now().plusMinutes(min));
         ScheduledExecutorService service = Executors  
                 .newSingleThreadScheduledExecutor();  
         service.scheduleAtFixedRate(runnable, min+deviant, 1440, TimeUnit.MINUTES); 

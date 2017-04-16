@@ -22,6 +22,7 @@ import java.util.Scanner;
 import data.common.DateTrie;
 import data.common.IndexTree;
 import data.datahelperservice.IStockDataHelper_2;
+import data.fetchdataimpl.DailyFetchThread;
 import data.fetchdataimpl.StockDataFetchImpl;
 import data.fetchdataservice.IStockDataFetch;
 import data.parse.Parse;
@@ -84,7 +85,7 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 //		check2();
 //		check();
 //	    
-//   	test();
+//		test();
 	}
 	/**
 	 * 初始化装载数据的容器
@@ -120,12 +121,6 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 		fetch=StockDataFetchImpl.getInstance();
 		parse=Parse.getInstance();
 		infopath=new File(ie.getPath("stockinfo"));
-		try {
-			fetch.fetchAllStockInfo();
-		} catch (InternetdisconnectException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 //		DailyFetchThread thread=new DailyFetchThread();
 		if(!infopath.exists()&&!infopath.isDirectory()){
 			try {
@@ -137,7 +132,7 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 //			thread.waitoneday();
 		}
 		else{
-//			thread.start();
+//			thread.start(0);
 		}
 	}
 	/**
@@ -488,13 +483,16 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 			File path=new File("config/stock/info");
 			String[] t=path.list();
 			long ttt1=System.currentTimeMillis();
-			
-			for(int cal :datesort){
-				for(int i=0;i<100;i++)
-					try {
-						getSingleInfo(cal, out[1]);
-					} catch (StockHaltingException | NullDateException e) {
-					}
+			for(String code:t){
+				try{
+					Integer.valueOf(code);
+				}catch(NumberFormatException e){
+					continue;
+				}
+				try {
+					System.out.println(getSingleInfo(b1, code));
+				} catch (StockHaltingException | NullDateException e) {
+				}
 			}
 			Runtime.getRuntime().gc();
 //			Collection<StockLeaf> it=datetree.get(b1).values();

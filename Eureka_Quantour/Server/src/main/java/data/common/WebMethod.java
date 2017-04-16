@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -39,23 +40,14 @@ public class WebMethod {
 	 * @throws InternetdisconnectException
 	 */
 	public  void testInternet() throws InternetdisconnectException{
-		String address ="www.baidu.com";
-		BufferedReader br=null;
+		URL url = null;
 		try {
-			Process process = Runtime.getRuntime().exec("ping " + address+" -n 2");
-			br = new BufferedReader(new InputStreamReader(process.getInputStream(),"GBK"));
-			String connectionStr =null;
-			String total="";
-			while ((connectionStr = br.readLine()) != null) {
-				total=total+connectionStr;
-			}
-			br.close();
-			if(total.indexOf("TTL")<0){
-				throw new InternetdisconnectException();
-			}
+		url = new URL("http://baicu.com/");
+		InputStream in = url.openStream();//打开到此 URL 的连接并返回一个用于从该连接读入的 InputStream
+			System.out.println("连接正常");
+		in.close();//关闭此输入流并释放与该流关联的所有系统资源。
 		} catch (IOException e) {
-			System.out.println("链接失败");
-			e.printStackTrace();
+			throw new InternetdisconnectException();
 		}
 	}
 	/**
