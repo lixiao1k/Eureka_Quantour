@@ -92,6 +92,7 @@ public class MarketUIController implements Initializable {
 	private MainScreenController controller;
 	
 	private List<SingleStockInfoVO> setStocks;
+	private LocalDate systime;
 	
 	/*
 	 * @description 初始化沪市板块栏的组件
@@ -102,14 +103,15 @@ public class MarketUIController implements Initializable {
 		Button HSAButton = new Button("沪市A股");
 		HSAButton.setPrefHeight(37);
 		HSAButton.setOnAction(new EventHandler<ActionEvent>() {
-			LocalDate systemTime = (LocalDate) dataController.get("SystemTime");
 			@Override
 			public void handle(ActionEvent event) {
+				systime = (LocalDate) dataController.get("SystemTime");
+				System.out.println(systime.toString());
 				// TODO Auto-generated method stub
 				RemoteHelper remote = RemoteHelper.getInstance();
 				StockLogicInterface stockLogicInterface = remote.getStockLogic();
 				try {
-					setStocks = stockLogicInterface.getStockSetSortedInfo("SHA",systemTime.minusDays(100), null);
+					setStocks = stockLogicInterface.getStockSetSortedInfo("SHA",systime.minusDays(1), null);
 					System.out.println(setStocks.size());
 					initialAllStocksPane(setStocks);
 				} catch (RemoteException e) {
@@ -123,14 +125,15 @@ public class MarketUIController implements Initializable {
 		Button HSBButton = new Button("沪市B股");
 		HSBButton.setPrefHeight(37);
 		HSBButton.setOnAction(new EventHandler<ActionEvent>() {
-			LocalDate systemTime = (LocalDate) dataController.get("SystemTime");
+			
 			@Override
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
+				systime = (LocalDate) dataController.get("SystemTime");
 				RemoteHelper remote = RemoteHelper.getInstance();
 				StockLogicInterface stockLogicInterface = remote.getStockLogic();
 				try {
-					setStocks = stockLogicInterface.getStockSetSortedInfo("SHB",systemTime.minusDays(100), null);
+					setStocks = stockLogicInterface.getStockSetSortedInfo("SHB",systime.minusDays(1), null);
 					System.out.println(setStocks.size());
 					initialAllStocksPane(setStocks);
 				} catch (RemoteException e) {
@@ -154,16 +157,15 @@ public class MarketUIController implements Initializable {
 		SZAButton.setPrefHeight(37);
 
 		SZAButton.setOnAction(new EventHandler<ActionEvent>() {
-			LocalDate systemTime = (LocalDate) dataController.get("SystemTime");
 
 			@Override
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
-				
+				systime = (LocalDate) dataController.get("SystemTime");
 				RemoteHelper remote = RemoteHelper.getInstance();
 				StockLogicInterface stockLogicInterface = remote.getStockLogic();
 				try {
-					setStocks = stockLogicInterface.getStockSetSortedInfo("SZA",systemTime.minusDays(1), null);
+					setStocks = stockLogicInterface.getStockSetSortedInfo("SZA",systime.minusDays(1), null);
 					initialAllStocksPane(setStocks);
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
@@ -176,14 +178,14 @@ public class MarketUIController implements Initializable {
 		Button SZBButton = new Button("深市B股");
 		SZBButton.setPrefHeight(37);
 		SZBButton.setOnAction(new EventHandler<ActionEvent>() {
-			LocalDate systemTime = (LocalDate) dataController.get("SystemTime");
 			@Override
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
+				systime = (LocalDate) dataController.get("SystemTime");
 				RemoteHelper remote = RemoteHelper.getInstance();
 				StockLogicInterface stockLogicInterface = remote.getStockLogic();
 				try {
-					setStocks = stockLogicInterface.getStockSetSortedInfo("SZB",systemTime.minusDays(1) , null);
+					setStocks = stockLogicInterface.getStockSetSortedInfo("SZB",systime.minusDays(1) , null);
 					initialAllStocksPane(setStocks);
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
@@ -196,14 +198,14 @@ public class MarketUIController implements Initializable {
 		Button CYBButton = new Button("创业板");
 		CYBButton.setPrefHeight(37);
 		CYBButton.setOnAction(new EventHandler<ActionEvent>() {
-			LocalDate systemTime = (LocalDate) dataController.get("SystemTime");
 			@Override
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
+				systime = (LocalDate) dataController.get("SystemTime");
 				RemoteHelper remote = RemoteHelper.getInstance();
 				StockLogicInterface stockLogicInterface = remote.getStockLogic();
 				try {
-					setStocks = stockLogicInterface.getStockSetSortedInfo("CYB",systemTime.minusDays(1) , null);
+					setStocks = stockLogicInterface.getStockSetSortedInfo("CYB",systime.minusDays(1) , null);
 					initialAllStocksPane(setStocks);
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
@@ -216,14 +218,14 @@ public class MarketUIController implements Initializable {
 		Button ZXBButton = new Button("中小板");
 		ZXBButton.setPrefHeight(37);
 		ZXBButton.setOnAction(new EventHandler<ActionEvent>() {
-			LocalDate systemTime = (LocalDate) dataController.get("SystemTime");
 			@Override
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
+				systime = (LocalDate) dataController.get("SystemTime");
 				RemoteHelper remote = RemoteHelper.getInstance();
 				StockLogicInterface stockLogicInterface = remote.getStockLogic();
 				try {
-					setStocks = stockLogicInterface.getStockSetSortedInfo("ZXB",systemTime.minusDays(1) , null);
+					setStocks = stockLogicInterface.getStockSetSortedInfo("ZXB",systime.minusDays(1) , null);
 					initialAllStocksPane(setStocks);
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
@@ -233,19 +235,19 @@ public class MarketUIController implements Initializable {
 			}
 		});
 		ZXBButton.getStylesheets().add(getClass().getClassLoader().getResource("styles/MarketButton.css").toExternalForm());
-		buttonHBox.getChildren().addAll(SZAButton,SZAButton,CYBButton,ZXBButton);
+		buttonHBox.getChildren().addAll(SZAButton,SZBButton,CYBButton,ZXBButton);
 	}
 	/*
 	 * @description 浏览沪深300的监听
 	 */
 	@FXML
 	protected void goBrowseHS300(ActionEvent e){
-		LocalDate systemTime = (LocalDate) dataController.get("SystemTime");
+		systime = (LocalDate) dataController.get("SystemTime");
 		buttonHBox.getChildren().clear();
 		RemoteHelper remote = RemoteHelper.getInstance();
 		StockLogicInterface stockLogicInterface = remote.getStockLogic();
 		try {
-			setStocks = stockLogicInterface.getStockSetSortedInfo("HS300", systemTime.minusDays(1), null);
+			setStocks = stockLogicInterface.getStockSetSortedInfo("HS300", systime.minusDays(1), null);
 			initialAllStocksPane(setStocks);
 		} catch (RemoteException e1) {
 			// TODO Auto-generated catch block
@@ -382,14 +384,30 @@ public class MarketUIController implements Initializable {
 		return label;
 	}
 	private void initialStocksFlowPane(List<SingleStockInfoVO> list){
-		int length = (int) Math.ceil(list.size()/50);
+		System.out.println(list.size());
+		int length = (int) Math.ceil(list.size()/50.0);
+		System.out.println(length);
 		initialPagination(length);
+		if(length==1){
+			int sublength = list.size();
+			List<SingleStockInfoVO> sublist = list.subList(0, sublength-1);
+			setStocksFlowPane(sublist,0);
+		}else{
+			List<SingleStockInfoVO> sublist = list.subList(0, 50);
+			setStocksFlowPane(sublist,0);
+		}
 		pagination.currentPageIndexProperty().addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				// TODO Auto-generated method stub
-				List<SingleStockInfoVO> sublist = list.subList(newValue.intValue()*50, newValue.intValue()*50+50);
-				initialStocksFlowPane(sublist);
+
+				if(newValue.intValue()!=length-1){
+					List<SingleStockInfoVO> sublist = list.subList(newValue.intValue()*50, newValue.intValue()*50+50);
+					setStocksFlowPane(sublist,newValue.intValue());
+				}else{
+					List<SingleStockInfoVO> sublist = list.subList(newValue.intValue()*50, list.size()-1);
+					setStocksFlowPane(sublist,newValue.intValue());
+				}
 			}
 		});
 		
@@ -398,12 +416,12 @@ public class MarketUIController implements Initializable {
 	/*
 	 * @description 初始化显示股市所有股票信息的界面,为setSocksFlowPane调用
 	 */
-	private void setStocksFlowPane(List<SingleStockInfoVO> list){
+	private void setStocksFlowPane(List<SingleStockInfoVO> list, int vernier){
 		stocksFlowPane.getChildren().clear();
 		int length = list.size();
 		for(int i=0;i<length;i++){
 			SingleStockInfoVO vo = list.get(i);
-			HBox hb = getHBox(i+1, vo.getCode(), vo.getName(), vo.getClose(), vo.getFudu()
+			HBox hb = getHBox(i+1+vernier*50, vo.getCode(), vo.getName(), vo.getClose(), vo.getFudu()
 					, vo.getOpen(), vo.getHigh(), vo.getLow(),(int)vo.getVolume());
 			stocksFlowPane.getChildren().add(hb);
 		}
@@ -535,7 +553,6 @@ public class MarketUIController implements Initializable {
 		pagePane.getChildren().add(pagination);
 		pagination.setStyle("-fx-page-information-visible: false;");
 		pagination.setPageCount(length);
-		
 	}
 	/*
 	 * @description 设置主界面的Controller
