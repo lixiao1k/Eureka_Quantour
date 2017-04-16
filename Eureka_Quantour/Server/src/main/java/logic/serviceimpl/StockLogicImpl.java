@@ -352,6 +352,7 @@ public class StockLogicImpl implements StockLogicInterface{
 			}
 		}
 		Collections.sort(res);
+		Collections.reverse(res);
 		return res;
 	}
 

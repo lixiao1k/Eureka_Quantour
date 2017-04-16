@@ -25,7 +25,7 @@
 
 .axis-tick-mark {
     -fx-stroke: #637040;
-    -fx-stroke-width: 1; 
+ /* -fx-stroke-width: 1; */
 }
 .axis-minor-tick-mark {
     -fx-stroke: #859656;
