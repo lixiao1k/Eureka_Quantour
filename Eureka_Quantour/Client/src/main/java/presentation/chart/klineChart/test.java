@@ -2,7 +2,6 @@ package presentation.chart.klineChart;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import javafx.application.Application;
@@ -26,11 +25,15 @@ public class test extends Application{
     
     private void testKLineChart(){
     	SingleStockInfoVO ssi = new SingleStockInfoVO();
-    	int j = 2;
-    	LocalDate cal = LocalDate.of(2014, 3, j);
-    	for(int i=0; i<100; i++, j++){
+    	int j = 1;
+    	int k = 3;
+    	for(int i=0; i<50; i++, j++){
+    		if( j>30 ){
+    			k++;
+    			j = 1;
+    		}    			
     		ssi = new SingleStockInfoVO();
-    		ssi.setDate(LocalDate.of(cal.getYear(), cal.getMonth(), cal.getDayOfMonth()));
+    		ssi.setDate(LocalDate.of(2014, k, j));
     		double d = Math.random();
     		if( d>0.5 ){
     			ssi.setOpen(d*7);

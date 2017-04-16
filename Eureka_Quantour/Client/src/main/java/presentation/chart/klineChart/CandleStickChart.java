@@ -22,6 +22,8 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.util.Duration;
 import vo.SingleStockInfoVO;
@@ -133,6 +135,7 @@ public class  CandleStickChart extends XYChart<String, Number> {
             Path seriesPath = null;
             if (series.getNode() instanceof Path) {
                 seriesPath = (Path) series.getNode();
+                seriesPath.setStrokeWidth(1);
                 seriesPath.getElements().clear();
             }
             while (iter.hasNext()) {
@@ -158,7 +161,16 @@ public class  CandleStickChart extends XYChart<String, Number> {
                     candle.setLayoutX(x);
                     candle.setLayoutY(y);
                 }
-
+                if( seriesPath != null ){
+                    if(seriesPath.getElements().isEmpty()) {
+                        seriesPath.getElements().add(
+                        		new MoveTo(x, getYAxis().getDisplayPosition( bar.getHigh() )));
+                    }
+                    else{
+                        seriesPath.getElements().add(
+                        		new LineTo(x, getYAxis().getDisplayPosition( bar.getHigh() )));
+                    }
+                }
             }
         }
     }
