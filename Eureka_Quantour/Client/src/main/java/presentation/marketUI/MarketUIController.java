@@ -2,8 +2,12 @@ package presentation.marketUI;
 
 import java.io.IOException;
 import java.net.URL;
+import java.rmi.RemoteException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import org.controlsfx.control.Notifications;
 
 import dataController.DataContorller;
 import en_um.Positive;
@@ -33,9 +37,11 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
+import logic.service.StockLogicInterface;
 import logic.service.Stub;
 import presentation.mainScreen.MainScreenController;
 import presentation.singleStockUI.SingleStockUIPopupController;
+import rmi.RemoteHelper;
 import vo.SingleStockInfoVO;
 
 public class MarketUIController implements Initializable {
@@ -85,6 +91,8 @@ public class MarketUIController implements Initializable {
 	 */
 	private MainScreenController controller;
 	
+	private List<SingleStockInfoVO> setStocks;
+	
 	/*
 	 * @description 初始化沪市板块栏的组件
 	 */
@@ -93,9 +101,45 @@ public class MarketUIController implements Initializable {
 		buttonHBox.getChildren().clear();
 		Button HSAButton = new Button("沪市A股");
 		HSAButton.setPrefHeight(37);
+		HSAButton.setOnAction(new EventHandler<ActionEvent>() {
+			LocalDate systemTime = (LocalDate) dataController.get("SystemTime");
+			@Override
+			public void handle(ActionEvent event) {
+				// TODO Auto-generated method stub
+				RemoteHelper remote = RemoteHelper.getInstance();
+				StockLogicInterface stockLogicInterface = remote.getStockLogic();
+				try {
+					setStocks = stockLogicInterface.getStockSetSortedInfo("SHA",systemTime.minusDays(100), null);
+					System.out.println(setStocks.size());
+					initialAllStocksPane(setStocks);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
+					e.printStackTrace();
+				}
+			}
+		});
 		HSAButton.getStylesheets().add(getClass().getClassLoader().getResource("styles/MarketButton.css").toExternalForm());
 		Button HSBButton = new Button("沪市B股");
 		HSBButton.setPrefHeight(37);
+		HSBButton.setOnAction(new EventHandler<ActionEvent>() {
+			LocalDate systemTime = (LocalDate) dataController.get("SystemTime");
+			@Override
+			public void handle(ActionEvent event) {
+				// TODO Auto-generated method stub
+				RemoteHelper remote = RemoteHelper.getInstance();
+				StockLogicInterface stockLogicInterface = remote.getStockLogic();
+				try {
+					setStocks = stockLogicInterface.getStockSetSortedInfo("SHB",systemTime.minusDays(100), null);
+					System.out.println(setStocks.size());
+					initialAllStocksPane(setStocks);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
+					e.printStackTrace();
+				}
+			}
+		});
 		HSBButton.getStylesheets().add(getClass().getClassLoader().getResource("styles/MarketButton.css").toExternalForm());
 		buttonHBox.getChildren().addAll(HSAButton,HSBButton);
 	}
@@ -106,39 +150,130 @@ public class MarketUIController implements Initializable {
 	@FXML
 	protected void goSetSSButtons(ActionEvent e){
 		buttonHBox.getChildren().clear();
-		Button HSAButton = new Button("深市A股");
-		HSAButton.setPrefHeight(37);
-		HSAButton.getStylesheets().add(getClass().getClassLoader().getResource("styles/MarketButton.css").toExternalForm());
-		Button HSBButton = new Button("深市B股");
-		HSBButton.setPrefHeight(37);
-		HSBButton.getStylesheets().add(getClass().getClassLoader().getResource("styles/MarketButton.css").toExternalForm());
+		Button SZAButton = new Button("深市A股");
+		SZAButton.setPrefHeight(37);
+
+		SZAButton.setOnAction(new EventHandler<ActionEvent>() {
+			LocalDate systemTime = (LocalDate) dataController.get("SystemTime");
+
+			@Override
+			public void handle(ActionEvent event) {
+				// TODO Auto-generated method stub
+				
+				RemoteHelper remote = RemoteHelper.getInstance();
+				StockLogicInterface stockLogicInterface = remote.getStockLogic();
+				try {
+					setStocks = stockLogicInterface.getStockSetSortedInfo("SZA",systemTime.minusDays(1), null);
+					initialAllStocksPane(setStocks);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
+					e.printStackTrace();
+				}
+			}
+		});
+		SZAButton.getStylesheets().add(getClass().getClassLoader().getResource("styles/MarketButton.css").toExternalForm());
+		Button SZBButton = new Button("深市B股");
+		SZBButton.setPrefHeight(37);
+		SZBButton.setOnAction(new EventHandler<ActionEvent>() {
+			LocalDate systemTime = (LocalDate) dataController.get("SystemTime");
+			@Override
+			public void handle(ActionEvent event) {
+				// TODO Auto-generated method stub
+				RemoteHelper remote = RemoteHelper.getInstance();
+				StockLogicInterface stockLogicInterface = remote.getStockLogic();
+				try {
+					setStocks = stockLogicInterface.getStockSetSortedInfo("SZB",systemTime.minusDays(1) , null);
+					initialAllStocksPane(setStocks);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
+					e.printStackTrace();
+				}
+			}
+		});
+		SZBButton.getStylesheets().add(getClass().getClassLoader().getResource("styles/MarketButton.css").toExternalForm());
 		Button CYBButton = new Button("创业板");
 		CYBButton.setPrefHeight(37);
+		CYBButton.setOnAction(new EventHandler<ActionEvent>() {
+			LocalDate systemTime = (LocalDate) dataController.get("SystemTime");
+			@Override
+			public void handle(ActionEvent event) {
+				// TODO Auto-generated method stub
+				RemoteHelper remote = RemoteHelper.getInstance();
+				StockLogicInterface stockLogicInterface = remote.getStockLogic();
+				try {
+					setStocks = stockLogicInterface.getStockSetSortedInfo("CYB",systemTime.minusDays(1) , null);
+					initialAllStocksPane(setStocks);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
+					e.printStackTrace();
+				}
+			}
+		});
 		CYBButton.getStylesheets().add(getClass().getClassLoader().getResource("styles/MarketButton.css").toExternalForm());
 		Button ZXBButton = new Button("中小板");
 		ZXBButton.setPrefHeight(37);
+		ZXBButton.setOnAction(new EventHandler<ActionEvent>() {
+			LocalDate systemTime = (LocalDate) dataController.get("SystemTime");
+			@Override
+			public void handle(ActionEvent event) {
+				// TODO Auto-generated method stub
+				RemoteHelper remote = RemoteHelper.getInstance();
+				StockLogicInterface stockLogicInterface = remote.getStockLogic();
+				try {
+					setStocks = stockLogicInterface.getStockSetSortedInfo("ZXB",systemTime.minusDays(1) , null);
+					initialAllStocksPane(setStocks);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
+					e.printStackTrace();
+				}
+			}
+		});
 		ZXBButton.getStylesheets().add(getClass().getClassLoader().getResource("styles/MarketButton.css").toExternalForm());
-		buttonHBox.getChildren().addAll(HSAButton,HSBButton,CYBButton,ZXBButton);
+		buttonHBox.getChildren().addAll(SZAButton,SZAButton,CYBButton,ZXBButton);
 	}
 	/*
 	 * @description 浏览沪深300的监听
 	 */
 	@FXML
 	protected void goBrowseHS300(ActionEvent e){
+		LocalDate systemTime = (LocalDate) dataController.get("SystemTime");
 		buttonHBox.getChildren().clear();
+		RemoteHelper remote = RemoteHelper.getInstance();
+		StockLogicInterface stockLogicInterface = remote.getStockLogic();
+		try {
+			setStocks = stockLogicInterface.getStockSetSortedInfo("HS300", systemTime.minusDays(1), null);
+			initialAllStocksPane(setStocks);
+		} catch (RemoteException e1) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
+			e1.printStackTrace();
+		}
+	}
+	/*
+	 * 初始化所有stocks信息
+	 */
+	private void initialAllStocksPane(List<SingleStockInfoVO> list){
+		initialTenScroll(list);
+		initialStocksFlowPane(list);
 	}
 	
 	/*
 	 * @description 初始化板块内排名前后十的界面
 	 */
 	private void initialTenScroll(List<SingleStockInfoVO> list){
+		upTenFlowPane.getChildren().clear();
+		downTenFlowPane.getChildren().clear();
 		int length = list.size();
-		for(int i =0;i<2;i++){
+		for(int i =0;i<10;i++){
 			SingleStockInfoVO vo = list.get(i);
 			HBox hb = getHBox4TenScoll(vo.getCode(), vo.getName(), vo.getClose(), vo.getFudu());
 			upTenFlowPane.getChildren().add(hb);
 		}
-		for(int i=0;i<2;i++){
+		for(int i=0;i<10;i++){
 			SingleStockInfoVO vo = list.get(length-1-i);
 			HBox hb = getHBox4TenScoll(vo.getCode(), vo.getName(), vo.getClose(), vo.getFudu());
 			downTenFlowPane.getChildren().add(hb);
@@ -246,10 +381,24 @@ public class MarketUIController implements Initializable {
 		}
 		return label;
 	}
-	/*
-	 * @description 初始化显示股市所有股票信息的界面
-	 */
 	private void initialStocksFlowPane(List<SingleStockInfoVO> list){
+		int length = (int) Math.ceil(list.size()/50);
+		initialPagination(length);
+		pagination.currentPageIndexProperty().addListener(new ChangeListener<Number>() {
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				// TODO Auto-generated method stub
+				List<SingleStockInfoVO> sublist = list.subList(newValue.intValue()*50, newValue.intValue()*50+50);
+				initialStocksFlowPane(sublist);
+			}
+		});
+		
+		
+	}
+	/*
+	 * @description 初始化显示股市所有股票信息的界面,为setSocksFlowPane调用
+	 */
+	private void setStocksFlowPane(List<SingleStockInfoVO> list){
 		stocksFlowPane.getChildren().clear();
 		int length = list.size();
 		for(int i=0;i<length;i++){
@@ -380,11 +529,13 @@ public class MarketUIController implements Initializable {
 	/*
 	 * @description 初始化分页控件
 	 */
-	private void initialPagination(){
+	private void initialPagination(int length){
 		pagination = new Pagination();
 		pagePane.getChildren().clear();
 		pagePane.getChildren().add(pagination);
 		pagination.setStyle("-fx-page-information-visible: false;");
+		pagination.setPageCount(length);
+		
 	}
 	/*
 	 * @description 设置主界面的Controller
@@ -401,21 +552,21 @@ public class MarketUIController implements Initializable {
 //		upTenScrollPane.setStyle("-fx-background-color:transparent;");
 //		downTenScrollPane.setStyle("-fx-background-color:transparent;");
 		initialMenuAnchorPane();
-		Stub stub = new Stub();
-		List<SingleStockInfoVO> vo =stub.getStockSetSortedInfo();
-		int length =(int) Math.ceil(vo.size()/50);
-		Pagination pagination = new Pagination();
-		pagePane.getChildren().add(pagination);
-		pagination.setStyle("-fx-page-information-visible: false;");
-		pagination.setPageCount(length);
-		pagination.currentPageIndexProperty().addListener(new ChangeListener<Number>() {
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				// TODO Auto-generated method stub
-				List<SingleStockInfoVO> list = vo.subList(newValue.intValue()*50, newValue.intValue()*50+50);
-				initialStocksFlowPane(list);
-			}
-		});
+//		Stub stub = new Stub();
+//		List<SingleStockInfoVO> vo =stub.getStockSetSortedInfo();
+//		int length =(int) Math.ceil(vo.size()/50);
+//		Pagination pagination = new Pagination();
+//		pagePane.getChildren().add(pagination);
+//		pagination.setStyle("-fx-page-information-visible: false;");
+//		pagination.setPageCount(length);
+//		pagination.currentPageIndexProperty().addListener(new ChangeListener<Number>() {
+//			@Override
+//			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+//				// TODO Auto-generated method stub
+//				List<SingleStockInfoVO> list = vo.subList(newValue.intValue()*50, newValue.intValue()*50+50);
+//				initialStocksFlowPane(list);
+//			}
+//		});
 	}
 
 }
