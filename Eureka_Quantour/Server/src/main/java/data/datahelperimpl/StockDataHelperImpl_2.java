@@ -22,6 +22,7 @@ import java.util.Scanner;
 import data.common.DateTrie;
 import data.common.IndexTree;
 import data.datahelperservice.IStockDataHelper_2;
+import data.fetchdataimpl.DailyFetchThread;
 import data.fetchdataimpl.StockDataFetchImpl;
 import data.fetchdataservice.IStockDataFetch;
 import data.parse.Parse;
@@ -84,7 +85,7 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 //		check2();
 //		check();
 //	    
-		test();
+//		test();
 	}
 	/**
 	 * 初始化装载数据的容器
@@ -131,7 +132,7 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 //			thread.waitoneday();
 		}
 		else{
-//			thread.start();
+//			thread.start(0);
 		}
 	}
 	/**

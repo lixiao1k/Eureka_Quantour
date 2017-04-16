@@ -122,16 +122,15 @@ public class StockInfoFetchByWeb {
 				}
 			}
 		}
+		OutputStream os=new FileOutputStream("config/stock/dataconfig.properties");
 		if(flag){
-			OutputStream os=new FileOutputStream("config/stock/dataconfig.properties");
 			pro.setProperty("lastday", lastday);
-			pro.store(os, "update personalSize");
 		}
-		else{
-			OutputStream os=new FileOutputStream("config/stock/dataconfig.properties");
+		else{	
 			pro.setProperty("lastday", enddate);
-			pro.store(os, "update personalSize");
 		}
+		pro.setProperty("lastUpdateDay", enddate);
+		pro.store(os, "update personalSize");
 		}catch(IOException e){
 			e.printStackTrace();
 		}
