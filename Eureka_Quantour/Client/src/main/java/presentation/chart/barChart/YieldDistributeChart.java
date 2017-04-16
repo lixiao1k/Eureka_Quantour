@@ -11,6 +11,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
@@ -19,6 +20,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import presentation.chart.chartService;
 import presentation.chart.function.CatchMouseMove;
 import presentation.chart.function.CatchMouseMoveService;
@@ -129,6 +132,7 @@ public class YieldDistributeChart implements chartService{
     	barChart.setMinSize(width, height);
     	
     	info = catchMouseMove.catchMouseReturnInfoForStackPane(barChart, dataMap, yield, "收益率", 10);
+    	
     	begin = commonSet.beignDataForAnchorPane( yield[0], height);
     	end = commonSet.endDataForAnchorPane( yield[yield.length-1], width, height );
     	begin.setLayoutX(begin.getLayoutX()+10);

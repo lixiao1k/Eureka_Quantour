@@ -10,8 +10,11 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 
 public class CatchMouseMove implements CatchMouseMoveService{
+	
+	private String dataInfo = new String();;
 	
 	@Override
 	public Label catchMouseReturnInfoForAnchorPane(XYChart<String, Number> chart, Map<String, String> dataMap,
