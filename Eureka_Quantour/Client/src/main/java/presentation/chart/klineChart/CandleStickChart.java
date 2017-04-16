@@ -107,6 +107,7 @@ public class  CandleStickChart extends XYChart<String, Number> {
             		     +"close : "+df.format( bar.getClose() )+"\n"
             		     +"high : "+df.format( bar.getHigh() )+"\n"
             		     +"low : "+df.format( bar.getLow() )+"\n"
+                         +"5EMA : "+ df.format( bar.getHigh() )+"\n"
             		     +"volume : "+bar.getVolume();
             dataMap.put(label, info);
         }

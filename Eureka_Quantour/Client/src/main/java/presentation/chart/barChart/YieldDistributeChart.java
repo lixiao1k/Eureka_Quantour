@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.Node;
 import javafx.geometry.Insets;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
@@ -87,6 +90,22 @@ public class YieldDistributeChart implements chartService{
         	seriem.getData().add( new XYChart.Data<>(yield[i], -Math.abs(pandm.get(1))) );
         	dataStrings[i] = namep+" : "+pandm.get(0)+"/"+namem+" : "+pandm.get(1);
         }
+        seriep.nodeProperty().addListener(new ChangeListener<Node>() {
+                @Override
+                public void changed(ObservableValue<? extends Node> observable, Node oldValue, Node newValue) {
+                    if (newValue != null) {
+                        newValue.setStyle("-fx-bar-fill: red;");
+                    }
+                }
+            });
+        seriem.nodeProperty().addListener(new ChangeListener<Node>() {
+                @Override
+                public void changed(ObservableValue<? extends Node> observable, Node oldValue, Node newValue) {
+                    if (newValue != null) {
+                        newValue.setStyle("-fx-bar-fill: green;");
+                    }
+                }
+            });
         barChart.getData().add(seriep);
         barChart.getData().add(seriem);
         
