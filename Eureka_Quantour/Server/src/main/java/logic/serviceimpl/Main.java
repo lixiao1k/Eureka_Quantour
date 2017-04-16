@@ -22,15 +22,18 @@ public class Main {
         StockLogicImpl s =new StockLogicImpl();
         Utility utility=Utility.getInstance();
         StrategyConditionVO stragetyConditionVo=new StrategyConditionVO();
-        stragetyConditionVo.setName("均值策略");
+        stragetyConditionVo.setName("动量策略");
         List<Object> list=new ArrayList<>();
         list.add(new Integer(20));
         stragetyConditionVo.setNums(10);
         stragetyConditionVo.setExtra(list);
         SaleVO saleVO=new SaleVO();
         saleVO.setTiaocangqi(10);
-        s.setStrategy(stragetyConditionVo,saleVO,LocalDate.of(2016,01,01),LocalDate.of(2016,10,01),"SHA",null);
-        System.out.print(s.getYieldChartData().getCeluelist());
+        System.out.println(s.getStockSetSortedInfo("SHA",LocalDate.now().plusDays(-1),null));
+//        s.setStrategy(stragetyConditionVo,saleVO,LocalDate.of(2013,01,01),LocalDate.of(2016,11,01),"SHA",null);
+//        System.out.print(s.getYieldChartData().getJizhunlist().size());
+        System.out.println();
+//        System.out.print(s.getYieldChartData().getCeluelist().size());
 //        IDataInterface s=new DataInterfaceImpl();
 //        LocalDate p=LocalDate.of(2015,01,01);
 //

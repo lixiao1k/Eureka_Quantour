@@ -152,7 +152,6 @@ public class Return {
         double init=100.0;
         List<Double> list=new ArrayList<>();
         LocalDate iter=LocalDate.of(begin.getYear(),begin.getMonth(),begin.getDayOfMonth());
-        System.out.println("end "+end);
         try {
             for (;
                  iter.compareTo(end)<0;
@@ -160,7 +159,6 @@ public class Return {
             {
                 double zheci=0;
                 double shangci=0;
-                System.out.println(iter);
                 List<SingleStockInfoPO> polist=new ArrayList<>();
 
                 for(String name:stockcode){
@@ -199,7 +197,7 @@ public class Return {
 
             }
         } catch (DateOverException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
         celueshouyilv=list;
         return list;
@@ -275,27 +273,47 @@ public class Return {
             try {
                 before = idi.addDays(now,-days);
             } catch (DateOverException e) {
-                e.printStackTrace();
             }
 
-            SingleStockInfoPO o3;
-            SingleStockInfoPO o4;
+            SingleStockInfoPO o3=null;
+            SingleStockInfoPO o4=null;
             double rate1=0;
             double rate2=0;
             try {
                 o3 = idi.getSingleStockInfo(name1,before);
-                o4 = idi.getSingleStockInfo(name2,before);
-                rate1=(o3.getAftClose()-o1.getAftClose())/o3.getAftClose();
-                rate2=(o4.getAftClose()-o2.getAftClose())/o4.getAftClose();
+
+
             } catch (NullStockIDException e) {
                 e.printStackTrace();
             } catch (NullDateException e) {
 //                e.printStackTrace();
             }
 
+            try {
+                o4 = idi.getSingleStockInfo(name2,before);
+            } catch (NullStockIDException e) {
+                e.printStackTrace();
+            } catch (NullDateException e) {
+//                e.printStackTrace();
+            }
+
+            if ((o3==null)&&(o4==null))
+                return 0;
+
+            if (o3==null)
+                return Integer.MAX_VALUE;
+            if (o4==null)
+                return -Integer.MAX_VALUE;
+
+            rate1=(o3.getAftClose()-o1.getAftClose())/o3.getAftClose();
+            rate2=(o4.getAftClose()-o2.getAftClose())/o4.getAftClose();
+            int p=(int)rate1*100;
+            int q=(int)rate2*100;
 
 
-            return (int) (rate1-rate2)*100;
+
+
+            return p-q;
 
         }
     }
