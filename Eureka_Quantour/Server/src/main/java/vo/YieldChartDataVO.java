@@ -81,4 +81,6 @@ public class YieldChartDataVO implements Serializable{
     public void setYearreturn(double yearreturn) {
         this.yearreturn = yearreturn;
     }
+
+
 }

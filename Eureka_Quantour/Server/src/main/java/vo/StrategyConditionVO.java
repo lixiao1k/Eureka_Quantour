@@ -37,4 +37,13 @@ public class StrategyConditionVO implements Serializable{
         this.extra = extra;
     }
 
+    public StrategyConditionVO(String name, List<Object> extra, int nums) {
+        this.name = name;
+        this.extra = extra;
+        this.nums = nums;
+    }
+
+    public StrategyConditionVO( ) {
+
+    }
 }
