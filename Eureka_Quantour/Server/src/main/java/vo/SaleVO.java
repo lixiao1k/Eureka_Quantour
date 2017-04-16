@@ -27,4 +27,12 @@ public class SaleVO implements Serializable {
     public void setTiaocangjiage(String tiaocangjiage) {
         this.tiaocangjiage = tiaocangjiage;
     }
+
+    public SaleVO(int tiaocangqi, String tiaocangjiage) {
+        this.tiaocangqi = tiaocangqi;
+        this.tiaocangjiage = tiaocangjiage;
+    }
+
+    public SaleVO() {
+    }
 }
