@@ -49,9 +49,6 @@ public class StockInfoFetchByWeb {
 	private long total;
 	
 	private InitEnvironment ie;
-	public static void main(String[] args){
-		new StockInfoFetchByWeb();
-	}
 	public StockInfoFetchByWeb(){
 		ie=InitEnvironment.getInstance();
 		df1 = new DecimalFormat("0.00");
@@ -341,7 +338,6 @@ public class StockInfoFetchByWeb {
 			BufferedWriter bw=new BufferedWriter(new FileWriter("config/resources/mainData",isAddition));
 			DateLeaf p;
 			int total=pretotal;
-			total=0;
 			int size=presize;
 			p=trie.getMin();
 			while(p!=null){
