@@ -13,7 +13,7 @@ import vo.YieldChartDataVO;
 
 /**
  * 
- * @Description: Test ComparedChart. when test is finished, I will delete it.
+ * @Description: Test ComparedChart. when project is finished, I will delete it.
  * @author: hzp
  * @time: 2017年4月1日
  */
@@ -121,7 +121,7 @@ public class test extends Application{
 	        dialogStage.initModality(Modality.WINDOW_MODAL);
 	        dialogStage.initOwner(primaryStage);
 	        
-	        Scene scene = new Scene(comparedChart.getchart(500, 400));
+	        Scene scene = new Scene(comparedChart.getchart(800, 300));
 //	        Scene scene = new Scene(singleLineChart.getchart(334, 200));
 //	        Scene scene = new Scene(emaChart.getchart(334, 200));
 	        dialogStage.setScene(scene);
