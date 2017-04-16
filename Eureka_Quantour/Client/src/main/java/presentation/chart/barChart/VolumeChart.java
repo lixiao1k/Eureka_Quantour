@@ -36,6 +36,9 @@ public class VolumeChart {
         volumechart = new BarChart<>(xAxis,yAxis);
         volumechart.setHorizontalGridLinesVisible(false);
         volumechart.setVerticalGridLinesVisible(false);
+        volumechart.setLegendVisible(false);
+        volumechart.setBarGap(0);
+        volumechart.setCategoryGap(0);
 
         XYChart.Series<String,Number> series = new XYChart.Series<>();
 
@@ -58,9 +61,6 @@ public class VolumeChart {
         }
 
         volumechart.getData().add(series);
-        volumechart.setLegendVisible(false);
-//        volumechart.setMaxSize(1000, 50);
-        volumechart.setBarGap(0);
         volumechart.getStylesheets().add(getClass().getResource("/styles/VolumeChart.css").toExternalForm());
         for (XYChart.Series<String, Number> s : volumechart.getData()) {
             for (XYChart.Data<String, Number> d : s.getData()) {

@@ -59,15 +59,14 @@ public class YieldDistributeChart implements chartService{
         yAxis.autoRangingProperty().set(true);
         yAxis.setAnimated(true);
         yAxis.forceZeroInRangeProperty().setValue(false);
-//        yAxis.setTickLabelsVisible(false);
         yAxis.setPrefWidth(1);
         yAxis.setOpacity(0.7);
 	    
         barChart = new BarChart<>(xAxis, yAxis);
         barChart.setVerticalGridLinesVisible(false);
-//        barChart.setHorizontalGridLinesVisible(false);
         barChart.setBarGap(0);
         barChart.setPadding(new Insets(10,10,10,10));
+        barChart.setCategoryGap(0);
 	    
         List<Double> yieldL = new ArrayList<>( keySet );
         yieldL = sortDouble(yieldL);
@@ -83,14 +82,13 @@ public class YieldDistributeChart implements chartService{
 	     
         XYChart.Series<String, Number> seriem = new XYChart.Series<>();
         XYChart.Series<String, Number> seriep = new XYChart.Series<>();
+        
         String namep = "正收益",  namem= "负收益";
         for( int i=0; i<yield.length; i++){
         	pandm = zuhe.get(yieldL.get(i));
-        	seriep.getData().add( new XYChart.Data<>(yield[i], Math.abs(pandm.get(0))) );
-        	seriem.getData().add( new XYChart.Data<>(yield[i], -Math.abs(pandm.get(1))) );
-        	dataStrings[i] = namep+" : "+pandm.get(0)+"/"+namem+" : "+pandm.get(1);
-        }
-        seriep.nodeProperty().addListener(new ChangeListener<Node>() {
+        	XYChart.Data<String,Number> sp= new XYChart.Data<>(yield[i], Math.abs(pandm.get(0)));
+            XYChart.Data<String,Number> sm= new XYChart.Data<>(yield[i], -Math.abs(pandm.get(0)));
+            sp.nodeProperty().addListener(new ChangeListener<Node>() {
                 @Override
                 public void changed(ObservableValue<? extends Node> observable, Node oldValue, Node newValue) {
                     if (newValue != null) {
@@ -98,7 +96,7 @@ public class YieldDistributeChart implements chartService{
                     }
                 }
             });
-        seriem.nodeProperty().addListener(new ChangeListener<Node>() {
+            sm.nodeProperty().addListener(new ChangeListener<Node>() {
                 @Override
                 public void changed(ObservableValue<? extends Node> observable, Node oldValue, Node newValue) {
                     if (newValue != null) {
@@ -106,6 +104,11 @@ public class YieldDistributeChart implements chartService{
                     }
                 }
             });
+        	seriep.getData().add( sp );
+        	seriem.getData().add( sm );
+        	dataStrings[i] = namep+" : "+pandm.get(0)+"/"+namem+" : "+pandm.get(1);
+        }
+       
         barChart.getData().add(seriep);
         barChart.getData().add(seriem);
         
