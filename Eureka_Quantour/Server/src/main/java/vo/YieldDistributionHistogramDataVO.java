@@ -27,4 +27,6 @@ public class YieldDistributionHistogramDataVO implements Serializable{
     public void setZuhe(Map<Double, List<Integer>> zuhe) {
         this.zuhe = zuhe;
     }
+
+
 }

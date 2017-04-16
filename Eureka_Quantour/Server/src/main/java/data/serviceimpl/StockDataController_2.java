@@ -30,6 +30,10 @@ public class StockDataController_2 {
 		if(stockdatacontroller==null) stockdatacontroller=new StockDataController_2();
 		return stockdatacontroller;
 	}
+	public void reload(){
+		datahelper=null;
+		datahelper=new StockDataHelperImpl_2();
+	}
 //	/**
 //	 * 判断是否是交易日
 //	 * @param day 需要判断的日期

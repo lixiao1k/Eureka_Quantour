@@ -149,7 +149,7 @@ public class SingleStockInfoPO
 		setOpen(strTodouble(input[0]));
 		setHigh(strTodouble(input[1]));
 		setLow(strTodouble(input[2]));
-		setVolume(Integer.parseInt(input[6]));
+		setVolume(Long.parseLong(input[6]));
 		
 		setClose(strTodouble(input[3]));
 		setSubClose(strTodouble(input[7]));

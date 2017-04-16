@@ -29,11 +29,23 @@ public class Main {
         stragetyConditionVo.setExtra(list);
         SaleVO saleVO=new SaleVO();
         saleVO.setTiaocangqi(10);
-        System.out.println(s.getStockSetSortedInfo("SHA",LocalDate.now().plusDays(-1),null));
-//        s.setStrategy(stragetyConditionVo,saleVO,LocalDate.of(2013,01,01),LocalDate.of(2016,11,01),"SHA",null);
-//        System.out.print(s.getYieldChartData().getJizhunlist().size());
-        System.out.println();
-//        System.out.print(s.getYieldChartData().getCeluelist().size());
+        List<SingleStockInfoVO> p=s.getStockSetSortedInfo("SHA",LocalDate.now().of(2016,3,6),null);
+//        SingleStockInfoVO vo= null;
+//        try {
+//            vo = s.getStockBasicInfo("000900", LocalDate.of(2016,03,9));
+//        } catch (NullStockIDException e) {
+//            e.printStackTrace();
+//        } catch (NullDateException e) {
+//            e.printStackTrace();
+//        }
+//        System.out.println(vo.getFudu());
+        for (SingleStockInfoVO vo:p){
+            System.out.println(vo.getClose()+"  "+vo.getFudu()+" "+vo.getOpen());
+        }
+//        s.setStrategy(stragetyConditionVo,saleVO,LocalDate.of(2013,01,01),LocalDate.of(2015,1,01),"SHA",null);
+//        System.out.print(s.getYieldChartData().getJizhunlist());
+//        System.out.println();
+//        System.out.print(s.getYieldChartData().getCeluelist());
 //        IDataInterface s=new DataInterfaceImpl();
 //        LocalDate p=LocalDate.of(2015,01,01);
 //

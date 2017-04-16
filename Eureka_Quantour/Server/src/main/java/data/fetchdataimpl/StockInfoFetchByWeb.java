@@ -49,9 +49,6 @@ public class StockInfoFetchByWeb {
 	private long total;
 	
 	private InitEnvironment ie;
-	public static void main(String[] args){
-		new StockInfoFetchByWeb();
-	}
 	public StockInfoFetchByWeb(){
 		ie=InitEnvironment.getInstance();
 		df1 = new DecimalFormat("0.00");
@@ -96,7 +93,6 @@ public class StockInfoFetchByWeb {
 		}
 		String enddate=sdf.format(cal.getTime());
 		long time=System.currentTimeMillis();
-		
 		try{
 			Properties pro=new Properties();
 			File profile=new File("config/stock/dataconfig.properties");
@@ -106,18 +102,37 @@ public class StockInfoFetchByWeb {
 			InputStream is=new FileInputStream("config/stock/dataconfig.properties");
 			pro.load(is);
 			is.close();
-			OutputStream os=new FileOutputStream("config/stock/dataconfig.properties");
-			pro.setProperty("lastday", enddate);
-			pro.store(os, "update personalSize");
-		}catch(IOException e){
-			e.printStackTrace();
-		}
-		
-		
+			String lastday=pro.getProperty("lastday");
+			int date1=Parse.getInstance().getIntDate(lastday);
+		boolean flag=true;
 		for(String stock:stocklist){
 			count++;
 			System.out.println("正在处理第"+count+"个，总共"+i+"个"+"剩余"+(i-count)+"个。");
-			fetchdate(stock,enddate);
+			String date2=fetchdate(stock,enddate);
+			if(flag){
+				if(date2!=null){
+					int tempdate=Parse.getInstance().getIntDate(date2);
+					if(tempdate>date1){
+						date1=tempdate;
+						lastday=date2;
+						if(date2.equals(enddate)){
+							flag=false;
+						}
+					}
+				}
+			}
+		}
+		OutputStream os=new FileOutputStream("config/stock/dataconfig.properties");
+		if(flag){
+			pro.setProperty("lastday", lastday);
+		}
+		else{	
+			pro.setProperty("lastday", enddate);
+		}
+		pro.setProperty("lastUpdateDay", enddate);
+		pro.store(os, "update personalSize");
+		}catch(IOException e){
+			e.printStackTrace();
 		}
 		long time1=System.currentTimeMillis();
 		System.out.println("花费时间：" +(time1-time)+"ms");
@@ -275,11 +290,11 @@ public class StockInfoFetchByWeb {
 				pro.setProperty("lastday", Parse.getInstance().intTocal(trie.getMax().getCal()));
 				pro.store(os, "update personalSize");
 				count=0;
-//				for(String code:list){
-//					count++;
-//					System.out.println("正在处理第"+count+"个，总共"+i+"个"+"剩余"+(i-count)+"个。");
-//					generateStockIndex(presize,code,trie,isAddition);
-//				}
+				for(String code:list){
+					count++;
+					System.out.println("正在处理第"+count+"个，总共"+i+"个"+"剩余"+(i-count)+"个。");
+					generateStockIndex(presize,code,trie,isAddition);
+				}
 			}
 		}catch(IOException e){
 			e.printStackTrace();
@@ -297,14 +312,14 @@ public class StockInfoFetchByWeb {
 				str=str.substring(11);
 				int day=Integer.parseInt(encodeDate(cal));
 				if(day>startday){
-//					File file=new File("config/resources/date/calendarDate/");
-//					if(!file.exists()&&!file.isDirectory()){
-//						file.mkdir();
-//					}
-//					BufferedWriter bw=new BufferedWriter(new FileWriter("config/resources/date/calendarDate/"+day,true));
+					File file=new File("config/resources/date/calendarDate/");
+					if(!file.exists()&&!file.isDirectory()){
+						file.mkdir();
+					}
+					BufferedWriter bw=new BufferedWriter(new FileWriter("config/resources/date/calendarDate/"+day,true));
 					trie.add(day, Integer.valueOf(code));
-//					bw.write(str+"\n");
-//					bw.close();
+					bw.write(str+"\n");
+					bw.close();
 				}
 			}
 			br1.close();
@@ -322,11 +337,9 @@ public class StockInfoFetchByWeb {
 			BufferedWriter bw=new BufferedWriter(new FileWriter("config/resources/mainData",isAddition));
 			DateLeaf p;
 			int total=pretotal;
-			total=0;
 			int size=presize;
 			p=trie.getMin();
 			while(p!=null){
-				System.out.println(p.getCal());
 				bw_tc.write(p.getCal()+""+total+"\n");
 				BufferedReader br1=new BufferedReader(new FileReader("config/resources/date/calendarDate/"+p.getCal()));
 				int temptotal=0;
@@ -768,7 +781,7 @@ public class StockInfoFetchByWeb {
 	 * @param code 股票编号
 	 * @param enddate 结束日期
 	 */
-	private void fetchdate(String code,String enddate){
+	private String fetchdate(String code,String enddate){
 		try {
 			String codepath=stockroot+"/"+code+"/";
 			Properties pro=new Properties();
@@ -813,9 +826,12 @@ public class StockInfoFetchByWeb {
 				pro.setProperty("last_day", date[0]);
 				pro.setProperty("update_day", decodeDate(enddate));
 				pro.store(out, "update info up to" + date[0]);
+				return date[0];
 			}
+			return null;
 		} catch (IOException e) {
 			e.printStackTrace();
+			return null;
 		}
 	}
 	/**
