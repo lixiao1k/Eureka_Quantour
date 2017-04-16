@@ -120,6 +120,12 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 		fetch=StockDataFetchImpl.getInstance();
 		parse=Parse.getInstance();
 		infopath=new File(ie.getPath("stockinfo"));
+		try {
+			fetch.fetchAllStockInfo();
+		} catch (InternetdisconnectException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 //		DailyFetchThread thread=new DailyFetchThread();
 		if(!infopath.exists()&&!infopath.isDirectory()){
 			try {
