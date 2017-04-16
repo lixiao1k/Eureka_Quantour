@@ -31,6 +31,7 @@ public class KLineChart implements chartService {
     private CandleStickChart candlestickchart;
     private VolumeChart volumeChart;
     private BarChart<String, Number> volumeBarChart;
+    private int datanum = 0;
 
     public KLineChart(List<SingleStockInfoVO> stocklist){
         this.candlestickchart = new CandleStickChart("k线图", stocklist);
@@ -38,8 +39,9 @@ public class KLineChart implements chartService {
         candlestickchart.setHorizontalGridLinesVisible(false);
         candlestickchart.setVerticalGridLinesVisible(false);
         
-        if (stocklist.size()>63) 
-        	candlestickchart.setCandlewidth(630/stocklist.size());
+        datanum = stocklist.size();
+//        if (stocklist.size()>63)
+//        	candlestickchart.setCandlewidth(630/stocklist.size());
         
         candlestickchart.getStylesheets().add(getClass().getResource("/styles/CandleStickChartStyles.css").toExternalForm());
     }
@@ -50,6 +52,10 @@ public class KLineChart implements chartService {
     		width = 334;
     	if( height<=0 )
     		height = 200;
+    	
+    	if( datanum>30 )
+        	candlestickchart.setCandlewidth( width/datanum );
+    	
     	
     	volumeBarChart = (BarChart<String, Number>)volumeChart.getchart(width, height/8*3);
     	candlestickchart.setMaxSize(width, height/8*6);

@@ -198,6 +198,8 @@ public class ComparedChart implements chartService{
      * @param: maxre:最大回撤
      */
     private void initInfo(double layout, double space){
+    	layout = 70;
+    	
     	infopane.setPrefSize(layout*8, space);
     	Label yearyield = new Label();
     	Label basicyearyield = new Label();
@@ -235,7 +237,7 @@ public class ComparedChart implements chartService{
     	infopane.getChildren().add(infobilv);
     	infopane.getChildren().add(maxre);
     	
-    	double index = 8;
+    	double index = 10;
     	AnchorPane.setLeftAnchor(yearyield, index);
     	
     	index += layout;
