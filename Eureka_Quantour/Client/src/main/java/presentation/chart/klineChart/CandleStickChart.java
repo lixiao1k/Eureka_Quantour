@@ -21,7 +21,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
@@ -86,7 +85,7 @@ public class  CandleStickChart extends XYChart<String, Number> {
         this.yAxis = yAxis;
         xAxis.setAnimated(true);
         xAxis.setPrefHeight(0);
-        xAxis.setStartMargin(10);
+        xAxis.setStartMargin(5);
         xAxis.setOpacity(0);
         
         yAxis.autoRangingProperty().set(true);
@@ -94,7 +93,7 @@ public class  CandleStickChart extends XYChart<String, Number> {
         yAxis.forceZeroInRangeProperty().setValue(Boolean.FALSE);
         setAnimated(true);
         yAxis.setAnimated(true);
-        yAxis.setOpacity(0.5);
+        yAxis.setOpacity(0);
         yAxis.setTickLabelsVisible(false);
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         

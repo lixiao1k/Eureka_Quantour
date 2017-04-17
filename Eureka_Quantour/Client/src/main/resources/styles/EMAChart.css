@@ -4,6 +4,10 @@
 
 .chart{
 	-fx-background-color:transparent;
+	-fx-padding: 0px;
+}
+.chart-content {
+    -fx-padding: 5px; 
 }
 .chart-title {
   -fx-text-fill: #cde6c7;

@@ -24,13 +24,14 @@ public class VolumeChart {
         xAxis.setGapStartAndEnd(false);
         xAxis.setTickMarkVisible(false);
         xAxis.setTickLabelsVisible(false);
-        xAxis.setStartMargin(10);
+        xAxis.setStartMargin(5);
+        xAxis.setOpacity(0.5);
         
         yAxis = new NumberAxis();
         yAxis.setPrefWidth(1);
         yAxis.autoRangingProperty().set(true);
         yAxis.forceZeroInRangeProperty().setValue(Boolean.FALSE);
-        yAxis.setOpacity(0.5);
+        yAxis.setOpacity(0);
         yAxis.setTickLabelsVisible(false);
 
         volumechart = new BarChart<>(xAxis,yAxis);

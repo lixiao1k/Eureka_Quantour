@@ -11,8 +11,6 @@ import javafx.scene.layout.StackPane;
 import presentation.chart.chartService;
 import presentation.chart.function.CatchMouseMove;
 import presentation.chart.function.CatchMouseMoveService;
-import presentation.chart.function.CommonSet;
-import presentation.chart.function.CommonSetService;
 import presentation.chart.function.ListToArray;
 import presentation.chart.function.ListToArrayService;
 import vo.EMAInfoVO;
@@ -36,13 +34,10 @@ public class EMAChart implements chartService {
 	
 	private CatchMouseMoveService catchMouseMove = new CatchMouseMove();
 	private ListToArrayService listToArray = new ListToArray();
-	private CommonSetService commonSet = new CommonSet();
 	
 	private AnchorPane pane = new AnchorPane();
 	private StackPane chartPane = new StackPane();
 	private Label info = new Label();
-	private Label begin = new Label();
-	private Label end = new Label();
 	
     protected NumberAxis yAxis;
     protected CategoryAxis xAxis;
@@ -63,8 +58,8 @@ public class EMAChart implements chartService {
         xAxis.setGapStartAndEnd(false);
         xAxis.setTickLabelsVisible(false);
         xAxis.setTickMarkVisible(false);
-        xAxis.setStartMargin(10);
-        xAxis.setOpacity(0.7);
+        xAxis.setStartMargin(5);
+        xAxis.setOpacity(0.5);
         
         yAxis = new NumberAxis();
         yAxis.autoRangingProperty().set(true);
@@ -72,7 +67,7 @@ public class EMAChart implements chartService {
         yAxis.forceZeroInRangeProperty().setValue(false);
         yAxis.setTickLabelsVisible(false);
         yAxis.setPrefWidth(1);
-        yAxis.setOpacity(0.7);
+        yAxis.setOpacity(0);
         
         lineChart = new LineChart<>(xAxis, yAxis);
         lineChart.setHorizontalGridLinesVisible(false);
@@ -127,8 +122,6 @@ public class EMAChart implements chartService {
             System.out.println("series-"+s.getName());
             s.getNode().getStyleClass().add("series-"+s.getName());
         }
-
-//        lineChart.getStylesheets().add(getClass().getResource("/styles/EMAChart.css").toExternalForm());
     }
 
     @Override
@@ -140,16 +133,12 @@ public class EMAChart implements chartService {
     	lineChart.setMaxSize(width, height);
     	lineChart.setMinSize(width, height);
     	
-    	info = catchMouseMove.catchMouseReturnInfoForStackPane(lineChart, dataMap, dates, "date", 10);
-    	begin = commonSet.beignDataForAnchorPane(dates[0], height);
-    	end = commonSet.endDataForAnchorPane(dates[dates.length-1], width, height);
+    	info = catchMouseMove.catchMouseReturnInfoForStackPane(lineChart, dataMap, dates, "date", 5);
     	
     	chartPane.getChildren().add(lineChart);
     	chartPane.getChildren().add(info);
 
     	pane.getChildren().add(chartPane);
-    	pane.getChildren().add(begin);
-    	pane.getChildren().add(end);
     	
     	info.getStylesheets().add(
     			getClass().getResource("/styles/InfoLabel.css").toExternalForm() );

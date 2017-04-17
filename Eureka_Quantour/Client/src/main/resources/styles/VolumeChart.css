@@ -13,7 +13,7 @@
 }
 
 .chart {
-	-fx-padding: 10px;
+	-fx-padding: 0px;
 }
 .chart-content {
     -fx-padding: 5px; 

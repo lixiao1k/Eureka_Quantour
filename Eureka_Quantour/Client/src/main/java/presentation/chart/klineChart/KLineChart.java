@@ -12,22 +12,17 @@ import presentation.chart.chartService;
 import presentation.chart.barChart.VolumeChart;
 import presentation.chart.function.CatchMouseMove;
 import presentation.chart.function.CatchMouseMoveService;
-import presentation.chart.function.CommonSet;
-import presentation.chart.function.CommonSetService;
 import vo.SingleStockInfoVO;
 
 public class KLineChart implements chartService {
 
 	private CatchMouseMoveService catchMouseMove = new CatchMouseMove();
-	private CommonSetService commonSet = new CommonSet();
 	
 	private AnchorPane pane = new AnchorPane();
 	private StackPane chart1 = new StackPane();
 	private StackPane chart2 = new StackPane();
 	private Label info = new Label();
 	private Label infoD = new Label();
-	private Label begin = new Label();
-	private Label end = new Label();
     private CandleStickChart candlestickchart;
     private VolumeChart volumeChart;
     private BarChart<String, Number> volumeBarChart;
@@ -62,11 +57,9 @@ public class KLineChart implements chartService {
     	candlestickchart.setMinSize(width, height/8*6);
     	
     	info = catchMouseMove.catchMouseReturnInfoForStackPane(
-    			candlestickchart, candlestickchart.dataMap, candlestickchart.dates, "date", 10);
+    			candlestickchart, candlestickchart.dataMap, candlestickchart.dates, "date", 5);
     	infoD = catchMouseMove.catchMouseReturnInfoForStackPane(
-    			volumeBarChart, candlestickchart.dataMap, candlestickchart.dates, "date", 10);
-    	begin = commonSet.beignDataForStackPane( candlestickchart.dates[0], height);
-    	end = commonSet.endDataForStackPane(candlestickchart.dates[candlestickchart.dates.length-1], width, height);
+    			volumeBarChart, candlestickchart.dataMap, candlestickchart.dates, "date", 5);
     	
     	chart1.getChildren().add(candlestickchart);
     	StackPane.setAlignment(candlestickchart, Pos.BOTTOM_CENTER);
@@ -75,9 +68,7 @@ public class KLineChart implements chartService {
     	
     	chart2.getChildren().add(volumeBarChart);
     	StackPane.setAlignment(volumeBarChart, Pos.TOP_CENTER);
-    	chart2.getChildren().add(begin);
-    	chart2.getChildren().add(end);
-    	
+
     	pane.getChildren().add(chart1);
     	pane.getChildren().add(chart2);
     	AnchorPane.setTopAnchor(chart2, height/8*5.0);
