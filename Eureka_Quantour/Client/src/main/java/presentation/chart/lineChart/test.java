@@ -25,6 +25,7 @@ public class test extends Application{
     private static ComparedChart comparedChart;
     private static SingleLineChart singleLineChart;
     private static EMAChart emaChart;
+    private static YieldComparedChart yieldComparedChart;
     
     private void testYieldComparedChart(){
     	int j = 2;
@@ -50,7 +51,7 @@ public class test extends Application{
 		ycd.setAlpha(0.146);
 		ycd.setBeta(0.97);
 		ycd.setSharpe(1.29);
-		comparedChart = new ComparedChart().setData(ycd);
+		yieldComparedChart = new YieldComparedChart( ycd );
 //		comparedChart.setName("ComparedChart");
     }
     
@@ -121,7 +122,7 @@ public class test extends Application{
 	        dialogStage.initModality(Modality.WINDOW_MODAL);
 	        dialogStage.initOwner(primaryStage);
 	        
-	        Scene scene = new Scene(comparedChart.getchart(800, 300));
+	        Scene scene = new Scene(yieldComparedChart.getchart(800, 300));
 //	        Scene scene = new Scene(singleLineChart.getchart(334, 200));
 //	        Scene scene = new Scene(emaChart.getchart(334, 200));
 	        dialogStage.setScene(scene);

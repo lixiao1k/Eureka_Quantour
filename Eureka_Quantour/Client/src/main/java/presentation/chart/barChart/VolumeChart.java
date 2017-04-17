@@ -20,24 +20,27 @@ public class VolumeChart {
     private BarChart<String, Number> volumechart ;
 
     public VolumeChart(List<SingleStockInfoVO> list){
-        xAxis=new CategoryAxis();
+        xAxis = new CategoryAxis();
         xAxis.setGapStartAndEnd(false);
         xAxis.setTickMarkVisible(false);
         xAxis.setTickLabelsVisible(false);
         xAxis.setStartMargin(10);
         
-        yAxis=new NumberAxis();
+        yAxis = new NumberAxis();
         yAxis.setPrefWidth(1);
         yAxis.autoRangingProperty().set(true);
         yAxis.forceZeroInRangeProperty().setValue(Boolean.FALSE);
         yAxis.setOpacity(0.5);
         yAxis.setTickLabelsVisible(false);
 
-        volumechart=new BarChart<>(xAxis,yAxis);
+        volumechart = new BarChart<>(xAxis,yAxis);
         volumechart.setHorizontalGridLinesVisible(false);
         volumechart.setVerticalGridLinesVisible(false);
+        volumechart.setLegendVisible(false);
+        volumechart.setBarGap(0);
+        volumechart.setCategoryGap(0);
 
-        XYChart.Series<String,Number> series =new XYChart.Series<>();
+        XYChart.Series<String,Number> series = new XYChart.Series<>();
 
         for (SingleStockInfoVO info:list){ 
             String label = info.getDate().toString();
@@ -58,9 +61,6 @@ public class VolumeChart {
         }
 
         volumechart.getData().add(series);
-        volumechart.setLegendVisible(false);
-//        volumechart.setMaxSize(1000, 50);
-        volumechart.setBarGap(0);
         volumechart.getStylesheets().add(getClass().getResource("/styles/VolumeChart.css").toExternalForm());
         for (XYChart.Series<String, Number> s : volumechart.getData()) {
             for (XYChart.Data<String, Number> d : s.getData()) {

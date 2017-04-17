@@ -14,7 +14,7 @@
  	 -fx-font-size: 1.6em;
 } 
 .axis-label {
- 	 -fx-background-color:transparent;
+ 	-fx-background-color:transparent;
   	-fx-text-fill: #65c294;
 }
 .chart-legend {
@@ -26,7 +26,8 @@
    -fx-background-radius: 0;
 }
 .chart-legend-item{
-    -fx-text-fill: #191970;
+    -fx-text-fill: #90d7ec;
+    -fx-font-size: 1.2em;
 }
 
 .chart-series-line{

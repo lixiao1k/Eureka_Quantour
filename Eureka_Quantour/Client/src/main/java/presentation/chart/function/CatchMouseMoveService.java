@@ -4,6 +4,7 @@ import java.util.Map;
 
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
+import javafx.scene.text.Text;
 
 /**
  * @Description: catch mouse movement and calculate corresponding data according to mouse's location
@@ -18,7 +19,8 @@ public interface CatchMouseMoveService {
 	 * @time: 2017年4月12日
 	 * @return: Label
 	 */
-	Label catchMouseReturnInfoForAnchorPane( XYChart<String, Number> chart, Map<String, String> dataMap, String[] dates, String name,int index );
+	Label catchMouseReturnInfoForAnchorPane( 
+			XYChart<String, Number> chart, Map<String, String> dataMap, String[] dates, String name,int index );
 
 	/**
 	 * @Description: according to StackPane's feature and mouse's location, 
@@ -27,5 +29,6 @@ public interface CatchMouseMoveService {
 	 * @time: 2017年4月12日
 	 * @return: Label
 	 */
-	Label catchMouseReturnInfoForStackPane( XYChart<String, Number> chart, Map<String, String> dataMap, String[] dates, String name,int index );
+	Label catchMouseReturnInfoForStackPane( 
+			XYChart<String, Number> chart, Map<String, String> dataMap, String[] dates, String name,int index );
 }
