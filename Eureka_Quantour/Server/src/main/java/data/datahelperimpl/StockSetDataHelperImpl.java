@@ -103,6 +103,7 @@ public class StockSetDataHelperImpl implements IStockSetDataHelper {
 	 * @param username	用户名
 	 */
 	public void deleteStockFromStockSet(String stockName, String stockSetName, String username){
+		System.out.println(userPath+"/"+username+"/"+stockSetName+"/"+stockName);
 		File file=new File(userPath+"/"+username+"/"+stockSetName+"/"+stockName);
 		file.delete();
 	}

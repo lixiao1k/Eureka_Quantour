@@ -1,0 +1,644 @@
+<!doctype html>
+<html>
+	<head>
+	<meta charset="UTF-8">
+	<title>单元测试文档</title>
+	<style>	
+/*	#divfont
+	{	font-family:"STXINGKA";
+		margin:0 auto;
+		width:50%;
+	}*/
+	body{
+			background-color:rgb(199,237,204);
+			margin-left: 20%;
+			margin-right: 20%;
+			border:2px dotted black;
+			padding:10px 10px 10px 10px;
+			font-family: sans-serif;
+		}
+/*	table{width:960px;word-break:break-all; word-wrap:break-all;}
+	.t1{width:200px}.t2{width:160px}.t3{width:160px}.t4{width:160px}.t5{width:100px}.t6{width:180px}*/
+	</style>
+	</head>
+	<body>
+		<div id="divfont">
+		<h2 align="center">单元测试文档 迭代二 1.0</h2>
+		<h3 align="center">2017/3/17</h3>
+		<table>
+			<tr>
+				<th>版本号</th>
+				<th>变更人员</th>
+				<th>变更原因</th>
+				<th>变更日期</th>
+			</tr>
+			<tr>
+				<td>单元测试文档 1.0</td>
+				<td>刘宇翔</td>
+				<td>数据层测试用例</td>
+				<td>2017/4/17</td>
+			</tr>
+		</table>
+		<h3> Unit Test Case L1</h3>
+		<p style="text-indent:2em"> 被测单元名称:getStockSet</p>
+		<p style="text-indent:2em"> 测试用例列表</p>
+		<table border="1">
+			<tr>
+				<th class="t1">
+				测试用例ID
+				</th>
+				<th class="t2">
+				输入数据
+				</th>
+				<th class="t3">
+				预期输出
+				</th>
+				<th class="t4">
+				实际输出
+				</th>
+				<th class="t5">
+				Pass/Fail
+				</th>
+				<th class="t6">
+				备注
+				</th>
+			</tr>
+			<tr>
+				<td>
+				testgetStockSet-01
+				</td>
+				<td>
+				用户名
+				</td>
+				<td>
+				该用户的所有股票池的名字
+				</td>
+				<td>
+				该用户的所有股票池的名字
+				</td>
+				<td>
+				Pass
+				</td>
+				<td>
+				</td>
+			</tr>
+		</table>
+		<br><br>
+		<h3> Unit Test Case L2</h3>
+		<p style="text-indent:2em"> 被测单元名称:addStockSet</p>
+		<p style="text-indent:2em"> 测试用例列表</p>
+		<table border="1">
+			<tr>
+				<th style="width:210px">
+				测试用例ID
+				</th>
+				<th class="t2">
+				输入数据
+				</th>
+				<th class="t3">
+				预期输出
+				</th>
+				<th class="t4">
+				实际输出
+				</th>
+				<th style="width:90px">
+				Pass/Fail
+				</th>
+				<th class="t6">
+				备注
+				</th>
+			</tr>
+			<tr>
+				<td>
+				testaddStockSet-01
+				</td>
+				<td>
+				用户名、未存在的股票池名字
+				</td>
+				<td>
+				添加成功
+				</td>
+				<td>
+				添加成功
+				</td>
+				<td>
+				Pass
+				</td>
+				<td>
+				无
+				</td>
+			</tr>
+			<tr>
+				<td>
+				testaddStockSet-02
+				</td>
+				<td>
+				用户名、存在的股票池名字
+				</td>
+				<td>
+				添加失败
+				</td>
+				<td>
+				添加失败
+				</td>
+				<td>
+				Pass
+				</td>
+				<td>
+				无
+				</td>
+			</tr>
+		</table>
+				<br><br>
+		<h3> Unit Test Case L3</h3>
+		<p style="text-indent:2em"> 被测单元名称:deleteStockSet</p>
+		<p style="text-indent:2em"> 测试用例列表</p>
+		<table border="1">
+			<tr>
+				<th style="width:210px">
+				测试用例ID
+				</th>
+				<th class="t2">
+				输入数据
+				</th>
+				<th class="t3">
+				预期输出
+				</th>
+				<th class="t4">
+				实际输出
+				</th>
+				<th style="width:90px">
+				Pass/Fail
+				</th>
+				<th class="t6">
+				备注
+				</th>
+			</tr>
+			<tr>
+				<td>
+				testdeleteStockSet-01
+				</td>
+				<td>
+				用户名、未存在的股票池名字
+				</td>
+				<td>
+				删除成功
+				</td>
+				<td>
+				删除成功
+				</td>
+				<td>
+				Pass
+				</td>
+				<td>
+				无
+				</td>
+			</tr>
+		</table>
+						<br><br>
+		<h3> Unit Test Case L4</h3>
+		<p style="text-indent:2em"> 被测单元名称:addStockToStockSet</p>
+		<p style="text-indent:2em"> 测试用例列表</p>
+		<table border="1">
+			<tr>
+				<th style="width:210px">
+				测试用例ID
+				</th>
+				<th class="t2">
+				输入数据
+				</th>
+				<th class="t3">
+				预期输出
+				</th>
+				<th class="t4">
+				实际输出
+				</th>
+				<th style="width:90px">
+				Pass/Fail
+				</th>
+				<th class="t6">
+				备注
+				</th>
+			</tr>
+			<tr>
+				<td>
+				testaddStockToStockSet-01
+				</td>
+				<td>
+				用户名、存在的股票池名字、未存在的股票编号
+				</td>
+				<td>
+				添加成功
+				</td>
+				<td>
+				添加成功
+				</td>
+				<td>
+				Pass
+				</td>
+				<td>
+				无
+				</td>
+			</tr>
+			<tr>
+				<td>
+				testaddStockToStockSet-02
+				</td>
+				<td>
+				用户名、存在的股票池名字、存在的股票编号
+				</td>
+				<td>
+				添加失败
+				</td>
+				<td>
+				添加失败
+				</td>
+				<td>
+				Pass
+				</td>
+				<td>
+				无
+				</td>
+			</tr>
+		</table>
+								<br><br>
+		<h3> Unit Test Case L5</h3>
+		<p style="text-indent:2em"> 被测单元名称:deleteStockToStockSet</p>
+		<p style="text-indent:2em"> 测试用例列表</p>
+		<table border="1">
+			<tr>
+				<th style="width:210px">
+				测试用例ID
+				</th>
+				<th class="t2">
+				输入数据
+				</th>
+				<th class="t3">
+				预期输出
+				</th>
+				<th class="t4">
+				实际输出
+				</th>
+				<th style="width:90px">
+				Pass/Fail
+				</th>
+				<th class="t6">
+				备注
+				</th>
+			</tr>
+			<tr>
+				<td>
+				testdeleteStockToStockSet-01
+				</td>
+				<td>
+				用户名、存在的股票池名字、存在的股票编号
+				</td>
+				<td>
+				删除成功
+				</td>
+				<td>
+				删除成功
+				</td>
+				<td>
+				Pass
+				</td>
+				<td>
+				无
+				</td>
+			</tr>
+		</table>
+								<br><br>
+		<h3> Unit Test Case L6</h3>
+		<p style="text-indent:2em"> 被测单元名称:getStockSetInfo</p>
+		<p style="text-indent:2em"> 测试用例列表</p>
+		<table border="1">
+			<tr>
+				<th style="width:210px">
+				测试用例ID
+				</th>
+				<th class="t2">
+				输入数据
+				</th>
+				<th class="t3">
+				预期输出
+				</th>
+				<th class="t4">
+				实际输出
+				</th>
+				<th style="width:90px">
+				Pass/Fail
+				</th>
+				<th class="t6">
+				备注
+				</th>
+			</tr>
+			<tr>
+				<td>
+				testgetStockSetInfo-01
+				</td>
+				<td>
+				用户名、存在的股票池名字
+				</td>
+				<td>
+				该股票池中股票的编号
+				</td>
+				<td>
+				该股票池中股票的编号
+				</td>
+				<td>
+				Pass
+				</td>
+				<td>
+				无
+				</td>
+			</tr>
+		</table>
+								<br><br>
+		<h3> Unit Test Case L7</h3>
+		<p style="text-indent:2em"> 被测单元名称:getSingleStockInfo</p>
+		<p style="text-indent:2em"> 测试用例列表</p>
+		<table border="1">
+			<tr>
+				<th style="width:210px">
+				测试用例ID
+				</th>
+				<th class="t2">
+				输入数据
+				</th>
+				<th class="t3">
+				预期输出
+				</th>
+				<th class="t4">
+				实际输出
+				</th>
+				<th style="width:90px">
+				Pass/Fail
+				</th>
+				<th class="t6">
+				备注
+				</th>
+			</tr>
+			<tr>
+				<td>
+				testgetSingleStockInfo-01
+				</td>
+				<td>
+				合法股票编号、日期（交易日）
+				</td>
+				<td>
+				该日期该股票的信息
+				</td>
+				<td>
+				该日期该股票的信息
+				</td>
+				<td>
+				Pass
+				</td>
+				<td>
+				无
+				</td>
+			</tr>
+			<tr>
+				<td>
+				testgetSingleStockInfo-02
+				</td>
+				<td>
+				合法股票编号、日期（非交易日）
+				</td>
+				<td>
+				抛出非交易日异常
+				</td>
+				<td>
+				抛出非交易日异常
+				</td>
+				<td>
+				Pass
+				</td>
+				<td>
+				无
+				</td>
+			</tr>
+			<tr>
+				<td>
+				testgetSingleStockInfo-03
+				</td>
+				<td>
+				不存在的股票编号或名字、日期（交易日）
+				</td>
+				<td>
+				抛出空的股票异常
+				</td>
+				<td>
+				抛出空的股票异常
+				</td>
+				<td>
+				Pass
+				</td>
+				<td>
+				无
+				</td>
+			</tr>
+		</table>
+									<br><br>
+		<h3> Unit Test Case L8</h3>
+		<p style="text-indent:2em"> 被测单元名称:getMinDay</p>
+		<p style="text-indent:2em"> 测试用例列表</p>
+		<table border="1">
+			<tr>
+				<th style="width:210px">
+				测试用例ID
+				</th>
+				<th class="t2">
+				输入数据
+				</th>
+				<th class="t3">
+				预期输出
+				</th>
+				<th class="t4">
+				实际输出
+				</th>
+				<th style="width:90px">
+				Pass/Fail
+				</th>
+				<th class="t6">
+				备注
+				</th>
+			</tr>
+			<tr>
+				<td>
+				testgetMinDay-01
+				</td>
+				<td>
+				合法股票编号
+				</td>
+				<td>
+				该股票最早一天的日期
+				</td>
+				<td>
+				该股票最早一天的日期
+				</td>
+				<td>
+				Pass
+				</td>
+				<td>
+				无
+				</td>
+			</tr>
+			<tr>
+				<td>
+				testgetMinDay-02
+				</td>
+				<td>
+				不存在的股票编号或名字
+				</td>
+				<td>
+				抛出空的股票异常
+				</td>
+				<td>
+				抛出空的股票异常
+				</td>
+				<td>
+				Pass
+				</td>
+				<td>
+				无
+				</td>
+			</tr>
+		</table>
+									<br><br>
+		<h3> Unit Test Case L9</h3>
+		<p style="text-indent:2em"> 被测单元名称:getMaxDay</p>
+		<p style="text-indent:2em"> 测试用例列表</p>
+		<table border="1">
+			<tr>
+				<th style="width:210px">
+				测试用例ID
+				</th>
+				<th class="t2">
+				输入数据
+				</th>
+				<th class="t3">
+				预期输出
+				</th>
+				<th class="t4">
+				实际输出
+				</th>
+				<th style="width:90px">
+				Pass/Fail
+				</th>
+				<th class="t6">
+				备注
+				</th>
+			</tr>
+			<tr>
+				<td>
+				testgetMaxDay-01
+				</td>
+				<td>
+				合法股票编号
+				</td>
+				<td>
+				该股票最晚一天的日期
+				</td>
+				<td>
+				该股票最晚一天的日期
+				</td>
+				<td>
+				Pass
+				</td>
+				<td>
+				无
+				</td>
+			</tr>
+			<tr>
+				<td>
+				testgetMaxDay-02
+				</td>
+				<td>
+				不存在的股票编号或名字
+				</td>
+				<td>
+				抛出空的股票异常
+				</td>
+				<td>
+				抛出空的股票异常
+				</td>
+				<td>
+				Pass
+				</td>
+				<td>
+				无
+				</td>
+			</tr>
+		</table>
+											<br><br>
+		<h3> Unit Test Case L10</h3>
+		<p style="text-indent:2em"> 被测单元名称:addDays</p>
+		<p style="text-indent:2em"> 测试用例列表</p>
+		<table border="1">
+			<tr>
+				<th style="width:210px">
+				测试用例ID
+				</th>
+				<th class="t2">
+				输入数据
+				</th>
+				<th class="t3">
+				预期输出
+				</th>
+				<th class="t4">
+				实际输出
+				</th>
+				<th style="width:90px">
+				Pass/Fail
+				</th>
+				<th class="t6">
+				备注
+				</th>
+			</tr>
+			<tr>
+				<td>
+				testaddDays-01
+				</td>
+				<td>
+				起始日期，延迟天数
+				</td>
+				<td>
+				延迟（或往前推）x个交易日的日期
+				</td>
+				<td>
+				延迟（或往前推）x个交易日的日期
+				</td>
+				<td>
+				Pass
+				</td>
+				<td>
+				起始日期+延迟天数应小于等于当天并且大于等于2005年2月1日。
+				</td>
+			</tr>
+			<tr>
+				<td>
+				testaddDays-02
+				</td>
+				<td>
+				超上下限的日期。
+				</td>
+				<td>
+				抛出空的股票异常
+				</td>
+				<td>
+				抛出空的股票异常
+				</td>
+				<td>
+				Pass
+				</td>
+				<td>
+				无
+				</td>
+			</tr>
+		</table>
+		</div>
+	<br/>
+	<p><a href="Eureka_Quantour迭代一文档.html">返回首页</a></p>
+	</body>
+</html>
