@@ -41,9 +41,11 @@ public class MarketUIPopupController implements Initializable{
 		String stockset = comboBox.getValue();
 		RemoteHelper remote = RemoteHelper.getInstance();
 		StockLogicInterface stockLogicInterface = remote.getStockLogic();
+		String name =(String)dataController.get("Market_StockNow");
 		try {
-			stockLogicInterface.addStockToStockSet((String)dataController.
-					get("Market_StockNow"), stockset, (String)dataController.get("UserName"));
+			String code = stockLogicInterface.nameToCode(name);
+			stockLogicInterface.addStockToStockSet(code
+					, stockset, (String)dataController.get("UserName"));
 			Notifications.create().title("成功").text("成功将"+(String)dataController.
 					get("Market_StockNow")+"添加至"+stockset).showInformation();
 			Stage stage = (Stage) nameLabel.getScene().getWindow();

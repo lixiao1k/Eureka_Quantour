@@ -6,7 +6,11 @@ import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
+import org.controlsfx.control.Notifications;
+
 import dataController.DataContorller;
+import exception.NullDateException;
+import exception.NullStockIDException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -92,9 +96,37 @@ public class SingleStockUIController implements Initializable{
 	@FXML
 	protected void search(ActionEvent e){
 		String name = searchTextField.getText();
+		
 		if(true){
 			dataController.upDate("SingleStockNow", name);
 		}
+	}
+	private void initialAllPane(String name){
+		RemoteHelper remote = RemoteHelper.getInstance();
+		StockLogicInterface stockLogicInterface = remote.getStockLogic();
+		SingleStockInfoVO vo;
+
+		try {
+			String code = stockLogicInterface.nameToCode(name);
+			vo = stockLogicInterface.getStockBasicInfo(code, (LocalDate)dataController.get("SystemTime"));
+			setBasicInfoPane(vo);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+		    Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
+			e.printStackTrace();
+		} catch (NullStockIDException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NullDateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	private void setBasicInfoPane(SingleStockInfoVO vo){
+		setStockInfoPane(vo.getCode(), vo.getName(), vo.getClose(), vo.getFudu(), vo.getHigh(),
+			    vo.getLow(), vo.getOpen(), vo.getVolume());
 	}
 	/*
 	 * @description初始化股票基本信息界面
