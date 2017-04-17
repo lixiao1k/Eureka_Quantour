@@ -4,11 +4,16 @@ import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import org.controlsfx.control.Notifications;
 
 import dataController.DataContorller;
+import exception.BeginInvalidException;
+import exception.DateInvalidException;
+import exception.DateOverException;
+import exception.EndInvalidException;
 import exception.NullDateException;
 import exception.NullStockIDException;
 import javafx.event.ActionEvent;
@@ -27,7 +32,11 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import logic.service.StockLogicInterface;
 import logic.service.Stub;
+import presentation.chart.chartService;
+import presentation.chart.klineChart.KLineChart;
+import presentation.chart.lineChart.EMAChart;
 import rmi.RemoteHelper;
+import vo.EMAInfoVO;
 import vo.SingleStockInfoVO;
 
 public class SingleStockUIController implements Initializable{
@@ -96,12 +105,13 @@ public class SingleStockUIController implements Initializable{
 	@FXML
 	protected void search(ActionEvent e){
 		String name = searchTextField.getText();
-		
-		if(true){
-			dataController.upDate("SingleStockNow", name);
-		}
+		dataController.upDate("SingleStockNow", name);
+		initialAllPane();
 	}
-	private void initialAllPane(String name){
+	private void initialAllPane(){
+		DataContorller dataContorller = DataContorller.getInstance();
+		String name = (String)dataContorller.get("SingleStockNow");
+		System.out.println("Single"+name);
 		RemoteHelper remote = RemoteHelper.getInstance();
 		StockLogicInterface stockLogicInterface = remote.getStockLogic();
 		SingleStockInfoVO vo;
@@ -110,23 +120,28 @@ public class SingleStockUIController implements Initializable{
 			String code = stockLogicInterface.nameToCode(name);
 			vo = stockLogicInterface.getStockBasicInfo(code, (LocalDate)dataController.get("SystemTime"));
 			setBasicInfoPane(vo);
+			
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 		    Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
 			e.printStackTrace();
 		} catch (NullStockIDException e) {
 			// TODO Auto-generated catch block
+			Notifications.create().title("无股票").text(e.toString()).showError();
 			e.printStackTrace();
 		} catch (NullDateException e) {
 			// TODO Auto-generated catch block
+			Notifications.create().title("无日期").text(e.toString()).showError();
 			e.printStackTrace();
 		}
 		
 	}
 	
-	private void setBasicInfoPane(SingleStockInfoVO vo){
+	public void setBasicInfoPane(SingleStockInfoVO vo){
 		setStockInfoPane(vo.getCode(), vo.getName(), vo.getClose(), vo.getFudu(), vo.getHigh(),
 			    vo.getLow(), vo.getOpen(), vo.getVolume());
+		setKlinePane(vo.getCode());
+		setEMAChartPane(vo.getCode());
 	}
 	/*
 	 * @description初始化股票基本信息界面
@@ -142,7 +157,7 @@ public class SingleStockUIController implements Initializable{
 		if(RAF>0){
 			RAFLabel.setText("+"+Double.toString(RAF)+"%");
 		}else if(RAF<0){
-			RAFLabel.setText("-"+Double.toString(RAF)+"%");
+			RAFLabel.setText(Double.toString(RAF)+"%");
 		}else{
 			RAFLabel.setText(Double.toString(RAF)+"%");
 		}
@@ -181,47 +196,94 @@ public class SingleStockUIController implements Initializable{
 		}
 
 	}
-
+	private void setKlinePane(String code){
+		kChartAnchorPane.getChildren().clear();
+		RemoteHelper remote = RemoteHelper.getInstance();
+		StockLogicInterface stockLogicInterface = remote.getStockLogic();
+		LocalDate systime = (LocalDate)dataController.get("SystemTime");
+		LocalDate beginTime = systime.minusDays(200);
+		List<SingleStockInfoVO> vo;
+		chartService chartservice;
+		try {
+			vo = stockLogicInterface.getSingleStockInfoByTime(code,
+				beginTime,systime);
+			chartservice = new KLineChart(vo);
+			for(SingleStockInfoVO s :vo){
+				System.out.println(s.getDate().toString());
+			}
+			kChartAnchorPane.getChildren().add(chartservice.getchart(758, 320));
+			
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
+			e.printStackTrace();
+		} catch (DateInvalidException e) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("日期错误").text(e.toString()).showError();
+			e.printStackTrace();
+		} catch (BeginInvalidException e) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("日期错误").text(e.toString()).showError();
+			e.printStackTrace();
+		} catch (EndInvalidException e) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("日期错误").text(e.toString()).showError();
+			e.printStackTrace();
+		} catch (NullStockIDException e) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("搜索异常").text(e.toString()).showError();
+			e.printStackTrace();
+		}
+	}
+	
+	private void setEMAChartPane(String code){
+		RemoteHelper remote = RemoteHelper.getInstance();
+		StockLogicInterface stockLogicInterface = remote.getStockLogic();
+		LocalDate systime =(LocalDate)dataController.get("SystemTime");
+		LocalDate begintime = systime.minusDays(200);
+		List<EMAInfoVO> vo;
+		chartService chartservice;
+		try {
+			emaChartAnchorPane.getChildren().clear();
+			vo=stockLogicInterface.getEMAInfo(code, begintime, systime);
+			chartservice = new EMAChart(vo);
+			emaChartAnchorPane.getChildren().add(chartservice.getchart(758, 307));			
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
+			e.printStackTrace();
+		} catch (DateInvalidException e) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("日期错误").text(e.toString()).showError();
+			e.printStackTrace();
+		} catch (BeginInvalidException e) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("日期错误").text(e.toString()).showError();
+			e.printStackTrace();
+		} catch (EndInvalidException e) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("日期错误").text(e.toString()).showError();
+			e.printStackTrace();
+		} catch (NullStockIDException e) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("搜索异常").text(e.toString()).showError();
+			e.printStackTrace();
+		} catch (DateOverException e) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("日期错误").text(e.toString()).showError();
+			e.printStackTrace();
+		}	
+	}
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
 		dataController = DataContorller.getInstance();
 		Image searchImage = new Image(getClass().getResourceAsStream("search.png"));
 		searchButton.setGraphic(new ImageView(searchImage));
-		Stub stub = new Stub();
-		SingleStockInfoVO vo = stub.getStockSetSortedInfo().get(0);
-		setStockInfoPane(vo.getCode(), vo.getName(), vo.getClose(), vo.getFudu(), vo.getHigh()
-				, vo.getLow(), vo.getOpen(), vo.getVolume());
-//		RemoteHelper remote = RemoteHelper.getInstance();
-//		StockLogicInterface stockLogicInterface = remote.getStockLogic();
-//		try {
-//			for(SingleStockInfoVO vo1:stockLogicInterface.getStockSetSortedInfo("股池1", LocalDate.of(2016, 4, 26), "LXD")){
-//				System.out.println(vo1.getCode());
-//			}
-//
-//		} catch (RemoteException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		RemoteHelper remote1 = RemoteHelper.getInstance();
-//		StockLogicInterface stockLogicInterface1 = remote1.getStockLogic();
-//		try {
-//			stockLogicInterface1.deleteStockFromStockSet("60073", "股池1", "LXD");
-//			System.out.println("go");
-//		} catch (RemoteException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		RemoteHelper remote2 = RemoteHelper.getInstance();
-//		StockLogicInterface stockLogicInterface2 = remote2.getStockLogic();
-//		try {
-//			for(SingleStockInfoVO vo2:stockLogicInterface2.getStockSetSortedInfo("股池1", LocalDate.of(2016, 4, 26), "LXD")){
-//				System.out.println(vo2.getCode());
-//			}
-//		} catch (RemoteException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		if(dataController.get("SingleStockNow")!=null){
+			initialAllPane();
+		}
+
 	}
 
 }

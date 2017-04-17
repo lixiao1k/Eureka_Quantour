@@ -16,6 +16,7 @@ import exception.DateInvalidException;
 import exception.DateOverException;
 import exception.EndInvalidException;
 import exception.NullDateException;
+import exception.NullMarketException;
 import exception.NullStockIDException;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -156,6 +157,10 @@ public class MarketUIController implements Initializable {
 					// TODO Auto-generated catch block
 					Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
 					e.printStackTrace();
+				}catch (NullMarketException e2) {
+					// TODO: handle exception
+					Notifications.create().title("信息").text(e2.toString()).showInformation();
+					e2.printStackTrace();
 				}
 			}
 		});
@@ -178,6 +183,9 @@ public class MarketUIController implements Initializable {
 					// TODO Auto-generated catch block
 					Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
 					e.printStackTrace();
+				}catch (NullMarketException e2) {
+					// TODO: handle exception
+					Notifications.create().title("信息").text(e2.toString()).showInformation();
 				}
 			}
 		});
@@ -209,6 +217,9 @@ public class MarketUIController implements Initializable {
 					// TODO Auto-generated catch block
 					Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
 					e.printStackTrace();
+				} catch (NullMarketException e2) {
+					// TODO: handle exception
+					Notifications.create().title("信息").text(e2.toString()).showInformation();
 				}
 			}
 		});
@@ -229,6 +240,9 @@ public class MarketUIController implements Initializable {
 					// TODO Auto-generated catch block
 					Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
 					e.printStackTrace();
+				}catch (NullMarketException e2) {
+					// TODO: handle exception
+					Notifications.create().title("信息").text(e2.toString()).showInformation();
 				}
 			}
 		});
@@ -249,6 +263,9 @@ public class MarketUIController implements Initializable {
 					// TODO Auto-generated catch block
 					Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
 					e.printStackTrace();
+				}catch (NullMarketException e2) {
+					// TODO: handle exception
+					Notifications.create().title("信息").text(e2.toString()).showInformation();
 				}
 			}
 		});
@@ -269,6 +286,9 @@ public class MarketUIController implements Initializable {
 					// TODO Auto-generated catch block
 					Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
 					e.printStackTrace();
+				}catch (NullMarketException e2) {
+					// TODO: handle exception
+					Notifications.create().title("信息").text(e2.toString()).showInformation();
 				}
 			}
 		});
@@ -291,6 +311,9 @@ public class MarketUIController implements Initializable {
 			// TODO Auto-generated catch block
 			Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
 			e1.printStackTrace();
+		}catch (NullMarketException e2) {
+			// TODO: handle exception
+			Notifications.create().title("信息").text(e2.toString()).showInformation();
 		}
 	}
 	/*
@@ -366,6 +389,7 @@ public class MarketUIController implements Initializable {
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
 				try {
+					dataController.upDate("SingleStockNow",code);
 					controller.setSingleStockUI();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -600,6 +624,7 @@ public class MarketUIController implements Initializable {
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
 				try {
+					dataController.upDate("SingleStockNow",code);
 					controller.setSingleStockUI();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
