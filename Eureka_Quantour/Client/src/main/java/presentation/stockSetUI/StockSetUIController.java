@@ -3,6 +3,7 @@ package presentation.stockSetUI;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -145,6 +146,17 @@ public class StockSetUIController implements Initializable {
 				String stockSetName = (String) button.getProperties().get("NAME");
 				System.out.println(stockSetName);
 				dataController.upDate("StockSetNow",stockSetName);
+				RemoteHelper remote = RemoteHelper.getInstance();
+				StockLogicInterface stockLogicInterface = remote.getStockLogic();
+				try {
+					List<SingleStockInfoVO> list = stockLogicInterface.getStockSetSortedInfo(stockSetName,
+							(LocalDate)dataController.get("SystemTime"),(String)dataController.get("UserName"));
+					setStockSetSortedInfo(list);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
+					e.printStackTrace();
+				}
 				//....
 			}
 		});
@@ -186,6 +198,7 @@ public class StockSetUIController implements Initializable {
 	 * @description 显示股票池中的所有股票信息
 	 */
 	private void setStockSetSortedInfo(List<SingleStockInfoVO> list){
+		stocksFlowPane.getChildren().clear();
 		int length = list.size();
 		for(int i=0;i<length;i++){
 			SingleStockInfoVO vo = list.get(i);
@@ -408,7 +421,7 @@ public class StockSetUIController implements Initializable {
 	/*
 	 * @description初始化股票基本信息界面
 	 */
-	private void setStockInfoPane(String code,String name,double close,double RAF,double high
+	private void setStockBasicInfoPane(String code,String name,double close,double RAF,double high
 			,double low,double open,long volume){
 		codeLabel.setText(code);
 		codeLabel.setStyle("-fx-text-fill: rgb(255, 255, 255, 1);-fx-font-weight:bold; -fx-font-size: 18;");
@@ -480,12 +493,12 @@ public class StockSetUIController implements Initializable {
 			Notifications.create().title("网络连接提示").text(e.toString()).showWarning();
 			e.printStackTrace();
 		}
-		setStockSetSortedInfo(stub.getStockSetSortedInfo());
+//		setStockSetSortedInfo(stub.getStockSetSortedInfo());
 		initialMenuAnchorPane();
-		SingleStockInfoVO vo = stub.getStockSetSortedInfo().get(0);
-		System.out.println(vo.getCode());
-		setStockInfoPane(vo.getCode(), vo.getName(), vo.getClose(), vo.getFudu(), vo.getHigh()
-				, vo.getLow(), vo.getOpen(), vo.getVolume());
+//		SingleStockInfoVO vo = stub.getStockSetSortedInfo().get(0);
+//		System.out.println(vo.getCode());
+//		setStockInfoPane(vo.getCode(), vo.getName(), vo.getClose(), vo.getFudu(), vo.getHigh()
+//				, vo.getLow(), vo.getOpen(), vo.getVolume());
 //		showDetailInfo();
 
 	}
