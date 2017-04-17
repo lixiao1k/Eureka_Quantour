@@ -34,6 +34,15 @@ public class SingleStockInfoVO implements Serializable, Comparable<SingleStockIn
 	private long volume = 0;
 	private double adjclose = 0.0;
 	private double fudu=0.0;
+	private double ave=0;
+
+	public double getAve() {
+		return ave;
+	}
+
+	public void setAve(double ave) {
+		this.ave = ave;
+	}
 	
 	public String getName(){
 		return this.name;

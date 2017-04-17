@@ -3,6 +3,7 @@ package vo;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * 
@@ -24,34 +25,14 @@ public class ComparedInfoVO implements Serializable{
 	private double lowA = 0.0;
 	private double highA = 0.0;
 	private double RODA = 0.0;
-	private double[] closeA ;
-	private double[] logYieldA ;
+	private List<Double> closeA ;
+	private List<Double> logYieldA ;
 	private double logYieldVarianceA = 0.0;
 	
-	private String nameB = "";
-	private String codeB = "";
-	private double lowB = 0.0;
-	private double highB = 0.0;
-	private double RODB = 0.0;
-	private double[] closeB ;
-	private double[] logYieldB ;
-	private double logYieldVarianceB = 0.0;
+
+	private List<LocalDate> date ;
 	
-	private LocalDate[] date ;
-	
-	public ComparedInfoVO(int n){
-		date = new LocalDate[n];
-		closeA = new double[n];
-		closeB = new double[n];
-		logYieldA = new double[n];
-		logYieldB = new double[n];
-		for(int i=0;i<n;i++){
-			closeA[i] = 0.0;
-			closeB[i] = 0.0;
-			logYieldA[i] = 0.0;
-			logYieldB[i] = 0.0;
-		}
-	}
+
 	
 	public String getNameA() {
 		return nameA;
@@ -83,16 +64,16 @@ public class ComparedInfoVO implements Serializable{
 	public void setRODA(double rODA) {
 		RODA = rODA;
 	}
-	public double[] getCloseA() {
+	public List<Double> getCloseA() {
 		return closeA;
 	}
-	public void setCloseA(double[] closeA) {
+	public void setCloseA(List<Double> closeA) {
 		this.closeA = closeA;
 	}
-	public double[] getLogYieldA() {
+	public List<Double> getLogYieldA() {
 		return logYieldA;
 	}
-	public void setLogYieldA(double[] logYieldA) {
+	public void setLogYieldA(List<Double> logYieldA) {
 		this.logYieldA = logYieldA;
 	}
 	public double getLogYieldVarianceA() {
@@ -101,80 +82,28 @@ public class ComparedInfoVO implements Serializable{
 	public void setLogYieldVarianceA(double logYieldVarianceA) {
 		this.logYieldVarianceA = logYieldVarianceA;
 	}
-	public String getNameB() {
-		return nameB;
-	}
-	public void setNameB(String nameB) {
-		this.nameB = nameB;
-	}
-	public String getCodeB() {
-		return codeB;
-	}
-	public void setCodeB(String codeB) {
-		this.codeB = codeB;
-	}
-	public double getLowB() {
-		return lowB;
-	}
-	public void setLowB(double lowB) {
-		this.lowB = lowB;
-	}
-	public double getHighB() {
-		return highB;
-	}
-	public void setHighB(double highB) {
-		this.highB = highB;
-	}
-	public double getRODB() {
-		return RODB;
-	}
-	public void setRODB(double rODB) {
-		RODB = rODB;
-	}
-	public double[] getCloseB() {
-		return closeB;
-	}
-	public void setCloseB(double[] closeB) {
-		this.closeB = closeB;
-	}
-	public double[] getLogYieldB() {
-		return logYieldB;
-	}
-	public void setLogYieldB(double[] logYieldB) {
-		this.logYieldB = logYieldB;
-	}
-	public double getLogYieldVarianceB() {
-		return logYieldVarianceB;
-	}
-	public void setLogYieldVarianceB(double logYieldVarianceB) {
-		this.logYieldVarianceB = logYieldVarianceB;
-	}
-	
-	public LocalDate[] getDate() {
+
+
+	public List<LocalDate> getDate() {
 		return date;
 	}
-	public void setDate(LocalDate[] date) {
+	public void setDate(List<LocalDate> date) {
 		this.date = date;
 	}
 	
-	public ComparedInfoVO initObject(
-			String nameA, String codeA, double lowA, double highA, 
-			double RODA, double[] closeA, double[] logYieldA, double logYieldVarianceA,
-			String nameB, String codeB, double lowB, double highB, 
-			double RODB, double[] closeB, double[] logYieldB, double logYieldVarianceB,
-			LocalDate[] date, int n)
-	{
-		ComparedInfoVO ci = new ComparedInfoVO(n);
-		ci.setNameA(nameA); ci.setCodeA(codeA); ci.setLowA(lowA); 
-		ci.setHighA(highA); ci.setRODA(RODA); ci.setCloseA(closeA); 
-		ci.setLogYieldA(logYieldA); ci.setLogYieldVarianceA(logYieldVarianceA);
-		
-		ci.setNameB(nameB); ci.setCodeB(codeB); ci.setLowB(lowB); 
-		ci.setHighB(highB); ci.setRODB(RODB); ci.setCloseB(closeB); 
-		ci.setLogYieldB(logYieldB); ci.setLogYieldVarianceB(logYieldVarianceB);
-		
-		ci.setDate(date);
-		return ci;
+
+
+
+
+	public ComparedInfoVO(String nameA, String codeA, double lowA, double highA, double RODA, List<Double> closeA, List<Double> logYieldA, double logYieldVarianceA, List<LocalDate> date) {
+		this.nameA = nameA;
+		this.codeA = codeA;
+		this.lowA = lowA;
+		this.highA = highA;
+		this.RODA = RODA;
+		this.closeA = closeA;
+		this.logYieldA = logYieldA;
+		this.logYieldVarianceA = logYieldVarianceA;
+		this.date = date;
 	}
-	
 }

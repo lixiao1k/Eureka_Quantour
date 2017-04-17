@@ -37,6 +37,7 @@ public class SingleStockInfoVO implements Serializable, Comparable<SingleStockIn
 	private double adjclose = 0.0;
 	private String market = "";
 	private double fudu=0.0;
+	private double ave=0;
 	
 	public String getName(){
 		return this.name;
@@ -100,8 +101,16 @@ public class SingleStockInfoVO implements Serializable, Comparable<SingleStockIn
 		this.fudu = fudu;
 	}
 
+	public double getAve() {
+		return ave;
+	}
+
+	public void setAve(double ave) {
+		this.ave = ave;
+	}
+
 	public SingleStockInfoVO initObject(String name, LocalDate date, String code, double open, double close,
-										double high, double low, int volume, double adjclose, String market,double fudu){
+										double high, double low, int volume, double adjclose, String market, double fudu){
 		SingleStockInfoVO ssi = new SingleStockInfoVO();
 		ssi.setName(name);
 		ssi.setDate(date);
@@ -127,6 +136,7 @@ public class SingleStockInfoVO implements Serializable, Comparable<SingleStockIn
 		this.setName(po.getName());
 		this.setOpen(po.getOpen());
 		this.setVolume(po.getVolume());
+
 	}
 	public SingleStockInfoVO(String code,String name){
 		this.name=name;

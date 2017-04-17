@@ -29,9 +29,9 @@ public class Utility {
     public void ifDateValid(LocalDate begin, LocalDate end,String stockcode) throws BeginInvalidException, DateInvalidException, EndInvalidException, NullStockIDException {
 
         LocalDate start= idi.getMinDay(stockcode);
-        LocalDate jieshu= idi.getMinDay(stockcode);
+        LocalDate jieshu= idi.getMaxDay(stockcode);
         if (end.compareTo(start)<0)throw new EndInvalidException();
-        if (begin.compareTo(jieshu)<0)throw new EndInvalidException();
+        if (begin.compareTo(jieshu)>0)throw new EndInvalidException();
         if (begin.compareTo(end)>0)
             throw new DateInvalidException();
     }

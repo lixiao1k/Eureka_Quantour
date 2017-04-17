@@ -35,7 +35,7 @@ public class StockLogicImpl implements StockLogicInterface{
 		LocalDate x=LocalDate.of(begin.getYear(),begin.getMonth(),begin.getDayOfMonth());
 
 		List<SingleStockInfoVO> lssi = new ArrayList<>();
-		for (;x.compareTo(end)<0;x=x.plusDays(1)){
+		for (;x.compareTo(end)<=0;x=x.plusDays(1)){
 			SingleStockInfoPO po= null;
 			System.out.println(x);
 			try {
@@ -78,7 +78,7 @@ public class StockLogicImpl implements StockLogicInterface{
 		ArrayList<LocalDate> timelist=new ArrayList<>();
 		ArrayList<Double> shujulist=new ArrayList<>();
 
-		for (;start.compareTo(end)<0;start=idi.addDays(start,1)){
+		for (;start.compareTo(end)<=0;start=idi.addDays(start,1)){
 			shujulist.add(utility.getEMA(stockCode,start,days));
 			timelist.add(LocalDate.of(start.getYear(),start.getMonth(),start.getDayOfMonth()));
 
@@ -90,48 +90,57 @@ public class StockLogicImpl implements StockLogicInterface{
 
 
 	@Override
-	public ComparedInfoVO getComparedInfo(String stockCodeA, String stockCodeB, LocalDate begin, LocalDate end)
+	public ComparedInfoVO getComparedInfo(String stockCodeA, LocalDate begin, LocalDate end)
 			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException {
 		try {
 			utility.ifDateValid(begin, end,stockCodeA);
 		} catch (NullStockIDException e) {
 			e.printStackTrace();
 		}
-		try {
-			utility.ifDateValid(begin, end,stockCodeB);
-		} catch (NullStockIDException e) {
-			e.printStackTrace();
-		}
+
 		String name1=idi.codeToname(stockCodeA);
-		String name2=idi.codeToname(stockCodeB);
 		LocalDate itr=LocalDate.of(begin.getYear(),begin.getMonth(),begin.getDayOfMonth());
 		double low1=10000000;
-		double low2=10000000;
+		double high1=0;
+		double diyitian=0;
+		double zuihouyitian=0;
+		List<Double> shoupanlist=new ArrayList<>();
+		List<Double> duishushouyiilv=new ArrayList<>();
+		List<LocalDate> timelist=new ArrayList<>();
 		try {
-			for (;itr.compareTo(end)<0;
+			for (;itr.compareTo(end)<=0;
                     itr=idi.addDays(itr,1)){
 				try {
 					SingleStockInfoPO po1=idi.getSingleStockInfo(stockCodeA,itr);
+					if (diyitian==0)
+						diyitian=po1.getAftClose();
+					zuihouyitian=po1.getAftClose();
+					low1=Math.min(low1,po1.getLow());
+					high1=Math.max(high1,po1.getHigh());
+
+
+					shoupanlist.add(po1.getClose());
+					duishushouyiilv.add(Math.log(po1.getAftClose()));
+					timelist.add(itr);
+
 				} catch (NullStockIDException e) {
 					e.printStackTrace();
 				} catch (NullDateException e) {
-					e.printStackTrace();
-				}
-				try {
-					SingleStockInfoPO po2=idi.getSingleStockInfo(stockCodeA,itr);
-				} catch (NullStockIDException e) {
-					e.printStackTrace();
-				} catch (NullDateException e) {
-					e.printStackTrace();
+					continue;
 				}
 
-//				low1=Math.min(low1,po1.getHigh());
+
+
 
 			}
 		} catch (DateOverException e) {
 			e.printStackTrace();
 		}
-		return  null;
+		if (diyitian==0)
+			throw  new DateInvalidException();
+		double fangcha=utility.getCorvariance(duishushouyiilv,duishushouyiilv);
+
+		return  new ComparedInfoVO(name1,stockCodeA,low1,high1,zuihouyitian/diyitian,shoupanlist,duishushouyiilv,fangcha,timelist);
 
 	}
 
