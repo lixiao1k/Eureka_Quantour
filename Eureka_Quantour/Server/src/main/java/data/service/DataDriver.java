@@ -119,6 +119,14 @@ public class DataDriver {
 					}
 				}
 			}
+			else if(mode.equals("translate1")){
+				String stockSetName=sc.nextLine();
+				System.out.println(data.codeToname(stockSetName));
+			}
+			else if(mode.equals("translate2")){
+				String stockSetName=sc.nextLine();
+				System.out.println(data.nameTocode(stockSetName));
+			}
 			else if(mode.equals("get single stock")){
 				String stockcode=sc.nextLine();
 				String cal=sc.nextLine();

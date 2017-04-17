@@ -55,6 +55,11 @@ public interface IDataInterface
 	 */
 	public String nameTocode(String name);
 	/**
+	 * 获取行业板块中的各种分类
+	 * @return 行业板块中的各种分类
+	 */
+	public List<String> getIndustryList();
+	/**
 	 * 获取某个用户的自定义股票池
 	 * @param username 用户名
 	 * @return 所有股票池的自定义名字

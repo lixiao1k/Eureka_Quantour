@@ -1,6 +1,9 @@
 package data.datahelperimpl;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -141,5 +144,30 @@ public class StockSetDataHelperImpl implements IStockSetDataHelper {
 			list.add(name);
 		}
 		return list;
+	}
+	/**
+	 * 获取行业板块中的各种分类
+	 * @return 行业板块中的各种分类
+	 */
+	public List<String> getIndustryList(){
+		String path="config/stock/stockset/Industry";
+		File set=new File(path);
+		List<String> list=new ArrayList<String>();
+		try {
+			BufferedReader br=new BufferedReader(new FileReader(set));
+			while(br.ready()){
+				String str=br.readLine();
+				if(str.length()>0){
+					list.add(str);
+				}
+			}
+			br.close();
+			return list;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		
 	}
 }

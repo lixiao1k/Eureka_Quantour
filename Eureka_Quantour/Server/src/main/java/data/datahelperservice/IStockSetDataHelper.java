@@ -57,4 +57,9 @@ public interface IStockSetDataHelper {
 	 * @throws NullSetException 
 	 */
 	public List<String>  getStockSetInfo(String stockSetName) throws NullSetException;
+	/**
+	 * 获取行业板块中的各种分类
+	 * @return 行业板块中的各种分类
+	 */
+	public List<String> getIndustryList();
 }

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.List;
 
+import data.parse.Parse;
 import data.parse.Translate;
 import data.service.IDataInterface;
 import exception.DateOverException;
@@ -147,7 +148,19 @@ public class DataInterfaceImpl implements IDataInterface
 	 * @return 股票名字
 	 */
 	public String nameTocode(String name){
-		return Translate.getInstance().trans_nameTocode(name);
+		try{
+			Integer.parseInt(name);
+			return Parse.getInstance().supCode(name);
+		}catch(NumberFormatException e){
+			return Translate.getInstance().trans_nameTocode(name);
+		}
+	}
+	/**
+	 * 获取行业板块中的各种分类
+	 * @return 行业板块中的各种分类
+	 */
+	public List<String> getIndustryList(){
+		return stockset.getIndustryList();
 	}
 //----------------------------------查询单个股票-------------------------------------
 	/**

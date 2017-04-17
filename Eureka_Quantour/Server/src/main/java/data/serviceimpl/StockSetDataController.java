@@ -91,4 +91,11 @@ public class StockSetDataController {
 		}
 		return null;
 	}
+	/**
+	 * 获取行业板块中的各种分类
+	 * @return 行业板块中的各种分类
+	 */
+	public List<String> getIndustryList(){
+		return stocksetdatahelper.getIndustryList();
+	}
 }

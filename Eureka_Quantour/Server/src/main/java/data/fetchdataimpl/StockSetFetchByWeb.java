@@ -391,12 +391,18 @@ public class StockSetFetchByWeb{
 			e.printStackTrace();
 		}
 	}
-	private void dealIndustryList(HashMap<String,List<String>> map){
+	private void dealIndustryList(HashMap<String,List<String>> map) throws IOException{
 		Iterator<Entry<String, List<String>>> it=map.entrySet().iterator();
 		String path="config/stock/stockset/";
+		File Industry=new File(path+"Industry");
+		if(!Industry.exists()){
+				Industry.createNewFile();
+		}
+		BufferedWriter bw=new BufferedWriter(new FileWriter(Industry));
 		while(it.hasNext()){
 			Entry<String, List<String>> entry=it.next();
 			String name=entry.getKey();
+			bw.write(name+"\n");
 			List<String> code=entry.getValue();
 			String temppath=path+name;
 			File file=new File(temppath);
@@ -412,5 +418,6 @@ public class StockSetFetchByWeb{
 				}
 			}
 		}
+		bw.close();
 	}
 }
