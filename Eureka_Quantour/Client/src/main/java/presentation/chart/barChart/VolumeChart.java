@@ -40,6 +40,7 @@ public class VolumeChart {
         volumechart.setLegendVisible(false);
         volumechart.setBarGap(0);
         volumechart.setCategoryGap(0);
+        volumechart.setOpacity(0.6);
 
         XYChart.Series<String,Number> series = new XYChart.Series<>();
 
@@ -51,9 +52,9 @@ public class VolumeChart {
                 public void changed(ObservableValue<? extends Node> observable, Node oldValue, Node newValue) {
                     if (newValue != null) {
                         if (info.getClose()>info.getOpen() ) {
-                            newValue.setStyle("-fx-bar-fill: red;");
+                            newValue.getStyleClass().add("barp");
                         } else  {
-                            newValue.setStyle("-fx-bar-fill: green;");
+                            newValue.getStyleClass().add("barm");
                         }
                     }
                 }
@@ -63,6 +64,7 @@ public class VolumeChart {
 
         volumechart.getData().add(series);
         volumechart.getStylesheets().add(getClass().getResource("/styles/VolumeChart.css").toExternalForm());
+        
         for (XYChart.Series<String, Number> s : volumechart.getData()) {
             for (XYChart.Data<String, Number> d : s.getData()) {
                 Tooltip.install(d.getNode(), new Tooltip(

@@ -43,7 +43,8 @@ public class  CandleStickChart extends XYChart<String, Number> {
     protected ObservableList<XYChart.Series<String, Number>> dataSeries;
     protected NumberAxis yAxis;
     protected CategoryAxis xAxis;
-    private DecimalFormat df = new DecimalFormat("0.000");   
+    private DecimalFormat df = new DecimalFormat("0.000");
+    private DecimalFormat dfvolume = new DecimalFormat("#0.00");
     
     protected Map<String, String> dataMap = new HashMap<String,String>();
     protected String[] dates;
@@ -103,12 +104,22 @@ public class  CandleStickChart extends XYChart<String, Number> {
             String label = bar.getDate().toString();
             series.getData().add( new XYChart.Data<>(label, bar.getOpen(),bar) );
             dates[i] = label;
+            double volumed = bar.getVolume();
+            String volumeS = "";
+            if( volumed>100000 )
+            	volumeS = dfvolume.format(volumed/10000)+"万";
+            if( volumed>1000000000 )
+            	volumeS = dfvolume.format(volumed/100000000)+"亿";
             String info = "open : "+df.format( bar.getOpen() )+"\n"
             		     +"close : "+df.format( bar.getClose() )+"\n"
             		     +"high : "+df.format( bar.getHigh() )+"\n"
             		     +"low : "+df.format( bar.getLow() )+"\n"
                          +"5EMA : "+ df.format( bar.getHigh() )+"\n"
-            		     +"volume : "+bar.getVolume();
+            		     +"volume : ";
+            if( volumeS.length()==0 )
+            	info = info+volumed;
+            else
+            	info = info+volumeS;
             dataMap.put(label, info);
         }
 
@@ -164,14 +175,16 @@ public class  CandleStickChart extends XYChart<String, Number> {
                 }
                 if( seriesPath != null ){
                 	double datapoint = ( bar.getHigh()+bar.getLow() )/2;
-                    if(seriesPath.getElements().isEmpty()) {
-                        seriesPath.getElements().add(
-                        		new MoveTo(x, getYAxis().getDisplayPosition( datapoint )));
-                    }
-                    else{
-                        seriesPath.getElements().add(
-                        		new LineTo(x, getYAxis().getDisplayPosition( datapoint )));
-                    }
+                	if( datapoint!=Integer.MAX_VALUE ){
+	                    if(seriesPath.getElements().isEmpty()) {
+	                        seriesPath.getElements().add(
+	                        		new MoveTo(x, getYAxis().getDisplayPosition( datapoint )));
+	                    }
+	                    else{
+	                        seriesPath.getElements().add(
+	                        		new LineTo(x, getYAxis().getDisplayPosition( datapoint )));
+	                    }
+                	}
                 }
             }
         }
