@@ -11,6 +11,8 @@ import org.controlsfx.control.Notifications;
 
 import dataController.DataContorller;
 import en_um.Positive;
+import exception.NullDateException;
+import exception.NullStockIDException;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -92,6 +94,7 @@ public class MarketUIController implements Initializable {
 	private MainScreenController controller;
 	
 	private List<SingleStockInfoVO> setStocks;
+	
 	private LocalDate systime;
 	
 	/*
@@ -342,6 +345,26 @@ public class MarketUIController implements Initializable {
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
 				dataController.upDate("Market_StockNow", code);
+				RemoteHelper remote = RemoteHelper.getInstance();
+				StockLogicInterface stockLogicInterface = remote.getStockLogic();
+				try {
+					SingleStockInfoVO vo = stockLogicInterface.
+							getStockBasicInfo(code,(LocalDate)dataController.get("SystemTime"));
+					System.out.println(vo.getName());
+					System.out.println(vo.getDate().toString());
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
+					e.printStackTrace();
+				} catch (NullStockIDException e) {
+					// TODO Auto-generated catch block
+					Notifications.create().title("搜索异常").text(e.toString()).showError();
+					e.printStackTrace();
+				} catch (NullDateException e) {
+					// TODO Auto-generated catch block
+					Notifications.create().title("搜索异常").text(e.toString()).showError();
+					e.printStackTrace();
+				}
 			}
 		});
 		menu.getItems().addAll(copy,look,show);
@@ -383,6 +406,7 @@ public class MarketUIController implements Initializable {
 		}
 		return label;
 	}
+	
 	private void initialStocksFlowPane(List<SingleStockInfoVO> list){
 		System.out.println(list.size());
 		int length = (int) Math.ceil(list.size()/50.0);
