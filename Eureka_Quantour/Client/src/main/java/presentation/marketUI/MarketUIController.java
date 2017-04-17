@@ -365,9 +365,9 @@ public class MarketUIController implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
+				dataController.upDate("Market_StockNow", name);
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getClassLoader().getResource(
-					"presentation/singleStockUI/SingleStockUIPopup.fxml"));
+				loader.setLocation(getClass().getResource("MarketUIPopup.fxml"));
 				Parent popUp = null;
 				try {
 					popUp = (AnchorPane)loader.load();
