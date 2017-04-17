@@ -43,6 +43,11 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 		return sli.getEMAInfo(stockCode, begin, end);
 	}
 
+	@Override
+	public ComparedInfoVO getComparedInfo(String stockCodeA, String stockCodeB, LocalDate begin, LocalDate end) throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException {
+		return null;
+	}
+
 //	@Override
 //	public ComparedInfoVO getComparedInfo(String stockCodeA, String stockCodeB, LocalDate begin, LocalDate end)
 //			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException {
