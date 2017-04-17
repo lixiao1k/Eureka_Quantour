@@ -2,6 +2,8 @@ package presentation.singleStockUI;
 
 import java.io.IOException;
 import java.net.URL;
+import java.rmi.RemoteException;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 import dataController.DataContorller;
@@ -19,7 +21,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import logic.service.StockLogicInterface;
 import logic.service.Stub;
+import rmi.RemoteHelper;
 import vo.SingleStockInfoVO;
 
 public class SingleStockUIController implements Initializable{
@@ -154,9 +158,38 @@ public class SingleStockUIController implements Initializable{
 		searchButton.setGraphic(new ImageView(searchImage));
 		Stub stub = new Stub();
 		SingleStockInfoVO vo = stub.getStockSetSortedInfo().get(0);
-		System.out.println(vo.getCode());
 		setStockInfoPane(vo.getCode(), vo.getName(), vo.getClose(), vo.getFudu(), vo.getHigh()
 				, vo.getLow(), vo.getOpen(), vo.getVolume());
+//		RemoteHelper remote = RemoteHelper.getInstance();
+//		StockLogicInterface stockLogicInterface = remote.getStockLogic();
+//		try {
+//			for(SingleStockInfoVO vo1:stockLogicInterface.getStockSetSortedInfo("股池1", LocalDate.of(2016, 4, 26), "LXD")){
+//				System.out.println(vo1.getCode());
+//			}
+//
+//		} catch (RemoteException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		RemoteHelper remote1 = RemoteHelper.getInstance();
+//		StockLogicInterface stockLogicInterface1 = remote1.getStockLogic();
+//		try {
+//			stockLogicInterface1.deleteStockFromStockSet("60073", "股池1", "LXD");
+//			System.out.println("go");
+//		} catch (RemoteException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		RemoteHelper remote2 = RemoteHelper.getInstance();
+//		StockLogicInterface stockLogicInterface2 = remote2.getStockLogic();
+//		try {
+//			for(SingleStockInfoVO vo2:stockLogicInterface2.getStockSetSortedInfo("股池1", LocalDate.of(2016, 4, 26), "LXD")){
+//				System.out.println(vo2.getCode());
+//			}
+//		} catch (RemoteException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 
 }

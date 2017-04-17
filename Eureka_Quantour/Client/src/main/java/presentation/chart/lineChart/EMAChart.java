@@ -134,7 +134,7 @@ public class EMAChart implements chartService {
     @Override
     public Pane getchart(int width, int height) {
     	if( width<=0 )
-    		width = 334;
+    		width = 327;
     	if( height<=0 )
     		height = 200;
     	lineChart.setMaxSize(width, height);

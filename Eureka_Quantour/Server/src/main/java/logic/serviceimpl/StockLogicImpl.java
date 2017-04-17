@@ -439,6 +439,7 @@ public class StockLogicImpl implements StockLogicInterface{
 
 	@Override
 	public void deleteStockFromStockSet(String stockName, String stockSetName, String username) {
+		System.out.println(stockName+"   "+stockSetName+"     "+username);
 		idi.deleteStockFromStockSet(stockName, stockSetName, username);
 	}
 
