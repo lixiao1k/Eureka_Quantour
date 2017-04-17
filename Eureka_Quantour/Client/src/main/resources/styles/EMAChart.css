@@ -35,21 +35,6 @@
 .chart-plot-background {
 	-fx-background-color: transparent;
 }
-.series-1 {
-	-fx-stroke: white;
-}
-.series-2 {
-	-fx-stroke: yellow;
-}
-.series-3 {
-	-fx-stroke: purple;
-}
-.series-4 {
-	-fx-stroke: green;
-}
-.series-5 {
-	-fx-stroke: blue;
-}
 
 .axis {
     -fx-tick-label-fill: #f2eada ;
@@ -58,3 +43,9 @@
     -fx-tick-length: 0;
     -fx-minor-tick-length: 0;
 }
+
+.default-color0.chart-series-line { -fx-stroke: white; }
+.default-color1.chart-series-line { -fx-stroke: yellow; }
+.default-color2.chart-series-line { -fx-stroke: purple; }
+.default-color3.chart-series-line { -fx-stroke: green; }
+.default-color4.chart-series-line { -fx-stroke: blue; }

@@ -164,14 +164,16 @@ public class  CandleStickChart extends XYChart<String, Number> {
                 }
                 if( seriesPath != null ){
                 	double datapoint = ( bar.getHigh()+bar.getLow() )/2;
-                    if(seriesPath.getElements().isEmpty()) {
-                        seriesPath.getElements().add(
-                        		new MoveTo(x, getYAxis().getDisplayPosition( datapoint )));
-                    }
-                    else{
-                        seriesPath.getElements().add(
-                        		new LineTo(x, getYAxis().getDisplayPosition( datapoint )));
-                    }
+                	if( datapoint!=Integer.MAX_VALUE ){
+	                    if(seriesPath.getElements().isEmpty()) {
+	                        seriesPath.getElements().add(
+	                        		new MoveTo(x, getYAxis().getDisplayPosition( datapoint )));
+	                    }
+	                    else{
+	                        seriesPath.getElements().add(
+	                        		new LineTo(x, getYAxis().getDisplayPosition( datapoint )));
+	                    }
+                	}
                 }
             }
         }

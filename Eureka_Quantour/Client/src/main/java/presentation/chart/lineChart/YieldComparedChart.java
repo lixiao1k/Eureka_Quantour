@@ -9,6 +9,7 @@ import java.util.List;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import presentation.chart.function.ListToArray;
 import presentation.chart.function.ListToArrayService;
 import vo.YieldChartDataVO;
@@ -26,7 +27,7 @@ public class YieldComparedChart extends ComparedChart {
 	private NumberFormat nf = NumberFormat.getPercentInstance();
 	
 	private AnchorPane pane = new AnchorPane();
-	private AnchorPane chartpane = new AnchorPane();
+	private StackPane chartpane = new StackPane();
 	private AnchorPane infopane = new AnchorPane();
 	
 	private ComparedChart comparedChart;
