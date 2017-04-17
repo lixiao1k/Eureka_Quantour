@@ -48,18 +48,14 @@ public class StockInfoCalculate {
 		BufferedReader br_aftadj=new BufferedReader(new FileReader(stockpath+"afterscription"));
 		AverageStackFactory asf=new AverageStackFactory(stockpath,isAddition);
 		asf.addstack(5);
-		asf.addstack(10);
-		asf.addstack(20);
-		asf.addstack(30);
-		asf.addstack(60);
-		BufferedReader br_average=new BufferedReader(new FileReader(stockpath+"average_5"));
-		while(br_subadj.ready()&&br_average.ready()){
-			Double subadj=Double.parseDouble(br_subadj.readLine().split(",")[0]);
-			Double aftadj=Double.parseDouble(br_aftadj.readLine().split(",")[0]);
-			asf.adddata(subadj, aftadj);
-			br_average.readLine();
-		}
-		br_average.close();
+//		BufferedReader br_average=new BufferedReader(new FileReader(stockpath+"average_5"));
+//		while(br_subadj.ready()&&br_average.ready()){
+//			Double subadj=Double.parseDouble(br_subadj.readLine().split(",")[0]);
+//			Double aftadj=Double.parseDouble(br_aftadj.readLine().split(",")[0]);
+//			asf.adddata(subadj, aftadj);
+//			br_average.readLine();
+//		}
+//		br_average.close();
 		while(br_subadj.ready()){
 			Double subadj=Double.parseDouble(br_subadj.readLine().split(",")[0]);
 			Double aftadj=Double.parseDouble(br_aftadj.readLine().split(",")[0]);

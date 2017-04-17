@@ -8,14 +8,14 @@ public class StockDataFetchImpl implements IStockDataFetch{
 	private StockInfoFetchByWeb infoByweb;
 	private StockInfoCalculate infocalculate;
 	private static StockDataFetchImpl impl;
-//	public static void main(String[] args){
-//		try {
-//			new StockDataFetchImpl().fetchAllStockSet();
-//		} catch (InternetdisconnectException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		};
-//	}
+	public static void main(String[] args){
+		try {
+			new StockDataFetchImpl().fetchAllStockInfo();
+		} catch (InternetdisconnectException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		};
+	}
 	private StockDataFetchImpl(){
 		setByweb=new StockSetFetchByWeb();
 		infoByweb=new StockInfoFetchByWeb();
@@ -47,9 +47,9 @@ public class StockDataFetchImpl implements IStockDataFetch{
 		System.out.println("开始爬取股票复权信息");
 		infoByweb.fetchAllsubscription();
 		System.out.println("爬取股票复权信息完成");
-//		System.out.println("开始计算均线");
-//		infocalculate.processAverage();
-//		System.out.println("计算均线完成");
+		System.out.println("开始计算均线");
+		infocalculate.processAverage();
+		System.out.println("计算均线完成");
 		System.out.println("开始汇总股票信息");
 		infoByweb.indexationStockDate(true);
 		System.out.println("汇总股票信息完成");

@@ -92,6 +92,7 @@ public class StockInfoFetchByWeb {
 			cal.set(Calendar.DATE, cal.get(Calendar.DATE)-1);
 		}
 		String enddate=sdf.format(cal.getTime());
+		System.out.println(enddate);
 		long time=System.currentTimeMillis();
 		try{
 			Properties pro=new Properties();
@@ -260,20 +261,24 @@ public class StockInfoFetchByWeb {
 			DateTrie trie=new DateTrie();
 			int lastday=Parse.getInstance().getIntDate(pro.getProperty("lastday","2005-02-01"));
 			if(!pro.containsKey("lastIndexationDay")){
+				DateWriter dw=new DateWriter(isAddition);
 				for(String code:list){
 					count++;
 					System.out.println("正在处理第"+count+"个，总共"+i+"个"+"剩余"+(i-count)+"个。");
-					gatherDate(code,-1,trie);
+					gatherDate(code,-1,trie,isAddition,dw);
 				}
+				dw.close();
 			}
 			else{
 				int indexDay=Parse.getInstance().getIntDate(pro.getProperty("lastIndexationDay"));
 				if(indexDay<lastday){
+					DateWriter dw=new DateWriter(isAddition);
 					for(String code:list){
 						count++;
 						System.out.println("正在处理第"+count+"个，总共"+i+"个"+"剩余"+(i-count)+"个。");
-						gatherDate(code,indexDay,trie);
+						gatherDate(code,indexDay,trie,isAddition,dw);
 					}
+					dw.close();
 				}
 				else{
 					update=false;
@@ -292,7 +297,7 @@ public class StockInfoFetchByWeb {
 				count=0;
 				for(String code:list){
 					count++;
-					System.out.println("正在处理第"+count+"个，总共"+i+"个"+"剩余"+(i-count)+"个。");
+					System.out.println("正在处 理第"+count+"个，总共"+i+"个"+"剩余"+(i-count)+"个。");
 					generateStockIndex(presize,code,trie,isAddition);
 				}
 			}
@@ -300,14 +305,18 @@ public class StockInfoFetchByWeb {
 			e.printStackTrace();
 		}
 	}
-	private void gatherDate(String code,int startday,DateTrie trie){
+	private void gatherDate(String code,int startday,DateTrie trie,boolean isAddition,DateWriter dw){
 		try{
 			String codepath=stockroot+"/"+code+"/";
 			BufferedReader br1=new BufferedReader(new FileReader(codepath+"data"));
 			BufferedReader br2=new BufferedReader(new FileReader(codepath+"subscription"));
 			BufferedReader br3=new BufferedReader(new FileReader(codepath+"afterscription"));
+			AverageStackFactory asf=new AverageStackFactory(codepath,true);
+			asf.addstack(5);
+			asf.close();
+			asf.openReader();
 			while(br1.ready()){
-				String str=br1.readLine()+","+br2.readLine()+","+br3.readLine();//+asf.readline()
+				String str=br1.readLine()+","+br2.readLine()+","+br3.readLine()+asf.readline();//
 				String cal=str.substring(0, 10);
 				str=str.substring(11);
 				int day=Integer.parseInt(encodeDate(cal));
@@ -316,10 +325,8 @@ public class StockInfoFetchByWeb {
 					if(!file.exists()&&!file.isDirectory()){
 						file.mkdir();
 					}
-					BufferedWriter bw=new BufferedWriter(new FileWriter("config/resources/date/calendarDate/"+day,true));
 					trie.add(day, Integer.valueOf(code));
-					bw.write(str+"\n");
-					bw.close();
+					dw.writer(day, str+"\n");
 				}
 			}
 			br1.close();
@@ -386,6 +393,8 @@ public class StockInfoFetchByWeb {
 			pro.load(is);
 			is.close();
 			int prepssize=Integer.valueOf(pro.getProperty("personalSize", "0"));
+			
+			
 			DateLeaf p=trie.getMin();
 			int code1=Integer.valueOf(code);
 			while(p!=null){
@@ -1021,6 +1030,42 @@ public class StockInfoFetchByWeb {
 		}
 		else{
 			return Double.parseDouble(str);
+		}
+	}
+}
+class DateWriter{
+	private HashMap<Integer,Integer> index;
+	private List<BufferedWriter> writer;
+	private boolean isAddition;
+	private String path;
+	private int now;
+	public DateWriter(boolean _isAddition){
+		index=new HashMap<Integer,Integer>();
+		writer=new ArrayList<BufferedWriter>();
+		isAddition=_isAddition;
+		path="config/resources/date/calendarDate/";
+		now = 0;
+	}
+	public void writer(int day,String info) throws IOException{
+		int index=this.index.getOrDefault(day, -1);
+		if(index<0){
+			File file=new File(path+day);
+			if(!file.exists()){
+				file.createNewFile();
+			}
+			BufferedWriter temp=new BufferedWriter(new FileWriter(path+day,isAddition));
+			temp.write(info);
+			this.index.put(day, now);
+			writer.add(temp);
+			now++;
+		}
+		else{
+			writer.get(index).write(info);
+		}
+	}
+	public void close() throws IOException{
+		for(int i=0;i<writer.size();i++){
+			writer.get(i).close();
 		}
 	}
 }
