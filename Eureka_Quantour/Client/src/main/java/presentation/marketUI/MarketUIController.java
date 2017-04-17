@@ -145,13 +145,11 @@ public class MarketUIController implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				systime = (LocalDate) dataController.get("SystemTime");
-				System.out.println(systime.toString());
 				// TODO Auto-generated method stub
 				RemoteHelper remote = RemoteHelper.getInstance();
 				StockLogicInterface stockLogicInterface = remote.getStockLogic();
 				try {
 					setStocks = stockLogicInterface.getStockSetSortedInfo("SHA",systime, null);
-					System.out.println(setStocks.size());
 					initialAllStocksPane(setStocks);
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
@@ -803,7 +801,26 @@ public class MarketUIController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
 		dataController = DataContorller.getInstance();
-		
+		RemoteHelper remote = RemoteHelper.getInstance();
+		StockLogicInterface stockLogicInterface = remote.getStockLogic();
+		systime = (LocalDate)dataController.get("SystemTime");
+		try {
+			setStocks = stockLogicInterface.getStockSetSortedInfo("SHA",systime, null);
+			initialAllStocksPane(setStocks);
+			dataController.upDate("Market_StockNow", setStocks.get(0));
+			setStockDetailInfo(setStocks.get(0));
+			
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("网络连接错误").text(e.toString()).showWarning();
+			e.printStackTrace();
+		} catch (NullMarketException e) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("无此市场").text(e.toString()).showError();
+			e.printStackTrace();
+		}
+
+
 //		upTenScrollPane.setStyle("-fx-background-color:transparent;");
 //		downTenScrollPane.setStyle("-fx-background-color:transparent;");
 		initialMenuAnchorPane();
