@@ -128,7 +128,8 @@ public class SingleStockInfoVO implements Serializable, Comparable<SingleStockIn
 		this.setOpen(po.getOpen());
 		this.setVolume(po.getVolume());
 	}
-	public SingleStockInfoVO(String code){
+	public SingleStockInfoVO(String code,String name){
+		this.name=name;
 		this.code=code;
 	}
 

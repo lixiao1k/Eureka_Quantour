@@ -1,6 +1,7 @@
 package vo;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Calendar;
 
 /**
@@ -36,10 +37,10 @@ public class ComparedInfoVO implements Serializable{
 	private double[] logYieldB ;
 	private double logYieldVarianceB = 0.0;
 	
-	private Calendar[] date ;
+	private LocalDate[] date ;
 	
 	public ComparedInfoVO(int n){
-		date = new Calendar[n];
+		date = new LocalDate[n];
 		closeA = new double[n];
 		closeB = new double[n];
 		logYieldA = new double[n];
@@ -149,10 +150,10 @@ public class ComparedInfoVO implements Serializable{
 		this.logYieldVarianceB = logYieldVarianceB;
 	}
 	
-	public Calendar[] getDate() {
+	public LocalDate[] getDate() {
 		return date;
 	}
-	public void setDate(Calendar[] date) {
+	public void setDate(LocalDate[] date) {
 		this.date = date;
 	}
 	
@@ -161,7 +162,7 @@ public class ComparedInfoVO implements Serializable{
 			double RODA, double[] closeA, double[] logYieldA, double logYieldVarianceA,
 			String nameB, String codeB, double lowB, double highB, 
 			double RODB, double[] closeB, double[] logYieldB, double logYieldVarianceB,
-			Calendar[] date, int n)
+			LocalDate[] date, int n)
 	{
 		ComparedInfoVO ci = new ComparedInfoVO(n);
 		ci.setNameA(nameA); ci.setCodeA(codeA); ci.setLowA(lowA); 

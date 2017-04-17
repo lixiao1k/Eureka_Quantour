@@ -123,6 +123,11 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 	}
 
 	@Override
+	public String nameToCode(String name) throws RemoteException {
+		return sli.nameToCode(name);
+	}
+
+	@Override
 	public void signUp(String username, char[] password) throws RemoteException, UserNameRepeatException {
 		cli.signUp(username,password);
 	}

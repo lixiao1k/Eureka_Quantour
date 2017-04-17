@@ -89,10 +89,52 @@ public class StockLogicImpl implements StockLogicInterface{
 
 
 
-//	@Override
-//	public ComparedInfoVO getComparedInfo(String stockCodeA, String stockCodeB, LocalDate begin, LocalDate end)
-//			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException {
-//
+	@Override
+	public ComparedInfoVO getComparedInfo(String stockCodeA, String stockCodeB, LocalDate begin, LocalDate end)
+			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException {
+		try {
+			utility.ifDateValid(begin, end,stockCodeA);
+		} catch (NullStockIDException e) {
+			e.printStackTrace();
+		}
+		try {
+			utility.ifDateValid(begin, end,stockCodeB);
+		} catch (NullStockIDException e) {
+			e.printStackTrace();
+		}
+		String name1=idi.codeToname(stockCodeA);
+		String name2=idi.codeToname(stockCodeB);
+		LocalDate itr=LocalDate.of(begin.getYear(),begin.getMonth(),begin.getDayOfMonth());
+		double low1=10000000;
+		double low2=10000000;
+		try {
+			for (;itr.compareTo(end)<0;
+                    itr=idi.addDays(itr,1)){
+				try {
+					SingleStockInfoPO po1=idi.getSingleStockInfo(stockCodeA,itr);
+				} catch (NullStockIDException e) {
+					e.printStackTrace();
+				} catch (NullDateException e) {
+					e.printStackTrace();
+				}
+				try {
+					SingleStockInfoPO po2=idi.getSingleStockInfo(stockCodeA,itr);
+				} catch (NullStockIDException e) {
+					e.printStackTrace();
+				} catch (NullDateException e) {
+					e.printStackTrace();
+				}
+
+//				low1=Math.min(low1,po1.getHigh());
+
+			}
+		} catch (DateOverException e) {
+			e.printStackTrace();
+		}
+		return  null;
+
+	}
+
 //		//TODO
 //		utility.ifDateValid(begin, end,stockCodeA);
 //		utility.ifDateValid(begin, end,stockCodeB);
@@ -348,15 +390,17 @@ public class StockLogicImpl implements StockLogicInterface{
 			} catch (NullStockIDException e) {
 				continue;
 			} catch (NullDateException e) {
-				res.add(new SingleStockInfoVO(s));
+				String name =idi.codeToname(s);
+				res.add(new SingleStockInfoVO(s,name));
 				p++;
 				continue;
 			}
 		}
-		if (p==namelist.size())
-			throw  new NullMarketException();
+
 		Collections.sort(res);
 		Collections.reverse(res);
+		if (p==namelist.size())
+			throw  new NullMarketException();
 		return res;
 	}
 
@@ -445,8 +489,10 @@ public class StockLogicImpl implements StockLogicInterface{
 		idi.deleteStockFromStockSet(stockName, stockSetName, username);
 	}
 
-
-
+	@Override
+	public String nameToCode(String name) throws RemoteException {
+		return idi.nameTocode(name);
+	}
 
 
 }

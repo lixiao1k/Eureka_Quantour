@@ -35,8 +35,8 @@ public interface StockLogicInterface extends Remote {
 	 *               invoke getSingleStockInfo() in data layer
 	 * @return: ComparedInfoVO
 	 */
-//	 ComparedInfoVO getComparedInfo ( String stockCodeA, String stockCodeB, LocalDate begin, LocalDate end )
-//			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException;
+	 ComparedInfoVO getComparedInfo ( String stockCodeA, String stockCodeB, LocalDate begin, LocalDate end )
+			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException;
 	/**
 	 * @Description: to get market's information by date,
 	 *               invoke getMarketByDate() in data layer
@@ -66,5 +66,7 @@ public interface StockLogicInterface extends Remote {
 	 void addStockToStockSet(String stockName, String stockSetName, String username) throws StockNameRepeatException,RemoteException;
 
 	 void deleteStockFromStockSet(String stockName, String stockSetName, String username)throws  RemoteException;
+
+	String nameToCode(String name) throws RemoteException;
 
 }
