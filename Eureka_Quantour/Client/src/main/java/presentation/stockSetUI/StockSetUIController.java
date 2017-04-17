@@ -3,6 +3,7 @@ package presentation.stockSetUI;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -14,6 +15,12 @@ import org.controlsfx.control.Notifications;
 
 import dataController.DataContorller;
 import en_um.Positive;
+import exception.BeginInvalidException;
+import exception.DateInvalidException;
+import exception.DateOverException;
+import exception.EndInvalidException;
+import exception.NullDateException;
+import exception.NullStockIDException;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -39,9 +46,12 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import logic.service.StockLogicInterface;
 import logic.service.Stub;
+import presentation.chart.chartService;
 import presentation.chart.klineChart.KLineChart;
+import presentation.chart.lineChart.EMAChart;
 import presentation.mainScreen.MainScreenController;
 import rmi.RemoteHelper;
+import vo.EMAInfoVO;
 import vo.SingleStockInfoVO;
 
 public class StockSetUIController implements Initializable {
@@ -143,8 +153,18 @@ public class StockSetUIController implements Initializable {
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
 				String stockSetName = (String) button.getProperties().get("NAME");
-				System.out.println(stockSetName);
 				dataController.upDate("StockSetNow",stockSetName);
+				RemoteHelper remote = RemoteHelper.getInstance();
+				StockLogicInterface stockLogicInterface = remote.getStockLogic();
+				try {
+					List<SingleStockInfoVO> list = stockLogicInterface.getStockSetSortedInfo(stockSetName,
+							(LocalDate)dataController.get("SystemTime"),(String)dataController.get("UserName"));
+					setStockSetSortedInfo(list);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
+					e.printStackTrace();
+				}
 				//....
 			}
 		});
@@ -186,6 +206,7 @@ public class StockSetUIController implements Initializable {
 	 * @description 显示股票池中的所有股票信息
 	 */
 	private void setStockSetSortedInfo(List<SingleStockInfoVO> list){
+		stocksFlowPane.getChildren().clear();
 		int length = list.size();
 		for(int i=0;i<length;i++){
 			SingleStockInfoVO vo = list.get(i);
@@ -221,6 +242,38 @@ public class StockSetUIController implements Initializable {
 		
 		ContextMenu menu = new ContextMenu();
 		MenuItem delete = new MenuItem("移除");
+		delete.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				// TODO Auto-generated method stub
+				RemoteHelper remote = RemoteHelper.getInstance();
+				StockLogicInterface stockLogicInterface = remote.getStockLogic();
+				try {
+					List<SingleStockInfoVO> vo =stockLogicInterface.getStockSetSortedInfo((String)dataController.get("StockSetNow")
+							, (LocalDate)dataController.get("SystemTime"),(String)dataController.get("UserName"));
+					for(SingleStockInfoVO vo1:vo){
+						System.out.println(vo1.getCode());
+					}
+					stockLogicInterface.deleteStockFromStockSet((String)dataController.get("StockSetNow"),
+							code,(String)dataController.get("UserName"));
+					System.out.println((String)dataController.get("StockSetNow"));
+					System.out.println(code);
+					System.out.println((String)dataController.get("UserName"));
+					List<SingleStockInfoVO> vo2 =stockLogicInterface.getStockSetSortedInfo((String)dataController.get("StockSetNow")
+							, (LocalDate)dataController.get("SystemTime"),(String)dataController.get("UserName"));
+					for(SingleStockInfoVO vo1:vo2){
+						System.out.println(vo1.getCode());
+					}
+					Notifications.create().title("成功").text("成功将股票"+name+"从股池"+
+							(String)dataController.get("StockSetNow")+"中删除").showInformation();;
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
+				}
+			}
+		});
 		MenuItem show = new MenuItem("细节");
 		show.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -228,7 +281,26 @@ public class StockSetUIController implements Initializable {
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
 				dataController.upDate("StockNow", code);
-				setDetailInfo();
+				RemoteHelper remote = RemoteHelper.getInstance();
+				StockLogicInterface stockLogicInterface = remote.getStockLogic();
+				SingleStockInfoVO vo;
+				try {
+					vo = stockLogicInterface.getStockBasicInfo(code,(LocalDate)dataController.get("SystemTime"));
+					showDetailInfo(vo);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
+					e.printStackTrace();
+				} catch (NullStockIDException e) {
+					// TODO Auto-generated catch block
+					Notifications.create().title("搜索异常").text(e.toString()).showError();
+					e.printStackTrace();
+				} catch (NullDateException e) {
+					// TODO Auto-generated catch block
+					Notifications.create().title("搜索异常").text(e.toString()).showError();
+					e.printStackTrace();
+				}
+
 				
 			}
 		});
@@ -292,7 +364,12 @@ public class StockSetUIController implements Initializable {
 	 *@description method for the eventHandler in stockInfo to show the chart
 	 *
 	 */
-	public void showDetailInfo(){
+	public void showDetailInfo(SingleStockInfoVO vo){
+		setStockBasicInfoPane(vo.getCode(), vo.getName(),vo.getClose(),vo.getFudu(),vo.getHigh()
+				,vo.getLow(),vo.getOpen(),vo.getVolume());
+		setKlinePane(vo.getCode());
+		setEMAChartPane(vo.getCode());
+		
 		/*
 		 * 测试代码K线图
 		 */
@@ -393,22 +470,90 @@ public class StockSetUIController implements Initializable {
 		return label;
 	}
 	/*
-	 * @description 设置界面右侧的股票详细信息
-	 */
-   private void setDetailInfo(){
-	   String code = (String) dataController.get("StockNow");
-	   //...
-   }
-	/*
 	 * @description 设置主界面的Controller
 	 */
 	public void setController(MainScreenController controller){
 		this.controller = controller;
 	}
+	
+	private void setKlinePane(String code){
+		kChartAnchorPane.getChildren().clear();
+		RemoteHelper remote = RemoteHelper.getInstance();
+		StockLogicInterface stockLogicInterface = remote.getStockLogic();
+		LocalDate systime = (LocalDate)dataController.get("SystemTime");
+		List<SingleStockInfoVO> vo;
+		chartService chartservice;
+		try {
+			vo = stockLogicInterface.getSingleStockInfoByTime(code,
+				systime.minusDays(100),systime);
+			chartservice = new KLineChart(vo);
+			kChartAnchorPane.getChildren().add(chartservice.getchart(0, 0));
+			
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
+			e.printStackTrace();
+		} catch (DateInvalidException e) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("日期错误").text(e.toString()).showError();
+			e.printStackTrace();
+		} catch (BeginInvalidException e) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("日期错误").text(e.toString()).showError();
+			e.printStackTrace();
+		} catch (EndInvalidException e) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("日期错误").text(e.toString()).showError();
+			e.printStackTrace();
+		} catch (NullStockIDException e) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("搜索异常").text(e.toString()).showError();
+			e.printStackTrace();
+		}
+
+	}
+	
+	private void setEMAChartPane(String code){
+		RemoteHelper remote = RemoteHelper.getInstance();
+		StockLogicInterface stockLogicInterface = remote.getStockLogic();
+		LocalDate systime =(LocalDate)dataController.get("SystemTime");
+		List<EMAInfoVO> vo;
+		chartService chartservice;
+		try {
+			emaChartAnchorPane.getChildren().clear();
+			vo=stockLogicInterface.getEMAInfo(code, systime.minusDays(100), systime);
+			chartservice = new EMAChart(vo);
+			emaChartAnchorPane.getChildren().add(chartservice.getchart(0, 0));			
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
+			e.printStackTrace();
+		} catch (DateInvalidException e) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("日期错误").text(e.toString()).showError();
+			e.printStackTrace();
+		} catch (BeginInvalidException e) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("日期错误").text(e.toString()).showError();
+			e.printStackTrace();
+		} catch (EndInvalidException e) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("日期错误").text(e.toString()).showError();
+			e.printStackTrace();
+		} catch (NullStockIDException e) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("搜索异常").text(e.toString()).showError();
+			e.printStackTrace();
+		} catch (DateOverException e) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("日期错误").text(e.toString()).showError();
+			e.printStackTrace();
+		}	
+	}
 	/*
 	 * @description初始化股票基本信息界面
 	 */
-	private void setStockInfoPane(String code,String name,double close,double RAF,double high
+	private void setStockBasicInfoPane(String code,String name,double close,double RAF,double high
 			,double low,double open,long volume){
 		codeLabel.setText(code);
 		codeLabel.setStyle("-fx-text-fill: rgb(255, 255, 255, 1);-fx-font-weight:bold; -fx-font-size: 18;");
@@ -419,7 +564,7 @@ public class StockSetUIController implements Initializable {
 		if(RAF>0){
 			RAFLabel.setText("+"+Double.toString(RAF)+"%");
 		}else if(RAF<0){
-			RAFLabel.setText("-"+Double.toString(RAF)+"%");
+			RAFLabel.setText(Double.toString(RAF)+"%");
 		}else{
 			RAFLabel.setText(Double.toString(RAF)+"%");
 		}
@@ -480,12 +625,12 @@ public class StockSetUIController implements Initializable {
 			Notifications.create().title("网络连接提示").text(e.toString()).showWarning();
 			e.printStackTrace();
 		}
-		setStockSetSortedInfo(stub.getStockSetSortedInfo());
+//		setStockSetSortedInfo(stub.getStockSetSortedInfo());
 		initialMenuAnchorPane();
-		SingleStockInfoVO vo = stub.getStockSetSortedInfo().get(0);
-		System.out.println(vo.getCode());
-		setStockInfoPane(vo.getCode(), vo.getName(), vo.getClose(), vo.getFudu(), vo.getHigh()
-				, vo.getLow(), vo.getOpen(), vo.getVolume());
+//		SingleStockInfoVO vo = stub.getStockSetSortedInfo().get(0);
+//		System.out.println(vo.getCode());
+//		setStockInfoPane(vo.getCode(), vo.getName(), vo.getClose(), vo.getFudu(), vo.getHigh()
+//				, vo.getLow(), vo.getOpen(), vo.getVolume());
 //		showDetailInfo();
 
 	}

@@ -11,6 +11,10 @@ import org.controlsfx.control.Notifications;
 
 import dataController.DataContorller;
 import en_um.Positive;
+import exception.BeginInvalidException;
+import exception.DateInvalidException;
+import exception.DateOverException;
+import exception.EndInvalidException;
 import exception.NullDateException;
 import exception.NullStockIDException;
 import javafx.beans.value.ChangeListener;
@@ -41,9 +45,13 @@ import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import logic.service.StockLogicInterface;
 import logic.service.Stub;
+import presentation.chart.chartService;
+import presentation.chart.klineChart.KLineChart;
+import presentation.chart.lineChart.EMAChart;
 import presentation.mainScreen.MainScreenController;
 import presentation.singleStockUI.SingleStockUIPopupController;
 import rmi.RemoteHelper;
+import vo.EMAInfoVO;
 import vo.SingleStockInfoVO;
 
 public class MarketUIController implements Initializable {
@@ -436,6 +444,8 @@ public class MarketUIController implements Initializable {
 	private void setStockDetailInfo(SingleStockInfoVO vo){
 		setStockBasicInfoPane(vo.getCode(),vo.getName(),vo.getClose(),vo.getFudu(),vo.getHigh(),
 				vo.getLow(),vo.getOpen(),vo.getVolume());
+		setKlinePane(vo.getCode());
+		setEMAChartPane(vo.getCode());
 		
 		
 	}
@@ -566,9 +576,9 @@ public class MarketUIController implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
+				dataController.upDate("Market_StockNow", name);
 				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(getClass().getClassLoader().getResource(
-					"presentation/singleStockUI/SingleStockUIPopup.fxml"));
+				loader.setLocation(getClass().getResource("MarketUIPopup.fxml"));
 				Parent popUp = null;
 				try {
 					popUp = (AnchorPane)loader.load();
@@ -673,6 +683,79 @@ public class MarketUIController implements Initializable {
 				+ "-fx-text-fill: rgb(255, 255, 255, 0.9);"
 				+ "-fx-font-weight:bold");
 		return label;
+	}
+	private void setKlinePane(String code){
+		kChartAnchorPane.getChildren().clear();
+		RemoteHelper remote = RemoteHelper.getInstance();
+		StockLogicInterface stockLogicInterface = remote.getStockLogic();
+		LocalDate systime = (LocalDate)dataController.get("SystemTime");
+		List<SingleStockInfoVO> vo;
+		chartService chartservice;
+		try {
+			vo = stockLogicInterface.getSingleStockInfoByTime(code,
+				systime.minusDays(100),systime);
+			chartservice = new KLineChart(vo);
+			kChartAnchorPane.getChildren().add(chartservice.getchart(0, 0));
+			
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
+			e.printStackTrace();
+		} catch (DateInvalidException e) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("日期错误").text(e.toString()).showError();
+			e.printStackTrace();
+		} catch (BeginInvalidException e) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("日期错误").text(e.toString()).showError();
+			e.printStackTrace();
+		} catch (EndInvalidException e) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("日期错误").text(e.toString()).showError();
+			e.printStackTrace();
+		} catch (NullStockIDException e) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("搜索异常").text(e.toString()).showError();
+			e.printStackTrace();
+		}
+	}
+	
+	private void setEMAChartPane(String code){
+		RemoteHelper remote = RemoteHelper.getInstance();
+		StockLogicInterface stockLogicInterface = remote.getStockLogic();
+		LocalDate systime =(LocalDate)dataController.get("SystemTime");
+		List<EMAInfoVO> vo;
+		chartService chartservice;
+		try {
+			emaChartAnchorPane.getChildren().clear();
+			vo=stockLogicInterface.getEMAInfo(code, systime.minusDays(100), systime);
+			chartservice = new EMAChart(vo);
+			emaChartAnchorPane.getChildren().add(chartservice.getchart(0, 0));			
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
+			e.printStackTrace();
+		} catch (DateInvalidException e) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("日期错误").text(e.toString()).showError();
+			e.printStackTrace();
+		} catch (BeginInvalidException e) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("日期错误").text(e.toString()).showError();
+			e.printStackTrace();
+		} catch (EndInvalidException e) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("日期错误").text(e.toString()).showError();
+			e.printStackTrace();
+		} catch (NullStockIDException e) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("搜索异常").text(e.toString()).showError();
+			e.printStackTrace();
+		} catch (DateOverException e) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("日期错误").text(e.toString()).showError();
+			e.printStackTrace();
+		}	
 	}
 	/*
 	 * @description 初始化分页控件

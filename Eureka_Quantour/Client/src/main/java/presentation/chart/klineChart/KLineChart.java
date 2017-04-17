@@ -49,7 +49,7 @@ public class KLineChart implements chartService {
     @Override
     public Pane getchart(int width, int height) {
     	if( width<=0 )
-    		width = 334;
+    		width = 317;
     	if( height<=0 )
     		height = 200;
     	
