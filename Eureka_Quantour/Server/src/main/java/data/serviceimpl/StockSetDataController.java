@@ -61,6 +61,7 @@ public class StockSetDataController {
 	 * @param username	用户名
 	 */
 	public void deleteStockFromStockSet(String stockName, String stockSetName, String username){
+		System.out.println(stockName);
 		stocksetdatahelper.deleteStockFromStockSet(stockName, stockSetName, username);
 	}
 	/**

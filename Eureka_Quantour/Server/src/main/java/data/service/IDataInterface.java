@@ -43,6 +43,18 @@ public interface IDataInterface
 	 */
 	public void signInCheck(String username,String password) throws LogErrorException;
 	/**
+	 * 编号转名字
+	 * @param code 股票编号
+	 * @return 股票名字
+	 */
+	public String codeToname(String code);
+	/**
+	 * 编号转名字
+	 * @param code 股票编号
+	 * @return 股票名字
+	 */
+	public String nameTocode(String name);
+	/**
 	 * 获取某个用户的自定义股票池
 	 * @param username 用户名
 	 * @return 所有股票池的自定义名字

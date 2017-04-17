@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.List;
 
+import data.parse.Translate;
 import data.service.IDataInterface;
 import exception.DateOverException;
 import exception.LogErrorException;
@@ -131,6 +132,22 @@ public class DataInterfaceImpl implements IDataInterface
 	 */
 	public List<String>  getStockSetInfo(String stockSetName){
 		return stockset.getStockSetInfo(stockSetName);
+	}
+	/**
+	 * 编号转名字
+	 * @param code 股票编号
+	 * @return 股票名字
+	 */
+	public String codeToname(String code){
+		return Translate.getInstance().trans_codeToname(code);
+	}
+	/**
+	 * 编号转名字
+	 * @param code 股票编号
+	 * @return 股票名字
+	 */
+	public String nameTocode(String name){
+		return Translate.getInstance().trans_nameTocode(name);
 	}
 //----------------------------------查询单个股票-------------------------------------
 	/**
