@@ -30,3 +30,10 @@
 .axis-minor-tick-mark {
     -fx-stroke: #859656;
 }
+
+.barp{
+	-fx-bar-fill: #FF5151;
+}
+.barm{
+	-fx-bar-fill: #53FF53;
+}
