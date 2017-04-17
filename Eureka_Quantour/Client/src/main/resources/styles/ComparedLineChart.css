@@ -4,6 +4,10 @@
 
 .chart{
 	-fx-background-color:transparent;
+	-fx-padding: 0px;
+}
+.chart-content {
+    -fx-padding: 5px; 
 }
 .chart-plot-background {
 	-fx-background-color: transparent;

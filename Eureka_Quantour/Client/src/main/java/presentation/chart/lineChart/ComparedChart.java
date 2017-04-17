@@ -16,6 +16,7 @@ import presentation.chart.function.ListToArray;
 import presentation.chart.function.ListToArrayService;
 import vo.ComparedInfoVO;
 
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class ComparedChart implements chartService{
 	private CatchMouseMoveService catchMouseMove = new CatchMouseMove();
 	private ListToArrayService listToArray = new ListToArray();
 	
+	private DecimalFormat df = new DecimalFormat("0.00");
 	private NumberFormat nf = NumberFormat.getPercentInstance();
 	
 	private StackPane pane = new StackPane();
@@ -93,7 +95,7 @@ public class ComparedChart implements chartService{
         	for(int j=0; j<date.length; j++){
 	        	if( j<datas.length && datas[j]!=0 && datas[j]!=Integer.MAX_VALUE ){
 	        		serie.getData().add( new XYChart.Data<>(dates[j], datas[j]) );
-	        		String dataFormat = ""+datas[j];
+	        		String dataFormat = df.format( datas[j] );
 	        		if( datas[j]<1 )
 	        			dataFormat = nf.format(datas[j]);
 	        		

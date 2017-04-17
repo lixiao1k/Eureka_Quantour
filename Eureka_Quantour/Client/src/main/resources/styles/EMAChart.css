@@ -22,14 +22,16 @@
    -fx-padding: 0px;
 } 
 .chart-legend-item-symbol{
-   -fx-background-radius: 1;
+   -fx-background-radius: 0;
 }
 .chart-legend-item{
-    -fx-text-fill: #191970;
+    -fx-text-fill: #90d7ec;
+    -fx-font-size: 1.2em;
 }
 
 .chart-series-line{
 	-fx-stroke-width: 1.5px;
+	-fx-effect: null;
 }
 
 .chart-plot-background {

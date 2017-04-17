@@ -107,9 +107,9 @@ public class  CandleStickChart extends XYChart<String, Number> {
             double volumed = bar.getVolume();
             String volumeS = "";
             if( volumed>100000 )
-            	volumeS = dfvolume.format(volumed)+"万";
+            	volumeS = dfvolume.format(volumed/10000)+"万";
             if( volumed>1000000000 )
-            	volumeS = dfvolume.format(volumed)+"亿";
+            	volumeS = dfvolume.format(volumed/100000000)+"亿";
             String info = "open : "+df.format( bar.getOpen() )+"\n"
             		     +"close : "+df.format( bar.getClose() )+"\n"
             		     +"high : "+df.format( bar.getHigh() )+"\n"
