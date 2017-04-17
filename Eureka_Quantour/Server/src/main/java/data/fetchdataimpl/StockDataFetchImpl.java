@@ -8,6 +8,14 @@ public class StockDataFetchImpl implements IStockDataFetch{
 	private StockInfoFetchByWeb infoByweb;
 	private StockInfoCalculate infocalculate;
 	private static StockDataFetchImpl impl;
+//	public static void main(String[] args){
+//		try {
+//			new StockDataFetchImpl().fetchAllStockSet();
+//		} catch (InternetdisconnectException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		};
+//	}
 	private StockDataFetchImpl(){
 		setByweb=new StockSetFetchByWeb();
 		infoByweb=new StockInfoFetchByWeb();
@@ -29,6 +37,7 @@ public class StockDataFetchImpl implements IStockDataFetch{
 		setByweb.getAllStockName();
 		setByweb.getHS300List();
 		setByweb.getZXBList();
+		setByweb.getIndustryList();
 	}
 	@Override
 	public void fetchAllStockInfo() throws InternetdisconnectException {
