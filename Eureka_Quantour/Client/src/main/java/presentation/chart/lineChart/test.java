@@ -124,7 +124,7 @@ public class test extends Application{
 	        
 //	        Scene scene = new Scene(yieldComparedChart.getchart(800, 300));
 //	        Scene scene = new Scene(singleLineChart.getchart(334, 200));
-	        Scene scene = new Scene(emaChart.getchart(334, 200));
+	        Scene scene = new Scene(emaChart.getchart(500, 300));
 	        dialogStage.setScene(scene);
 
 	        dialogStage.show();
