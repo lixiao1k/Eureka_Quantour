@@ -48,7 +48,7 @@ public class Return {
 
         try {
             for (;
-                 iter.compareTo(end)<0;
+                 iter.compareTo(end)<=0;
                  iter=idi.addDays(iter,days)){
                 timelist.add(LocalDate.of(iter.getYear(),iter.getMonth(),iter.getDayOfMonth()));
             }
@@ -89,7 +89,7 @@ public class Return {
         double shuzi=list.get(list.size()-1);
         int i=0;
         LocalDate itr=LocalDate.of(begin.getYear(),begin.getMonth(),begin.getDayOfMonth());
-        for (;itr.compareTo(end)<0;itr=itr.plusDays(1)){
+        for (;itr.compareTo(end)<=0;itr=itr.plusDays(1)){
             i++;
         }
 
@@ -127,7 +127,7 @@ public class Return {
         double init=100.0;
         try {
             for (;
-                 iter.compareTo(end)<0;
+                 iter.compareTo(end)<=0;
                  iter=idi.addDays(iter,days))
             {
                 double zheci=0;
@@ -170,7 +170,7 @@ public class Return {
         LocalDate iter=LocalDate.of(begin.getYear(),begin.getMonth(),begin.getDayOfMonth());
         try {
             for (;
-                 iter.compareTo(end)<0;
+                 iter.compareTo(end)<=0;
                  iter=idi.addDays(iter,days))
             {
                 double zheci=0;

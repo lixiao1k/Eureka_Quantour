@@ -32,13 +32,36 @@ public class Main {
 
 
         try {
-            SingleStockInfoVO vo=s.getStockBasicInfo("603726",LocalDate.of(2016,04,26));
-            System.out.println(vo.getOpen());
+            List<SingleStockInfoVO> vo=s.getSingleStockInfoByTime("603028",LocalDate.of(2015,1,1),LocalDate.of(2016,4,25));
+            System.out.println(vo);
         } catch (NullStockIDException e) {
             e.printStackTrace();
-        } catch (NullDateException e) {
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        } catch (BeginInvalidException e) {
+            e.printStackTrace();
+        } catch (DateInvalidException e) {
+            e.printStackTrace();
+        } catch (EndInvalidException e) {
             e.printStackTrace();
         }
+
+
+//        try {
+//            System.out.println(utility.getEMA("603028",LocalDate.of(2016,4,26),5));
+//        } catch (DateOverException e) {
+//            e.printStackTrace();
+//        } catch (NullStockIDException e) {
+//            e.printStackTrace();
+//        }
+//        try {
+//            SingleStockInfoVO vo=s.getStockBasicInfo("603726",LocalDate.of(2016,04,26));
+//            System.out.println(vo.getOpen());
+//        } catch (NullStockIDException e) {
+//            e.printStackTrace();
+//        } catch (NullDateException e) {
+//            e.printStackTrace();
+//        }
 //        try {
 //            List<SingleStockInfoVO> p=s.getStockSetSortedInfo("SHA",LocalDate.now().of(2016,3,6),null);
 //        } catch (NullMarketException e) {
