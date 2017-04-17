@@ -27,7 +27,7 @@ public class test extends Application{
     	SingleStockInfoVO ssi = new SingleStockInfoVO();
     	int j = 1;
     	int k = 3;
-    	for(int i=0; i<50; i++, j++){
+    	for(int i=0; i<150; i++, j++){
     		if( j>30 ){
     			k++;
     			j = 1;
@@ -88,7 +88,7 @@ public class test extends Application{
 	        dialogStage.initOwner(primaryStage);
 	        
 //	        Scene scene = new Scene(KLineChart.getchart(334, 200));
-	        Scene scene = new Scene(KLineChart.getchart(500, 400));
+	        Scene scene = new Scene(KLineChart.getchart(800, 300));
 	        dialogStage.setScene(scene);
 
 	        dialogStage.show();
