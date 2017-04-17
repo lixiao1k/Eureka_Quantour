@@ -6,6 +6,8 @@ import java.time.LocalDate;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import org.controlsfx.control.Notifications;
+
 import dataController.DataContorller;
 import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
@@ -120,6 +122,7 @@ public class MainScreenController implements Initializable{
 		if(date!=null){
 			dataController.upDate("SystemTime", date);
 			timeLabel.setText(date.toString());
+			Notifications.create().title("成功").text("系统时间修改成功").showInformation();
 		}else{
 			System.out.println("NoTime");
 		}
