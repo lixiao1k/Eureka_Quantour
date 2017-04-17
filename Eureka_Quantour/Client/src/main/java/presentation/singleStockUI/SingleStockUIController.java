@@ -91,8 +91,6 @@ public class SingleStockUIController implements Initializable{
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("SingleStockUIPopup.fxml"));
 		Parent popUp = (AnchorPane)loader.load();
-		SingleStockUIPopupController controller =loader.getController();
-		controller.setController(this);
 		Scene scene = new Scene(popUp);
 		Stage stage = new Stage();
 		stage.setScene(scene);
