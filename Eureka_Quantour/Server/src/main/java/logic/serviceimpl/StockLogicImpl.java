@@ -336,11 +336,12 @@ public class StockLogicImpl implements StockLogicInterface{
 	}
 
 	@Override
-	public List<SingleStockInfoVO> getStockSetSortedInfo(String stockSetName, LocalDate now,String username) {
+	public List<SingleStockInfoVO> getStockSetSortedInfo(String stockSetName, LocalDate now,String username) throws NullMarketException {
 		List<String> namelist=idi.getStockSetInfo(stockSetName,username);
 		if (namelist==null )
 			return null;
 		List<SingleStockInfoVO> res=new ArrayList<>();
+		int p=0;
 		for (String s:namelist){
 			try {
 				res.add(new SingleStockInfoVO(idi.getSingleStockInfo(s,now)));
@@ -348,9 +349,12 @@ public class StockLogicImpl implements StockLogicInterface{
 				continue;
 			} catch (NullDateException e) {
 				res.add(new SingleStockInfoVO(s));
+				p++;
 				continue;
 			}
 		}
+		if (p==namelist.size())
+			throw  new NullMarketException();
 		Collections.sort(res);
 		Collections.reverse(res);
 		return res;
@@ -373,8 +377,7 @@ public class StockLogicImpl implements StockLogicInterface{
 	public YieldChartDataVO getYieldChartData() {
 
 		try {
-			YieldChartDataVO p= new YieldChartDataVO(stragety.getTimelist(),stragety.getBasicReturn(),stragety.getStragetyReturn());
-			System.out.println("asgr");
+			YieldChartDataVO p= new YieldChartDataVO(stragety.getTimelist(),stragety.getBasicReturn(),stragety.getStragetyReturn(),stragety.getAlpha(),stragety.getBeta(),stragety.getSharpe(),stragety.gerBasicYearReturn());
 			return  p;
 		} catch (PriceTypeException e) {
 			e.printStackTrace();
@@ -439,6 +442,7 @@ public class StockLogicImpl implements StockLogicInterface{
 
 	@Override
 	public void deleteStockFromStockSet(String stockName, String stockSetName, String username) {
+		System.out.println("esgrdt");
 		idi.deleteStockFromStockSet(stockName, stockSetName, username);
 	}
 

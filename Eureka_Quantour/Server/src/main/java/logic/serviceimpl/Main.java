@@ -29,23 +29,38 @@ public class Main {
         stragetyConditionVo.setExtra(list);
         SaleVO saleVO=new SaleVO();
         saleVO.setTiaocangqi(10);
-        List<SingleStockInfoVO> p=s.getStockSetSortedInfo("SHA",LocalDate.now().of(2016,3,6),null);
+
+
+        try {
+            SingleStockInfoVO vo=s.getStockBasicInfo("603726",LocalDate.of(2016,04,26));
+            System.out.println(vo.getOpen());
+        } catch (NullStockIDException e) {
+            e.printStackTrace();
+        } catch (NullDateException e) {
+            e.printStackTrace();
+        }
+//        try {
+//            List<SingleStockInfoVO> p=s.getStockSetSortedInfo("SHA",LocalDate.now().of(2016,3,6),null);
+//        } catch (NullMarketException e) {
+//            e.printStackTrace();
+//        }
 //        SingleStockInfoVO vo= null;
 //        try {
-//            vo = s.getStockBasicInfo("000900", LocalDate.of(2016,03,9));
+//            vo = s.getStockBasicInfo("000900", LocalDate.of(2016,03,8));
 //        } catch (NullStockIDException e) {
 //            e.printStackTrace();
 //        } catch (NullDateException e) {
 //            e.printStackTrace();
 //        }
 //        System.out.println(vo.getFudu());
-        for (SingleStockInfoVO vo:p){
-            System.out.println(vo.getClose()+"  "+vo.getFudu()+" "+vo.getOpen());
-        }
-//        s.setStrategy(stragetyConditionVo,saleVO,LocalDate.of(2013,01,01),LocalDate.of(2015,1,01),"SHA",null);
-//        System.out.print(s.getYieldChartData().getJizhunlist());
+//        for (SingleStockInfoVO vo:p){
+//            System.out.println(vo.getClose()+"  "+vo.getFudu()+" "+vo.getOpen());
+//        }
+//        s.setStrategy(stragetyConditionVo,saleVO,LocalDate.of(2016,01,01),LocalDate.of(2017,1,1),"SHA",null);
+//        s.getYieldChartData().getBeta();
+//        System.out.print(s.getYieldChartData().getSharpe());
 //        System.out.println();
-//        System.out.print(s.getYieldChartData().getCeluelist());
+//        System.out.print(s.getYieldChartData().getCeluelist().size());
 //        IDataInterface s=new DataInterfaceImpl();
 //        LocalDate p=LocalDate.of(2015,01,01);
 //

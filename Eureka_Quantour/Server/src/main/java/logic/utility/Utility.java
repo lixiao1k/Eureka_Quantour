@@ -98,19 +98,23 @@ public class Utility {
 
     public double getEMA(String stockCode,LocalDate time,int days) throws DateOverException, NullStockIDException {
         double jieguo=0.0;
+        int p=0;
         for (int i=1;i<=days;i++)
         {
             try {
-                System.out.println(idi.addDays(time, -i));
                 SingleStockInfoPO po = idi.getSingleStockInfo(stockCode, idi.addDays(time, -i));
                 jieguo+=po.getAftClose();
             }
             catch (NullDateException e) {
+                p++;
                 continue;
             }
 
         }
-        return  jieguo/days;
+        if (p==days) {
+            return Integer.MAX_VALUE;
+        }
+        return  jieguo/(days-p);
     }
 
     public double getCorvariance(List<Double> A,List<Double> B){

@@ -63,7 +63,7 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 	}
 
 	@Override
-	public List<SingleStockInfoVO> getStockSetSortedInfo(String stockSetName, LocalDate now, String username) throws RemoteException {
+	public List<SingleStockInfoVO> getStockSetSortedInfo(String stockSetName, LocalDate now, String username) throws RemoteException, NullMarketException {
 		return sli.getStockSetSortedInfo(stockSetName,now,username);
 	}
 

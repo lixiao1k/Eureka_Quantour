@@ -26,6 +26,16 @@ public class YieldChartDataVO implements Serializable{
         this.celuelist = celuelist;
     }
 
+    public YieldChartDataVO(List<LocalDate> datelist, List<Double> jizhunlist, List<Double> celuelist, double alpha, double beta, double sharpe, double yearreturn) {
+        this.datelist = datelist;
+        this.jizhunlist = jizhunlist;
+        this.celuelist = celuelist;
+        this.alpha = alpha;
+        this.beta = beta;
+        this.sharpe = sharpe;
+        this.yearreturn = yearreturn;
+    }
+
     public List<LocalDate> getDatelist() {
         return datelist;
     }

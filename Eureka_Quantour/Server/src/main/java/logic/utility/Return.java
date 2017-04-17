@@ -66,22 +66,38 @@ public class Return {
 
     }
     public Double getBeta(){
+//        System.out.println(jizhunfudu);
+//        System.out.println(celuefudu);
+//        System.out.println("1+  "+utility.getCorvariance(jizhunfudu,celuefudu));
+//        System.out.println("2+  "+utility.getCorvariance(jizhunfudu,jizhunfudu));
 
 
         return utility.getCorvariance(jizhunfudu,celuefudu)/utility.getCorvariance(jizhunfudu,jizhunfudu);
     }
 
     public Double gerYearReturn(){
-        double shuzi=celueshouyilv.get(celueshouyilv.size()-1);
-        int days=begin.until(end).getDays();
 
-        return Math.pow((1+shuzi),365/days)-1;
+
+        return getYear(celueshouyilv);
     }
     public Double gerBasicYearReturn(){
-        double shuzi=jizhunshouyilv.get(jizhunshouyilv.size()-1);
-        int days=begin.until(end).getDays();
 
-        return Math.pow((1+shuzi),365/days)-1;
+        return getYear(jizhunshouyilv);
+    }
+
+    private Double getYear(List<Double> list){
+        double shuzi=list.get(list.size()-1);
+        int i=0;
+        LocalDate itr=LocalDate.of(begin.getYear(),begin.getMonth(),begin.getDayOfMonth());
+        for (;itr.compareTo(end)<0;itr=itr.plusDays(1)){
+            i++;
+        }
+
+        double a=1+shuzi;
+        double b=365.0/i;
+//        System.out.println(a+"  "+b);
+//        System.out.println(Math.pow(a,b));
+        return Math.pow(a,b)-1;
     }
 
 
@@ -131,7 +147,7 @@ public class Return {
 
                     if(zheci==0) continue;
                 jizhunfudu.add(zheci/shangci);
-                System.out.println(zheci+"  "+shangci);
+//                System.out.println(zheci+"  "+shangci);
                 init=init*(zheci/shangci);
                 double rate=(init-100)/100;
                 list.add(rate);
@@ -189,7 +205,8 @@ public class Return {
 
                 }
                 if(zheci==0) continue;
-                jizhunfudu.add(zheci/shangci);
+//                System.out.println(zheci+"  "+shangci);
+                celuefudu.add(zheci/shangci);
                 init=init*(zheci/shangci);
                 double rate=(init-100)/100;
                 list.add(rate);
@@ -229,6 +246,9 @@ public class Return {
             LocalDate now=o1.getDate();
             double junzhi1=0.0;
             double junzhi2=0.0;
+
+
+
             try {
                 junzhi1=utility.getEMA(name1,now,days);
                 junzhi2=utility.getEMA(name2,now,days);
@@ -246,7 +266,14 @@ public class Return {
                 e.printStackTrace();
             }
 
-            return (int) (rate1-rate2)*100;
+            int p=(int)rate1*100;
+            int q=(int)rate2*100;
+
+
+
+
+            return p-q;
+
         }
     }
 
