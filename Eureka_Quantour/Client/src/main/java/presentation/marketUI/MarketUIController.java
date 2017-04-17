@@ -111,7 +111,7 @@ public class MarketUIController implements Initializable {
 				RemoteHelper remote = RemoteHelper.getInstance();
 				StockLogicInterface stockLogicInterface = remote.getStockLogic();
 				try {
-					setStocks = stockLogicInterface.getStockSetSortedInfo("SHA",systime.minusDays(1), null);
+					setStocks = stockLogicInterface.getStockSetSortedInfo("SHA",systime, null);
 					System.out.println(setStocks.size());
 					initialAllStocksPane(setStocks);
 				} catch (RemoteException e) {
@@ -133,7 +133,7 @@ public class MarketUIController implements Initializable {
 				RemoteHelper remote = RemoteHelper.getInstance();
 				StockLogicInterface stockLogicInterface = remote.getStockLogic();
 				try {
-					setStocks = stockLogicInterface.getStockSetSortedInfo("SHB",systime.minusDays(1), null);
+					setStocks = stockLogicInterface.getStockSetSortedInfo("SHB",systime, null);
 					System.out.println(setStocks.size());
 					initialAllStocksPane(setStocks);
 				} catch (RemoteException e) {
@@ -165,7 +165,7 @@ public class MarketUIController implements Initializable {
 				RemoteHelper remote = RemoteHelper.getInstance();
 				StockLogicInterface stockLogicInterface = remote.getStockLogic();
 				try {
-					setStocks = stockLogicInterface.getStockSetSortedInfo("SZA",systime.minusDays(1), null);
+					setStocks = stockLogicInterface.getStockSetSortedInfo("SZA",systime, null);
 					initialAllStocksPane(setStocks);
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
@@ -185,7 +185,7 @@ public class MarketUIController implements Initializable {
 				RemoteHelper remote = RemoteHelper.getInstance();
 				StockLogicInterface stockLogicInterface = remote.getStockLogic();
 				try {
-					setStocks = stockLogicInterface.getStockSetSortedInfo("SZB",systime.minusDays(1) , null);
+					setStocks = stockLogicInterface.getStockSetSortedInfo("SZB",systime, null);
 					initialAllStocksPane(setStocks);
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
@@ -205,7 +205,7 @@ public class MarketUIController implements Initializable {
 				RemoteHelper remote = RemoteHelper.getInstance();
 				StockLogicInterface stockLogicInterface = remote.getStockLogic();
 				try {
-					setStocks = stockLogicInterface.getStockSetSortedInfo("CYB",systime.minusDays(1) , null);
+					setStocks = stockLogicInterface.getStockSetSortedInfo("CYB",systime , null);
 					initialAllStocksPane(setStocks);
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
@@ -225,7 +225,7 @@ public class MarketUIController implements Initializable {
 				RemoteHelper remote = RemoteHelper.getInstance();
 				StockLogicInterface stockLogicInterface = remote.getStockLogic();
 				try {
-					setStocks = stockLogicInterface.getStockSetSortedInfo("ZXB",systime.minusDays(1) , null);
+					setStocks = stockLogicInterface.getStockSetSortedInfo("ZXB",systime , null);
 					initialAllStocksPane(setStocks);
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
@@ -247,7 +247,7 @@ public class MarketUIController implements Initializable {
 		RemoteHelper remote = RemoteHelper.getInstance();
 		StockLogicInterface stockLogicInterface = remote.getStockLogic();
 		try {
-			setStocks = stockLogicInterface.getStockSetSortedInfo("HS300", systime.minusDays(1), null);
+			setStocks = stockLogicInterface.getStockSetSortedInfo("HS300", systime, null);
 			initialAllStocksPane(setStocks);
 		} catch (RemoteException e1) {
 			// TODO Auto-generated catch block
