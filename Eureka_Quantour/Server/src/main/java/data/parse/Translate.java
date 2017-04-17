@@ -22,9 +22,6 @@ public class Translate {
 	private File nameTocode;
 	private File codeToname;
 	private IStockDataFetch datafetch;
-	public static void main(String[] args){
-		new Translate();
-	}
 	private Translate(){	
 		try{
 			nameTocode_pro=new Properties();

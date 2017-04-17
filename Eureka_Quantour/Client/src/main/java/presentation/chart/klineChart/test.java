@@ -87,8 +87,8 @@ public class test extends Application{
 	        dialogStage.initModality(Modality.WINDOW_MODAL);
 	        dialogStage.initOwner(primaryStage);
 	        
-	        Scene scene = new Scene(KLineChart.getchart(334, 200));
-//	        Scene scene = new Scene(KLineChart.getchart(500, 400));
+//	        Scene scene = new Scene(KLineChart.getchart(334, 200));
+	        Scene scene = new Scene(KLineChart.getchart(500, 400));
 	        dialogStage.setScene(scene);
 
 	        dialogStage.show();

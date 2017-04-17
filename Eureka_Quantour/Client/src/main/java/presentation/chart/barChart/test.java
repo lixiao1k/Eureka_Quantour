@@ -22,9 +22,10 @@ public class test extends Application{
 		YieldDistributionHistogramDataVO ydhd;
 		
 		for( int i=0; i<10; i++){
-			pandm.add( (int)(Math.random()*60) );
-			pandm.add( (int)(Math.random()*60) );
-			zuhe.put(Math.random() , pandm);
+			double date = Math.random();
+			pandm.add( (int)(date*30) );
+			pandm.add( (int)(date*30) );
+			zuhe.put( date, pandm);
 		}
 		ydhd = new YieldDistributionHistogramDataVO( zuhe );
 		

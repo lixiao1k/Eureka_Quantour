@@ -21,6 +21,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
@@ -43,7 +44,7 @@ public class  CandleStickChart extends XYChart<String, Number> {
     protected ObservableList<XYChart.Series<String, Number>> dataSeries;
     protected NumberAxis yAxis;
     protected CategoryAxis xAxis;
-    private DecimalFormat df = new DecimalFormat("0.00000");   
+    private DecimalFormat df = new DecimalFormat("0.000");   
     
     protected Map<String, String> dataMap = new HashMap<String,String>();
     protected String[] dates;
@@ -107,6 +108,7 @@ public class  CandleStickChart extends XYChart<String, Number> {
             		     +"close : "+df.format( bar.getClose() )+"\n"
             		     +"high : "+df.format( bar.getHigh() )+"\n"
             		     +"low : "+df.format( bar.getLow() )+"\n"
+                         +"5EMA : "+ df.format( bar.getHigh() )+"\n"
             		     +"volume : "+bar.getVolume();
             dataMap.put(label, info);
         }
@@ -162,13 +164,14 @@ public class  CandleStickChart extends XYChart<String, Number> {
                     candle.setLayoutY(y);
                 }
                 if( seriesPath != null ){
+                	double datapoint = ( bar.getHigh()+bar.getLow() )/2;
                     if(seriesPath.getElements().isEmpty()) {
                         seriesPath.getElements().add(
-                        		new MoveTo(x, getYAxis().getDisplayPosition( bar.getHigh() )));
+                        		new MoveTo(x, getYAxis().getDisplayPosition( datapoint )));
                     }
                     else{
                         seriesPath.getElements().add(
-                        		new LineTo(x, getYAxis().getDisplayPosition( bar.getHigh() )));
+                        		new LineTo(x, getYAxis().getDisplayPosition( datapoint )));
                     }
                 }
             }

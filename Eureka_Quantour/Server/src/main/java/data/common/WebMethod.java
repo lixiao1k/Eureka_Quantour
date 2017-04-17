@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,6 +14,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -268,5 +270,46 @@ public class WebMethod {
   		bis.close();
   		httpUrl.disconnect();
 		return list;
+	}
+	public HashMap<String,List<String>> matchIndustry(String path) throws IOException{
+		HashMap<String,List<String>> result=new HashMap<String,List<String>>();
+		File file=new File(path);
+		BufferedReader bis = null;
+		bis = new BufferedReader(new FileReader(file));
+		String total="";
+		while(bis.ready()){
+			total=total+bis.readLine();
+		}
+		String p="<tr>[\\s\\S]*?</tr>";
+  		Pattern pat=Pattern.compile(p);
+  		Matcher m=pat.matcher(total);
+  		String nowIndustry="";
+  		while(m.find()){
+  			String match=m.group();
+  			String p1="[0-9]{6}";
+  			String p2="<a\\starget=_blank\\shref=\\'http://quote.cfi.cn/quotelist\\.aspx.*?style.*?>.*?</a>";
+  			Pattern pat2=Pattern.compile(p2);
+  			Matcher m2=pat2.matcher(match);
+  			if(m2.find()){
+  				String p3=">.*?<";
+  	  			Pattern pat3=Pattern.compile(p3);
+  	  			Matcher m3=pat3.matcher(m2.group());
+  	  			m3.find();
+  	  			List<String> temp=new ArrayList<String>();
+  	  			nowIndustry=m3.group().substring(1,m3.group().length()-1);
+  				result.put(m3.group().substring(1,m3.group().length()-1), temp);
+  				
+  			}
+  			else{
+  				Pattern pat1=Pattern.compile(p1);
+  	  			Matcher m1=pat1.matcher(match);
+  	  			while(m1.find()){
+  	  				String stt=m1.group();
+  	  				result.get(nowIndustry).add(stt);
+  	  			}
+  			}
+  		}
+  		bis.close();
+  		return result;
 	}
 }

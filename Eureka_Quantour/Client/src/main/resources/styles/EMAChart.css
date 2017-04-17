@@ -18,7 +18,7 @@
    -fx-padding: 20px;
 } 
 .chart-legend-item-symbol{
-   -fx-background-radius: 0;
+   -fx-background-radius: 1;
 }
 .chart-legend-item{
     -fx-text-fill: #191970;

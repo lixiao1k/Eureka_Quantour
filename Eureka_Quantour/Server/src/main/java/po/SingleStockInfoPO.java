@@ -146,22 +146,22 @@ public class SingleStockInfoPO
 		setDate(_date);
 		
 		String[] input=info.split(",");
-		setOpen(strTodouble(input[0]));
-		setHigh(strTodouble(input[1]));
-		setLow(strTodouble(input[2]));
+		setOpen(strTodouble1(input[0]));
+		setHigh(strTodouble1(input[1]));
+		setLow(strTodouble1(input[2]));
 		setVolume(Long.parseLong(input[6]));
 		
-		setClose(strTodouble(input[3]));
-		setSubClose(strTodouble(input[7]));
-		setAftClose(strTodouble(input[10]));
+		setClose(strTodouble1(input[3]));
+		setSubClose(strTodouble1(input[7]));
+		setAftClose(strTodouble1(input[10]));
 		
-		setLclose(strTodouble(input[4]));
-		setLsubClose(strTodouble(input[8]));
-		setLaftClose(strTodouble(input[11]));
+		setLclose(strTodouble1(input[4]));
+		setLsubClose(strTodouble1(input[8]));
+		setLaftClose(strTodouble1(input[11]));
 		
-		setRate(strTodouble(input[5]));
-		setSubrate(strTodouble(input[9]));
-		setAftrate(strTodouble(input[12]));
+		setRate(strTodouble2(input[5]));
+		setSubrate(strTodouble2(input[9]));
+		setAftrate(strTodouble2(input[12]));
 		
 //		setSubavg_5(strTodouble(input[13]));
 //		setSubavg_10(strTodouble(input[15]));
@@ -459,13 +459,15 @@ public class SingleStockInfoPO
 	private void setAftrate(double aftrate) {
 		this.aftrate = aftrate;
 	}
-	/**
-	 * 字符串转double
-	 * @param str 
-	 * @return
-	 */
-	private double strTodouble(String str){
-		return Double.parseDouble(str);
+	private double strTodouble1(String str){
+		double result=Double.parseDouble(str);
+		int i=(int)(result*100+0.5);
+		return i/100.0;
+	}
+	private double strTodouble2(String str){
+		double result=Double.parseDouble(str);
+		int i=(int)(result*10000+0.5);
+		return i/10000.0;
 	}
 //	/**
 //	 * @return the subavg_5

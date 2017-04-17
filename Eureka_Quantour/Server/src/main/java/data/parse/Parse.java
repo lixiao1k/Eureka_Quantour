@@ -1,6 +1,5 @@
 package data.parse;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
@@ -94,5 +93,15 @@ public class Parse {
 		LocalDate cal=LocalDate.of(year, month, day);
 		DateTimeFormatter dtf=DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		return cal.format(dtf);
+	}
+	public double strTodouble1(String str){
+		double result=Double.parseDouble(str);
+		int i=(int)(result*100+0.5);
+		return i/100.0;
+	}
+	public double strTodouble2(String str){
+		double result=Double.parseDouble(str);
+		int i=(int)(result*10000+0.5);
+		return i/10000.0;
 	}
 }

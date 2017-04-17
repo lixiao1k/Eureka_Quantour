@@ -11,6 +11,8 @@ import org.controlsfx.control.Notifications;
 
 import dataController.DataContorller;
 import en_um.Positive;
+import exception.NullDateException;
+import exception.NullStockIDException;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -81,6 +83,33 @@ public class MarketUIController implements Initializable {
 	@FXML
 	AnchorPane pagePane;
 	
+	@FXML
+	AnchorPane basicInfoAnchorPane;
+	
+	@FXML
+	Label codeLabel;
+	
+	@FXML
+	Label nameLabel;
+	
+	@FXML
+	Label closeLabel;
+	
+	@FXML
+	Label RAFLabel;
+	
+	@FXML
+	Label highLabel;
+	
+	@FXML
+	Label openLabel;
+	
+	@FXML
+	Label lowLabel;
+	
+	@FXML
+	Label volumeLabel;
+	
 	private DataContorller dataController;
 	
 	//pagnition 是浏览股票信息时的分页组件
@@ -92,6 +121,7 @@ public class MarketUIController implements Initializable {
 	private MainScreenController controller;
 	
 	private List<SingleStockInfoVO> setStocks;
+	
 	private LocalDate systime;
 	
 	/*
@@ -111,7 +141,7 @@ public class MarketUIController implements Initializable {
 				RemoteHelper remote = RemoteHelper.getInstance();
 				StockLogicInterface stockLogicInterface = remote.getStockLogic();
 				try {
-					setStocks = stockLogicInterface.getStockSetSortedInfo("SHA",systime.minusDays(1), null);
+					setStocks = stockLogicInterface.getStockSetSortedInfo("SHA",systime, null);
 					System.out.println(setStocks.size());
 					initialAllStocksPane(setStocks);
 				} catch (RemoteException e) {
@@ -133,7 +163,7 @@ public class MarketUIController implements Initializable {
 				RemoteHelper remote = RemoteHelper.getInstance();
 				StockLogicInterface stockLogicInterface = remote.getStockLogic();
 				try {
-					setStocks = stockLogicInterface.getStockSetSortedInfo("SHB",systime.minusDays(1), null);
+					setStocks = stockLogicInterface.getStockSetSortedInfo("SHB",systime, null);
 					System.out.println(setStocks.size());
 					initialAllStocksPane(setStocks);
 				} catch (RemoteException e) {
@@ -165,7 +195,7 @@ public class MarketUIController implements Initializable {
 				RemoteHelper remote = RemoteHelper.getInstance();
 				StockLogicInterface stockLogicInterface = remote.getStockLogic();
 				try {
-					setStocks = stockLogicInterface.getStockSetSortedInfo("SZA",systime.minusDays(1), null);
+					setStocks = stockLogicInterface.getStockSetSortedInfo("SZA",systime, null);
 					initialAllStocksPane(setStocks);
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
@@ -185,7 +215,7 @@ public class MarketUIController implements Initializable {
 				RemoteHelper remote = RemoteHelper.getInstance();
 				StockLogicInterface stockLogicInterface = remote.getStockLogic();
 				try {
-					setStocks = stockLogicInterface.getStockSetSortedInfo("SZB",systime.minusDays(1) , null);
+					setStocks = stockLogicInterface.getStockSetSortedInfo("SZB",systime, null);
 					initialAllStocksPane(setStocks);
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
@@ -205,7 +235,7 @@ public class MarketUIController implements Initializable {
 				RemoteHelper remote = RemoteHelper.getInstance();
 				StockLogicInterface stockLogicInterface = remote.getStockLogic();
 				try {
-					setStocks = stockLogicInterface.getStockSetSortedInfo("CYB",systime.minusDays(1) , null);
+					setStocks = stockLogicInterface.getStockSetSortedInfo("CYB",systime , null);
 					initialAllStocksPane(setStocks);
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
@@ -225,7 +255,7 @@ public class MarketUIController implements Initializable {
 				RemoteHelper remote = RemoteHelper.getInstance();
 				StockLogicInterface stockLogicInterface = remote.getStockLogic();
 				try {
-					setStocks = stockLogicInterface.getStockSetSortedInfo("ZXB",systime.minusDays(1) , null);
+					setStocks = stockLogicInterface.getStockSetSortedInfo("ZXB",systime , null);
 					initialAllStocksPane(setStocks);
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
@@ -247,7 +277,7 @@ public class MarketUIController implements Initializable {
 		RemoteHelper remote = RemoteHelper.getInstance();
 		StockLogicInterface stockLogicInterface = remote.getStockLogic();
 		try {
-			setStocks = stockLogicInterface.getStockSetSortedInfo("HS300", systime.minusDays(1), null);
+			setStocks = stockLogicInterface.getStockSetSortedInfo("HS300", systime, null);
 			initialAllStocksPane(setStocks);
 		} catch (RemoteException e1) {
 			// TODO Auto-generated catch block
@@ -342,6 +372,25 @@ public class MarketUIController implements Initializable {
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
 				dataController.upDate("Market_StockNow", code);
+				RemoteHelper remote = RemoteHelper.getInstance();
+				StockLogicInterface stockLogicInterface = remote.getStockLogic();
+				try {
+					SingleStockInfoVO vo = stockLogicInterface.
+							getStockBasicInfo(code,(LocalDate)dataController.get("SystemTime"));
+					setStockDetailInfo(vo);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
+					e.printStackTrace();
+				} catch (NullStockIDException e) {
+					// TODO Auto-generated catch block
+					Notifications.create().title("搜索异常").text(e.toString()).showError();
+					e.printStackTrace();
+				} catch (NullDateException e) {
+					// TODO Auto-generated catch block
+					Notifications.create().title("搜索异常").text(e.toString()).showError();
+					e.printStackTrace();
+				}
 			}
 		});
 		menu.getItems().addAll(copy,look,show);
@@ -383,6 +432,69 @@ public class MarketUIController implements Initializable {
 		}
 		return label;
 	}
+	
+	private void setStockDetailInfo(SingleStockInfoVO vo){
+		setStockBasicInfoPane(vo.getCode(),vo.getName(),vo.getClose(),vo.getFudu(),vo.getHigh(),
+				vo.getLow(),vo.getOpen(),vo.getVolume());
+		
+		
+	}
+	/*
+	 * 初始化股票基本信息的面板
+	 */
+	private void setStockBasicInfoPane(String code,String name,double close,double RAF,double high
+			,double low,double open,long volume){
+		codeLabel.setText(code);
+		codeLabel.setStyle("-fx-text-fill: rgb(255, 255, 255, 1);-fx-font-weight:bold; -fx-font-size: 18;");
+		nameLabel.setText(name);
+		nameLabel.setStyle("-fx-text-fill: rgb(255, 255, 255, 1);-fx-font-weight:bold; -fx-font-size: 18;");
+		closeLabel.setText(Double.toString(close));
+		addLabelColor(closeLabel, close,28);
+		if(RAF>0){
+			RAFLabel.setText("+"+Double.toString(RAF)+"%");
+		}else if(RAF<0){
+			RAFLabel.setText(Double.toString(RAF)+"%");
+		}else{
+			RAFLabel.setText(Double.toString(RAF)+"%");
+		}
+	    addLabelColor(RAFLabel, RAF,0);
+	    highLabel.setText(Double.toString(high));
+	    addLabelColor(highLabel, high,0);
+	    lowLabel.setText(Double.toString(low));
+	    addLabelColor(lowLabel, -1,0);
+	    openLabel.setText(Double.toString(open));
+	    addLabelColor(openLabel, open,0);
+	    volumeLabel.setText(Long.toString(volume));		
+	}
+	/*
+	 * @description设置字体颜色，为setStockBasicInfoPane方法所调用
+	 */
+	public void addLabelColor(Label label,double num,int size){
+		if(size==0){
+			if(num>0){
+				label.setStyle("-fx-text-fill: rgb(255, 0, 0, 1);-fx-font-weight:bold");
+			}else if(num<0){
+				label.setStyle("-fx-text-fill: rgb(0, 255, 0, 1);-fx-font-weight:bold");
+			}else{
+				label.setStyle("-fx-text-fill: rgb(255, 255, 255, 1);-fx-font-weight:bold");
+			}
+		}else{
+			if(num>0){
+				label.setStyle("-fx-text-fill: rgb(255, 0, 0, 1);-fx-font-weight:bold"
+						+ ";-fx-font-size:28");
+			}else if(num<0){
+				label.setStyle("-fx-text-fill: rgb(0, 255, 0, 1);-fx-font-weight:bold"
+						+ ";-fx-font-size:28");
+			}else{
+				label.setStyle("-fx-text-fill: rgb(255, 255, 255, 1);-fx-font-weight:bold"
+						+ ";-fx-font-size:28");
+			}
+		}
+
+	}
+
+	
+	
 	private void initialStocksFlowPane(List<SingleStockInfoVO> list){
 		System.out.println(list.size());
 		int length = (int) Math.ceil(list.size()/50.0);
@@ -492,6 +604,24 @@ public class MarketUIController implements Initializable {
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
 				dataController.upDate("Market_StockNow", code);
+				RemoteHelper remote = RemoteHelper.getInstance();
+				StockLogicInterface stockLogicInterface = remote.getStockLogic();
+				try {
+					SingleStockInfoVO vo = stockLogicInterface.getStockBasicInfo(code, (LocalDate)dataController.get("SystemTime"));
+					setStockDetailInfo(vo);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
+					e.printStackTrace();
+				} catch (NullStockIDException e) {
+					// TODO Auto-generated catch block
+					Notifications.create().title("搜索异常").text(e.toString()).showError();
+					e.printStackTrace();
+				} catch (NullDateException e) {
+					// TODO Auto-generated catch block
+					Notifications.create().title("搜索异常").text(e.toString()).showError();
+					e.printStackTrace();
+				}
 			}
 		});
 		menu.getItems().addAll(copy,look,show);

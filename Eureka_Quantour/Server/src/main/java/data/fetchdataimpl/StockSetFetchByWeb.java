@@ -10,8 +10,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -158,7 +160,31 @@ public class StockSetFetchByWeb{
 			e.printStackTrace();
 		}
 	}
-	
+	public void getIndustryList() throws InternetdisconnectException{
+		try{
+			File backups_ZXB=new File("config/backups/IndustryList");
+			try {
+				System.out.println("get Industry list");
+				webmethod.testInternet();
+				webmethod.saveToFile_ByInputStream("http://quote.cfi.cn/cache_image/hy_avgzdf_desc.htm"
+						,"config/backups/IndustryList");
+				HashMap<String,List<String>> result=webmethod.matchIndustry("config/backups/IndustryList");
+				dealIndustryList(result);
+				System.out.println("update by web");
+			} catch (InternetdisconnectException e) {
+					if(backups_ZXB.exists()){
+						HashMap<String,List<String>> result=webmethod.matchIndustry("config/backups/IndustryList");
+						dealIndustryList(result);
+						System.out.println("update by backups");
+					}
+					else{
+						throw e;
+					}
+			}
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+	}
 	/**
 	 * 处理爬取到的股票名字
 	 * @param list
@@ -363,6 +389,28 @@ public class StockSetFetchByWeb{
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+	private void dealIndustryList(HashMap<String,List<String>> map){
+		Iterator<Entry<String, List<String>>> it=map.entrySet().iterator();
+		String path="config/stock/stockset/";
+		while(it.hasNext()){
+			Entry<String, List<String>> entry=it.next();
+			String name=entry.getKey();
+			List<String> code=entry.getValue();
+			String temppath=path+name;
+			File file=new File(temppath);
+			if(file.exists()&&file.isDirectory()){
+				filemethod.dealdir(file);
+			}
+			else{
+				file.mkdir();
+			}
+			for(String str:code){
+				if(Translate.getInstance().containsCode(str)){
+					addstock(str,temppath);
+				}
+			}
 		}
 	}
 }
