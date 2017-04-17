@@ -40,6 +40,7 @@ public class VolumeChart {
         volumechart.setLegendVisible(false);
         volumechart.setBarGap(0);
         volumechart.setCategoryGap(0);
+        volumechart.setOpacity(0.7);
 
         XYChart.Series<String,Number> series = new XYChart.Series<>();
 
@@ -51,10 +52,8 @@ public class VolumeChart {
                 public void changed(ObservableValue<? extends Node> observable, Node oldValue, Node newValue) {
                     if (newValue != null) {
                         if (info.getClose()>info.getOpen() ) {
-//                            newValue.setStyle("-fx-bar-fill: red;");
                             newValue.getStyleClass().add("barp");
                         } else  {
-//                            newValue.setStyle("-fx-bar-fill: green;");
                             newValue.getStyleClass().add("barm");
                         }
                     }

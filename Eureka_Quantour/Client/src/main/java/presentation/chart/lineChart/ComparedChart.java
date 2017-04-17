@@ -93,7 +93,9 @@ public class ComparedChart implements chartService{
         	for(int j=0; j<date.length; j++){
 	        	if( j<datas.length && datas[j]!=0 && datas[j]!=Integer.MAX_VALUE ){
 	        		serie.getData().add( new XYChart.Data<>(dates[j], datas[j]) );
-	        		String dataFormat = nf.format(datas[j]);
+	        		String dataFormat = ""+datas[j];
+	        		if( datas[j]<1 )
+	        			dataFormat = nf.format(datas[j]);
 	        		
 	        		if( dataStrings[j]!=null )
 	        			dataStrings[j] += "/"+name+" : "+dataFormat;
