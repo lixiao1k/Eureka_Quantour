@@ -20,6 +20,7 @@ import exception.DateInvalidException;
 import exception.DateOverException;
 import exception.EndInvalidException;
 import exception.NullDateException;
+import exception.NullMarketException;
 import exception.NullStockIDException;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -164,6 +165,9 @@ public class StockSetUIController implements Initializable {
 					// TODO Auto-generated catch block
 					Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
 					e.printStackTrace();
+				}catch (NullMarketException e) {
+					// TODO: handle exception
+					Notifications.create().title("信息").text(e.toString()).showInformation();
 				}
 				//....
 			}
@@ -271,6 +275,10 @@ public class StockSetUIController implements Initializable {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 					Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
+				}catch (NullMarketException e) {
+					Notifications.create().title("信息").text(e.toString()).showInformation();
+					// TODO: handle exception
+					e.printStackTrace();
 				}
 			}
 		});

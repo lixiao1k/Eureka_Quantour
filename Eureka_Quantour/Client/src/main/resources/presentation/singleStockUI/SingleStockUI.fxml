@@ -23,7 +23,7 @@
          <children>
             <Label fx:id="codeLabel" layoutY="6.0" prefHeight="17.0" prefWidth="90.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="2.0" />
             <Label fx:id="nameLabel" layoutX="92.0" layoutY="5.5" prefHeight="17.0" prefWidth="84.0" AnchorPane.leftAnchor="92.0" AnchorPane.topAnchor="2.0" />
-            <Label fx:id="closeLabel" layoutX="2.0" layoutY="21.0" prefHeight="29.0" prefWidth="62.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="21.0" />
+            <Label fx:id="closeLabel" layoutX="23.5" layoutY="24.5" prefHeight="29.0" prefWidth="90.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="23.0" />
             <Label fx:id="RAFLabel" layoutX="99.5" layoutY="30.5" prefHeight="17.0" prefWidth="77.0" AnchorPane.leftAnchor="98.0" AnchorPane.topAnchor="29.0" />
             <Label layoutX="3.0" layoutY="61.0" text="最高价：" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="61.0" />
             <Label fx:id="highLabel" layoutX="64.0" layoutY="64.0" prefHeight="17.0" prefWidth="62.0" AnchorPane.leftAnchor="64.0" AnchorPane.topAnchor="61.0" />
