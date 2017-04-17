@@ -66,4 +66,7 @@ public interface StockLogicInterface extends Remote {
 
 	 void deleteStockFromStockSet(String stockName, String stockSetName, String username)throws RemoteException;
 
+	 String nameToCode(String name) throws RemoteException;
+
+
 }
