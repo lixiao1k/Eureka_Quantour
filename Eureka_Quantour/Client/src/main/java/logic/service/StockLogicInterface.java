@@ -48,7 +48,7 @@ public interface StockLogicInterface extends Remote {
 
 	 List<String> getStockSet(String username)throws RemoteException;
 
-	 List<SingleStockInfoVO> getStockSetSortedInfo(String stockSetName, LocalDate now,String username)throws RemoteException;
+	 List<SingleStockInfoVO> getStockSetSortedInfo(String stockSetName, LocalDate now,String username)throws RemoteException, NullMarketException;
 
 	 SingleStockInfoVO getStockBasicInfo(String code, LocalDate now) throws NullStockIDException, NullDateException,RemoteException;
 
