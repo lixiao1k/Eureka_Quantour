@@ -23,8 +23,8 @@ public class test extends Application{
 		
 		for( int i=0; i<10; i++){
 			double date = Math.random();
-			pandm.add( (int)(date*30) );
-			pandm.add( (int)(date*30) );
+			pandm.add( (int)(date*70) );
+			pandm.add( (int)(date*90) );
 			zuhe.put( date, pandm);
 		}
 		ydhd = new YieldDistributionHistogramDataVO( zuhe );
@@ -44,6 +44,7 @@ public class test extends Application{
 			dialogStage.initOwner(primaryStage);
 		        
 			Scene scene = new Scene(yieldDistuributeChart.getchart(334, 200, true));
+//			Scene scene = new Scene(yieldDistuributeChart.getchart(334, 200, false));
 			dialogStage.setScene(scene);
 
 			dialogStage.show();

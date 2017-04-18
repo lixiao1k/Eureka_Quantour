@@ -40,6 +40,7 @@ public class test extends Application{
     			ssi.setClose(d*9);
     			ssi.setHigh(d*10);
     			ssi.setLow(d*6);
+    			ssi.setFudu(0.5);
     			ssi.setVolume((long)(d*8000));
     		}
     		else{
@@ -47,6 +48,7 @@ public class test extends Application{
     			ssi.setClose(d*7);
     			ssi.setHigh(d*11);
     			ssi.setLow(d*5.5);
+    			ssi.setFudu(-0.5);
     			ssi.setVolume((long)(d*11000));
     		}
     		stocklist.add(ssi);

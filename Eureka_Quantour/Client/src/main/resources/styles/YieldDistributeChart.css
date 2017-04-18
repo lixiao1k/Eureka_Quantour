@@ -4,7 +4,7 @@
 
 .chart{
 	-fx-background-color:transparent;
-	-fx-padding: 5px;
+	-fx-padding: 0px;
 }
 .chart-content {
     -fx-padding: 0px; 
