@@ -107,6 +107,7 @@ public class StrategyUIController implements Initializable{
 		int createdays = 0;//形成期 
 		int holddays = 0;
 		int nums = 0;//股票数
+		int meandays = 0;
 		boolean flag = true;//判断是否能够继续调用策略
 		if(momentumRadioButton.isSelected()){
 			meandaysTextField.setEditable(false);
@@ -200,9 +201,13 @@ public class StrategyUIController implements Initializable{
 					System.out.println(yieldDistributionHistogramDataVO);
 					System.out.println(yieldChartDataVO);
 					chartService chartservice = new YieldComparedChart(yieldChartDataVO);
-					Pane pane = chartservice.getchart(900,300,true);
+					Pane pane = chartservice.getchart(900,250,true);
+					chartservice = new YieldDistributeChart(yieldDistributionHistogramDataVO);
+					Pane pane1 = chartservice.getchart(900, 250, true);
 					chart2AnchorPane.getChildren().clear();
 					chart2AnchorPane.getChildren().add(pane);
+					chart1AnchorPane.getChildren().clear();
+					chart1AnchorPane.getChildren().add(pane1);
 	 			} catch (RemoteException e1) {
 					// TODO Auto-generated catch block
 					Notifications.create().title("网络连接异常").text(e1.toString()).showWarning();
@@ -210,6 +215,105 @@ public class StrategyUIController implements Initializable{
 				}	
 			}
 		}else{
+			if(stockSetComboBox.getValue()!=null){
+				stockSet = stockSetComboBox.getValue();
+			}else{
+				flag = false;
+				Notifications.create().title("输入异常").text("请正确选择股票池").showWarning();
+			}
+			if(holdPeriodTextField.getText().length()!=0){
+				int num = 0;
+				try{
+				    num = Integer.parseInt(holdPeriodTextField.getText());
+				    if(num<=0){
+				    	Notifications.create().title("输入异常").text("持有期请输入正数").showWarning();
+				    	flag = false;
+				    }
+				}catch(NumberFormatException e1){
+					flag = false;
+					Notifications.create().title("输入异常").text("持有期请输入整数").showWarning();
+				}
+				holddays = num;
+			}else{
+				flag = false;
+				Notifications.create().title("输入异常").text("请输入持有期").showWarning();
+			}
+			if(closeRadioButton.isSelected()){
+				price = "收盘价";
+			}else{
+				price = "开盘价";
+			}
+			
+			if(numOfStockTextField.getText().length()!=0){
+				int num =0;
+				try{
+				    num = Integer.parseInt(numOfStockTextField.getText());
+				    if(num<=0){
+				    	Notifications.create().title("输入异常").text("股票数请输入正数").showWarning();
+				    	flag = false;
+				    }
+				}catch(NumberFormatException e1){
+					flag = false;
+					Notifications.create().title("输入异常").text("股票数请输入整数").showWarning();
+				}
+				nums = num;
+			}else{
+				flag = false;
+				Notifications.create().title("输入异常").text("请输入股票数").showWarning();
+			}
+			
+			if(meandaysTextField.getText().length()!=0){
+				int num =0;
+				try{
+				    num = Integer.parseInt(meandaysTextField.getText());
+				    if(num<=0){
+				    	Notifications.create().title("输入异常").text("几日均值请输入正数").showWarning();
+				    	flag = false;
+				    }
+				}catch(NumberFormatException e1){
+					flag = false;
+					Notifications.create().title("输入异常").text("几日均值请输入整数").showWarning();
+				}
+				meandays = num;
+			}else{
+				flag = false;
+				Notifications.create().title("输入异常").text("请输入几日均值数").showWarning();
+			}
+			if(flag){
+				List<Object> meandaylist =new ArrayList<Object>();
+				meandaylist.add(meandays);
+				StrategyConditionVO strategyConditionVO2 = new StrategyConditionVO("均值策略",meandaylist,nums);
+				SaleVO saleVO2 = new SaleVO(holddays,price);
+				RemoteHelper remote = RemoteHelper.getInstance();
+				StockLogicInterface stockLogicInterface = remote.getStockLogic();
+				try {
+					stockLogicInterface.setStrategy(strategyConditionVO2, saleVO2,(LocalDate)dataController.get("BeginTime"),
+							(LocalDate)dataController.get("SystemTime"), stockSet, (String)dataController.get("UserName"));
+					System.out.println("均值股票池："+stockSet);
+					System.out.println("均值策略："+"均值");
+					System.out.println("均值持有期："+holddays);
+					System.out.println("均值价格："+price);
+					System.out.println("均值股票数："+nums);
+					System.out.println("均值几日股票："+meandays);
+					YieldDistributionHistogramDataVO yieldDistributionHistogramDataVO1 = stockLogicInterface.getYieldDistributionHistogramData();
+					YieldChartDataVO yieldChartDataVO1 = stockLogicInterface.getYieldChartData();
+					System.out.println(yieldDistributionHistogramDataVO1);
+					System.out.println(yieldChartDataVO1);
+					chartService chartservice = new YieldComparedChart(yieldChartDataVO1);
+					Pane pane = chartservice.getchart(900,250,true);
+					chartservice = new YieldDistributeChart(yieldDistributionHistogramDataVO1);
+					Pane pane1 = chartservice.getchart(900, 250, true);
+					chart2AnchorPane.getChildren().clear();
+					chart2AnchorPane.getChildren().add(pane);
+					chart1AnchorPane.getChildren().clear();
+					chart1AnchorPane.getChildren().add(pane1);
+				} catch (RemoteException e1) {
+					// TODO Auto-generated catch block
+					Notifications.create().title("网络连接异常").text(e1.toString()).show();
+					e1.printStackTrace();
+				}
+			}
+
 			
 		}
 
