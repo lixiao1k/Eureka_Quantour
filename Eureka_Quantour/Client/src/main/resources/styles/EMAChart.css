@@ -22,7 +22,7 @@
    -fx-padding: 0px;
 } 
 .chart-legend-item-symbol{
-   -fx-background-radius: 0;
+   -fx-background-radius: 3;
 }
 .chart-legend-item{
     -fx-text-fill: #90d7ec;

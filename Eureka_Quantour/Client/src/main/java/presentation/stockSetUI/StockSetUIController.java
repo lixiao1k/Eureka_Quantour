@@ -161,6 +161,11 @@ public class StockSetUIController implements Initializable {
 					List<SingleStockInfoVO> list = stockLogicInterface.getStockSetSortedInfo(stockSetName,
 							(LocalDate)dataController.get("SystemTime"),(String)dataController.get("UserName"));
 					setStockSetSortedInfo(list);
+					if(list!=null){
+						SingleStockInfoVO vo = list.get(0);
+						showDetailInfo(vo);
+					}
+
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
 					Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
@@ -254,32 +259,30 @@ public class StockSetUIController implements Initializable {
 				RemoteHelper remote = RemoteHelper.getInstance();
 				StockLogicInterface stockLogicInterface = remote.getStockLogic();
 				try {
-					List<SingleStockInfoVO> vo =stockLogicInterface.getStockSetSortedInfo((String)dataController.get("StockSetNow")
-							, (LocalDate)dataController.get("SystemTime"),(String)dataController.get("UserName"));
-					for(SingleStockInfoVO vo1:vo){
-						System.out.println(vo1.getCode());
-					}
-					stockLogicInterface.deleteStockFromStockSet((String)dataController.get("StockSetNow"),
-							code,(String)dataController.get("UserName"));
-					System.out.println((String)dataController.get("StockSetNow"));
-					System.out.println(code);
-					System.out.println((String)dataController.get("UserName"));
-					List<SingleStockInfoVO> vo2 =stockLogicInterface.getStockSetSortedInfo((String)dataController.get("StockSetNow")
-							, (LocalDate)dataController.get("SystemTime"),(String)dataController.get("UserName"));
-					for(SingleStockInfoVO vo1:vo2){
-						System.out.println(vo1.getCode());
-					}
+					stockLogicInterface.deleteStockFromStockSet(
+							code,(String)dataController.get("StockSetNow"),(String)dataController.get("UserName"));
 					Notifications.create().title("成功").text("成功将股票"+name+"从股池"+
-							(String)dataController.get("StockSetNow")+"中删除").showInformation();;
+							(String)dataController.get("StockSetNow")+"中删除").showInformation();
+					
+					
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 					Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
-				}catch (NullMarketException e) {
-					Notifications.create().title("信息").text(e.toString()).showInformation();
-					// TODO: handle exception
+				}
+				List<SingleStockInfoVO> list;
+				try {
+					list = stockLogicInterface.getStockSetSortedInfo((String)dataController.get("StockSetNow"),
+							(LocalDate)dataController.get("SystemTime"),(String)dataController.get("UserName"));
+					setStockSetSortedInfo(list);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NullMarketException e) {
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+
 			}
 		});
 		MenuItem show = new MenuItem("细节");
@@ -368,6 +371,7 @@ public class StockSetUIController implements Initializable {
 		
 		return root;
 	}
+	
 	/*
 	 *@description method for the eventHandler in stockInfo to show the chart
 	 *
@@ -378,41 +382,7 @@ public class StockSetUIController implements Initializable {
 		setKlinePane(vo.getCode());
 		setEMAChartPane(vo.getCode());
 		
-		/*
-		 * 测试代码K线图
-		 */
-//	    KLineChart klineChart;
-//	    List<SingleStockInfoVO> stocklist = new ArrayList<>();
-//		SingleStockInfoVO ssi = new SingleStockInfoVO();
-//    	Calendar cal = Calendar.getInstance();
-//    	int j = 2;
-//    	for(int i=0; i<20; i++, j++){
-//    		ssi = new SingleStockInfoVO();
-//    		cal.set(2014, 3, j);
-//    		ssi.setDate( (Calendar)cal.clone() );
-//    		double d = Math.random();
-//    		if( d>0.5 ){
-//    			ssi.setOpen(d*7);
-//    			ssi.setClose(d*9);
-//    			ssi.setHigh(d*10);
-//    			ssi.setLow(d*6);
-//    			ssi.setVolume((long)(d*8000));
-//    		}
-//    		else{
-//    			ssi.setOpen(d*9);
-//    			ssi.setClose(d*7);
-//    			ssi.setHigh(d*11);
-//    			ssi.setLow(d*5.5);
-//    			ssi.setVolume((long)(d*11000));
-//    		}
-//    		stocklist.add(ssi);
-//    	}
-//    	klineChart = new KLineChart(stocklist);
-//		Pane klinePane = klineChart.getchart(344,200);
-//		kChartAnchorPane.getChildren().clear();
-//		kChartAnchorPane.getChildren().add(klinePane);
-//		
-//		
+
 	}
 	/*
 	 * @description 判断正负性

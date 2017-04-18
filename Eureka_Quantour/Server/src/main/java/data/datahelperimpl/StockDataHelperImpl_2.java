@@ -94,7 +94,7 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 		ie=InitEnvironment.getInstance();
 		
 		indexBuffer=new StockIndexBuffer(3300);
-		dataBuffer=new StockIndexBuffer(100);
+		dataBuffer=new StockIndexBuffer(3000);
 		indexBuffer_is=new DataBuffer_ByInputStream(3300);
 		dataBuffer_is=new DataBuffer_ByInputStream(100);
 		

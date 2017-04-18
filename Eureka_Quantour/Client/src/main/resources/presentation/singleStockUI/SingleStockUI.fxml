@@ -26,13 +26,13 @@
             <Label fx:id="closeLabel" layoutX="23.5" layoutY="24.5" prefHeight="29.0" prefWidth="90.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="23.0" />
             <Label fx:id="RAFLabel" layoutX="99.5" layoutY="30.5" prefHeight="17.0" prefWidth="77.0" AnchorPane.leftAnchor="98.0" AnchorPane.topAnchor="29.0" />
             <Label layoutX="3.0" layoutY="61.0" text="最高价：" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="61.0" />
-            <Label fx:id="highLabel" layoutX="64.0" layoutY="64.0" prefHeight="17.0" prefWidth="62.0" AnchorPane.leftAnchor="64.0" AnchorPane.topAnchor="61.0" />
+            <Label fx:id="highLabel" layoutX="67.5" layoutY="64.5" prefHeight="17.0" prefWidth="54.0" AnchorPane.leftAnchor="66.0" AnchorPane.topAnchor="63.0" />
             <Label layoutX="2.0" layoutY="87.0" text="最低价：" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="87.0" />
-            <Label fx:id="lowLabel" layoutX="66.0" layoutY="90.0" prefHeight="17.0" prefWidth="62.0" AnchorPane.leftAnchor="64.0" AnchorPane.topAnchor="87.0" />
-            <Label layoutX="142.0" layoutY="64.0" text="开盘价：" AnchorPane.leftAnchor="142.0" AnchorPane.topAnchor="61.0" />
-            <Label fx:id="openLabel" layoutX="204.0" layoutY="63.0" prefHeight="17.0" prefWidth="62.0" AnchorPane.leftAnchor="204.0" AnchorPane.topAnchor="61.0" />
-            <Label layoutX="144.0" layoutY="90.0" text="成交量：" AnchorPane.leftAnchor="142.0" AnchorPane.topAnchor="87.0" />
-            <Label fx:id="volumeLabel" layoutX="206.0" layoutY="90.0" prefHeight="17.0" prefWidth="62.0" AnchorPane.leftAnchor="204.0" AnchorPane.topAnchor="87.0" />
+            <Label fx:id="lowLabel" layoutX="69.5" layoutY="92.5" prefHeight="17.0" prefWidth="54.0" AnchorPane.leftAnchor="68.0" AnchorPane.topAnchor="91.0" />
+            <Label layoutX="142.0" layoutY="64.0" text="开盘价：" AnchorPane.leftAnchor="122.0" AnchorPane.topAnchor="61.0" />
+            <Label fx:id="openLabel" layoutX="179.5" layoutY="64.5" prefHeight="17.0" prefWidth="90.0" AnchorPane.leftAnchor="178.0" AnchorPane.topAnchor="63.0" />
+            <Label layoutX="144.0" layoutY="90.0" text="成交量：" AnchorPane.leftAnchor="122.0" AnchorPane.topAnchor="87.0" />
+            <Label fx:id="volumeLabel" layoutX="179.5" layoutY="90.5" prefHeight="17.0" prefWidth="90.0" AnchorPane.leftAnchor="178.0" AnchorPane.topAnchor="89.0" />
          </children></AnchorPane>
    </children>
 </AnchorPane>

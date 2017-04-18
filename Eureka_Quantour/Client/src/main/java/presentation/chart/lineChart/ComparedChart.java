@@ -90,7 +90,6 @@ public class ComparedChart implements chartService{
             String name = "";
         	if( i<dataName.size() )
         		name = dataName.get(i);
-        	System.out.println(name);
         	
         	for(int j=0; j<date.length; j++){
 	        	if( j<datas.length && datas[j]!=0 && datas[j]!=Integer.MAX_VALUE ){
@@ -114,7 +113,6 @@ public class ComparedChart implements chartService{
         	}
         	serie.setName(name);
         	series.add(serie);
-//        	lineChart.getData().add(serie);
         }
         for(int i=0; i<date.length; i++){
         	if( dataStrings[i].length()!=0 )
