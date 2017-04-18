@@ -36,9 +36,8 @@ public class YieldDistributeChart implements chartService{
 	
 	private AnchorPane pane = new AnchorPane();
 	private StackPane chartpane = new StackPane();
+	private StackPane datepane = new StackPane();
 	private Label info = new Label();
-	private Label begin = new Label();
-	private Label end = new Label();
 	
 	private NumberAxis yAxis;
     private CategoryAxis xAxis;
@@ -122,28 +121,35 @@ public class YieldDistributeChart implements chartService{
 	}
 
 	@Override
-	public Pane getchart(int width, int height) {
+	public Pane getchart(int width, int height, boolean withdate) {
 		// TODO Auto-generated method stub
 		if( width<=0 )
     		width = 334;
     	if( height<=0 )
     		height = 200;
+    	int dateheight = 10;
+    	if( withdate ){
+    		height -= dateheight;
+    		String bdate = yield[0];
+    		String mdate = yield[yield.length/2];
+    		String edate = yield[yield.length-1];
+    		datepane.getChildren().addAll( 
+    				commonSet.dateForStackPane(bdate, mdate, edate).getChildren() );
+    		datepane.setPrefSize(width, dateheight);
+    	}
     	barChart.setMaxSize(width, height);
     	barChart.setMinSize(width, height);
     	
     	info = catchMouseMove.catchMouseReturnInfoForStackPane(barChart, dataMap, yield, "收益率", 10);
     	
-    	begin = commonSet.beignDataForAnchorPane( yield[0], height);
-    	end = commonSet.endDataForAnchorPane( yield[yield.length-1], width, height );
-    	begin.setLayoutX(begin.getLayoutX()+10);
-    	end.setLayoutX(end.getLayoutX()+10);
-    	
     	chartpane.getChildren().add(barChart);
     	chartpane.getChildren().add(info);
     	
     	pane.getChildren().add(chartpane);
-    	pane.getChildren().add(begin);
-    	pane.getChildren().add(end);
+    	if( withdate ){
+    		pane.getChildren().add(datepane);
+    		AnchorPane.setTopAnchor(datepane, height+0.0);
+    	}
     	
     	info.getStylesheets().add(
     			getClass().getResource("/styles/InfoLabel.css").toExternalForm() );

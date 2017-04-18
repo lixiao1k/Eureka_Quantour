@@ -97,7 +97,7 @@ public class SingleLineChart implements chartService{
     }
     
     @Override
-    public Pane getchart(int width, int height) {
+    public Pane getchart(int width, int height, boolean withdate) {
     	double space = 20;
     	int heightT = (int)(height-space);
     	
@@ -110,8 +110,8 @@ public class SingleLineChart implements chartService{
     	lineChart.setMinSize(width, heightT);
     	
     	info = catchMouseMove.catchMouseReturnInfoForAnchorPane(lineChart, dataMap, dates, "date", 0);
-    	begin = commonSet.beignDataForAnchorPane(dates[0], height);
-    	end = commonSet.endDataForAnchorPane(dates[dates.length-1], width, height);
+    	begin = commonSet.beignDateForAnchorPane(dates[0], height);
+    	end = commonSet.endDateForAnchorPane(dates[dates.length-1], width, height);
     	
     	pane.getChildren().add(lineChart);
     	pane.getChildren().add(info);

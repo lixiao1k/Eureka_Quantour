@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by huihantao on 2017/3/9.
  */
-public class VolumeChart {
+public class VolumeChart{
 	
     protected NumberAxis yAxis;
     protected CategoryAxis xAxis;

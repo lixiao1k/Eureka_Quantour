@@ -7,7 +7,7 @@
 	-fx-padding: 0px;
 }
 .chart-content {
-    -fx-padding: 5px; 
+    -fx-padding: 0px; 
 }
 .chart-title {
   -fx-text-fill: #cde6c7;
@@ -26,7 +26,7 @@
 }
 .chart-legend-item{
     -fx-text-fill: #90d7ec;
-    -fx-font-size: 1.2em;
+    -fx-font-size: 1em;
 }
 
 .chart-series-line{

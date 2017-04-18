@@ -7,7 +7,7 @@
 	-fx-padding: 0px;
 }
 .chart-content {
-    -fx-padding: 5px; 
+    -fx-padding: 0px; 
 }
 .chart-plot-background {
 	-fx-background-color: transparent;
