@@ -129,9 +129,6 @@ public class YieldComparedChart extends ComparedChart {
     	
     	index += layout;
     	AnchorPane.setLeftAnchor(maxre, index);
-    	
-//    	infopane.getStylesheets().add(
-//    			getClass().getResource("/styles/YieldChartInfoLabel.css").toExternalForm() );
 	}
 	
 	 @Override
