@@ -127,7 +127,7 @@ public class YieldDistributeChart implements chartService{
     		width = 334;
     	if( height<=0 )
     		height = 200;
-    	int dateheight = 10;
+    	double dateheight = 10, dategap = 25;
     	if( withdate ){
     		height -= dateheight;
     		String bdate = yield[0];
@@ -135,7 +135,7 @@ public class YieldDistributeChart implements chartService{
     		String edate = yield[yield.length-1];
     		datepane.getChildren().addAll( 
     				commonSet.dateForStackPane(bdate, mdate, edate).getChildren() );
-    		datepane.setPrefSize(width, dateheight);
+    		datepane.setPrefSize(width-dategap, dateheight);
     	}
     	else{
     		yAxis.setPrefWidth(1);
@@ -153,6 +153,7 @@ public class YieldDistributeChart implements chartService{
     	if( withdate ){
     		pane.getChildren().add(datepane);
     		AnchorPane.setTopAnchor(datepane, height+0.0);
+    		AnchorPane.setLeftAnchor(datepane, dategap);
     	}
     	
     	info.getStylesheets().add(

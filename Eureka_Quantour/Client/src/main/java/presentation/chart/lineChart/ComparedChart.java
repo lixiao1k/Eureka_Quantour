@@ -143,7 +143,7 @@ public class ComparedChart implements chartService{
     		width = 334;
     	if( height<=0 )
     		height = 200;
-    	int dateheight = 10;
+    	double dateheight = 10, dategap = 10;
     	if( withdate ){
     		lineChart.getYAxis().setOpacity(0.9);
     		height -= dateheight;
@@ -152,7 +152,7 @@ public class ComparedChart implements chartService{
     		String edate = dates[dates.length-1];
     		datepane.getChildren().addAll( 
     				commonSet.dateForStackPane(bdate, mdate, edate).getChildren() );
-    		datepane.setPrefSize(width, dateheight);
+    		datepane.setPrefSize(width-10, dateheight);
     		datepane.getStylesheets().add(
         			getClass().getResource("/styles/DateLabel.css").toExternalForm() );
     	}
@@ -175,6 +175,7 @@ public class ComparedChart implements chartService{
     	if( withdate ){
     		pane.getChildren().add(datepane);
     		AnchorPane.setTopAnchor(datepane, height+3.0);
+    		AnchorPane.setLeftAnchor(datepane, dategap);
     	}	
     	
     	info.getStylesheets().add(
