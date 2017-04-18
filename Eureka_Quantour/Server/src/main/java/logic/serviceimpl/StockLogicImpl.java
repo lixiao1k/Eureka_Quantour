@@ -52,7 +52,7 @@ public class StockLogicImpl implements StockLogicInterface{
 
 	@Override
 	public List<EMAInfoVO> getEMAInfo( String stockCode, LocalDate begin, LocalDate end )
-			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException, DateOverException {
+			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException {
 
 		// methods用于存储日均线计算的方式
 		int methods[] = { 5, 10, 20, 30, 60 };
@@ -68,7 +68,7 @@ public class StockLogicImpl implements StockLogicInterface{
 	}
 
 	public EMAInfoVO getEMAInfo( String stockCode, LocalDate begin, LocalDate end ,int days)
-			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, DateOverException, NullStockIDException {
+			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException {
 
 		utility.ifDateValid(begin.plusDays(-days),end,stockCode);
 
@@ -78,9 +78,13 @@ public class StockLogicImpl implements StockLogicInterface{
 		ArrayList<LocalDate> timelist=new ArrayList<>();
 		ArrayList<Double> shujulist=new ArrayList<>();
 
-		for (;start.compareTo(end)<=0;start=idi.addDays(start,1)){
-			shujulist.add(utility.getEMA(stockCode,start,days));
-			timelist.add(LocalDate.of(start.getYear(),start.getMonth(),start.getDayOfMonth()));
+		try {
+			for (;start.compareTo(end)<=0;start=idi.addDays(start,1)){
+                shujulist.add(utility.getEMA(stockCode,start,days));
+                timelist.add(LocalDate.of(start.getYear(),start.getMonth(),start.getDayOfMonth()));
+
+            }
+		} catch (DateOverException e) {
 
 		}
 		EMAInfoVO vo = new EMAInfoVO(timelist,shujulist,days);
@@ -268,10 +272,10 @@ public class StockLogicImpl implements StockLogicInterface{
 		try {
 			List<Double> jizhunlist=stragety.getBasicReturn();
 			List<Double> celuelist=stragety.getStragetyReturn();
-			System.out.println(jizhunlist.size());
-			System.out.println(celuelist.size());
-			System.out.println(timelist.size());
-			for (int i=0;i<timelist.size();i++){
+			System.out.println(jizhunlist);
+			System.out.println(celuelist);
+//			System.out.println(timelist);
+			for (int i=0;i<jizhunlist.size();i++){
 				double hengzhou=Math.rint(jizhunlist.get(i));
 
 				if (zuhe.get(hengzhou)==null)
