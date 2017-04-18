@@ -39,9 +39,9 @@
 }
 
 .axis {
-    -fx-tick-label-fill: #f2eada ;
+    -fx-tick-label-fill: #feeeed ;
     -fx-font-family: Tahoma;
-    -fx-tick-label-font-size: 0.9em;
+    -fx-tick-label-font-size: 11px;
     -fx-tick-length: 0;
     -fx-minor-tick-length: 0;
 }

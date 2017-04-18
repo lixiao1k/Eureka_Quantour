@@ -56,19 +56,19 @@ public class YieldDistributeChart implements chartService{
         xAxis.setTickLabelsVisible(false);
         xAxis.setStartMargin(10);
         xAxis.setOpacity(0.7);
+        
 	        
         yAxis = new NumberAxis();
         yAxis.autoRangingProperty().set(true);
         yAxis.setAnimated(true);
         yAxis.forceZeroInRangeProperty().setValue(false);
-        yAxis.setPrefWidth(1);
-        yAxis.setOpacity(0.7);
 	    
         barChart = new BarChart<>(xAxis, yAxis);
         barChart.setVerticalGridLinesVisible(false);
         barChart.setBarGap(0);
         barChart.setPadding(new Insets(10,10,10,10));
         barChart.setCategoryGap(0);
+        barChart.setLegendVisible(false);
 	    
         List<Double> yieldL = new ArrayList<>( keySet );
         yieldL = sortDouble(yieldL);
@@ -94,7 +94,7 @@ public class YieldDistributeChart implements chartService{
                 @Override
                 public void changed(ObservableValue<? extends Node> observable, Node oldValue, Node newValue) {
                     if (newValue != null) {
-                        newValue.setStyle("-fx-bar-fill: red;");
+                        newValue.setStyle("-fx-bar-fill: #FF5151;");
                     }
                 }
             });
@@ -102,7 +102,7 @@ public class YieldDistributeChart implements chartService{
                 @Override
                 public void changed(ObservableValue<? extends Node> observable, Node oldValue, Node newValue) {
                     if (newValue != null) {
-                        newValue.setStyle("-fx-bar-fill: green;");
+                        newValue.setStyle("-fx-bar-fill: #53FF53;");
                     }
                 }
             });
@@ -137,6 +137,10 @@ public class YieldDistributeChart implements chartService{
     				commonSet.dateForStackPane(bdate, mdate, edate).getChildren() );
     		datepane.setPrefSize(width, dateheight);
     	}
+    	else{
+    		yAxis.setPrefWidth(1);
+            yAxis.setOpacity(0.7);
+    	}
     	barChart.setMaxSize(width, height);
     	barChart.setMinSize(width, height);
     	
@@ -154,7 +158,7 @@ public class YieldDistributeChart implements chartService{
     	info.getStylesheets().add(
     			getClass().getResource("/styles/InfoLabel.css").toExternalForm() );
     	pane.getStylesheets().add(
-    			getClass().getResource("/styles/SingleLineChart.css").toExternalForm() );
+    			getClass().getResource("/styles/YieldDistributeChart.css").toExternalForm() );
     	return pane;
 	}
 

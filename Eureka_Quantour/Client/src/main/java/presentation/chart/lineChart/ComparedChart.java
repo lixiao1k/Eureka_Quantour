@@ -69,7 +69,7 @@ public class ComparedChart implements chartService{
         xAxis.setTickLabelsVisible(false);
         xAxis.setTickMarkVisible(false);
         xAxis.setStartMargin(5);
-        xAxis.setOpacity(0.7);
+        xAxis.setOpacity(1);
 
         yAxis = new NumberAxis();
         yAxis.autoRangingProperty().set(true);
@@ -145,7 +145,7 @@ public class ComparedChart implements chartService{
     		height = 200;
     	int dateheight = 10;
     	if( withdate ){
-    		lineChart.getYAxis().setOpacity(0.7);
+    		lineChart.getYAxis().setOpacity(0.9);
     		height -= dateheight;
     		String bdate = dates[0];
     		String mdate = dates[dates.length/2];
@@ -171,9 +171,10 @@ public class ComparedChart implements chartService{
     	StackPane.setAlignment(lineChart, Pos.CENTER);
     	
     	pane.getChildren().add(chartpane);
+    	AnchorPane.setTopAnchor(chartpane, 3.0);
     	if( withdate ){
     		pane.getChildren().add(datepane);
-    		AnchorPane.setTopAnchor(datepane, height+0.0);
+    		AnchorPane.setTopAnchor(datepane, height+3.0);
     	}	
     	
     	info.getStylesheets().add(
