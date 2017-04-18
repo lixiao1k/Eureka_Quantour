@@ -32,7 +32,7 @@ public class Main {
 
 
         try {
-            List<SingleStockInfoVO> vo=s.getSingleStockInfoByTime("603028",LocalDate.of(2015,1,1),LocalDate.of(2016,4,25));
+            List<SingleStockInfoVO> vo=s.getSingleStockInfoByTime("603028",LocalDate.of(2015,1,1),LocalDate.of(2016,4,22));
             System.out.println(vo);
         } catch (NullStockIDException e) {
             e.printStackTrace();

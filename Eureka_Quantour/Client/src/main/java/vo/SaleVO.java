@@ -9,8 +9,10 @@ public class SaleVO implements Serializable {
     private static final long serialVersionUID = -8022219757439228511L;
 
     private int tiaocangqi=10;
+    // 调仓期
 
     private String tiaocangjiage="收盘价";
+    // 调仓价格
 
     public int getTiaocangqi() {
         return tiaocangqi;
@@ -26,5 +28,13 @@ public class SaleVO implements Serializable {
 
     public void setTiaocangjiage(String tiaocangjiage) {
         this.tiaocangjiage = tiaocangjiage;
+    }
+
+    public SaleVO(int tiaocangqi, String tiaocangjiage) {
+        this.tiaocangqi = tiaocangqi;
+        this.tiaocangjiage = tiaocangjiage;
+    }
+
+    public SaleVO() {
     }
 }

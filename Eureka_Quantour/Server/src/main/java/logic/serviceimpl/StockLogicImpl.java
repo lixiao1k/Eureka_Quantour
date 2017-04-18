@@ -37,13 +37,13 @@ public class StockLogicImpl implements StockLogicInterface{
 		List<SingleStockInfoVO> lssi = new ArrayList<>();
 		for (;x.compareTo(end)<=0;x=x.plusDays(1)){
 			SingleStockInfoPO po= null;
-			System.out.println(x);
+
 			try {
 				po = idi.getSingleStockInfo(stockCode,x);
 			}catch (NullDateException e) {
 				continue;
 			}
-
+			System.out.println(x);
 			SingleStockInfoVO vo=new SingleStockInfoVO(po);
 			lssi.add(vo);
 		}
@@ -142,6 +142,11 @@ public class StockLogicImpl implements StockLogicInterface{
 
 		return  new ComparedInfoVO(name1,stockCodeA,low1,high1,zuihouyitian/diyitian,shoupanlist,duishushouyiilv,fangcha,timelist);
 
+	}
+
+	@Override
+	public MarketInfoVO getMarketInfo(LocalDate date) throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException {
+		return null;
 	}
 
 //		//TODO
