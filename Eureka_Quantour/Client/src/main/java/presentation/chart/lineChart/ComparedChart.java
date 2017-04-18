@@ -7,11 +7,14 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import presentation.chart.chartService;
 import presentation.chart.function.CatchMouseMove;
 import presentation.chart.function.CatchMouseMoveService;
+import presentation.chart.function.CommonSet;
+import presentation.chart.function.CommonSetService;
 import presentation.chart.function.ListToArray;
 import presentation.chart.function.ListToArrayService;
 import vo.ComparedInfoVO;
@@ -33,11 +36,14 @@ public class ComparedChart implements chartService{
 
 	private CatchMouseMoveService catchMouseMove = new CatchMouseMove();
 	private ListToArrayService listToArray = new ListToArray();
+	private CommonSetService commonSet = new CommonSet();
 	
 	private DecimalFormat df = new DecimalFormat("0.00");
 	private NumberFormat nf = NumberFormat.getPercentInstance();
 	
-	private StackPane pane = new StackPane();
+	private AnchorPane pane = new AnchorPane();
+	private StackPane chartpane = new StackPane();
+	private StackPane datepane = new StackPane();
 	private Label info = new Label();
 	
     private NumberAxis yAxis;
@@ -132,22 +138,37 @@ public class ComparedChart implements chartService{
     }
     
     @Override
-    public Pane getchart(int width, int height) {
-    	
+    public Pane getchart(int width, int height, boolean withdate) {
     	if( width<=0 )
     		width = 334;
     	if( height<=0 )
     		height = 200;
-    	
+    	int dateheight = 10;
+    	if( withdate ){
+    		height -= dateheight;
+    		String bdate = dates[0];
+    		String mdate = dates[dates.length/2];
+    		String edate = dates[dates.length-1];
+    		datepane.getChildren().addAll( 
+    				commonSet.dateForStackPane(bdate, mdate, edate).getChildren() );
+    		datepane.setPrefSize(width, dateheight);
+    		datepane.getStylesheets().add(
+        			getClass().getResource("/styles/DateLabel.css").toExternalForm() );
+    	}
     	lineChart.setMaxSize(width, height);
     	lineChart.setMinSize(width, height);
     	
     	info = catchMouseMove.catchMouseReturnInfoForStackPane(lineChart, dataMap, dates, "date", 10);
     	
-    	pane.getChildren().add(lineChart);
-    	pane.getChildren().add(info);
-
+    	chartpane.getChildren().add(lineChart);
+    	chartpane.getChildren().add(info);
     	StackPane.setAlignment(lineChart, Pos.CENTER);
+    	
+    	pane.getChildren().add(chartpane);
+    	if( withdate ){
+    		pane.getChildren().add(datepane);
+    		AnchorPane.setTopAnchor(datepane, height+0.0);
+    	}	
     	
     	info.getStylesheets().add(
     			getClass().getResource("/styles/InfoLabel.css").toExternalForm() );

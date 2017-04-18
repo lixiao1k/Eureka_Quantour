@@ -27,7 +27,7 @@ public class YieldComparedChart extends ComparedChart {
 	private NumberFormat nf = NumberFormat.getPercentInstance();
 	
 	private AnchorPane pane = new AnchorPane();
-	private StackPane chartpane = new StackPane();
+	private AnchorPane chartpane = new AnchorPane();
 	private AnchorPane infopane = new AnchorPane();
 	
 	private ComparedChart comparedChart;
@@ -126,8 +126,8 @@ public class YieldComparedChart extends ComparedChart {
 	}
 	
 	 @Override
-	 public Pane getchart(int width, int height) {
-		 chartpane.getChildren().addAll( comparedChart.getchart(width, height-space).getChildren() );
+	 public Pane getchart(int width, int height, boolean withdate) {
+		 chartpane = (AnchorPane)comparedChart.getchart(width, height-space, withdate);
 		 pane.getChildren().add(infopane);
 		 AnchorPane.setTopAnchor(chartpane, (double)space);	
 		 pane.getChildren().add(chartpane);

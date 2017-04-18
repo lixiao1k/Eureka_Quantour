@@ -14,7 +14,7 @@ public interface chartService {
 	 * @time: 2017年4月3日
 	 * @return: Pane
 	 */
-    Pane getchart(int width, int height);
+    Pane getchart(int width, int height, boolean withdate);
 
     /**
      * 

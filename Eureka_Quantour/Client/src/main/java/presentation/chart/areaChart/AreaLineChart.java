@@ -100,7 +100,7 @@ public class AreaLineChart implements chartService {
     }
     
     @Override
-    public Pane getchart(int width, int height) {
+    public Pane getchart(int width, int height, boolean withdate) {
     	if( width<=0 )
     		width = 334;
     	if( height<=0 )
@@ -109,8 +109,8 @@ public class AreaLineChart implements chartService {
     	areaChart.setMinSize(width, height);
     	
     	info = catchMouseMove.catchMouseReturnInfoForStackPane(areaChart, dataMap, cycleSave, "周期", 10);
-    	begin = commonSet.beignDataForAnchorPane( cycleSave[0], height);
-    	end = commonSet.endDataForAnchorPane(cycleSave[cycleSave.length-1], width, height);
+    	begin = commonSet.beignDateForAnchorPane( cycleSave[0], height);
+    	end = commonSet.endDateForAnchorPane(cycleSave[cycleSave.length-1], width, height);
     	begin.setLayoutX(begin.getLayoutX()+10);
     	end.setLayoutX(end.getLayoutX()+25);
     	

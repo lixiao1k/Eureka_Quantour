@@ -1,5 +1,6 @@
 package presentation.chart.lineChart;
 
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import presentation.chart.function.ListToArray;
@@ -25,17 +26,17 @@ public class EMAChart extends ComparedChart {
 	 */
 	private ListToArrayService listToArray = new ListToArray();
 
-	private StackPane pane = new StackPane();	
+	private AnchorPane pane = new AnchorPane();	
 
     private ComparedChart comparedChart;
 
     public EMAChart(List<EMAInfoVO> EMAList) {
     	List<String> dataName = new ArrayList<>();
-    	dataName.add("5日均线");
-    	dataName.add("10日均线");
-    	dataName.add("20日均线");
-    	dataName.add("30日均线");
-    	dataName.add("60日均线");
+    	dataName.add("5日");
+    	dataName.add("10日");
+    	dataName.add("20日");
+    	dataName.add("30日");
+    	dataName.add("60日");
     	
     	LocalDate[] date = new LocalDate[0];
         date = listToArray.changeLocalDate( EMAList.get(0).getDate() );
@@ -48,8 +49,8 @@ public class EMAChart extends ComparedChart {
     }
 
     @Override
-    public Pane getchart(int width, int height) {
-    	pane.getChildren().addAll( comparedChart.getchart(width, height).getChildren() );
+    public Pane getchart(int width, int height, boolean withdate) {
+    	pane = (AnchorPane)comparedChart.getchart(width, height, withdate);
     	
     	pane.getStylesheets().add(
     			getClass().getResource("/styles/EMAChart.css").toExternalForm() );

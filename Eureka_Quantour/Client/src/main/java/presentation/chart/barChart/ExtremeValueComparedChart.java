@@ -44,7 +44,7 @@ public class ExtremeValueComparedChart implements chartService {
     }
 
     @Override
-    public Pane getchart(int width, int height) {
+    public Pane getchart(int width, int height, boolean withdate) {
     	if( width<=0 )
     		width = 334;
     	if( height<=0 )
