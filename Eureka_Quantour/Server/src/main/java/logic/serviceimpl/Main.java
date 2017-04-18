@@ -25,26 +25,10 @@ public class Main {
         stragetyConditionVo.setName("动量策略");
         List<Object> list=new ArrayList<>();
         list.add(new Integer(20));
-        stragetyConditionVo.setNums(10);
+        stragetyConditionVo.setNums(100);
         stragetyConditionVo.setExtra(list);
         SaleVO saleVO=new SaleVO();
         saleVO.setTiaocangqi(10);
-
-
-        try {
-            List<SingleStockInfoVO> vo=s.getSingleStockInfoByTime("603028",LocalDate.of(2015,1,1),LocalDate.of(2016,4,22));
-            System.out.println(vo);
-        } catch (NullStockIDException e) {
-            e.printStackTrace();
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        } catch (BeginInvalidException e) {
-            e.printStackTrace();
-        } catch (DateInvalidException e) {
-            e.printStackTrace();
-        } catch (EndInvalidException e) {
-            e.printStackTrace();
-        }
 
 
 //        try {
@@ -79,8 +63,8 @@ public class Main {
 //        for (SingleStockInfoVO vo:p){
 //            System.out.println(vo.getClose()+"  "+vo.getFudu()+" "+vo.getOpen());
 //        }
-//        s.setStrategy(stragetyConditionVo,saleVO,LocalDate.of(2016,01,01),LocalDate.of(2017,1,1),"SHA",null);
-//        s.getYieldChartData().getBeta();
+        s.setStrategy(stragetyConditionVo,saleVO,LocalDate.of(2016,01,01),LocalDate.of(2017,1,1),"SHA",null);
+        s.getYieldDistributionHistogramData();
 //        System.out.print(s.getYieldChartData().getSharpe());
 //        System.out.println();
 //        System.out.print(s.getYieldChartData().getCeluelist().size());

@@ -129,9 +129,6 @@ public class StockLogicImpl implements StockLogicInterface{
 					continue;
 				}
 
-
-
-
 			}
 		} catch (DateOverException e) {
 			e.printStackTrace();
@@ -145,246 +142,60 @@ public class StockLogicImpl implements StockLogicInterface{
 	}
 
 	@Override
-	public MarketInfoVO getMarketInfo(LocalDate date) throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException {
+	public MarketInfoVO getMarketInfo(LocalDate date,String marketname) throws RemoteException{
+		List<String> namelist=idi.getStockSetInfo(marketname,null);
+		long volume=0;
+		int wushuju=0;
+		int chaoguo10=0;
+		int dieguo10=0;
+		int zheng5dao10=0;
+		int zheng0dao5=0;
+		int fu5dao10=0;
+		int fu0dao5=0;
+		int fuduwei=0;
+
+		for (String name:namelist){
+			SingleStockInfoPO po=null;
+			try {
+				po=idi.getSingleStockInfo(name,date);
+			} catch (NullStockIDException e) {
+				e.printStackTrace();
+			} catch (NullDateException e) {
+				wushuju++;
+				continue;
+			}
+			volume+=po.getVolume();
+			if (po.getAftrate()>=10){
+				chaoguo10++;
+			}
+			if (po.getAftrate()<=-10){
+				dieguo10++;
+			}
+			if (po.getAftrate()<10 && po.getAftrate()>=5){
+				zheng5dao10++;
+			}
+			if (po.getAftrate()>-10 && po.getAftrate()<=-5){
+				fu5dao10++;
+			}
+
+			if (po.getAftrate()<5 && po.getAftrate()>0){
+				zheng5dao10++;
+			}
+			if (po.getAftrate()>-10 && po.getAftrate()<-5){
+				fu5dao10++;
+			}
+
+
+
+
+
+
+
+		}
+
+
 		return null;
 	}
-
-//		//TODO
-//		utility.ifDateValid(begin, end,stockCodeA);
-//		utility.ifDateValid(begin, end,stockCodeB);
-//
-//
-//		// 日期格式化
-//		Calendar beginTempA = (Calendar)begin.clone();
-//		Calendar endTempA =  (Calendar)end.clone();
-//		Calendar beginTempB = (Calendar)begin.clone();
-//		Calendar endTempB =  (Calendar)end.clone();
-//
-//
-//		List<SingleStockInfoVO> lstiA = new ArrayList<>();
-//		List<SingleStockInfoPO> listA=idi.getSingleStockInfo_byEnd(stockCodeA, beginTempA, endTempA);
-//		List<SingleStockInfoPO> listB=idi.getSingleStockInfo_byEnd(stockCodeB, beginTempB, endTempB);
-//
-//		if( listA==null || listB==null)
-//			throw new DateInvalidException();
-//
-//		for(SingleStockInfoPO po:listA){
-//			SingleStockInfoVO vo=new SingleStockInfoVO(po);
-//			lstiA.add(vo);
-//		}
-//		List<SingleStockInfoVO> lstiB = new ArrayList<>();
-//		for(SingleStockInfoPO po:listB){
-//			SingleStockInfoVO vo=new SingleStockInfoVO(po);
-//			lstiB.add(vo);
-//		}
-//
-//
-//
-//		boolean ifANull = false;
-//		boolean ifBNull = false;
-//
-//
-//
-//		// 获取前一天的数据
-//		SingleStockInfoVO ssiA = new SingleStockInfoVO();
-//		SingleStockInfoVO ssiB = new SingleStockInfoVO();
-//		Calendar tempCal = begin;
-//		int getCount = 5; // 只取5次
-//		for( int i=0; i<getCount; i++ ){
-//			if( ifANull && ifBNull)
-//				break;
-//			utility.calendarAdvance(tempCal);
-//			if( ssiA.getCode().equals("") && !ifANull )
-//				ssiA = getSingleStockInfoByTime(stockCodeA, tempCal, tempCal).get(0);
-//			if( ssiB.getCode().equals("") && !ifBNull )
-//				ssiB = getSingleStockInfoByTime(stockCodeB, tempCal, tempCal).get(0);
-//			if( !ssiA.getCode().equals("") && !ssiB.getCode().equals(""))
-//				break;
-//		}
-//		// 用于暂存前一天的复权收盘价
-//		double lastAdjcloseA = 0.0, lastAdjcloseB = 0.0;
-//		lastAdjcloseA = ssiA.getAdjclose();
-//		lastAdjcloseB = ssiB.getAdjclose();
-//
-//		// 开始存储返回的数据
-//		int tempInt = lstiA.size(); // 用处初始化VO内部数组大小
-//		ComparedInfoVO ci = new ComparedInfoVO(tempInt);
-//		ci.setNameA( lstiA.get(0).getName() );
-//		ci.setNameB( lstiB.get(0).getName() );
-//		ci.setCodeA( stockCodeA );
-//		ci.setCodeB( stockCodeB );
-//		// 涨幅为正，跌幅为负
-//		int iLastIndex = 0, iNewIndex = tempInt-1;
-//		double dLastAdjclose =0.0, dNewAdjclose = 0.0;
-//		// 如果A不为空，一直获取到A的最初一天复权收盘价 >0
-//		if( !ifANull ){
-//			if( lastAdjcloseA==0 ){
-//				while( lstiA.get(iLastIndex).getAdjclose()==0 && iLastIndex<iNewIndex )
-//					iLastIndex++;
-//				dLastAdjclose = lstiA.get(iLastIndex).getAdjclose();
-//				lastAdjcloseA = dLastAdjclose;
-//			}
-//			else
-//				dLastAdjclose = lastAdjcloseA;
-//			if( lastAdjcloseA!=0 ){
-//				// 一直获取到A的最近的复权收盘价 >0
-//				while( lstiA.get(iNewIndex).getAdjclose()==0 && iNewIndex>iLastIndex )
-//					iNewIndex--;
-//				dNewAdjclose = lstiA.get(iNewIndex).getAdjclose();
-//				double result = ( dNewAdjclose-dLastAdjclose ) / dLastAdjclose;
-//				ci.setRODA( utility.formatDoubleSaveFive( result ) );
-//			}
-//		}
-//
-//		iLastIndex = 0; iNewIndex = tempInt-1;
-//		dLastAdjclose =0.0; dNewAdjclose = 0.0;
-//		// 如果B不为空，一直获取到B的最初一天复权收盘价 >0
-//		if( !ifBNull ){
-//			if( lastAdjcloseB==0 ){
-//				while( lstiB.get(iLastIndex).getAdjclose()==0 && iLastIndex<iNewIndex )
-//					iLastIndex++;
-//				dLastAdjclose = lstiB.get(iLastIndex).getAdjclose();
-//				lastAdjcloseB = dLastAdjclose;
-//			}
-//			else
-//				dLastAdjclose = lastAdjcloseB;
-//			if( lastAdjcloseB!=0 ){
-//				// 一直获取到B的最近的复权收盘价 >0
-//				while( lstiB.get(iNewIndex).getAdjclose()==0 && iNewIndex>iLastIndex )
-//					iNewIndex--;
-//				dNewAdjclose = lstiB.get(iNewIndex).getAdjclose();
-//				double result = ( dNewAdjclose-dLastAdjclose ) / dLastAdjclose;
-//				ci.setRODB( utility.formatDoubleSaveFive( result ) );
-//			}
-//		}
-//
-//		// 计算最高值、最低值、储存收盘价、计算对数收益率和对数收益率方差
-//		double maxA = 0, minA = 1000000.0, maxB = 0, minB = 1000000.0;
-//		double newAdjloseA = 0.0, newAdjcloseB = 0.0;
-//		double[] logYieldA = new double[tempInt];
-//		double[] logYieldB = new double[tempInt];
-//		double[] closeA = new double[tempInt];
-//		double[] closeB = new double[tempInt];
-//		Calendar[] date = new Calendar[tempInt];
-//		ssiA = new SingleStockInfoVO();
-//		ssiB = new SingleStockInfoVO();
-//		for( int i=0 ; i<tempInt ; i++ ){
-//			ssiA = lstiA.get(i);
-//			ssiB = lstiB.get(i);
-//			closeA[i] = ssiA.getClose();
-//			closeB[i] = ssiB.getClose();
-//			if( !ifANull)
-//				date[i] = ssiA.getDate();
-//			else
-//				date[i] = ssiB.getDate();
-//
-//			// 获取最高（低）值
-//			if( lstiA.get(i).getHigh()>maxA )
-//				maxA = ssiA.getHigh();
-//			if( lstiB.get(i).getHigh()>maxB )
-//				maxB = ssiB.getHigh();
-//			if( lstiA.get(i).getLow()<minA )
-//				minA = ssiA.getLow();
-//			if( lstiB.get(i).getLow()<minB )
-//				minB = ssiB.getLow();
-//
-//			// 计算对数收益率
-//			newAdjloseA = ssiA.getAdjclose();
-//			if( lastAdjcloseA>0 )
-//				logYieldA[i] = utility.formatDoubleSaveFive( Math.log(newAdjloseA/lastAdjcloseA) );
-//			else
-//				logYieldA[i] = Integer.MIN_VALUE;
-//			lastAdjcloseA = newAdjloseA;
-//
-//			newAdjcloseB = ssiB.getAdjclose();
-//			if( lastAdjcloseB>0 )
-//				logYieldB[i] = utility.formatDoubleSaveFive( Math.log(newAdjcloseB/lastAdjcloseB) );
-//			else
-//				logYieldB[i] = Integer.MIN_VALUE;
-//			lastAdjcloseB = newAdjcloseB;
-//		}
-//
-//		ci.setLowA(minA); ci.setLowB(minB);
-//		ci.setHighA(maxA); ci.setHighB(maxB);
-//		ci.setCloseA(closeA); ci.setCloseB(closeB);
-//		ci.setLogYieldA(logYieldA);
-//		ci.setLogYieldB(logYieldB);
-//		ci.setLogYieldVarianceA( utility.calVariance(logYieldA) );
-//		ci.setLogYieldVarianceB( utility.calVariance(logYieldB) );
-//		ci.setDate(date);
-//		return ci;
-//	}
-
-//	@Override
-//	public MarketInfoVO getMarketInfo(Calendar date)
-//			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException {
-//		// TODO Auto
-//		MarketInfoVO mi = new MarketInfoVO();
-//
-////		utility.ifDateValid(date, date);
-//
-//
-//		// 日期格式化
-//		Calendar dateTemp = (Calendar) date.clone();
-//
-//
-//		List<SingleStockInfoPO> lsti = idi.getMarketByDate( dateTemp );
-//		// 如果没有数据，抛出日期无效异常
-//		if( lsti==null )
-//			throw new DateInvalidException();
-//		else{
-//			// 用来暂存市场中单支股票的数据
-//			SingleStockInfoPO ssi = new SingleStockInfoPO();
-//			long volume = 0;
-//			int riseStop = 0, dropStop = 0, riseEFP = 0, stopEFP = 0;
-//			int OMCEFP = 0, OMCLTFP = 0;
-//			for( int i=0; i<lsti.size(); i++ ){
-//				ssi = lsti.get(i);
-//				double open = ssi.getOpen();
-//				double close = ssi.getClose();
-//				double lastClose = ssi.getLast_close();
-//				double adjclose = ssi.getAdjclose();
-//				double lastAdjclose = ssi.getLast_adjclose();// 用于保存前一天的复权收盘价
-//				// 计算总的交易量
-//				if( ssi.getVolume() > 0 )
-//					volume += ssi.getVolume();
-//
-//				if( lastAdjclose>0 && adjclose>0 ){
-//					// 计算涨停的股票数
-//					if( utility.ifDoubleEqual((ssi.getHigh()-lastAdjclose)/lastAdjclose,  0.10) )
-//						riseStop++;
-//					// 计算跌停的股票数
-//					if( utility.ifDoubleEqual((lastAdjclose-ssi.getLow())/lastAdjclose,  0.10) )
-//						dropStop++;
-//					// 计算涨幅超过5%
-//					if( (adjclose-lastAdjclose)/lastAdjclose > 0.05
-//							&& (adjclose-lastAdjclose)/lastAdjclose <= 0.1)
-//						riseEFP++;
-//					// 计算跌幅超过5%
-//					if( (lastAdjclose-adjclose)/lastAdjclose > 0.05
-//							&& (lastAdjclose-adjclose)/lastAdjclose <= 0.1)
-//						stopEFP++;
-//				}
-//				if( open>0 && close>0 && lastClose>0 ){
-//					// 计算某某数据
-//					if( (open-close) > (0.05*lastClose) )
-//						OMCEFP++;
-//					else if( (open-close) < (-0.05*lastClose) )
-//						OMCLTFP++;
-//				}
-//			}
-//
-//			mi.setVolume(volume);
-//			mi.setNumOfRiseStop(riseStop);
-//			mi.setNumOfDropStop(dropStop);
-//			mi.setNumOfRiseEFP(riseEFP);
-//			mi.setNumOfDropEFP(stopEFP);
-//			mi.setNumOfOMCEFP(OMCEFP);
-//			mi.setNumOfOMCLTFP(OMCLTFP);
-//
-//			return mi;
-//		}
-//	}
 
 	@Override
 	public List<String> getStockSet(String username) {
@@ -426,6 +237,10 @@ public class StockLogicImpl implements StockLogicInterface{
 	@Override
 	public void setStrategy(StrategyConditionVO strategyConditionVO, SaleVO s, LocalDate begin, LocalDate now, String stockSetName,String username) {
 		//TODO
+
+		if (stockSetName.equals("SHA") ||stockSetName.equals("SZA") ||stockSetName.equals("SHB")|| stockSetName.equals("SZB")||stockSetName.equals("CYB")||stockSetName.equals("HS300")
+				||stockSetName.equals("ZXB") )
+			username=null;
 		List<String> stocklistname=idi.getStockSetInfo(stockSetName,username);
 
 		stragety=new Return(stocklistname,begin,now,s,strategyConditionVO);
@@ -453,6 +268,9 @@ public class StockLogicImpl implements StockLogicInterface{
 		try {
 			List<Double> jizhunlist=stragety.getBasicReturn();
 			List<Double> celuelist=stragety.getStragetyReturn();
+			System.out.println(jizhunlist.size());
+			System.out.println(celuelist.size());
+			System.out.println(timelist.size());
 			for (int i=0;i<timelist.size();i++){
 				double hengzhou=Math.rint(jizhunlist.get(i));
 

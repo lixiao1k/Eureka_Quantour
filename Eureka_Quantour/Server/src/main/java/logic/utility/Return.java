@@ -188,7 +188,7 @@ public class Return {
                 if(polist.size()==0) continue;
                 Collections.sort(polist,comparator);
                 List<String> jilu=new ArrayList<>();
-                for (int i=0;i<strategyConditionVO.getNums();i++){
+                for (int i=0;i<Math.min(strategyConditionVO.getNums(),polist.size());i++){
                     zheci=zheci+getjiage(polist.get(i));
                     jilu.add(polist.get(i).getCode());
                 }

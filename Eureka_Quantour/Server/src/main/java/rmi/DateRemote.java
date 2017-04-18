@@ -49,8 +49,8 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 	}
 
 	@Override
-	public MarketInfoVO getMarketInfo(LocalDate date) throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException {
-		return sli.getMarketInfo(date);
+	public MarketInfoVO getMarketInfo(LocalDate date,String marketname) throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException {
+		return sli.getMarketInfo(date,marketname);
 	}
 
 
