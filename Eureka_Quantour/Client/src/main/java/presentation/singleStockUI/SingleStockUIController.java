@@ -245,7 +245,7 @@ public class SingleStockUIController implements Initializable{
 			emaChartAnchorPane.getChildren().clear();
 			vo=stockLogicInterface.getEMAInfo(code, begintime, systime);
 			chartservice = new EMAChart(vo);
-			emaChartAnchorPane.getChildren().add(chartservice.getchart(758, 307,true));			
+			emaChartAnchorPane.getChildren().add(chartservice.getchart(758, 295,true));			
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
