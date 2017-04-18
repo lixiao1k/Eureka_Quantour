@@ -43,7 +43,6 @@ public class StockLogicImpl implements StockLogicInterface{
 			}catch (NullDateException e) {
 				continue;
 			}
-			System.out.println(x);
 			SingleStockInfoVO vo=new SingleStockInfoVO(po);
 			lssi.add(vo);
 		}
@@ -268,13 +267,9 @@ public class StockLogicImpl implements StockLogicInterface{
 	public YieldDistributionHistogramDataVO getYieldDistributionHistogramData() {
 
 		Map<Double,List<Integer>> zuhe=new HashMap<>();
-		List<LocalDate> timelist=stragety.getTimelist();
 		try {
 			List<Double> jizhunlist=stragety.getBasicReturn();
 			List<Double> celuelist=stragety.getStragetyReturn();
-			System.out.println(jizhunlist);
-			System.out.println(celuelist);
-//			System.out.println(timelist);
 			for (int i=0;i<jizhunlist.size();i++){
 				double hengzhou=Math.rint(jizhunlist.get(i));
 

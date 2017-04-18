@@ -88,6 +88,15 @@ public class YieldComparedChart extends ComparedChart {
     	infobilv.setText( "信息比率\n" + df.format( 1.03 ) );
     	maxre.setText( "最大回撤\n" + nf.format( 0.238 ) );
     	
+    	yearyield.getStyleClass().add("label-1");
+    	basicyearyield.getStyleClass().add("label-1");
+    	alpha.getStyleClass().add("label-2");
+    	beta.getStyleClass().add("label-2");
+    	sharpe.getStyleClass().add("label-2");
+    	yieldbodong.getStyleClass().add("label-3");
+    	infobilv.getStyleClass().add("label-3");
+    	maxre.getStyleClass().add("label-3");
+    	
     	infopane.getChildren().add(yearyield);
     	infopane.getChildren().add(basicyearyield);
     	infopane.getChildren().add(alpha);
@@ -120,9 +129,6 @@ public class YieldComparedChart extends ComparedChart {
     	
     	index += layout;
     	AnchorPane.setLeftAnchor(maxre, index);
-    	
-    	infopane.getStylesheets().add(
-    			getClass().getResource("/styles/YieldChartInfoLabel.css").toExternalForm() );
 	}
 	
 	 @Override
@@ -133,7 +139,7 @@ public class YieldComparedChart extends ComparedChart {
 		 pane.getChildren().add(chartpane);
 		 
 		 pane.getStylesheets().add(
-				 getClass().getResource("/styles/ComparedLineChart.css").toExternalForm() );
+				 getClass().getResource("/styles/YieldComparedChart.css").toExternalForm() );
 		 return pane;
 	 }
 }
