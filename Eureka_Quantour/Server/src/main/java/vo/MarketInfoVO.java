@@ -78,14 +78,14 @@ public class MarketInfoVO implements Serializable{
 	public void setNumOfOMCLTFP(int numOfOMCLTFP){
 		this.numOfOMCLTFP = numOfOMCLTFP;
 	}
-	
-	public MarketInfoVO initObject(int volume, int numOfRiseStop, int numOfDropStop, 
-			int numOfRiseEFP, int numOfDropEFP, int numOfOMCEFP, int numOfOMCLTFP){
-		MarketInfoVO mi = new MarketInfoVO();
-		mi.setVolume(volume); 
-		mi.setNumOfRiseStop(numOfRiseStop); mi.setNumOfDropStop(numOfDropStop);
-		mi.setNumOfRiseEFP(numOfRiseEFP); mi.setNumOfDropEFP(numOfDropEFP);
-		mi.setNumOfOMCEFP(numOfOMCEFP); mi.setNumOfOMCLTFP(numOfOMCLTFP);
-		return mi;
+
+	public MarketInfoVO(long volume, int numOfRiseStop, int numOfDropStop, int numOfRiseEFP, int numOfDropEFP, int numOfOMCEFP, int numOfOMCLTFP) {
+		this.volume = volume;
+		this.numOfRiseStop = numOfRiseStop;
+		this.numOfDropStop = numOfDropStop;
+		this.numOfRiseEFP = numOfRiseEFP;
+		this.numOfDropEFP = numOfDropEFP;
+		this.numOfOMCEFP = numOfOMCEFP;
+		this.numOfOMCLTFP = numOfOMCLTFP;
 	}
 }

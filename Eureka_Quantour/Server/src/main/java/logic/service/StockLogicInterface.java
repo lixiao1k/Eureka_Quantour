@@ -42,7 +42,7 @@ public interface StockLogicInterface extends Remote {
 	 *               invoke getMarketByDate() in data layer
 	 * @return: MarketInfoVO
 	 */
-	 MarketInfoVO getMarketInfo ( LocalDate date )
+	 MarketInfoVO getMarketInfo ( LocalDate date,String marketname )
 			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException;
 
 
