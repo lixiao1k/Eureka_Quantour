@@ -69,7 +69,7 @@ public class ComparedChart implements chartService{
         xAxis.setTickLabelsVisible(false);
         xAxis.setTickMarkVisible(false);
         xAxis.setStartMargin(5);
-        xAxis.setOpacity(0.5);
+        xAxis.setOpacity(0.7);
 
         yAxis = new NumberAxis();
         yAxis.autoRangingProperty().set(true);
