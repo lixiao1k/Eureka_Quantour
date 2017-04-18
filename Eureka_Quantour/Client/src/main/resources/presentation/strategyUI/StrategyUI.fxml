@@ -34,17 +34,21 @@
             <AnchorPane layoutX="6.0" layoutY="161.0" prefHeight="212.0" prefWidth="301.0" styleClass="top1-segment" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <children>
                   <Label layoutX="25.0" layoutY="14.0" text="交易条件" />
-                  <Label layoutX="32.0" layoutY="62.0" text="持有期" />
-                  <TextField fx:id="holdPeriodTextField" layoutX="84.0" layoutY="58.0" prefHeight="25.0" prefWidth="66.0" />
-                  <Label layoutX="32.0" layoutY="101.0" text="价格" />
-                  <Label layoutX="32.0" layoutY="144.0" text="股票数" />
-                  <TextField fx:id="numOfStockTextField" layoutX="84.0" layoutY="140.0" prefHeight="25.0" prefWidth="66.0" />
-                  <RadioButton fx:id="closeRadioButton" layoutX="84.0" layoutY="102.0" mnemonicParsing="false" selected="true" text="收盘">
+                  <Label layoutX="25.0" layoutY="62.0" text="持有期" />
+                  <TextField fx:id="holdPeriodTextField" layoutX="74.0" layoutY="59.0" prefHeight="17.0" prefWidth="66.0" />
+                  <Label layoutX="25.0" layoutY="102.0" text="价格" />
+                  <Label layoutX="25.0" layoutY="143.0" text="股票数" />
+                  <TextField fx:id="numOfStockTextField" layoutX="100.0" layoutY="140.0" prefHeight="16.0" prefWidth="66.0" />
+                  <RadioButton fx:id="closeRadioButton" layoutX="77.0" layoutY="102.0" mnemonicParsing="false" selected="true" text="收盘">
                      <toggleGroup>
                         <ToggleGroup fx:id="price" />
                      </toggleGroup>
                   </RadioButton>
                   <RadioButton fx:id="openRadioButton" layoutX="150.0" layoutY="102.0" mnemonicParsing="false" text="开盘" toggleGroup="$price" />
+                  <Label layoutX="25.0" layoutY="181.0" text="几日均值" />
+                  <TextField fx:id="meandaysTextField" layoutX="100.0" layoutY="178.0" prefHeight="23.0" prefWidth="66.0" />
+                  <Label layoutX="157.0" layoutY="63.0" text="形成期" />
+                  <TextField fx:id="createPeriodTextField" layoutX="207.5" layoutY="60.0" prefHeight="23.0" prefWidth="66.0" AnchorPane.leftAnchor="206.0" />
                </children>
             </AnchorPane>
          </children>

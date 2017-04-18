@@ -69,15 +69,15 @@ public class ComparedChart implements chartService{
         xAxis.setTickLabelsVisible(false);
         xAxis.setTickMarkVisible(false);
         xAxis.setStartMargin(5);
-        xAxis.setOpacity(0.5);
+        xAxis.setOpacity(0.7);
 
         yAxis = new NumberAxis();
         yAxis.autoRangingProperty().set(true);
         yAxis.setAnimated(true);
         yAxis.forceZeroInRangeProperty().setValue(false);
-        yAxis.setTickLabelsVisible(false);
-        yAxis.setPrefWidth(1);
-        yAxis.setOpacity(0);
+//        yAxis.setTickLabelsVisible(false);
+//        yAxis.setPrefWidth(1);
+//        yAxis.setOpacity(0);
         
         lineChart = new LineChart<>(xAxis, yAxis);
         lineChart.setHorizontalGridLinesVisible(false);
@@ -125,7 +125,7 @@ public class ComparedChart implements chartService{
         		dataMap.put(dates[i], dataStrings[i]);
         }
         lineChart.getData().addAll(series);
-        lineChart.setLegendSide(Side.BOTTOM);
+        lineChart.setLegendSide(Side.TOP);
     }
     /**
      * @Description: input a ComparedInfoVO and draw a ComparedChart to compare two stock's situation
@@ -145,6 +145,7 @@ public class ComparedChart implements chartService{
     		height = 200;
     	int dateheight = 10;
     	if( withdate ){
+    		lineChart.getYAxis().setOpacity(0.7);
     		height -= dateheight;
     		String bdate = dates[0];
     		String mdate = dates[dates.length/2];
@@ -154,6 +155,11 @@ public class ComparedChart implements chartService{
     		datepane.setPrefSize(width, dateheight);
     		datepane.getStylesheets().add(
         			getClass().getResource("/styles/DateLabel.css").toExternalForm() );
+    	}
+    	else{
+    		lineChart.getYAxis().setTickLabelsVisible(false);
+    		lineChart.getYAxis().setPrefWidth(1);
+    		lineChart.getYAxis().setOpacity(0);
     	}
     	lineChart.setMaxSize(width, height);
     	lineChart.setMinSize(width, height);

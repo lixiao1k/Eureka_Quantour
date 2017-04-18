@@ -465,7 +465,7 @@ public class StockSetUIController implements Initializable {
 			vo = stockLogicInterface.getSingleStockInfoByTime(code,
 				systime.minusDays(100),systime);
 			chartservice = new KLineChart(vo);
-			kChartAnchorPane.getChildren().add(chartservice.getchart(0, 0));
+			kChartAnchorPane.getChildren().add(chartservice.getchart(0, 0,false));
 			
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
@@ -501,7 +501,7 @@ public class StockSetUIController implements Initializable {
 			emaChartAnchorPane.getChildren().clear();
 			vo=stockLogicInterface.getEMAInfo(code, systime.minusDays(100), systime);
 			chartservice = new EMAChart(vo);
-			emaChartAnchorPane.getChildren().add(chartservice.getchart(0, 0));			
+			emaChartAnchorPane.getChildren().add(chartservice.getchart(0, 0,false));			
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
