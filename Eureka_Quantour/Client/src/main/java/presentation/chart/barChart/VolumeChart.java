@@ -40,7 +40,7 @@ public class VolumeChart{
         volumechart.setLegendVisible(false);
         volumechart.setBarGap(0);
         volumechart.setCategoryGap(0);
-        volumechart.setOpacity(0.6);
+        volumechart.setOpacity(1);
 
         XYChart.Series<String,Number> series = new XYChart.Series<>();
 

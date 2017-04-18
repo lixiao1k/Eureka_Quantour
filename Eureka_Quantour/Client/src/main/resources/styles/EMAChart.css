@@ -51,3 +51,10 @@
 .default-color2.chart-series-line { -fx-stroke: purple; }
 .default-color3.chart-series-line { -fx-stroke: green; }
 .default-color4.chart-series-line { -fx-stroke: blue; }
+
+.default-color0.chart-legend-item-symbol { -fx-background-color: white; }
+.default-color1.chart-legend-item-symbol { -fx-background-color: yellow; }
+.default-color0.chart-legend-item-symbol { -fx-background-color: purple; }
+.default-color1.chart-legend-item-symbol { -fx-background-color: green; }
+.default-color0.chart-legend-item-symbol { -fx-background-color: blue; }
+
