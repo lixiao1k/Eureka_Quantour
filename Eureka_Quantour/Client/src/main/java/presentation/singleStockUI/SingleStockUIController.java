@@ -82,6 +82,12 @@ public class SingleStockUIController implements Initializable{
 	@FXML
 	TextField searchTextField;
 	
+	@FXML
+	AnchorPane RAFdistributionPane;//涨跌幅分布图
+	
+	@FXML
+	AnchorPane logPane;//对数收益率图
+	
 	private DataContorller dataController;
 	/*
 	 * @description添加至股池，弹出相应界面
@@ -272,6 +278,7 @@ public class SingleStockUIController implements Initializable{
 			e.printStackTrace();
 		}	
 	}
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub

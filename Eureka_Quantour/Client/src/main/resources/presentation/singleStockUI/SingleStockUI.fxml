@@ -34,5 +34,7 @@
             <Label layoutX="144.0" layoutY="90.0" text="成交量：" AnchorPane.leftAnchor="122.0" AnchorPane.topAnchor="87.0" />
             <Label fx:id="volumeLabel" layoutX="179.5" layoutY="90.5" prefHeight="17.0" prefWidth="90.0" AnchorPane.leftAnchor="178.0" AnchorPane.topAnchor="89.0" />
          </children></AnchorPane>
+      <AnchorPane fx:id="RAFdistributionPane" layoutX="951.0" layoutY="152.0" prefHeight="203.0" prefWidth="271.0" />
+      <AnchorPane fx:id="logPane" layoutX="951.0" layoutY="355.0" prefHeight="212.0" prefWidth="271.0" />
    </children>
 </AnchorPane>

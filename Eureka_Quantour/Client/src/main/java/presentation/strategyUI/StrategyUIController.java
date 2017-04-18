@@ -94,6 +94,12 @@ public class StrategyUIController implements Initializable{
 	@FXML
 	TextField createPeriodTextField;//形成期
 	
+	@FXML
+	Label psLabel1;
+	
+	@FXML
+	Label psLabel2;
+	
 	private DataContorller dataController;
 	
 	private ObservableList<String> stocksetlist = FXCollections.observableArrayList();
@@ -339,6 +345,8 @@ public class StrategyUIController implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
+		psLabel1.getStylesheets().add(getClass().getClassLoader().getResource("styles/PSLabel.css").toExternalForm());
+		psLabel2.getStylesheets().add(getClass().getClassLoader().getResource("styles/PSLabel.css").toExternalForm());
 		dataController = DataContorller.getInstance();
 		Image saveImage = new Image(getClass().getResourceAsStream("save.png"));
 		saveButton.setGraphic(new ImageView(saveImage));

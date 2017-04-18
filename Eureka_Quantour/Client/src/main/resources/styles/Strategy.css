@@ -8,9 +8,7 @@
 .scroll-pane > .viewport {
    -fx-background-color: transparent;
 }
-.combo-box .arrow, .combo-box .arrow-button{
-    -fx-background-color: transparent;
-}
+
 .scroll-bar:vertical {
 	-fx-background-color:
         linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),

@@ -54,6 +54,9 @@ public class MainScreenController implements Initializable{
 	Button strategyButton;
 	
 	@FXML
+	Button statisticsButton;
+	
+	@FXML
 	AnchorPane mainAnchorPane;
 	
 	@FXML
@@ -115,6 +118,18 @@ public class MainScreenController implements Initializable{
 		AnchorPane strategyPane = (AnchorPane)FXMLLoader.load(getClass().getClassLoader().getResource("presentation/strategyUI/StrategyUI.fxml"));
 		mainAnchorPane.getChildren().add(strategyPane);
 	}
+	
+	@FXML
+	protected void browseStatistics(ActionEvent e) throws IOException{
+		setBrowseStatisticsUI();
+	}
+	
+	public void setBrowseStatisticsUI() throws IOException{
+		ObservableList<Node> nodeList = mainAnchorPane.getChildren();
+		nodeList.clear();
+		AnchorPane statisticsPane = (AnchorPane)FXMLLoader.load(getClass().getClassLoader().getResource("presentation/statisticsUI/StatisticsUI.fxml"));
+		mainAnchorPane.getChildren().add(statisticsPane);
+	}
 
 	@FXML
 	protected void saveTime(ActionEvent e){
@@ -148,6 +163,7 @@ public class MainScreenController implements Initializable{
 		marketButton.setText("市场");
 		singleStockButton.setText("个股");
 		strategyButton.setText("策略");
+		statisticsButton.setText("统计");
 		
 		Locale.setDefault(Locale.ENGLISH);
 		

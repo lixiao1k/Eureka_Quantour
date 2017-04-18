@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="758.0" prefWidth="1217.0" styleClass="background" stylesheets="@../../styles/StatisticsUI.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="presentation.statisticsUI.StatisticsUIController">
+   <children>
+      <ComboBox fx:id="marketComboBox" layoutX="80.0" layoutY="88.0" prefHeight="23.0" prefWidth="119.0" />
+      <Label layoutX="199.0" layoutY="90.0" text="市场" />
+      <Label fx:id="nameLabel" layoutX="80.0" layoutY="24.0" prefHeight="52.0" prefWidth="155.0" />
+      <Label layoutX="357.0" layoutY="90.0" prefHeight="20.0" prefWidth="103.0" text="涨跌幅分布：" />
+      <AnchorPane fx:id="RAFPieChartPane" layoutX="357.0" layoutY="150.0" prefHeight="276.0" prefWidth="334.0" />
+      <AnchorPane fx:id="RAFContributionPane" layoutX="357.0" layoutY="448.0" prefHeight="276.0" prefWidth="334.0" />
+      <Label layoutX="779.0" layoutY="93.0" text="涨跌幅均值、方差：" />
+      <AnchorPane fx:id="meanPane" layoutX="745.0" layoutY="150.0" prefHeight="276.0" prefWidth="334.0" />
+   </children>
+</AnchorPane>
