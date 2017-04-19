@@ -41,6 +41,7 @@ public class YieldDistributeChart implements chartService{
 	private CommonSetService commonSet = new CommonSet();
 	
 	private DecimalFormat df = new DecimalFormat("0.00");
+	private NumberFormat nf = NumberFormat.getPercentInstance();
 	
 	private AnchorPane pane = new AnchorPane();
 	private StackPane chartpane = new StackPane();
@@ -54,6 +55,9 @@ public class YieldDistributeChart implements chartService{
     private Map<String, String> dataMap = new HashMap<String,String>();
     private String[] yield;
     private Map<Double,List<Integer>> zuhe;
+    
+    private int min = 0;
+    private int max = 0;
 	
 	public YieldDistributeChart(YieldDistributionHistogramDataVO ydhd){
 		zuhe = ydhd.getZuhe();
@@ -61,8 +65,8 @@ public class YieldDistributeChart implements chartService{
 		
 		List<Double> yieldL = new ArrayList<>( keySet );
         yieldL = sortDouble(yieldL);
-		int min = (int)((double)yieldL.get(0));
-		int max = (int)((double)yieldL.get(yieldL.size()-1));
+		min = (int)((double)yieldL.get(0));
+		max = (int)((double)yieldL.get(yieldL.size()-1));
 		if( min>-100 )
 			min -= 5;
 		if( max<100 )
@@ -71,7 +75,7 @@ public class YieldDistributeChart implements chartService{
 		List<String> value = new ArrayList<>();
 		double k = min, gap = 5;
 		for( ; k<=max; k+=gap )
-			value.add(NumberFormat.getPercentInstance().format(k/100));
+			value.add( nf.format(k/100) );
 		ObservableList<String> values = FXCollections.observableList(value);
 		
 		xAxis = new CategoryAxis(values);
@@ -98,7 +102,7 @@ public class YieldDistributeChart implements chartService{
         
         yield = new String[yieldL.size()];
         for(int i =0; i<yieldL.size(); i++){
-        	yield[i] = NumberFormat.getPercentInstance().format( yieldL.get(i)/100 );
+        	yield[i] = nf.format( yieldL.get(i)/100 );
         }
 	     
         String[] dataStrings = new String[yield.length];
@@ -161,7 +165,8 @@ public class YieldDistributeChart implements chartService{
     	if( withdate ){
     		height -= dateheight;
     		datepane.getChildren().addAll( 
-    				commonSet.dateForStackPane("1%", "50%", "100%").getChildren() );
+    				commonSet.dateForStackPane(
+    						nf.format(min/100), nf.format((min+max)/200), nf.format(max/100)).getChildren() );
     		datepane.setPrefSize(width-dategap, dateheight);
     		datepane.getStylesheets().add(
         			getClass().getResource("/styles/DateLabel.css").toExternalForm() );

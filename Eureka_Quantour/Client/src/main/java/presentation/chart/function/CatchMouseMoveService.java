@@ -31,4 +31,7 @@ public interface CatchMouseMoveService {
 	 */
 	Label catchMouseReturnInfoForStackPane( 
 			XYChart<String, Number> chart, Map<String, String> dataMap, String[] dates, String name,int index );
+	
+	Label catchMouseReturnInfoForStackPaneNN( 
+			XYChart<Number, Number> chart, Map<String, String> dataMap, String[] dates, String name,int index );
 }

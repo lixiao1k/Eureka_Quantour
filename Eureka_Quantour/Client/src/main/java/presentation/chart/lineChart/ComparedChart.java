@@ -27,6 +27,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import en_um.ChartKind;
+
 /**
  * @Description: TODO
  * @author: hzp
@@ -62,7 +64,7 @@ public class ComparedChart implements chartService{
     public ComparedChart(){
     	nf.setMinimumFractionDigits(1);
     };
-    protected ComparedChart(LocalDate[] date, List<Double[]> doubleList, List<String> dataName) {
+    protected ComparedChart(LocalDate[] date, List<Double[]> doubleList, List<String> dataName, ChartKind kind) {
         
     	xAxis = new CategoryAxis();
         xAxis.setGapStartAndEnd(false);
@@ -94,14 +96,16 @@ public class ComparedChart implements chartService{
         	XYChart.Series<String, Number> serie = new XYChart.Series<>();
         	Double[] datas = doubleList.get(i);
             String name = "";
-        	if( i<dataName.size() )
+            if( i<dataName.size() )
         		name = dataName.get(i);
         	
         	for(int j=0; j<date.length; j++){
 	        	if( j<datas.length && datas[j]!=0 && datas[j]!=Integer.MAX_VALUE ){
 	        		serie.getData().add( new XYChart.Data<>(dates[j], datas[j]) );
 	        		String dataFormat = df.format( datas[j] );
-	        		if( datas[j]<1 )
+	        		if( kind==ChartKind.EMA )
+	        			dataFormat = nf.format(datas[j]);
+	        		else if( datas[j]<1 )
 	        			dataFormat = nf.format(datas[j]);
 	        		
 	        		if( dataStrings[j]!=null )
@@ -109,12 +113,6 @@ public class ComparedChart implements chartService{
 	        		else
 	        			dataStrings[j] = name+" : "+dataFormat;
 	        	}
-//        		else{
-//        			if( dataStrings[j]!=null )
-//        				dataStrings[j] += "/"+name+" : "+"0";
-//        			else
-//        				dataStrings[j] = name+" : "+"0";
-//        		}
 
         	}
         	serie.setName(name);

@@ -1,0 +1,48 @@
+.root {  
+     -fx-background-image: url("/presentation/chart/panebackground.jpg");  
+}  
+
+.chart{
+	-fx-background-color:transparent;
+	-fx-padding: 0px;
+}
+.chart-content {
+    -fx-padding: 0px; 
+}
+.chart-plot-background {
+	-fx-background-color: transparent;
+}
+
+.chart-title {
+  	-fx-text-fill: #cde6c7;
+ 	 -fx-font-size: 1.6em;
+} 
+.axis-label {
+ 	-fx-background-color:transparent;
+  	-fx-text-fill: #65c294;
+}
+.chart-legend {
+	-fx-background-color: transparent;
+	-fx-padding: 0px;
+} 
+
+.chart-legend-item-symbol{
+   -fx-background-radius: 3;
+}
+.chart-legend-item{
+    -fx-text-fill: #90d7ec;
+    -fx-font-size: 1.2em;
+}
+.axis {
+    -fx-tick-label-fill: #feeeed ;
+    -fx-font-family: Tahoma;
+    -fx-tick-label-font-size: 11px;
+    -fx-tick-length: 0;
+    -fx-minor-tick-length: 0;
+}
+
+
+.chart-symbol{ 
+    -fx-stroke: #a9e200;
+    -fx-shape: "M0,4 L2,4 L4,8 L7,0 L9,0 L4,11 Z";
+}
