@@ -100,9 +100,37 @@ public class StrategyUIController implements Initializable{
 	@FXML
 	Label psLabel2;
 	
+	@FXML
+	AnchorPane anchorPane4;
+	
+	@FXML
+	AnchorPane anchorPane5;
+	
+	
 	private DataContorller dataController;
 	
 	private ObservableList<String> stocksetlist = FXCollections.observableArrayList();
+	
+	/*
+	 * 预测策略的监听
+	 */
+	@FXML
+	protected void goBrowsePredict(ActionEvent e){
+		String marketName = "";
+		String chiyouqi = "";
+		String xinchengqi = "";
+		if(stockSetComboBox.getValue()!=null){
+			marketName = stockSetComboBox.getValue();
+		}else{
+			Notifications.create().title("异常").text("请选择市场").showWarning();
+		}
+		chiyouqi = holdPeriodTextField.getText();
+		xinchengqi = createPeriodTextField.getText();
+		RemoteHelper remote = RemoteHelper.getInstance();
+		StockLogicInterface stockLogicInterface = remote.getStockLogic();
+		stockLogicInterface.getDantengchart("动量策略",(LocalDate)dataController.get("BeginTime"), (LocalDate)dataController.get("SystemTime"), "持有期", (String)dataController.get("UserName"), stockSetComboBox.getValue(), )
+		
+	}
 	
 	@FXML
 	protected void makeStrategy(ActionEvent e){
@@ -221,6 +249,7 @@ public class StrategyUIController implements Initializable{
 				}	
 			}
 		}else{
+			meandaysTextField.setEditable(true);
 			if(stockSetComboBox.getValue()!=null){
 				stockSet = stockSetComboBox.getValue();
 			}else{
@@ -331,13 +360,13 @@ public class StrategyUIController implements Initializable{
 	protected void saveTime(ActionEvent e){
 		LocalDate begin = beginTimeDatePicker.getValue();
 		if(begin==null){
-			System.out.println("NoTime");
+			Notifications.create().title("输入异常").text("请输入开始时间").showWarning();
 		}
 		else if(begin.isBefore((LocalDate)dataController.get("SystemTime"))){
 			timeLabel.setText(begin.toString());
 			dataController.upDate("BeginTime", begin);
 		}else{
-			System.out.println("No");
+			Notifications.create().title("时间异常").text("开始时间需在系统时间之前").showWarning();
 		}
 	}
 
