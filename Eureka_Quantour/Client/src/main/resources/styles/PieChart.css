@@ -13,6 +13,11 @@
 	-fx-background-color: transparent;
 }
 
+.chart-pie-label {
+    -fx-padding: 3px;
+    -fx-fill: #90d7ec;
+}
+
 .chart-title {
   	-fx-text-fill: #cde6c7;
  	 -fx-font-size: 1.2em;
@@ -31,8 +36,6 @@
     -fx-font-size: 0.9em;
 }
 
-
-
 .data0.chart-pie { -fx-pie-color: #4e72b8; }
 .data1.chart-pie { -fx-pie-color: #b2d235; }
 .data2.chart-pie { -fx-pie-color: #ffe600; }
@@ -42,4 +45,16 @@
 .data6.chart-pie { -fx-pie-color: #fcaf17; }
 .data7.chart-pie { -fx-pie-color: royalblue; }
 .data8.chart-pie { -fx-pie-color: dodgerblue; }
+
+.data0.chart-pie { -fx-pie-label-fill: #4e72b8; }
+.data1.chart-pie { -fx-pie-label-fill: #b2d235; }
+.data2.chart-pie { -fx-pie-label-fill: #ffe600; }
+.data3.chart-pie { -fx-pie-label-fill: #f47920; }
+.data4.chart-pie { -fx-pie-label-fill: #ef4136; }
+.data5.chart-pie { -fx-pie-label-fill: #9b95c9; }
+.data6.chart-pie { -fx-pie-label-fill: #fcaf17; }
+.data7.chart-pie { -fx-pie-label-fill: royalblue; }
+.data8.chart-pie { -fx-pie-label-fill: dodgerblue; }
+
+
 

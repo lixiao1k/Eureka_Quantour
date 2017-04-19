@@ -22,8 +22,8 @@ public class Main {
         StrategyConditionVO stragetyConditionVo=new StrategyConditionVO();
         stragetyConditionVo.setName("动量策略");
         List<Object> list=new ArrayList<>();
-        list.add(new Integer(12));
-        stragetyConditionVo.setNums(12);
+        list.add(new Integer(10));
+        stragetyConditionVo.setNums(10);
         stragetyConditionVo.setExtra(list);
         SaleVO saleVO=new SaleVO();
         saleVO.setTiaocangqi(1);
@@ -62,7 +62,7 @@ public class Main {
 //        for (SingleStockInfoVO vo:p){
 //            System.out.println(vo.getClose()+"  "+vo.getFudu()+" "+vo.getOpen());
 //        }
-        s.setStrategy(stragetyConditionVo,saleVO,LocalDate.of(2015,04,15),LocalDate.of(2016,4,20),"SHA",null);
+        s.setStrategy(stragetyConditionVo,saleVO,LocalDate.of(2015,04,15),LocalDate.of(2017,4,7),"SHA",null);
         YieldChartDataVO vo=s.getYieldChartData();
         System.out.println(vo.getJizhunlist().size());
         System.out.println(vo.getCeluelist().size());

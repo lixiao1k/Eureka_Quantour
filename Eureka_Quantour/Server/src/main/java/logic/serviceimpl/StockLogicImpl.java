@@ -262,7 +262,7 @@ public class StockLogicImpl implements StockLogicInterface{
 	public YieldChartDataVO getYieldChartData() {
 
 		try {
-			YieldChartDataVO p= new YieldChartDataVO(stragety.getTimelist(),stragety.getBasicReturn(),stragety.getStragetyReturn(),stragety.getAlpha(),stragety.getBeta(),stragety.getSharpe(),stragety.gerBasicYearReturn());
+			YieldChartDataVO p= new YieldChartDataVO(stragety.getTimelist(),stragety.getBasicReturn(),stragety.getStragetyReturn(),stragety.getAlpha(),stragety.getBeta(),stragety.getSharpe(),stragety.gerYearReturn(),stragety.gerBasicYearReturn());
 			return  p;
 		} catch (PriceTypeException e) {
 			e.printStackTrace();
@@ -289,7 +289,7 @@ public class StockLogicImpl implements StockLogicInterface{
 					zuhe.put(hengzhou, Arrays.asList(0, 0));
 				}
 
-				if(celuelist.get(i)>=hengzhou){
+				if(celuelist.get(i)>=jizhunlist.get(i)){
 					int shuzi=zuhe.get(hengzhou).get(0);
 					shuzi++;
 					zuhe.get(hengzhou).set(0,shuzi);
@@ -303,6 +303,7 @@ public class StockLogicImpl implements StockLogicInterface{
 
 
 			}
+			System.out.println("--------"+zuhe);
 			return new YieldDistributionHistogramDataVO(zuhe);
 
 

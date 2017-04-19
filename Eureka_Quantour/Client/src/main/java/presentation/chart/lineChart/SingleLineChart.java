@@ -109,7 +109,7 @@ public class SingleLineChart implements chartService{
     	lineChart.setMaxSize(width, heightT);
     	lineChart.setMinSize(width, heightT);
     	
-    	info = catchMouseMove.catchMouseReturnInfoForAnchorPane(lineChart, dataMap, dates, "date", 0);
+    	info = catchMouseMove.catchMouseReturnInfoForAnchorPaneSN(lineChart, dataMap, dates, "date", 0);
     	begin = commonSet.beignDateForAnchorPane(dates[0], height);
     	end = commonSet.endDateForAnchorPane(dates[dates.length-1], width, height);
     	

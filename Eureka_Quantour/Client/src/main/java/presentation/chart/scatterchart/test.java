@@ -12,10 +12,13 @@ import javafx.stage.Stage;
 public class test extends Application{
 	
 	private static PointChart pointChart;
+	private static YieldPointChart yieldPointChart;
     
 	private List<int[]> yield = new ArrayList<>();
 	private List<int[]> num = new ArrayList<>();
 	private List<String> dataName = new ArrayList<>();
+	private List<Integer> nums = new ArrayList<>();
+	
 	private void testPointChart(){
 		int[] yieldD = new int[21];
 		int[] numI = new int[21];
@@ -53,19 +56,74 @@ public class test extends Application{
 		pointChart = new PointChart( yield, num, dataName, ChartKind.POINTFULL);
 	}
 	
+	public void testYieldPointChart1(){
+		nums.add(5);
+		nums.add(6);
+		nums.add(4);
+		nums.add(8);
+		nums.add(8);
+		nums.add(4);
+		nums.add(12);
+		nums.add(13);
+		nums.add(20);
+		nums.add(35);
+		
+		nums.add(40);
+		nums.add(36);
+		nums.add(22);
+		nums.add(15);
+		nums.add(14);
+		nums.add(8);
+		nums.add(8);
+		nums.add(6);
+		nums.add(3);
+		nums.add(2);
+		yieldPointChart = new YieldPointChart(nums, ChartKind.POINTONE);
+	}
+	
+	public void testYieldPointChart2(){
+		nums.add(5);
+		nums.add(6);
+		nums.add(4);
+		nums.add(8);
+		nums.add(8);
+		nums.add(4);
+		nums.add(12);
+		nums.add(13);
+		nums.add(20);
+		nums.add(35);
+		
+		nums.add(40);
+		nums.add(36);
+		nums.add(22);
+		nums.add(15);
+		nums.add(14);
+		nums.add(8);
+		nums.add(8);
+		nums.add(6);
+		nums.add(3);
+		nums.add(2);
+		
+		yieldPointChart = new YieldPointChart(nums, ChartKind.POINTFULL);
+	}
+	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		 // TODO Auto-generated method stub
-		 new test().testPointChart();
-		 
+//		 new test().testPointChart();
+		 new test().testYieldPointChart1();
+//		 new test().testYieldPointChart2();
 		try{
 			Stage dialogStage = new Stage();
 			dialogStage.setTitle("Birthday Statistics");
 			dialogStage.initModality(Modality.WINDOW_MODAL);
 			dialogStage.initOwner(primaryStage);
-		        
-//			Scene scene = new Scene(pointChart.getchart(334, 200, true));
-			Scene scene = new Scene(pointChart.getchart(334, 200, false));
+			Scene scene ;  
+//			scene = new Scene(pointChart.getchart(334, 200, true));
+//			scene = new Scene(pointChart.getchart(334, 200, false));
+//			scene = new Scene(yieldPointChart.getchart(334, 200, false));
+			scene = new Scene(yieldPointChart.getchart(334, 200, true));
+			
 			dialogStage.setScene(scene);
 
 			dialogStage.show();

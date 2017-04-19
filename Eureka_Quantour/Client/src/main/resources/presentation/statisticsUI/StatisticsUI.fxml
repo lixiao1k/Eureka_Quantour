@@ -9,11 +9,18 @@
    <children>
       <ComboBox fx:id="marketComboBox" layoutX="246.0" layoutY="24.0" onAction="#setMarket" prefHeight="23.0" prefWidth="119.0" />
       <Label fx:id="nameLabel" layoutX="80.0" layoutY="24.0" prefHeight="52.0" prefWidth="155.0" />
-      <Label layoutX="357.0" layoutY="90.0" prefHeight="20.0" prefWidth="103.0" text="涨跌幅分布：" />
-      <AnchorPane fx:id="RAFPieChartPane" layoutX="357.0" layoutY="150.0" prefHeight="276.0" prefWidth="334.0" />
-      <AnchorPane fx:id="RAFContributionPane" layoutX="357.0" layoutY="448.0" prefHeight="276.0" prefWidth="334.0" />
-      <Label layoutX="779.0" layoutY="93.0" text="涨跌幅均值、方差：" />
-      <AnchorPane fx:id="meanPane" layoutX="745.0" layoutY="150.0" prefHeight="276.0" prefWidth="334.0" />
-      <HBox fx:id="infoHBox" layoutX="58.0" layoutY="104.0" prefHeight="263.0" prefWidth="178.0" />
+      <Label layoutX="357.0" layoutY="65.0" prefHeight="20.0" prefWidth="103.0" text="涨跌幅分布：" />
+      <AnchorPane fx:id="RAFPieChartPane" layoutX="351.0" layoutY="87.0" prefHeight="276.0" prefWidth="334.0" />
+      <AnchorPane fx:id="RAFContributionPane" layoutX="357.0" layoutY="363.0" prefHeight="276.0" prefWidth="334.0" />
+      <Label layoutX="779.0" layoutY="65.0" text="涨跌幅均值、方差：" />
+      <AnchorPane fx:id="meanPane" layoutX="779.0" layoutY="150.0" prefHeight="276.0" prefWidth="334.0" />
+      <Label fx:id="zhangtingLabel" layoutX="80.0" layoutY="128.0" text="涨停：" />
+      <Label fx:id="dietingLabel" layoutX="80.0" layoutY="178.0" text="跌停：" />
+      <Label fx:id="tingpaiLabel" layoutX="80.0" layoutY="234.0" text="停牌：" />
+      <Label fx:id="volumeLabel" layoutX="80.0" layoutY="288.0" text="成交量：" />
+      <Label fx:id="zhangtingvalue" layoutX="158.0" layoutY="128.0" prefHeight="22.0" prefWidth="127.0" />
+      <Label fx:id="dietingValue" layoutX="158.0" layoutY="182.0" prefHeight="22.0" prefWidth="127.0" />
+      <Label fx:id="tingpaiValue" layoutX="158.0" layoutY="238.0" prefHeight="22.0" prefWidth="127.0" />
+      <Label fx:id="volumeValue" layoutX="158.0" layoutY="292.0" prefHeight="22.0" prefWidth="127.0" />
    </children>
 </AnchorPane>

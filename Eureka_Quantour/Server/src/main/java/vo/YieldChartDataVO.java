@@ -18,15 +18,13 @@ public class YieldChartDataVO implements Serializable{
     private double alpha;
     private double beta;
     private double sharpe;
+    private double jizhunyearreturn;
     private double yearreturn;
+    private double zuidahuiche;
 
-    public YieldChartDataVO(List<LocalDate> datelist, List<Double> jizhunlist, List<Double> celuelist) {
-        this.datelist = datelist;
-        this.jizhunlist = jizhunlist;
-        this.celuelist = celuelist;
-    }
 
-    public YieldChartDataVO(List<LocalDate> datelist, List<Double> jizhunlist, List<Double> celuelist, double alpha, double beta, double sharpe, double yearreturn) {
+
+    public YieldChartDataVO(List<LocalDate> datelist, List<Double> jizhunlist, List<Double> celuelist, double alpha, double beta, double sharpe, double yearreturn,double jizhunyearreturn) {
         this.datelist = datelist;
         this.jizhunlist = jizhunlist;
         this.celuelist = celuelist;
@@ -34,6 +32,7 @@ public class YieldChartDataVO implements Serializable{
         this.beta = beta;
         this.sharpe = sharpe;
         this.yearreturn = yearreturn;
+        this.jizhunyearreturn=jizhunyearreturn;
     }
 
     public List<LocalDate> getDatelist() {
@@ -92,5 +91,19 @@ public class YieldChartDataVO implements Serializable{
         this.yearreturn = yearreturn;
     }
 
+    public double getJizhunyearreturn() {
+        return jizhunyearreturn;
+    }
 
+    public void setJizhunyearreturn(double jizhunyearreturn) {
+        this.jizhunyearreturn = jizhunyearreturn;
+    }
+
+    public double getZuidahuiche() {
+        return zuidahuiche;
+    }
+
+    public void setZuidahuiche(double zuidahuiche) {
+        this.zuidahuiche = zuidahuiche;
+    }
 }

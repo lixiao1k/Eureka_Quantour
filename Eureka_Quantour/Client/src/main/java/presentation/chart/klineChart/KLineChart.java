@@ -76,9 +76,9 @@ public class KLineChart implements chartService {
     	candlestickchart.setMaxSize(width, height/8*5.5);
     	candlestickchart.setMinSize(width, height/8*5.5);
     	
-    	info = catchMouseMove.catchMouseReturnInfoForStackPane(
+    	info = catchMouseMove.catchMouseReturnInfoForStackPaneSN(
     			candlestickchart, candlestickchart.dataMap, candlestickchart.dates, "date", 5);
-    	infoD = catchMouseMove.catchMouseReturnInfoForStackPane(
+    	infoD = catchMouseMove.catchMouseReturnInfoForStackPaneSN(
     			volumeBarChart, candlestickchart.dataMap, candlestickchart.dates, "date", 5);
     	
     	chart1.getChildren().add(candlestickchart);

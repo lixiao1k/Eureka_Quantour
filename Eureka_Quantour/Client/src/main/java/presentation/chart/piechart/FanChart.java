@@ -38,7 +38,8 @@ public class FanChart implements chartService{
 		        });
 		}
 		
-		chart.setLegendSide( Side.RIGHT );
+		chart.getStyleClass().add("-fx-text-fill: #90d7ec");
+		chart.setLegendSide( Side.BOTTOM );
 	}
 	@Override
 	public Pane getchart(int width, int height, boolean withdate) {
@@ -57,6 +58,6 @@ public class FanChart implements chartService{
 	@Override
 	public void setName(String name) {
 		// TODO Auto-generated method stub
-		
+		chart.setTitle(name);
 	}
 }

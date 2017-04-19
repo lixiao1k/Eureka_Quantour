@@ -103,7 +103,7 @@ public class ComparedChart implements chartService{
 	        	if( j<datas.length && datas[j]!=0 && datas[j]!=Integer.MAX_VALUE ){
 	        		serie.getData().add( new XYChart.Data<>(dates[j], datas[j]) );
 	        		String dataFormat = df.format( datas[j] );
-	        		if( kind==ChartKind.EMA )
+	        		if( kind==ChartKind.EMA || kind==ChartKind.YIELDCOMPARED)
 	        			dataFormat = nf.format(datas[j]);
 	        		else if( datas[j]<1 )
 	        			dataFormat = nf.format(datas[j]);
@@ -162,7 +162,7 @@ public class ComparedChart implements chartService{
     	lineChart.setMaxSize(width, height);
     	lineChart.setMinSize(width, height);
     	
-    	info = catchMouseMove.catchMouseReturnInfoForStackPane(lineChart, dataMap, dates, "date", 10);
+    	info = catchMouseMove.catchMouseReturnInfoForStackPaneSN(lineChart, dataMap, dates, "date", 10);
     	
     	chartpane.getChildren().add(lineChart);
     	chartpane.getChildren().add(info);

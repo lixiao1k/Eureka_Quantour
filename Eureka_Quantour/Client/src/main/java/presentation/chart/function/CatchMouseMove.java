@@ -15,7 +15,7 @@ import javafx.scene.layout.StackPane;
 public class CatchMouseMove implements CatchMouseMoveService{
 	
 	@Override
-	public Label catchMouseReturnInfoForAnchorPane(XYChart<String, Number> chart, Map<String, String> dataMap,
+	public Label catchMouseReturnInfoForAnchorPaneSN(XYChart<String, Number> chart, Map<String, String> dataMap,
 			String[] dates, String name, int index) {
 		// TODO Auto-generated method stub
 
@@ -66,7 +66,7 @@ public class CatchMouseMove implements CatchMouseMoveService{
 		    		else
 		    			index = -1;
 	    		}
-	    		if( index>-1){
+	    		if( index>-1 && index<dates.length){
 		    		String dataInfo = dataMap.get(dates[index]);
 		    		String infos[] = dataInfo.split("/");
 		    		String info = name+" : "+dates[index]+"\n";
@@ -94,7 +94,7 @@ public class CatchMouseMove implements CatchMouseMoveService{
 	}
 
 	@Override
-	public Label catchMouseReturnInfoForStackPane(XYChart<String, Number> chart, Map<String, String> dataMap,
+	public Label catchMouseReturnInfoForStackPaneSN(XYChart<String, Number> chart, Map<String, String> dataMap,
 			String[] dates, String name, int index) {
 		// TODO Auto-generated method stub
 		
@@ -145,7 +145,7 @@ public class CatchMouseMove implements CatchMouseMoveService{
 		    		else
 		    			index = -1;
 	    		}
-	    		if( index>-1){
+	    		if( index>-1 && index<dates.length){
 		    		String dataInfo = dataMap.get(dates[index]);
 		    		String infos[] = dataInfo.split("/");
 		    		String info = name+" : "+dates[index]+"\n";
@@ -228,7 +228,7 @@ public class CatchMouseMove implements CatchMouseMoveService{
 		    		else
 		    			index = -1;
 	    		}
-	    		if( index>-1){
+	    		if( index>-1 && index<dates.length){
 		    		String dataInfo = dataMap.get(dates[index]);
 		    		String infos[] = dataInfo.split("/");
 		    		String info = name+" : "+dates[index]+"\n";
@@ -253,5 +253,94 @@ public class CatchMouseMove implements CatchMouseMoveService{
 		    });
 			
 		return cursorCoords;
+	}
+
+	@Override
+	public Label catchMouseReturnInfoForStackPaneNS(XYChart<Number, String> chart, Map<String, String> dataMap,
+			String[] dates, String name, int index, ChartKind kind) {
+		// TODO Auto-generated method stub
+		Axis<Number> xAxis = chart.getXAxis();
+	    Axis<String> yAxis = chart.getYAxis();
+	
+	    Label cursorCoords = new Label();
+	    cursorCoords.setVisible(false);
+	
+	    final Node chartBackground = chart.lookup(".chart-plot-background");
+	    for( Node n: chartBackground.getParent().getChildrenUnmodifiable() ) {
+	    	if ( n!=chartBackground && n!=xAxis && n!=yAxis) {
+	    		n.setMouseTransparent(true);
+	    	}
+	    }
+
+	    chartBackground.setOnMouseEntered(new EventHandler<MouseEvent>() {
+	    	@Override 
+	    	public void handle(MouseEvent mouseEvent) {
+	    		cursorCoords.setVisible(true);
+	    	}
+	    });
+		    
+		chartBackground.setOnMouseMoved(new EventHandler<MouseEvent>() {
+			
+	    	public void handle(MouseEvent mouseEvent) {
+	    		double temp = 0.0;
+	    		if( kind==ChartKind.POINTFULL || kind==ChartKind.POINTONE )
+	    			temp = (mouseEvent.getX()-index)*(dates.length-1)/(xAxis.getWidth()-2*index);
+	    		else
+	    			temp = (mouseEvent.getX()-index)*(dates.length-1)/(xAxis.getWidth()-index);
+	    		
+	    		if( mouseEvent.getX()>chart.getXAxis().getWidth()/2 )
+	    			StackPane.setAlignment(cursorCoords, Pos.TOP_LEFT);			
+	    		else
+	    			StackPane.setAlignment(cursorCoords, Pos.TOP_RIGHT);
+	    		
+	    		int index = 0;
+	    		if( xAxis.getWidth()/(dates.length-1)<8 ){
+		    		if( (temp%1)<0.49 )
+		    			index = (int)(temp/1);
+		    		else if( (temp%1)>0.51 )
+		    			index = (int)(temp/1)+1;
+		    		else
+		    			index = -1;
+	    		}
+	    		else{
+	    			if( (temp%1)<0.4 )
+		    			index = (int)(temp/1);
+		    		else if( (temp%1)>0.6 )
+		    			index = (int)(temp/1)+1;
+		    		else
+		    			index = -1;
+	    		}
+	    		if( index>-1 && index<dates.length){
+		    		String dataInfo = dataMap.get(dates[index]);
+		    		String infos[] = dataInfo.split("/");
+		    		String info = name+" : "+dates[index]+"\n";
+		    		for(int i=0; i<infos.length; i++){
+		    			info += infos[i]+"\n";
+		    		}
+		    		cursorCoords.setVisible(true);
+		    		cursorCoords.setText(info);
+	    		}
+	    		else{
+	    			cursorCoords.setVisible(false);
+	    			cursorCoords.setText("");
+	    		}
+	    	}
+	    });
+		
+		 chartBackground.setOnMouseExited(new EventHandler<MouseEvent>() {
+		    	@Override 
+		    	public void handle(MouseEvent mouseEvent) {
+		    		cursorCoords.setVisible(false);
+		    	}
+		    });
+			
+		return cursorCoords;
+	}
+
+	@Override
+	public Label catchMouseReturnInfoForYieldDistributeChart(XYChart<String, Number> chart, Map<String, String> dataMap,
+			String[] dates, String name, int index) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
