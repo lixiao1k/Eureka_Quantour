@@ -1,7 +1,5 @@
 package presentation.chart.areaChart;
 
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
@@ -36,9 +34,8 @@ public class AreaLineChart implements chartService {
 	
 	private AnchorPane pane = new AnchorPane();
 	private StackPane chartpane = new StackPane();
+	private StackPane datepane = new StackPane();
 	private Label info = new Label();
-	private Label begin = new Label();
-	private Label end = new Label();
 	
     private NumberAxis yAxis;
     private CategoryAxis xAxis;
@@ -51,21 +48,20 @@ public class AreaLineChart implements chartService {
         xAxis = new CategoryAxis();
         xAxis.setGapStartAndEnd(false);
         xAxis.setTickLabelsVisible(false);
-        xAxis.setStartMargin(10);
+        xAxis.setStartMargin(5);
         xAxis.setOpacity(0.7);
         
         yAxis = new NumberAxis();
     	yAxis.autoRangingProperty().set(true);
         yAxis.setAnimated(true);
         yAxis.forceZeroInRangeProperty().setValue(false);
-        yAxis.setPrefWidth(1);
         yAxis.setOpacity(0.7);
         
         areaChart = new AreaChart<>(xAxis, yAxis);
         areaChart.setHorizontalGridLinesVisible(false);
         areaChart.setVerticalGridLinesVisible(false);
         areaChart.setCreateSymbols(false);
-        areaChart.setPadding(new Insets(10,10,10,10));
+        areaChart.setLegendVisible(false);
         
         cycleSave = listToArray.formatInteger(cycles);
         
@@ -105,27 +101,44 @@ public class AreaLineChart implements chartService {
     		width = 334;
     	if( height<=0 )
     		height = 200;
+    	double chartsmall = 6,dateheight = 8, dategap = 35;
+    	if( withdate ){
+    		areaChart.getYAxis().setOpacity(0.9);
+    		height -= dateheight;
+    		String bdate = cycleSave[0];
+    		String mdate = cycleSave[cycleSave.length/2];
+    		String edate = cycleSave[cycleSave.length-1];
+    		datepane.getChildren().addAll( 
+    				commonSet.dateForStackPane(bdate, mdate, edate).getChildren() );
+    		datepane.setPrefSize(width-dategap, dateheight);
+    		datepane.getStylesheets().add(
+        			getClass().getResource("/styles/DateLabel.css").toExternalForm() );
+    	}
+    	else{
+    		areaChart.getYAxis().setTickLabelsVisible(false);
+    		areaChart.getYAxis().setPrefWidth(1);
+    		areaChart.getYAxis().setOpacity(0);
+    	}
     	areaChart.setMaxSize(width, height);
     	areaChart.setMinSize(width, height);
     	
-    	info = catchMouseMove.catchMouseReturnInfoForStackPaneSN(areaChart, dataMap, cycleSave, "周期", 10);
-    	begin = commonSet.beignDateForAnchorPane( cycleSave[0], height);
-    	end = commonSet.endDateForAnchorPane(cycleSave[cycleSave.length-1], width, height);
-    	begin.setLayoutX(begin.getLayoutX()+10);
-    	end.setLayoutX(end.getLayoutX()+25);
+    	info = catchMouseMove.catchMouseReturnInfoForStackPaneSN(areaChart, dataMap, cycleSave, "周期", 5);
     	
     	chartpane.getChildren().add(areaChart);
     	chartpane.getChildren().add(info);
     	
     	pane.getChildren().add(chartpane);
-    	pane.getChildren().add(begin);
-    	pane.getChildren().add(end);
-    	StackPane.setAlignment(chartpane, Pos.CENTER);
+    	AnchorPane.setTopAnchor(chartpane, chartsmall);
+    	if( withdate ){
+    		pane.getChildren().add(datepane);
+    		AnchorPane.setTopAnchor(datepane, height+chartsmall);
+    		AnchorPane.setLeftAnchor(datepane, dategap);
+    	}	
     	
     	info.getStylesheets().add(
     			getClass().getResource("/styles/InfoLabel.css").toExternalForm() );
     	pane.getStylesheets().add(
-    			getClass().getResource("/styles/SingleLineChart.css").toExternalForm() );
+    			getClass().getResource("/styles/AreaChart.css").toExternalForm() );
         return pane;
     }
     

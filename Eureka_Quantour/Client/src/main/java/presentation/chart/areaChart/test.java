@@ -38,6 +38,7 @@ public class test extends Application{
 			dialogStage.initOwner(primaryStage);
 		        
 			Scene scene = new Scene(areaLineChart.getchart(334, 200, true));
+//			Scene scene = new Scene(areaLineChart.getchart(334, 200, false));
 			dialogStage.setScene(scene);
 
 			dialogStage.show();
