@@ -69,5 +69,7 @@ public interface StockLogicInterface extends Remote {
 
 	 String nameToCode(String name) throws RemoteException;
 
+	 List<List<Double>> getDantengchart(String name,LocalDate begin,LocalDate end,String hengzhou,String usernam, String stocksetname) throws RemoteException;
+
 
 }

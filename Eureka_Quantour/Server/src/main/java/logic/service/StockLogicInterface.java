@@ -21,52 +21,53 @@ public interface StockLogicInterface extends Remote {
 	 *               invoke getSingleStockInfo() in data layer
 	 * @return: Iterator<SingleStockInfoVO>
 	 */
-	 List<SingleStockInfoVO> getSingleStockInfoByTime (String stockCode, LocalDate begin, LocalDate end )
+	List<SingleStockInfoVO> getSingleStockInfoByTime (String stockCode, LocalDate begin, LocalDate end )
 			 throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException;
 	/**
 	 * @Description: to get all stocks' EMA between "begin" and "end",
 	 *               invoke getSingleStockInfo() in data layer
 	 * @return: Iterator<Double>
 	 */
-	 List<EMAInfoVO> getEMAInfo ( String stockCode, LocalDate begin, LocalDate end )
+	List<EMAInfoVO> getEMAInfo ( String stockCode, LocalDate begin, LocalDate end )
 			 throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException, DateOverException;
 	/**
 	 * @Description: to get stock A and B's compared information between "begin" and "end",
 	 *               invoke getSingleStockInfo() in data layer
 	 * @return: ComparedInfoVO
 	 */
-	 ComparedInfoVO getComparedInfo ( String stockCodeA, LocalDate begin, LocalDate end )
+	ComparedInfoVO getComparedInfo ( String stockCodeA, LocalDate begin, LocalDate end )
 			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException;
 	/**
 	 * @Description: to get market's information by date,
 	 *               invoke getMarketByDate() in data layer
 	 * @return: MarketInfoVO
 	 */
-	 MarketInfoVO getMarketInfo ( LocalDate date,String marketname )
+	MarketInfoVO getMarketInfo ( LocalDate date,String marketname )
 			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException;
 
 
-	 List<String> getStockSet(String username) throws  RemoteException;
+	List<String> getStockSet(String username) throws  RemoteException;
 
-	 List<SingleStockInfoVO> getStockSetSortedInfo(String stockSetName, LocalDate now,String username) throws RemoteException, NullMarketException;
+	List<SingleStockInfoVO> getStockSetSortedInfo(String stockSetName, LocalDate now,String username) throws RemoteException, NullMarketException;
 
-	 SingleStockInfoVO getStockBasicInfo(String code, LocalDate now) throws NullStockIDException, NullDateException, RemoteException;
+	SingleStockInfoVO getStockBasicInfo(String code, LocalDate now) throws NullStockIDException, NullDateException, RemoteException;
 
-	 void setStrategy(StrategyConditionVO strategyConditionVO, SaleVO s, LocalDate begin, LocalDate now, String stockSetName,String username)
+	void setStrategy(StrategyConditionVO strategyConditionVO, SaleVO s, LocalDate begin, LocalDate now, String stockSetName,String username)
 		throws  RemoteException;
 
-	 YieldChartDataVO getYieldChartData()throws  RemoteException;;
+	YieldChartDataVO getYieldChartData()throws  RemoteException;;
 
-	 YieldDistributionHistogramDataVO getYieldDistributionHistogramData() throws  RemoteException;;
+	YieldDistributionHistogramDataVO getYieldDistributionHistogramData() throws  RemoteException;;
 
-	 void addStockSet(String stockSetName, String username) throws StockSetNameRepeatException,RemoteException;
+	void addStockSet(String stockSetName, String username) throws StockSetNameRepeatException,RemoteException;
 
-	 void deleteStockSet(String stockSetName, String username)throws  RemoteException;
+	void deleteStockSet(String stockSetName, String username)throws  RemoteException;
 
-	 void addStockToStockSet(String stockName, String stockSetName, String username) throws StockNameRepeatException,RemoteException;
+	void addStockToStockSet(String stockName, String stockSetName, String username) throws StockNameRepeatException,RemoteException;
 
-	 void deleteStockFromStockSet(String stockName, String stockSetName, String username)throws  RemoteException;
+	void deleteStockFromStockSet(String stockName, String stockSetName, String username)throws  RemoteException;
 
 	String nameToCode(String name) throws RemoteException;
 
+	List<List<Double>> getDantengchart(String name,LocalDate begin,LocalDate end,String hengzhou,String usernam, String stocksetname) throws RemoteException;
 }

@@ -189,11 +189,6 @@ public class StockLogicImpl implements StockLogicInterface{
 			}
 
 
-
-
-
-
-
 		}
 
 
@@ -327,6 +322,11 @@ public class StockLogicImpl implements StockLogicInterface{
 	@Override
 	public String nameToCode(String name) throws RemoteException {
 		return idi.nameTocode(name);
+	}
+
+	@Override
+	public List<List<Double>> getDantengchart(String name, LocalDate begin, LocalDate end, String hengzhou, String usernam, String stocksetname) {
+		return null;
 	}
 
 

@@ -139,6 +139,12 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 	}
 
 	@Override
+	public List<List<Double>> getDantengchart(String name, LocalDate begin, LocalDate end, String hengzhou, String usernam, String stocksetname) {
+		return null;
+	}
+
+
+	@Override
 	public void signUp(String username, char[] password) throws RemoteException, UserNameRepeatException {
 		cli.signUp(username,password);
 	}
