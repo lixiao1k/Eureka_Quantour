@@ -46,7 +46,7 @@ public class YieldComparedChart implements chartService {
     	LocalDate[] dates = new LocalDate[date.length/2];
     	for( int i=0; i<dates.length; i++)
     		dates[i] = date[i];
-    	comparedChart = new ComparedChart( dates, doubleList, dataName, ChartKind.YIELDCOMPARED);
+    	comparedChart = new ComparedChart( date, doubleList, dataName, ChartKind.YIELDCOMPARED);
     	
     	double layout = 70;
     	
