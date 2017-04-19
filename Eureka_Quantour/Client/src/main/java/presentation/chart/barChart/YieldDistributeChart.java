@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import en_um.ChartKind;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -49,9 +50,10 @@ public class YieldDistributeChart implements chartService{
 	private Label info = new Label();
 	
 	private NumberAxis yAxis;
-    private CategoryAxis xAxis;
+//    private CategoryAxis xAxis;
+	private NumberAxis xAxis;
 
-    private BarChart<String, Number> barChart;
+    private BarChart<Number, Number> barChart;
     private Map<String, String> dataMap = new HashMap<String,String>();
     private String[] yield;
     private Map<Double,List<Integer>> zuhe;
@@ -78,11 +80,14 @@ public class YieldDistributeChart implements chartService{
 			value.add( nf.format(k/100) );
 		ObservableList<String> values = FXCollections.observableList(value);
 		
-		xAxis = new CategoryAxis(values);
+//		xAxis = new CategoryAxis(values);
+		xAxis = new NumberAxis();
         xAxis.setTickMarkVisible(false);
         xAxis.setTickLabelsVisible(false);
-        xAxis.setStartMargin(0);
+//        xAxis.setStartMargin(0);
         xAxis.setOpacity(0.7);
+        xAxis.setLowerBound(min);
+        xAxis.setUpperBound(max);
 	        
         yAxis = new NumberAxis();
         yAxis.autoRangingProperty().set(false);
@@ -109,8 +114,8 @@ public class YieldDistributeChart implements chartService{
 
         List<Integer> pandm = new ArrayList<>();
 	     
-        XYChart.Series<String, Number> seriem = new XYChart.Series<>();
-        XYChart.Series<String, Number> seriep = new XYChart.Series<>();
+        XYChart.Series<Number, Number> seriem = new XYChart.Series<>();
+        XYChart.Series<Number, Number> seriep = new XYChart.Series<>();
         
         String namep = "正收益",  namem= "负收益";
         max = 0;
@@ -120,8 +125,8 @@ public class YieldDistributeChart implements chartService{
         		max = Math.abs(pandm.get(0));
         	if( Math.abs(pandm.get(1))>max )
         		max = Math.abs(pandm.get(1));
-        	XYChart.Data<String,Number> sp= new XYChart.Data<>(yield[i], Math.abs(pandm.get(0)));
-            XYChart.Data<String,Number> sm= new XYChart.Data<>(yield[i], Math.abs(pandm.get(1)));
+        	XYChart.Data<Number,Number> sp= new XYChart.Data<>(yieldL.get(i)/100 , Math.abs(pandm.get(0)));
+            XYChart.Data<Number,Number> sm= new XYChart.Data<>(yieldL.get(i)/100 , Math.abs(pandm.get(1)));
             sp.nodeProperty().addListener(new ChangeListener<Node>() {
                 @Override
                 public void changed(ObservableValue<? extends Node> observable, Node oldValue, Node newValue) {
@@ -176,8 +181,8 @@ public class YieldDistributeChart implements chartService{
     	}
     	barChart.setMaxSize(width, height);
     	barChart.setMinSize(width, height);
-    	
-    	info = catchMouseMove.catchMouseReturnInfoForStackPane(barChart, dataMap, yield, "收益率", 0);
+   
+    	info = catchMouseMove.catchMouseReturnInfoForStackPaneNN(barChart, dataMap, yield, "收益率", 0, ChartKind.YIELDDISTRIBUTE);
     	
     	chartpane.getChildren().add(barChart);
     	chartpane.getChildren().add(info);

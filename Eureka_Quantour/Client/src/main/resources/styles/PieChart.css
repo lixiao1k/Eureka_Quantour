@@ -13,6 +13,11 @@
 	-fx-background-color: transparent;
 }
 
+.chart-pie-label {
+    -fx-padding: 3px;
+    -fx-fill: #90d7ec;
+}
+
 .chart-title {
   	-fx-text-fill: #cde6c7;
  	 -fx-font-size: 1.2em;
