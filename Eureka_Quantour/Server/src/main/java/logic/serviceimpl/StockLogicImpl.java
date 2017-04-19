@@ -152,6 +152,7 @@ public class StockLogicImpl implements StockLogicInterface{
 		int zheng0dao5=0;
 		int fu5dao10=0;
 		int fu0dao5=0;
+		List<Double> rate=new ArrayList<>();
 		List<Integer> diantu=new ArrayList<>();
 		for (int i=0;i<21;i++){
 			diantu.add(0);
@@ -169,6 +170,7 @@ public class StockLogicImpl implements StockLogicInterface{
 			if (wushuju==namelist.size())
 				throw new NullMarketException();
 			volume+=po.getVolume();
+			rate.add(po.getRate());
 
 			if (po.getRate()<10 && po.getRate()>=5){
 				zheng5dao10++;
@@ -204,9 +206,12 @@ public class StockLogicImpl implements StockLogicInterface{
 		shanxingtu.add(zheng0dao5);
 		shanxingtu.add(zheng5dao10);
 //		System.out.println("afesgrht   "+chaoguo10);
+		MarketInfoVO marketInfoVO=new MarketInfoVO(volume,chaoguo10,dieguo10,wushuju,shanxingtu,diantu);
+		marketInfoVO.setJunzhi(utility.getAverage(rate));
+		marketInfoVO.setFangcha(utility.getCorvariance(rate,rate));
 
 
-		return new MarketInfoVO(volume,chaoguo10,dieguo10,wushuju,shanxingtu,diantu);
+		return marketInfoVO;
 	}
 
 	@Override
@@ -263,6 +268,7 @@ public class StockLogicImpl implements StockLogicInterface{
 
 		try {
 			YieldChartDataVO p= new YieldChartDataVO(stragety.getTimelist(),stragety.getBasicReturn(),stragety.getStragetyReturn(),stragety.getAlpha(),stragety.getBeta(),stragety.getSharpe(),stragety.gerYearReturn(),stragety.gerBasicYearReturn());
+			p.setZuidahuiche(stragety.getzuidaguiceh());
 			return  p;
 		} catch (PriceTypeException e) {
 			e.printStackTrace();
@@ -394,7 +400,7 @@ public class StockLogicImpl implements StockLogicInterface{
 						heng.add(i*1.0);
 						SaleVO saleVO=new SaleVO(i,"收盘价");
 						List<Object> list=new ArrayList<>();
-						list.add(new Integer(geiding));
+						list.add(new Integer(5));
 						StrategyConditionVO strategyConditionVO=new StrategyConditionVO(name,list,10);
 						Return stra=new Return(stocklistname,begin,end,saleVO,strategyConditionVO);
 						try {

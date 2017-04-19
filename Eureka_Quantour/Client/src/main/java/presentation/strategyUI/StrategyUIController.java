@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import javafx.scene.layout.FlowPane;
 import org.controlsfx.control.Notifications;
 
 import dataController.DataContorller;
@@ -29,6 +30,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import logic.service.StockLogicInterface;
+import presentation.chart.areaChart.DanTengChart;
 import presentation.chart.chartService;
 import presentation.chart.barChart.YieldDistributeChart;
 import presentation.chart.lineChart.YieldComparedChart;
@@ -128,8 +130,34 @@ public class StrategyUIController implements Initializable{
 		xinchengqi = createPeriodTextField.getText();
 		RemoteHelper remote = RemoteHelper.getInstance();
 		StockLogicInterface stockLogicInterface = remote.getStockLogic();
-		stockLogicInterface.getDantengchart("动量策略",(LocalDate)dataController.get("BeginTime"), (LocalDate)dataController.get("SystemTime"), "持有期", (String)dataController.get("UserName"), stockSetComboBox.getValue(), )
-		
+		List<List<Double>> datelist1=new ArrayList<>();
+		List<List<Double>> datelist2=new ArrayList<>();
+		FlowPane pane=new FlowPane();
+		try {
+			if(momentumRadioButton.isSelected()) {
+				datelist1 = stockLogicInterface.getDantengchart("动量策略", (LocalDate) dataController.get("BeginTime"), (LocalDate) dataController.get("SystemTime"), "持有期", (String) dataController.get("UserName"), stockSetComboBox.getValue(), Integer.parseInt(xinchengqi));
+				datelist2 = stockLogicInterface.getDantengchart("动量策略", (LocalDate) dataController.get("BeginTime"), (LocalDate) dataController.get("SystemTime"), "形成期", (String) dataController.get("UserName"), stockSetComboBox.getValue(), Integer.parseInt(chiyouqi));
+
+				chartService service1=new DanTengChart(datelist1.get(1),datelist1.get(2));
+				chartService service2=new DanTengChart(datelist2.get(1),datelist1.get(2));
+
+//				//
+//				需补全参数的
+//				pane.getChildren().add(service1.getchart());
+//				pane.getChildren().add(service2.getchart());
+				//
+
+			}else{
+				datelist1 = stockLogicInterface.getDantengchart("均值策略", (LocalDate) dataController.get("BeginTime"), (LocalDate) dataController.get("SystemTime"), "持有期", (String) dataController.get("UserName"), stockSetComboBox.getValue(), Integer.parseInt(xinchengqi));
+				chartService service1=new DanTengChart(datelist1.get(1),datelist1.get(2));
+//				//同上
+//				pane.getChildren().add(service1.getchart());
+			}
+//			主pane上把pane加上
+		} catch (RemoteException e1) {
+			e1.printStackTrace();
+		}
+
 	}
 	
 	@FXML

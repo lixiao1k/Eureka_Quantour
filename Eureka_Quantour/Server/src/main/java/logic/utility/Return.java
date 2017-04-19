@@ -92,6 +92,10 @@ public class Return {
         return (ri-rf)/seta;
     }
 
+    public Double getzuidaguiceh(){
+        return 0.0;
+    }
+
 
     public List<LocalDate> getTimelist() {
         return timelist;

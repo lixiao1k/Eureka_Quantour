@@ -18,6 +18,8 @@ public class MarketInfoVO implements Serializable{
 	private int zhangting=0;
 	private int dieting=0;
 	private int tingpai;
+	private double junzhi=0;
+	private double fangcha=0;
 	private List<Integer> shanxingtu;
 	private List<Integer> diantu;
 
@@ -76,5 +78,21 @@ public class MarketInfoVO implements Serializable{
 		this.tingpai = tingpai;
 		this.shanxingtu = shanxingtu;
 		this.diantu = diantu;
+	}
+
+	public double getJunzhi() {
+		return junzhi;
+	}
+
+	public void setJunzhi(double junzhi) {
+		this.junzhi = junzhi;
+	}
+
+	public double getFangcha() {
+		return fangcha;
+	}
+
+	public void setFangcha(double fangcha) {
+		this.fangcha = fangcha;
 	}
 }
