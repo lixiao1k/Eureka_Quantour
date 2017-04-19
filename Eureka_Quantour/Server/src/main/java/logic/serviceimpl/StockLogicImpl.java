@@ -325,7 +325,30 @@ public class StockLogicImpl implements StockLogicInterface{
 	}
 
 	@Override
-	public List<List<Double>> getDantengchart(String name, LocalDate begin, LocalDate end, String hengzhou, String usernam, String stocksetname) {
+	public List<List<Double>> getDantengchart(String name, LocalDate begin, LocalDate end, String hengzhou, String usernam, String stocksetname,int geiding) {
+		if (stocksetname.equals("SHA") ||stocksetname.equals("SZA") ||stocksetname.equals("SHB")|| stocksetname.equals("SZB")||stocksetname.equals("CYB")||stocksetname.equals("HS300")
+				||stocksetname.equals("ZXB") )
+			usernam=null;
+		List<String> stocklistname=idi.getStockSetInfo(stocksetname,usernam);
+
+
+
+		if (name.equals("动量策略")) {
+			if (hengzhou.equals("形成期")){
+
+
+			}
+
+			else
+				if (hengzhou.equals("持有期")){
+
+				}
+		}
+
+
+
+
+
 		return null;
 	}
 
