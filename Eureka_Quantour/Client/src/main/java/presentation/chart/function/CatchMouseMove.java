@@ -66,7 +66,7 @@ public class CatchMouseMove implements CatchMouseMoveService{
 		    		else
 		    			index = -1;
 	    		}
-	    		if( index>-1){
+	    		if( index>-1 && index<dates.length){
 		    		String dataInfo = dataMap.get(dates[index]);
 		    		String infos[] = dataInfo.split("/");
 		    		String info = name+" : "+dates[index]+"\n";
@@ -145,7 +145,7 @@ public class CatchMouseMove implements CatchMouseMoveService{
 		    		else
 		    			index = -1;
 	    		}
-	    		if( index>-1){
+	    		if( index>-1 && index<dates.length){
 		    		String dataInfo = dataMap.get(dates[index]);
 		    		String infos[] = dataInfo.split("/");
 		    		String info = name+" : "+dates[index]+"\n";
@@ -228,7 +228,7 @@ public class CatchMouseMove implements CatchMouseMoveService{
 		    		else
 		    			index = -1;
 	    		}
-	    		if( index>-1){
+	    		if( index>-1 && index<dates.length){
 		    		String dataInfo = dataMap.get(dates[index]);
 		    		String infos[] = dataInfo.split("/");
 		    		String info = name+" : "+dates[index]+"\n";
