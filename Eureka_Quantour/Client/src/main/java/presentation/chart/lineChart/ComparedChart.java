@@ -103,7 +103,7 @@ public class ComparedChart implements chartService{
 	        	if( j<datas.length && datas[j]!=0 && datas[j]!=Integer.MAX_VALUE ){
 	        		serie.getData().add( new XYChart.Data<>(dates[j], datas[j]) );
 	        		String dataFormat = df.format( datas[j] );
-	        		if( kind==ChartKind.EMA )
+	        		if( kind==ChartKind.EMA || kind==ChartKind.YIELDCOMPARED)
 	        			dataFormat = nf.format(datas[j]);
 	        		else if( datas[j]<1 )
 	        			dataFormat = nf.format(datas[j]);

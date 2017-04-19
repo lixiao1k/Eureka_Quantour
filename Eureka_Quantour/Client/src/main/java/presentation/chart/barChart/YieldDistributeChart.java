@@ -91,7 +91,7 @@ public class YieldDistributeChart implements chartService{
         
         yield = new String[yieldL.size()];
         for(int i =0; i<yieldL.size(); i++){
-        	yield[i] = nf.format( yieldL.get(i)/100 );
+        	yield[i] = nf.format( yieldL.get(i)/100.0 );
         }
 	     
         String[] dataStrings = new String[yield.length];
@@ -104,9 +104,9 @@ public class YieldDistributeChart implements chartService{
         for( int i=0; i<yield.length; i++){
         	pandm = zuhe.get(yieldL.get(i));
         	XYChart.Data<String,Number> sp= new XYChart.Data<>(
-        			nf.format( yieldL.get(i)/100 ), Math.abs(pandm.get(0)));
+        			nf.format( yieldL.get(i)/100.0 ), Math.abs(pandm.get(0)));
             XYChart.Data<String,Number> sm= new XYChart.Data<>(
-            		nf.format( yieldL.get(i)/100 ), Math.abs(pandm.get(1)));
+            		nf.format( yieldL.get(i)/100.0), Math.abs(pandm.get(1)));
             
             sp.nodeProperty().addListener(new ChangeListener<Node>() {
                 @Override
@@ -152,7 +152,7 @@ public class YieldDistributeChart implements chartService{
     		height -= dateheight;
     		datepane.getChildren().addAll( 
     				commonSet.dateForStackPane(
-    						nf.format(min/100), nf.format((min+max)/200), nf.format(max/100)).getChildren() );
+    						nf.format(min/100.0), nf.format((min+max)/200.0), nf.format(max/100.0)).getChildren() );
     		datepane.setPrefSize(width-dategap, dateheight);
     		datepane.getStylesheets().add(
         			getClass().getResource("/styles/DateLabel.css").toExternalForm() );
