@@ -299,6 +299,7 @@ public class StockLogicImpl implements StockLogicInterface{
 
 
 			}
+			System.out.println("--------"+zuhe);
 			return new YieldDistributionHistogramDataVO(zuhe);
 
 
