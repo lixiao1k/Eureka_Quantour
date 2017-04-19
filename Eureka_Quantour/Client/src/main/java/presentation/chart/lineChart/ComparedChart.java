@@ -109,19 +109,19 @@ public class ComparedChart implements chartService{
 	        		else
 	        			dataStrings[j] = name+" : "+dataFormat;
 	        	}
-        		else{
-        			if( dataStrings[j]!=null )
-        				dataStrings[j] += "/"+name+" : "+"0";
-        			else
-        				dataStrings[j] = name+" : "+"0";
-        		}
+//        		else{
+//        			if( dataStrings[j]!=null )
+//        				dataStrings[j] += "/"+name+" : "+"0";
+//        			else
+//        				dataStrings[j] = name+" : "+"0";
+//        		}
 
         	}
         	serie.setName(name);
         	series.add(serie);
         }
         for(int i=0; i<date.length; i++){
-        	if( dataStrings[i].length()!=0 )
+        	if( dataStrings[i]!=null )
         		dataMap.put(dates[i], dataStrings[i]);
         }
         lineChart.getData().addAll(series);

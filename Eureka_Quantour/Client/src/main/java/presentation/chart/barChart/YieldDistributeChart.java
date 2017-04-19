@@ -57,8 +57,8 @@ public class YieldDistributeChart implements chartService{
 		Set<Double> keySet = zuhe.keySet();
 		
 		List<String> value = new ArrayList<>();
-		double k = 0.01;
-		for( int i=0; i<100; i++, k=k+0.01)
+		double k = 0.00, gap = 0.05;
+		for( int i=0; i<21; i++, k+=gap )
 			value.add(NumberFormat.getPercentInstance().format(k));
 		ObservableList<String> values = FXCollections.observableList(value);
 		
@@ -89,7 +89,7 @@ public class YieldDistributeChart implements chartService{
         
         yield = new String[yieldL.size()];
         for(int i =0; i<yieldL.size(); i++){
-        	yield[i] = NumberFormat.getPercentInstance().format( yieldL.get(i) );
+        	yield[i] = NumberFormat.getPercentInstance().format( yieldL.get(i)/100 );
         }
 	     
         String[] dataStrings = new String[yield.length];

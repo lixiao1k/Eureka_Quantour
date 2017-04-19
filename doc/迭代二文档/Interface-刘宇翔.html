@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style>
+		.textFont {font-family:楷体}
+    .tdl {width:100px;}
+    .tdr {width:150px;}
+    .tdh {width:100px;text-align: center}
+    .kfont {
+      font-family:"楷体";
+            font-size: 5    
+         }
+    body{
+      background-color:rgb(199,237,204);
+      margin-left: 20%;
+      margin-right: 20%;
+      border:2px dotted black;
+      padding:10px 10px 10px 10px;
+      font-family: sans-serif;
+    }
+  </style>
+ </head>
+<body>
+<h1 class="md-end-block md-heading">接口定义文档</h1>
+<h2 class="md-end-block md-heading">对象</h2>
+
+<h2 class="md-end-block md-heading">异常</h2>
+<ul class="ul-list" data-mark="*">
+<li>
+<p><span class="md-line md-end-block">BeginInvalidException : 用来表示起始日期大于最大有效日期</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">DateInvalidException : 用来表示该日期段内没有股票数据</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">EndInvalidException : 用来表示结束日期小于最小有效日期</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">DateOverException : 日期溢出错误</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">InternetdisconnectException : 网络未连接异常</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">LogErrorException : 登录异常</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">NoneMatchedMarketException : 没有相匹配的市场异常</span></p>
+</li>
+</li>
+<li>
+<p><span class="md-line md-end-block">NullDateException : 选取的日期非交易日异常</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">NullSetException : 空股票池异常</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">NullSetInfoException : 不存在的股票池异常</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">NullStockIDException : 空的股票编号或名字异常</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">StockHaltingException : 股票停牌异常</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">StockNameRepeatException : 股票池中已存在股票异常</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">StockSetNameRepeatException : 已存在同名的股票池异常</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">UserNameRepeatException : 用户名重复异常</span></p>
+</li>
+</ul>
+
+<h2 class="md-end-block md-heading">界面层需（逻辑层）接口/逻辑层供（界面层）接口</h2>
+<ul class="ul-list" data-mark="*">
+<li>
+<p><span class="md-line md-end-block">注册 public boolean signUp( String username, String password )</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">登录 public boolean signIn( String username, String password )</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">登出 public void signOut(String username)</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block"><b>以下逻辑层接口均 : throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException</b></span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">根据时间获取单支股票信息 public List<SingleStockInfoVO> getSingleStockInfoByTime (String stockCode, LocalDate begin, LocalDate end )
+			 throws  NullStockIDException;</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">public List<EMAInfoVO> getEMAInfo ( String stockCode, LocalDate begin, LocalDate end )
+			 throws   NullStockIDException, DateOverException;</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">获取股票统计信息public ComparedInfoVO getComparedInfo( String stockCodeA, Calendar begin, Calendar end )</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">获取某个市场或板块信息public MarketInfoVO getMarketInfo( LocalDate date ,String marketname)</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">获取某个用户的所有股票池public List<String> getStockSet(String username)</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">获取某个股票池某天按涨跌幅排序后的信息public List<SingleStockInfoVO> getStockSetSortedInfo(String stockSetName, LocalDate now,String username)</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">获取某个股票某天的信息public SingleStockInfoVO getStockBasicInfo(String code, LocalDate now) throws NullStockIDException, NullDateException, RemoteException;
+</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">设置某个策略的相关信息public void setStrategy(StrategyConditionVO strategyConditionVO, SaleVO s, LocalDate begin, LocalDate now, String stockSetName,String username)
+		throws  RemoteException;
+</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">获取某个策略计算出的结果public YieldChartDataVO getYieldChartData()throws  RemoteException;;
+</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">获取某个策略计算出的结果public YieldDistributionHistogramDataVO getYieldDistributionHistogramData() throws  RemoteException;;
+</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">添加一个自定义股票池public void addStockSet(String stockSetName, String username) throws StockSetNameRepeatException,RemoteException;
+</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">删除一个自定义股票池public void deleteStockSet(String stockSetName, String username)throws  RemoteException;
+</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">添加一个股票至股票池中public void addStockToStockSet(String stockName, String stockSetName, String username) throws StockNameRepeatException,RemoteException;
+</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">从股票池中删除一个股票public void deleteStockFromStockSet(String stockName, String stockSetName, String username)throws  RemoteException;
+</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">将股票名字转为编号public String nameToCode(String name) throws RemoteException;
+</span></p>
+</li>
+ </ul>
+
+<h2 class="md-end-block md-heading">逻辑层需（数据层）接口/数据层供（逻辑层）接口</h2>
+<ul class="ul-list" data-mark="*">
+<li>
+<p><span class="md-line md-end-block">注册 public boolean signUp( String username, String password )</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">登录 public boolean signIn( String username, String password )</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">登出 public void signOut(String username)</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">添加一个自定义股票池public void addStockSet(String stockSetName, String username) throws StockSetNameRepeatException;
+</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">删除一个自定义股票池public void deleteStockSet(String stockSetName, String username);
+</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">添加一个股票至股票池中public void addStockToStockSet(String stockName, String stockSetName, String username) throws StockNameRepeatException;
+</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">从股票池中删除一个股票public void deleteStockFromStockSet(String stockName, String stockSetName, String username);
+</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">将股票名字转为编号public String nameToCode(String name);
+</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">获取一个股票最早的一天public LocalDate getMinDay(String stockCode) throws NullStockIDException;
+</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">获取一个股票最晚的一天public LocalDate getMaxDay(String stockCode) throws NullStockIDException;
+</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">获取当前交易日往前推或往后退x个交易日的日期public LocalDate addDays(LocalDate date,int last) throws DateOverException;;
+</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">将股票编号转为名字public String codeToname(String name);
+</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">获取股票某一天的数据	public SingleStockInfoPO getSingleStockInfo(String stockcode,LocalDate date) 
+			throws  NullStockIDException, NullDateException;;
+</span></p>
+</li>
+</ul>
+
+<h2 class="md-end-block md-heading">逻辑层自己的方法</h2>
+<ul class="ul-list" data-mark="*">
+<li>
+<p><span class="md-line md-end-block">private double formatDoubleSaveTwo(double d)</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">private double formatDoubleSaveFive(double d)</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">private double calVariance(double[] num)</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">private String formateCalendar(Calendar cal)</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">private boolean ifDoubleEqual(double d1, double d2)</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">public Calendar calendarAdvance(Calendar cal)</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">private boolean ifDateValid(Calendar begin, Calendar end)throws BeginInvalidException, EndInvalidException</span></p>
+</li>
+</ul>
+
+<h2 class="md-end-block md-heading">数据层自己的方法</h2>
+<ul class="ul-list" data-mark="*">
+<li>
+<p><span class="md-line md-end-block">public boolean insert ( String username, String password )</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">爬取所有股票数据以及分红配股情况并进行分类汇总（至今日） public void fetchAllStockInfo ()</span></p>
+</li>
+<li>
+<p><span class="md-line md-end-block">爬取所有股票分类与所有股票列表 public void fetchAllStockSet ()</span></p>
+</li>
+</ul>
+  <p><a href="Eureka_Quantour迭代一文档.html">返回首页</a></p>
+</body>
+</html>
+

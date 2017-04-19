@@ -35,17 +35,22 @@ public interface StockLogicInterface extends Remote {
 	 *               invoke getSingleStockInfo() in data layer
 	 * @return: ComparedInfoVO
 	 */
-//	 ComparedInfoVO getComparedInfo ( String stockCodeA, String stockCodeB, LocalDate begin, LocalDate end )
-//			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException;
+	ComparedInfoVO getComparedInfo ( String stockCodeA, LocalDate begin, LocalDate end )
+			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException;
 	/**
 	 * @Description: to get market's information by date,
 	 *               invoke getMarketByDate() in data layer
 	 * @return: MarketInfoVO
 	 */
-//	 MarketInfoVO getMarketInfo ( Calendar date )
-//			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException;
+	MarketInfoVO getMarketInfo ( LocalDate date,String marketname )
+			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException;
 
-
+	/*
+	 * @Description: to get the name list of Industry
+	 * @author:LXD
+	 */
+	 List<String> getIndustryList() throws RemoteException;
+	 
 	 List<String> getStockSet(String username)throws RemoteException;
 
 	 List<SingleStockInfoVO> getStockSetSortedInfo(String stockSetName, LocalDate now,String username)throws RemoteException, NullMarketException;
