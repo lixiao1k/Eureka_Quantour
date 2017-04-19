@@ -142,7 +142,7 @@ public class StockLogicImpl implements StockLogicInterface{
 	}
 
 	@Override
-	public MarketInfoVO getMarketInfo(LocalDate date,String marketname) throws RemoteException{
+	public MarketInfoVO getMarketInfo(LocalDate date,String marketname) throws RemoteException, NullMarketException {
 		List<String> namelist=idi.getStockSetInfo(marketname,null);
 		long volume=0;
 		int wushuju=0;
@@ -166,31 +166,33 @@ public class StockLogicImpl implements StockLogicInterface{
 				wushuju++;
 				continue;
 			}
+			if (wushuju==namelist.size())
+				throw new NullMarketException();
 			volume+=po.getVolume();
 
-			if (po.getRate()<0.1 && po.getRate()>=0.05){
+			if (po.getRate()<10 && po.getRate()>=5){
 				zheng5dao10++;
 			}
-			if (po.getRate()>-0.1 && po.getRate()<=-0.05){
+			if (po.getRate()>-10 && po.getRate()<=5){
 				fu5dao10++;
 			}
 
-			if (po.getAftrate()<0.05 && po.getRate()>=0){
+			if (po.getAftrate()<5 && po.getRate()>=0){
 				zheng0dao5++;
 			}
-			if (po.getRate()>-0.05 && po.getRate()<0){
+			if (po.getRate()>5 && po.getRate()<0){
 				fu0dao5++;
 			}
 
-			if (po.getRate()>=0.1){
+			if (po.getRate()>=10){
 				chaoguo10++;
 				continue;
 			}
-			if (po.getRate()<=-0.1){
+			if (po.getRate()<=-10){
 				dieguo10++;
 				continue;
 			}
-			Integer s=(int ) (Math.rint(po.getRate()*100));
+			Integer s=(int ) (Math.rint(po.getRate()));
 
 			int p=diantu.get(s+10);
 			p++;
@@ -201,6 +203,7 @@ public class StockLogicImpl implements StockLogicInterface{
 		shanxingtu.add(fu0dao5);
 		shanxingtu.add(zheng0dao5);
 		shanxingtu.add(zheng5dao10);
+//		System.out.println("afesgrht   "+chaoguo10);
 
 
 		return new MarketInfoVO(volume,chaoguo10,dieguo10,wushuju,shanxingtu,diantu);

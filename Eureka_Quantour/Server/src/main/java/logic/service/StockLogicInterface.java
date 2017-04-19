@@ -43,7 +43,7 @@ public interface StockLogicInterface extends Remote {
 	 * @return: MarketInfoVO
 	 */
 	MarketInfoVO getMarketInfo ( LocalDate date,String marketname )
-			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException;
+            throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullMarketException;
 	
 	/*
 	 * @Description: to get the name list of Industry

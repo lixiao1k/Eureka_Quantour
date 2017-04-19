@@ -171,6 +171,8 @@ public class Return {
                 if(polist.size()==0) continue;
 
                 Collections.sort(polist,comparator);
+                for (int as=0;as<polist.size();as++)
+                System.out.println(polist.get(as).getName());
 
                 List<String> jilu=new ArrayList<>();
 
@@ -186,9 +188,9 @@ public class Return {
                     SingleStockInfoPO poshangci = null;
 
                     try {
-                        poshangci = idi.getSingleStockInfo(pozheci.getCode(),idi.addDays(iter,-days));
+                        poshangci = idi.getSingleStockInfo(pozheci.getCode(),idi.addDays(iter,days));
                     } catch (NullDateException e) {
-                        System.out.println("as");
+//                        System.out.println("as");
                         continue;
                     }
                     zheci=zheci+getjiage(pozheci);
@@ -201,9 +203,10 @@ public class Return {
 
 
                 if(zheci==0) continue;
-                System.out.println(zheci+"  "+shangci);
-                celuefudu.add(zheci/shangci);
-                init=init*(zheci/shangci);
+//                System.out.println(zheci+"  "+shangci);
+                celuefudu.add(shangci/zheci);
+                init=init*(shangci/zheci);
+
                 double rate=(init-100)/100;
                 list.add(rate);
 
@@ -221,7 +224,7 @@ public class Return {
 
     private double getjiage(SingleStockInfoPO po) throws PriceTypeException {
         String type=salevo.getTiaocangjiage();
-        if (type.equals("收盘价")) return po.getClose();
+        if (type.equals("收盘价")) return po.getAftClose();
         if (type.equals("开盘价")) return po.getOpen();
         throw new PriceTypeException();
     }
