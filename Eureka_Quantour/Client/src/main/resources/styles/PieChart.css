@@ -1,0 +1,45 @@
+.root {  
+     -fx-background-image: url("/presentation/chart/panebackground.jpg");  
+}  
+
+.chart{
+	-fx-background-color:transparent;
+	-fx-padding: 0px;
+}
+.chart-content {
+    -fx-padding: 0px; 
+}
+.chart-plot-background {
+	-fx-background-color: transparent;
+}
+
+.chart-title {
+  	-fx-text-fill: #cde6c7;
+ 	 -fx-font-size: 1.2em;
+} 
+
+.chart-legend {
+	-fx-background-color: transparent;
+	-fx-padding: 0px;
+} 
+
+.chart-legend-item-symbol{
+   -fx-background-radius: 3;
+}
+.chart-legend-item{
+    -fx-text-fill: #90d7ec;
+    -fx-font-size: 0.9em;
+}
+
+
+
+.data0.chart-pie { -fx-pie-color: #4e72b8; }
+.data1.chart-pie { -fx-pie-color: #b2d235; }
+.data2.chart-pie { -fx-pie-color: #ffe600; }
+.data3.chart-pie { -fx-pie-color: #f47920; }
+.data4.chart-pie { -fx-pie-color: #ef4136; }
+.data5.chart-pie { -fx-pie-color: #9b95c9; }
+.data6.chart-pie { -fx-pie-color: #fcaf17; }
+.data7.chart-pie { -fx-pie-color: royalblue; }
+.data8.chart-pie { -fx-pie-color: dodgerblue; }
+

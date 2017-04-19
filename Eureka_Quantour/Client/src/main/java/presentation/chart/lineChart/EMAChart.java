@@ -2,6 +2,7 @@ package presentation.chart.lineChart;
 
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import presentation.chart.chartService;
 import presentation.chart.function.ListToArray;
 import presentation.chart.function.ListToArrayService;
 import vo.EMAInfoVO;
@@ -21,7 +22,7 @@ import en_um.ChartKind;
  * @author: hzp
  * @time: 2017年4月6日
  */
-public class EMAChart extends ComparedChart {
+public class EMAChart implements chartService {
 	/*
 	 * 保利加通道
 	 */
@@ -57,5 +58,11 @@ public class EMAChart extends ComparedChart {
     			getClass().getResource("/styles/EMAChart.css").toExternalForm() );
         return pane;
     }
+
+	@Override
+	public void setName(String name) {
+		// TODO Auto-generated method stub
+		comparedChart.setName(name);
+	}
 
 }

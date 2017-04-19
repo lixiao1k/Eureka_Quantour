@@ -64,8 +64,8 @@ public class test extends Application{
 			dialogStage.initModality(Modality.WINDOW_MODAL);
 			dialogStage.initOwner(primaryStage);
 		        
-			Scene scene = new Scene(pointChart.getchart(334, 200, true));
-//			Scene scene = new Scene(yieldDistuributeChart.getchart(334, 200, false));
+//			Scene scene = new Scene(pointChart.getchart(334, 200, true));
+			Scene scene = new Scene(pointChart.getchart(334, 200, false));
 			dialogStage.setScene(scene);
 
 			dialogStage.show();

@@ -10,6 +10,7 @@ import en_um.ChartKind;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import presentation.chart.chartService;
 import presentation.chart.function.ListToArray;
 import presentation.chart.function.ListToArrayService;
 import vo.YieldChartDataVO;
@@ -19,7 +20,7 @@ import vo.YieldChartDataVO;
  * @author: hzp 
  * @date: Apr 17, 2017
  */
-public class YieldComparedChart extends ComparedChart {
+public class YieldComparedChart implements chartService {
 	
 	private ListToArrayService listToArray = new ListToArray();
 	
@@ -142,4 +143,10 @@ public class YieldComparedChart extends ComparedChart {
 				 getClass().getResource("/styles/YieldComparedChart.css").toExternalForm() );
 		 return pane;
 	 }
+
+	@Override
+	public void setName(String name) {
+		// TODO Auto-generated method stub
+		comparedChart.setName(name);
+	}
 }
