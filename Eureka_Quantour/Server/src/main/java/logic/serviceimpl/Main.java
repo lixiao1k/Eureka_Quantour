@@ -5,9 +5,7 @@ import data.serviceimpl.DataInterfaceImpl;
 import exception.*;
 import logic.utility.Utility;
 import po.SingleStockInfoPO;
-import vo.SaleVO;
-import vo.SingleStockInfoVO;
-import vo.StrategyConditionVO;
+import vo.*;
 
 import java.rmi.RemoteException;
 import java.time.LocalDate;
@@ -22,27 +20,14 @@ public class Main {
         StockLogicImpl s =new StockLogicImpl();
         Utility utility=Utility.getInstance();
         StrategyConditionVO stragetyConditionVo=new StrategyConditionVO();
-        stragetyConditionVo.setName("动量策略");
+        stragetyConditionVo.setName("均值策略");
         List<Object> list=new ArrayList<>();
-        list.add(new Integer(20));
-        stragetyConditionVo.setNums(100);
+        list.add(new Integer(5));
+        stragetyConditionVo.setNums(10);
         stragetyConditionVo.setExtra(list);
         SaleVO saleVO=new SaleVO();
         saleVO.setTiaocangqi(10);
-        try {
-            System.out.println(s.getEMAInfo("900956",LocalDate.of(2016,10,1),LocalDate.of(2017,4,13)).get(0).getEMA());
 
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        } catch (DateInvalidException e) {
-            e.printStackTrace();
-        } catch (BeginInvalidException e) {
-            e.printStackTrace();
-        } catch (EndInvalidException e) {
-            e.printStackTrace();
-        } catch (NullStockIDException e) {
-            e.printStackTrace();
-        }
 
 
 //        try {
@@ -77,8 +62,10 @@ public class Main {
 //        for (SingleStockInfoVO vo:p){
 //            System.out.println(vo.getClose()+"  "+vo.getFudu()+" "+vo.getOpen());
 //        }
-//        s.setStrategy(stragetyConditionVo,saleVO,LocalDate.of(2016,01,01),LocalDate.of(2017,1,1),"SHA",null);
-//        s.getYieldDistributionHistogramData();
+        s.setStrategy(stragetyConditionVo,saleVO,LocalDate.of(2013,01,01),LocalDate.of(2016,7,9),"SHA",null);
+        YieldChartDataVO vo=s.getYieldChartData();
+        System.out.println(vo.getJizhunlist());
+        System.out.println(vo.getCeluelist());
 //        System.out.print(s.getYieldChartData().getSharpe());
 //        System.out.println();
 //        System.out.print(s.getYieldChartData().getCeluelist().size());

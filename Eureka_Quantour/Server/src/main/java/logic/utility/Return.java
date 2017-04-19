@@ -44,17 +44,7 @@ public class Return {
         String type=strategyConditionVO.getName();
         if (type.equals("动量策略")) comparator=new dongliangcelue(strategyConditionVO.getExtra());
         if (type.equals("均值策略")) comparator=new junzhicelue(strategyConditionVO.getExtra());
-        LocalDate iter=LocalDate.of(begin.getYear(),begin.getMonth(),begin.getDayOfMonth());
 
-        try {
-            for (;
-                 iter.compareTo(end)<=0;
-                 iter=idi.addDays(iter,days)){
-                timelist.add(LocalDate.of(iter.getYear(),iter.getMonth(),iter.getDayOfMonth()));
-            }
-        } catch (DateOverException e) {
-            e.printStackTrace();
-        }
     }
 
     public Double getAlpha(){
@@ -66,11 +56,6 @@ public class Return {
 
     }
     public Double getBeta(){
-//        System.out.println(jizhunfudu);
-//        System.out.println(celuefudu);
-//        System.out.println("1+  "+utility.getCorvariance(jizhunfudu,celuefudu));
-//        System.out.println("2+  "+utility.getCorvariance(jizhunfudu,jizhunfudu));
-
 
         return utility.getCorvariance(jizhunfudu,celuefudu)/utility.getCorvariance(jizhunfudu,jizhunfudu);
     }
@@ -95,8 +80,6 @@ public class Return {
 
         double a=1+shuzi;
         double b=365.0/i;
-//        System.out.println(a+"  "+b);
-//        System.out.println(Math.pow(a,b));
         return Math.pow(a,b)-1;
     }
 
@@ -106,8 +89,6 @@ public class Return {
         double rf=0.04;
         double seta=utility.getCorvariance(celueshouyilv,celueshouyilv);
         return (ri-rf)/seta;
-
-        
     }
 
 
@@ -116,8 +97,7 @@ public class Return {
     }
 
     public List<Double> getBasicReturn ()
-            throws PriceTypeException, NullStockIDException
-    {
+            throws PriceTypeException, NullStockIDException {
 
         List<Double> list=new ArrayList<>();
 
@@ -145,7 +125,11 @@ public class Return {
                         }
                     }
 
-                    if(zheci==0) continue;
+                    if(zheci==0) {
+                        System.out.println("shit");
+                        continue;
+                    }
+                    timelist.add(iter);
                 jizhunfudu.add(zheci/shangci);
 //                System.out.println(zheci+"  "+shangci);
                 init=init*(zheci/shangci);
@@ -186,26 +170,41 @@ public class Return {
                     }
                 }
                 if(polist.size()==0) continue;
+
                 Collections.sort(polist,comparator);
+
                 List<String> jilu=new ArrayList<>();
-                for (int i=0;i<Math.min(strategyConditionVO.getNums(),polist.size());i++){
-                    zheci=zheci+getjiage(polist.get(i));
-                    jilu.add(polist.get(i).getCode());
-                }
 
 
-                for(String name:jilu){
-                    SingleStockInfoPO po= null;
+
+//                System.out.println("assd");
+                int i=0;
+                int j=0;
+                while (j<Math.min(strategyConditionVO.getNums(),polist.size())){
+//                    System.out.print(getjiage(polist.get(i)));
+                    i++;
+                    SingleStockInfoPO pozheci=polist.get(i);
+                    SingleStockInfoPO poshangci = null;
+
                     try {
-                        po = idi.getSingleStockInfo(name,idi.addDays(iter,-days));
+                        poshangci = idi.getSingleStockInfo(pozheci.getCode(),idi.addDays(iter,-days));
                     } catch (NullDateException e) {
+
                         continue;
                     }
-                    shangci+=getjiage(po);
 
+                    zheci=zheci+getjiage(pozheci);
+                    shangci+=getjiage(poshangci);
+                    j++;
                 }
+//                System.out.println("assd");
+
+
+
+
+
                 if(zheci==0) continue;
-//                System.out.println(zheci+"  "+shangci);
+                System.out.println(zheci+"  "+shangci);
                 celuefudu.add(zheci/shangci);
                 init=init*(zheci/shangci);
                 double rate=(init-100)/100;
@@ -223,7 +222,7 @@ public class Return {
 
 
 
-        private double getjiage(SingleStockInfoPO po) throws PriceTypeException {
+    private double getjiage(SingleStockInfoPO po) throws PriceTypeException {
         String type=salevo.getTiaocangjiage();
         if (type.equals("收盘价")) return po.getClose();
         if (type.equals("开盘价")) return po.getOpen();
@@ -259,6 +258,17 @@ public class Return {
             }
             double rate1=0.0;
             double rate2=0.0;
+
+            if (junzhi1==Integer.MAX_VALUE && junzhi2==Integer.MAX_VALUE)
+            {
+                return 0;
+            }
+            if (junzhi1== Integer.MAX_VALUE){
+                return Integer.MAX_VALUE;
+            }
+            if (junzhi2== Integer.MAX_VALUE){
+                return -Integer.MAX_VALUE;
+            }
             try {
                 rate1=(getjiage(o1)-junzhi1)/junzhi1;
                 rate2=(getjiage(o2)-junzhi2)/junzhi2;
@@ -272,7 +282,7 @@ public class Return {
 
 
 
-            return p-q;
+            return q-p;
 
         }
     }
@@ -302,6 +312,7 @@ public class Return {
             } catch (DateOverException e) {
             }
 
+//            System.out.println(before);
             SingleStockInfoPO o3=null;
             SingleStockInfoPO o4=null;
             double rate1=0;
@@ -332,15 +343,15 @@ public class Return {
             if (o4==null)
                 return -Integer.MAX_VALUE;
 
-            rate1=(o3.getAftClose()-o1.getAftClose())/o3.getAftClose();
-            rate2=(o4.getAftClose()-o2.getAftClose())/o4.getAftClose();
+            rate1=(o1.getAftClose()-o3.getAftClose())/o3.getAftClose();
+            rate2=(o2.getAftClose()-o4.getAftClose())/o4.getAftClose();
             int p=(int)rate1*100;
             int q=(int)rate2*100;
 
 
 
 
-            return p-q;
+            return q-p;
 
         }
     }
