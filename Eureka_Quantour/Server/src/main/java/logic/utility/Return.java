@@ -41,6 +41,7 @@ public class Return {
         this.strategyConditionVO = strategyConditionVO;
         this.days=salevo.getTiaocangqi();
         this.timelist=new ArrayList<>();
+//        System.out.println("aes"+stockcode);
         String type=strategyConditionVO.getName();
         if (type.equals("动量策略")) comparator=new dongliangcelue(strategyConditionVO.getExtra());
         if (type.equals("均值策略")) comparator=new junzhicelue(strategyConditionVO.getExtra());
@@ -125,10 +126,10 @@ public class Return {
                         }
                     }
 
-                    if(zheci==0) {
+                    if(zheci==0)
                         continue;
-                    }
-                    timelist.add(iter);
+
+                timelist.add(iter);
                 jizhunfudu.add(zheci/shangci);
 //                System.out.println(zheci+"  "+shangci);
                 init=init*(zheci/shangci);
@@ -171,18 +172,15 @@ public class Return {
                 if(polist.size()==0) continue;
 
                 Collections.sort(polist,comparator);
-                for (int as=0;as<polist.size();as++)
-                System.out.println(polist.get(as).getName());
+
 
                 List<String> jilu=new ArrayList<>();
 
 
 
-//                System.out.println("assd");
                 int i=0;
                 int j=0;
                 while (j<Math.min(strategyConditionVO.getNums(),polist.size())){
-//                    System.out.print(getjiage(polist.get(i)));
                     i++;
                     SingleStockInfoPO pozheci=polist.get(i);
                     SingleStockInfoPO poshangci = null;
@@ -190,7 +188,6 @@ public class Return {
                     try {
                         poshangci = idi.getSingleStockInfo(pozheci.getCode(),idi.addDays(iter,days));
                     } catch (NullDateException e) {
-//                        System.out.println("as");
                         continue;
                     }
                     zheci=zheci+getjiage(pozheci);
@@ -198,12 +195,7 @@ public class Return {
                     j++;
                 }
 
-
-
-
-
                 if(zheci==0) continue;
-//                System.out.println(zheci+"  "+shangci);
                 celuefudu.add(shangci/zheci);
                 init=init*(shangci/zheci);
 
@@ -344,8 +336,6 @@ public class Return {
             rate2=(o2.getAftClose()-o4.getAftClose())/o4.getAftClose();
             int p=(int)rate1*100;
             int q=(int)rate2*100;
-
-
 
 
             return q-p;
