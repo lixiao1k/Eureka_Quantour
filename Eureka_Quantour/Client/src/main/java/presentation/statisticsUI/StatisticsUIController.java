@@ -127,7 +127,7 @@ public class StatisticsUIController implements Initializable {
 		dataController = DataContorller.getInstance();
 		nameLabel.setStyle(
 				"-fx-font-size:45;"
-				+ "-fx-text-fill: rgb(255, 0, 0, 0.9);"
+				+ "-fx-text-fill: rgb(255, 0, 0, 1);"
 				+ "-fx-font-weight:bold");
 		zhangtingLabel.setStyle("-fx-font-size:20;"
 				+ "-fx-text-fill: #EE5C42;"
@@ -136,10 +136,10 @@ public class StatisticsUIController implements Initializable {
 				+ "-fx-text-fill: #C0FF3E;"
 				+ "-fx-font-weight:bold");
 		tingpaiLabel.setStyle("-fx-font-size:20;"
-				+ "-fx-text-fill: rgb(255, 255, 255, 0.8);"
+				+ "-fx-text-fill: rgb(255, 255, 255, 1);"
 				+ "-fx-font-weight:bold");
 		volumeLabel.setStyle("-fx-font-size:20;"
-				+ "-fx-text-fill: rgb(255, 255, 255, 0.8);"
+				+ "-fx-text-fill: rgb(255, 255, 255, 1);"
 				+ "-fx-font-weight:bold");
 		zhangtingvalue.setStyle("-fx-font-size:20;"
 				+ "-fx-text-fill: #EE5C42;"

@@ -27,17 +27,7 @@
                <children>
                   <ScrollPane fx:id="stocksScrollPane" layoutX="7.5" layoutY="47.5" prefHeight="700.0" prefWidth="662.0" styleClass="background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
                      <content>
-                        <GridPane maxWidth="645.0" minHeight="645.0" prefHeight="740.0" prefWidth="645.0">
-                          <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="654.0" minWidth="10.0" prefWidth="50.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                           <children>
-                              <FlowPane fx:id="stocksFlowPane" maxWidth="645.0" minHeight="551.0" prefHeight="551.0" prefWidth="578.0" />
-                           </children>
-                        </GridPane>
+                        <FlowPane fx:id="stocksFlowPane" prefHeight="722.0" prefWidth="644.0" />
                      </content>
                   </ScrollPane>
                   <AnchorPane fx:id="menuAnchorPane" layoutX="3.5" maxWidth="645.0" minWidth="645.0" prefHeight="25.0" prefWidth="645.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="13.0" />
