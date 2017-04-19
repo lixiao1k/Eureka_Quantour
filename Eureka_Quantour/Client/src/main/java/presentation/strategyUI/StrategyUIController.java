@@ -362,7 +362,10 @@ public class StrategyUIController implements Initializable{
 	    StockLogicInterface stockLogicInterface = remote.getStockLogic();
 	    try {
 			List<String> stockset = stockLogicInterface.getStockSet((String)dataController.get("UserName"));
-			stocksetlist.addAll(stockset);			
+			if(stockset!=null){
+				stocksetlist.addAll(stockset);	
+			}
+		
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
