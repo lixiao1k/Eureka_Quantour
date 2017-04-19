@@ -176,8 +176,8 @@ public class YieldDistributeChart implements chartService{
     		AnchorPane.setLeftAnchor(datepane, dategap);
     	}
     	
-    	info.getStylesheets().add(
-    			getClass().getResource("/styles/InfoLabel.css").toExternalForm() );
+//    	info.getStylesheets().add(
+//    			getClass().getResource("/styles/InfoLabel.css").toExternalForm() );
     	pane.getStylesheets().add(
     			getClass().getResource("/styles/YieldDistributeChart.css").toExternalForm() );
     	return pane;
