@@ -111,8 +111,8 @@ public class test extends Application{
 	public void start(Stage primaryStage) throws Exception {
 		 // TODO Auto-generated method stub
 //		 new test().testPointChart();
-//		 new test().testYieldPointChart1();
-		 new test().testYieldPointChart2();
+		 new test().testYieldPointChart1();
+//		 new test().testYieldPointChart2();
 		try{
 			Stage dialogStage = new Stage();
 			dialogStage.setTitle("Birthday Statistics");

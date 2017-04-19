@@ -38,6 +38,7 @@ public class FanChart implements chartService{
 		        });
 		}
 		
+		chart.getStyleClass().add("-fx-text-fill: #90d7ec");
 		chart.setLegendSide( Side.BOTTOM );
 	}
 	@Override
