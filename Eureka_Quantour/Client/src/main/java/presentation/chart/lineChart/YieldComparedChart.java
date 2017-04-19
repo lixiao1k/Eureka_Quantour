@@ -84,14 +84,14 @@ public class YieldComparedChart implements chartService {
     	maxre.setPrefSize(layout, space);
     	
     	yearyield.setText( "年化收益率\n" + nf.format( ycd.getYearreturn() ) );
-    	basicyearyield.setText( "基准年化收益率\n" + nf.format( 0.124 ));
+    	basicyearyield.setText( "基准年化收益率\n" + nf.format( ycd.getJizhunyearreturn() ));
     	alpha.setText( "α\n" + nf.format( ycd.getAlpha() ) );
     	beta.setText( "β\n" + df.format( ycd.getBeta() ) );
     	sharpe.setText( "夏普比率\n" + df.format( ycd.getSharpe() ) );
     	yieldbodong.setText( "收益波动率\n" + nf.format( 0.249 ) );
     	infobilv.setText( "信息比率\n" + df.format( 1.03 ) );
     	maxre.setText( "最大回撤\n" + nf.format( 0.238 ) );
-    	
+
     	yearyield.getStyleClass().add("label-1");
     	basicyearyield.getStyleClass().add("label-1");
     	alpha.getStyleClass().add("label-2");
