@@ -24,6 +24,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.scene.text.Text;
 import presentation.chart.chartService;
 import presentation.chart.function.CatchMouseMove;
@@ -38,6 +41,7 @@ public class YieldDistributeChart implements chartService{
 	private CommonSetService commonSet = new CommonSet();
 	
 	private DecimalFormat df = new DecimalFormat("0.00");
+	private NumberFormat nf = NumberFormat.getPercentInstance();
 	
 	private AnchorPane pane = new AnchorPane();
 	private StackPane chartpane = new StackPane();
@@ -51,15 +55,27 @@ public class YieldDistributeChart implements chartService{
     private Map<String, String> dataMap = new HashMap<String,String>();
     private String[] yield;
     private Map<Double,List<Integer>> zuhe;
+    
+    private int min = 0;
+    private int max = 0;
 	
 	public YieldDistributeChart(YieldDistributionHistogramDataVO ydhd){
 		zuhe = ydhd.getZuhe();
 		Set<Double> keySet = zuhe.keySet();
 		
+		List<Double> yieldL = new ArrayList<>( keySet );
+        yieldL = sortDouble(yieldL);
+		min = (int)((double)yieldL.get(0));
+		max = (int)((double)yieldL.get(yieldL.size()-1));
+		if( min>-100 )
+			min -= 5;
+		if( max<100 )
+			max += 5;
+			
 		List<String> value = new ArrayList<>();
-		double k = 0.00, gap = 0.05;
-		for( int i=0; i<21; i++, k+=gap )
-			value.add(NumberFormat.getPercentInstance().format(k));
+		double k = min, gap = 5;
+		for( ; k<=max; k+=gap )
+			value.add( nf.format(k/100) );
 		ObservableList<String> values = FXCollections.observableList(value);
 		
 		xAxis = new CategoryAxis(values);
@@ -83,13 +99,10 @@ public class YieldDistributeChart implements chartService{
         barChart.setCategoryGap(0);
         barChart.setLegendVisible(false);
         barChart.setOpacity(0.9);
-	    
-        List<Double> yieldL = new ArrayList<>( keySet );
-        yieldL = sortDouble(yieldL);
         
         yield = new String[yieldL.size()];
         for(int i =0; i<yieldL.size(); i++){
-        	yield[i] = NumberFormat.getPercentInstance().format( yieldL.get(i)/100 );
+        	yield[i] = nf.format( yieldL.get(i)/100 );
         }
 	     
         String[] dataStrings = new String[yield.length];
@@ -100,7 +113,7 @@ public class YieldDistributeChart implements chartService{
         XYChart.Series<String, Number> seriep = new XYChart.Series<>();
         
         String namep = "正收益",  namem= "负收益";
-        int max = 0;
+        max = 0;
         for( int i=0; i<yield.length; i++){
         	pandm = zuhe.get(yieldL.get(i));
         	if( Math.abs(pandm.get(0))>max )
@@ -152,7 +165,8 @@ public class YieldDistributeChart implements chartService{
     	if( withdate ){
     		height -= dateheight;
     		datepane.getChildren().addAll( 
-    				commonSet.dateForStackPane("1%", "50%", "100%").getChildren() );
+    				commonSet.dateForStackPane(
+    						nf.format(min/100), nf.format((min+max)/200), nf.format(max/100)).getChildren() );
     		datepane.setPrefSize(width-dategap, dateheight);
     		datepane.getStylesheets().add(
         			getClass().getResource("/styles/DateLabel.css").toExternalForm() );

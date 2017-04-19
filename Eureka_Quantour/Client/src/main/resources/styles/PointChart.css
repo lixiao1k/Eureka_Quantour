@@ -33,12 +33,6 @@
     -fx-text-fill: #90d7ec;
     -fx-font-size: 1.2em;
 }
-
-.chart-series-line{
-	-fx-stroke-width: 1.5px;
-	-fx-effect: null;
-}
-
 .axis {
     -fx-tick-label-fill: #feeeed ;
     -fx-font-family: Tahoma;
@@ -48,4 +42,7 @@
 }
 
 
-
+.chart-symbol{ 
+    -fx-stroke: #a9e200;
+    -fx-shape: "M0,4 L2,4 L4,8 L7,0 L9,0 L4,11 Z";
+}

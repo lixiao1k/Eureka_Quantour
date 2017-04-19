@@ -6,7 +6,6 @@
 }
 
 .candlestick-average-line {
-    -fx-stroke: #106ece;
     -fx-stroke-width: 2px;
     -fx-stroke: yellow;
 }
