@@ -13,15 +13,15 @@ public class test extends Application{
 	
 	private static PointChart pointChart;
     
-	private List<Double[]> yield = new ArrayList<>();
+	private List<int[]> yield = new ArrayList<>();
 	private List<int[]> num = new ArrayList<>();
 	private List<String> dataName = new ArrayList<>();
 	private void testPointChart(){
-		Double[] yieldD = new Double[21];
+		int[] yieldD = new int[21];
 		int[] numI = new int[21];
 		dataName.add("test");
 		
-		Double j = -10.0;
+		int j = -10;
 		for( int i=0; i<=20; i++, j++)
 			yieldD[i] = j;
 		numI[0] = 5;
