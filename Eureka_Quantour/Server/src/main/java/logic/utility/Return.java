@@ -171,6 +171,8 @@ public class Return {
                 if(polist.size()==0) continue;
 
                 Collections.sort(polist,comparator);
+                for (int as=0;as<polist.size();as++)
+                System.out.println(polist.get(as).getName());
 
                 List<String> jilu=new ArrayList<>();
 
