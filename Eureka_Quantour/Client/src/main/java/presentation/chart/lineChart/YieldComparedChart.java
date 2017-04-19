@@ -43,7 +43,10 @@ public class YieldComparedChart implements chartService {
     	doubleList.add( listToArray.changeDouble(ycd.getCeluelist()) );
     	dataName.add("策略");
     	
-    	comparedChart = new ComparedChart( date, doubleList, dataName, ChartKind.YIELDCOMPARED);
+    	LocalDate[] dates = new LocalDate[date.length/2];
+    	for( int i=0; i<dates.length; i++)
+    		dates[i] = date[i];
+    	comparedChart = new ComparedChart( dates, doubleList, dataName, ChartKind.YIELDCOMPARED);
     	
     	double layout = 70;
     	
