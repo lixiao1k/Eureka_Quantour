@@ -20,7 +20,7 @@ public interface CatchMouseMoveService {
 	 * @time: 2017年4月12日
 	 * @return: Label
 	 */
-	Label catchMouseReturnInfoForAnchorPane( 
+	Label catchMouseReturnInfoForAnchorPaneSN( 
 			XYChart<String, Number> chart, Map<String, String> dataMap, String[] dates, String name,int index );
 
 	/**
@@ -30,9 +30,12 @@ public interface CatchMouseMoveService {
 	 * @time: 2017年4月12日
 	 * @return: Label
 	 */
-	Label catchMouseReturnInfoForStackPane( 
+	Label catchMouseReturnInfoForStackPaneSN( 
 			XYChart<String, Number> chart, Map<String, String> dataMap, String[] dates, String name,int index );
 	
-	Label catchMouseReturnInfoForStackPaneNN( 
-			XYChart<Number, Number> chart, Map<String, String> dataMap, String[] dates, String name, int index, ChartKind kind);
+	Label catchMouseReturnInfoForStackPaneNN( XYChart<Number, Number> chart, 
+			Map<String, String> dataMap, String[] dates, String name, int index, ChartKind kind);
+
+	Label catchMouseReturnInfoForStackPaneNS( XYChart<Number, String> chart, 
+			Map<String, String> dataMap, String[] dates, String name,int index, ChartKind kind);
 }

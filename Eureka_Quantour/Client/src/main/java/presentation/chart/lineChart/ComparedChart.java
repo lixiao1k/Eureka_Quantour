@@ -162,7 +162,7 @@ public class ComparedChart implements chartService{
     	lineChart.setMaxSize(width, height);
     	lineChart.setMinSize(width, height);
     	
-    	info = catchMouseMove.catchMouseReturnInfoForStackPane(lineChart, dataMap, dates, "date", 10);
+    	info = catchMouseMove.catchMouseReturnInfoForStackPaneSN(lineChart, dataMap, dates, "date", 10);
     	
     	chartpane.getChildren().add(lineChart);
     	chartpane.getChildren().add(info);
