@@ -126,7 +126,6 @@ public class Return {
                     }
 
                     if(zheci==0) {
-                        System.out.println("shit");
                         continue;
                     }
                     timelist.add(iter);
@@ -189,15 +188,13 @@ public class Return {
                     try {
                         poshangci = idi.getSingleStockInfo(pozheci.getCode(),idi.addDays(iter,-days));
                     } catch (NullDateException e) {
-
+                        System.out.println("as");
                         continue;
                     }
-
                     zheci=zheci+getjiage(pozheci);
                     shangci+=getjiage(poshangci);
                     j++;
                 }
-//                System.out.println("assd");
 
 
 

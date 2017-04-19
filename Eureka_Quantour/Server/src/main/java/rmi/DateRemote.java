@@ -139,8 +139,8 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 	}
 
 	@Override
-	public List<List<Double>> getDantengchart(String name, LocalDate begin, LocalDate end, String hengzhou, String usernam, String stocksetname) {
-		return null;
+	public List<List<Double>> getDantengchart(String name, LocalDate begin, LocalDate end, String hengzhou, String usernam, String stocksetname,int geiding) throws RemoteException {
+		return sli.getDantengchart(name, begin, end, hengzhou, usernam, stocksetname, geiding);
 	}
 
 
