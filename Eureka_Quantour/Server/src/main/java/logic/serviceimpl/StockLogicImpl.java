@@ -142,7 +142,7 @@ public class StockLogicImpl implements StockLogicInterface{
 	}
 
 	@Override
-	public MarketInfoVO getMarketInfo(LocalDate date,String marketname) throws RemoteException{
+	public MarketInfoVO getMarketInfo(LocalDate date,String marketname) throws RemoteException, NullMarketException {
 		List<String> namelist=idi.getStockSetInfo(marketname,null);
 		long volume=0;
 		int wushuju=0;
@@ -166,6 +166,8 @@ public class StockLogicImpl implements StockLogicInterface{
 				wushuju++;
 				continue;
 			}
+			if (wushuju==namelist.size())
+				throw new NullMarketException();
 			volume+=po.getVolume();
 
 			if (po.getRate()<10 && po.getRate()>=5){
@@ -183,7 +185,6 @@ public class StockLogicImpl implements StockLogicInterface{
 			}
 
 			if (po.getRate()>=10){
-				System.out.println(po.getRate());
 				chaoguo10++;
 				continue;
 			}
@@ -202,7 +203,7 @@ public class StockLogicImpl implements StockLogicInterface{
 		shanxingtu.add(fu0dao5);
 		shanxingtu.add(zheng0dao5);
 		shanxingtu.add(zheng5dao10);
-		System.out.println("afesgrht   "+chaoguo10);
+//		System.out.println("afesgrht   "+chaoguo10);
 
 
 		return new MarketInfoVO(volume,chaoguo10,dieguo10,wushuju,shanxingtu,diantu);

@@ -171,6 +171,8 @@ public class Return {
                 if(polist.size()==0) continue;
 
                 Collections.sort(polist,comparator);
+                for (int as=0;as<polist.size();as++)
+                System.out.println(polist.get(as).getName());
 
                 List<String> jilu=new ArrayList<>();
 
@@ -188,7 +190,7 @@ public class Return {
                     try {
                         poshangci = idi.getSingleStockInfo(pozheci.getCode(),idi.addDays(iter,days));
                     } catch (NullDateException e) {
-                        System.out.println("as");
+//                        System.out.println("as");
                         continue;
                     }
                     zheci=zheci+getjiage(pozheci);
@@ -201,7 +203,7 @@ public class Return {
 
 
                 if(zheci==0) continue;
-                System.out.println(zheci+"  "+shangci);
+//                System.out.println(zheci+"  "+shangci);
                 celuefudu.add(shangci/zheci);
                 init=init*(shangci/zheci);
 
