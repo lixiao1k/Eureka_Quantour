@@ -190,7 +190,7 @@ public class StockLogicImpl implements StockLogicInterface{
 				dieguo10++;
 				continue;
 			}
-			Integer s=(int ) (Math.rint(po.getAftrate())*100);
+			Integer s=(int ) (Math.rint(po.getAftrate()*100));
 
 			int p=diantu.get(s+10);
 			p++;
