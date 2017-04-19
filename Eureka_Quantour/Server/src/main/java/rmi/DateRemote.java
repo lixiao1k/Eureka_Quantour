@@ -158,4 +158,10 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 	public void signOut(String username) throws RemoteException {
 		cli.signOut(username);
 	}
+
+	@Override
+	public List<String> getIndustryList() throws RemoteException {
+		// TODO Auto-generated method stub
+		return sli.getIndustryList();
+	}
 }
