@@ -168,29 +168,29 @@ public class StockLogicImpl implements StockLogicInterface{
 			}
 			volume+=po.getVolume();
 
-			if (po.getAftrate()<0.1 && po.getAftrate()>=0.05){
+			if (po.getRate()<0.1 && po.getRate()>=0.05){
 				zheng5dao10++;
 			}
-			if (po.getAftrate()>-0.1 && po.getAftrate()<=-0.05){
+			if (po.getRate()>-0.1 && po.getRate()<=-0.05){
 				fu5dao10++;
 			}
 
-			if (po.getAftrate()<0.05 && po.getAftrate()>=0){
+			if (po.getAftrate()<0.05 && po.getRate()>=0){
 				zheng0dao5++;
 			}
-			if (po.getAftrate()>-0.05 && po.getAftrate()<0){
+			if (po.getRate()>-0.05 && po.getRate()<0){
 				fu0dao5++;
 			}
 
-			if (po.getAftrate()>=0.1){
+			if (po.getRate()>=0.1){
 				chaoguo10++;
 				continue;
 			}
-			if (po.getAftrate()<=-0.1){
+			if (po.getRate()<=-0.1){
 				dieguo10++;
 				continue;
 			}
-			Integer s=(int ) (Math.rint(po.getAftrate()*100));
+			Integer s=(int ) (Math.rint(po.getRate()*100));
 
 			int p=diantu.get(s+10);
 			p++;
