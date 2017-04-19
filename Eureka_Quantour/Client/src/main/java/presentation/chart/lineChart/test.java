@@ -46,7 +46,7 @@ public class test extends Application{
     		d2[i] = celuelist.get(i);
     	}
     	
-    	YieldChartDataVO ycd = new YieldChartDataVO(datelist,jizhunlist, celuelist);
+    	YieldChartDataVO ycd = new YieldChartDataVO(datelist,jizhunlist, celuelist, 1.0, 2.0, 3.0, 4.0, 5.0);
 		ycd.setYearreturn(0.357);
 		ycd.setAlpha(0.146);
 		ycd.setBeta(0.97);
