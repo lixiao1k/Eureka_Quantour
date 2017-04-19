@@ -329,5 +329,11 @@ public class StockLogicImpl implements StockLogicInterface{
 		return null;
 	}
 
+	@Override
+	public List<String> getIndustryList() throws RemoteException {
+		// TODO Auto-generated method stub
+		return idi.getIndustryList();
+	}
+
 
 }

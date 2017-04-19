@@ -40,6 +40,7 @@ import javafx.scene.control.Separator;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -118,6 +119,9 @@ public class MarketUIController implements Initializable {
 	
 	@FXML
 	Label volumeLabel;
+	
+	@FXML
+	Label industryLabel;
 	
 	private DataContorller dataController;
 	
@@ -314,10 +318,38 @@ public class MarketUIController implements Initializable {
 			Notifications.create().title("信息").text(e2.toString()).showInformation();
 		}
 	}
+	
+	@FXML
+	protected void goBrowseCareer(ActionEvent e){
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(getClass().getResource("MarketCareer.fxml"));
+		Parent career = null;
+		try {
+			career = (GridPane)loader.load();
+			MarketCareerController controller = loader.getController();
+			controller.setController(this);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		Scene scene = new Scene(career);
+		Stage stage = new Stage();
+		stage.setScene(scene);
+//		stage.initStyle(StageStyle.TRANSPARENT);
+		stage.show();
+	}
+	
+	/*
+	 * 设置industryLabel内容，为MarketCareerController调用
+	 */
+	public void setIndustryLabel(String name){
+		industryLabel.setText(name);
+	}
+	
 	/*
 	 * 初始化所有stocks信息
 	 */
-	private void initialAllStocksPane(List<SingleStockInfoVO> list){
+	public void initialAllStocksPane(List<SingleStockInfoVO> list){
 		initialTenScroll(list);
 		initialStocksFlowPane(list);
 	}
@@ -463,7 +495,7 @@ public class MarketUIController implements Initializable {
 		return label;
 	}
 	
-	private void setStockDetailInfo(SingleStockInfoVO vo){
+	public void setStockDetailInfo(SingleStockInfoVO vo){
 		setStockBasicInfoPane(vo.getCode(),vo.getName(),vo.getClose(),vo.getFudu(),vo.getHigh(),
 				vo.getLow(),vo.getOpen(),vo.getVolume());
 		setKlinePane(vo.getCode());
@@ -780,6 +812,7 @@ public class MarketUIController implements Initializable {
 			e.printStackTrace();
 		}	
 	}
+	
 	/*
 	 * @description 初始化分页控件
 	 */
