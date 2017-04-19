@@ -151,6 +151,7 @@ public class MarketUIController implements Initializable {
 				systime = (LocalDate) dataController.get("SystemTime");
 				// TODO Auto-generated method stub
 				RemoteHelper remote = RemoteHelper.getInstance();
+				industryLabel.setText("");
 				StockLogicInterface stockLogicInterface = remote.getStockLogic();
 				try {
 					setStocks = stockLogicInterface.getStockSetSortedInfo("SHA",systime, null);
@@ -174,6 +175,7 @@ public class MarketUIController implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
+				industryLabel.setText("");
 				systime = (LocalDate) dataController.get("SystemTime");
 				RemoteHelper remote = RemoteHelper.getInstance();
 				StockLogicInterface stockLogicInterface = remote.getStockLogic();
@@ -209,6 +211,7 @@ public class MarketUIController implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
+				industryLabel.setText("");
 				systime = (LocalDate) dataController.get("SystemTime");
 				RemoteHelper remote = RemoteHelper.getInstance();
 				StockLogicInterface stockLogicInterface = remote.getStockLogic();
@@ -232,6 +235,7 @@ public class MarketUIController implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
+				industryLabel.setText("");
 				systime = (LocalDate) dataController.get("SystemTime");
 				RemoteHelper remote = RemoteHelper.getInstance();
 				StockLogicInterface stockLogicInterface = remote.getStockLogic();
@@ -255,6 +259,7 @@ public class MarketUIController implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
+				industryLabel.setText("");
 				systime = (LocalDate) dataController.get("SystemTime");
 				RemoteHelper remote = RemoteHelper.getInstance();
 				StockLogicInterface stockLogicInterface = remote.getStockLogic();
@@ -278,6 +283,7 @@ public class MarketUIController implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
+				industryLabel.setText("");
 				systime = (LocalDate) dataController.get("SystemTime");
 				RemoteHelper remote = RemoteHelper.getInstance();
 				StockLogicInterface stockLogicInterface = remote.getStockLogic();
@@ -302,6 +308,7 @@ public class MarketUIController implements Initializable {
 	 */
 	@FXML
 	protected void goBrowseHS300(ActionEvent e){
+		industryLabel.setText("");
 		systime = (LocalDate) dataController.get("SystemTime");
 		buttonHBox.getChildren().clear();
 		RemoteHelper remote = RemoteHelper.getInstance();
