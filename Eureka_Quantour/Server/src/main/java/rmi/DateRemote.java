@@ -161,7 +161,6 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 
 	@Override
 	public List<String> getIndustryList() throws RemoteException {
-		// TODO Auto-generated method stub
 		return sli.getIndustryList();
 	}
 }

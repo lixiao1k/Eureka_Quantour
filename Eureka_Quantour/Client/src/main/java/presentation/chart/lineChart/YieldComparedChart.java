@@ -6,10 +6,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import en_um.ChartKind;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import presentation.chart.function.ListToArray;
 import presentation.chart.function.ListToArrayService;
 import vo.YieldChartDataVO;
@@ -42,7 +42,7 @@ public class YieldComparedChart extends ComparedChart {
     	doubleList.add( listToArray.changeDouble(ycd.getCeluelist()) );
     	dataName.add("策略");
     	
-    	comparedChart = new ComparedChart( date, doubleList, dataName );
+    	comparedChart = new ComparedChart( date, doubleList, dataName, ChartKind.YIELDCOMPARED);
     	
     	double layout = 70;
     	

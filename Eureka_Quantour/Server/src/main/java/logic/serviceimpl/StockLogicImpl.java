@@ -155,8 +155,10 @@ public class StockLogicImpl implements StockLogicInterface{
 		int zheng0dao5=0;
 		int fu5dao10=0;
 		int fu0dao5=0;
-		int fuduwei=0;
-
+		List<Integer> diantu=new ArrayList<>();
+		for (int i=0;i<21;i++){
+			diantu.add(0);
+		}
 		for (String name:namelist){
 			SingleStockInfoPO po=null;
 			try {
@@ -168,12 +170,7 @@ public class StockLogicImpl implements StockLogicInterface{
 				continue;
 			}
 			volume+=po.getVolume();
-			if (po.getAftrate()>=10){
-				chaoguo10++;
-			}
-			if (po.getAftrate()<=-10){
-				dieguo10++;
-			}
+
 			if (po.getAftrate()<10 && po.getAftrate()>=5){
 				zheng5dao10++;
 			}
@@ -181,17 +178,43 @@ public class StockLogicImpl implements StockLogicInterface{
 				fu5dao10++;
 			}
 
-			if (po.getAftrate()<5 && po.getAftrate()>0){
-				zheng5dao10++;
+			if (po.getAftrate()<5 && po.getAftrate()>=0){
+				zheng0dao5++;
 			}
-			if (po.getAftrate()>-10 && po.getAftrate()<-5){
-				fu5dao10++;
+			if (po.getAftrate()>-5 && po.getAftrate()<0){
+				fu0dao5++;
 			}
+
+			if (po.getAftrate()>=10){
+				chaoguo10++;
+				continue;
+			}
+			if (po.getAftrate()<=-10){
+				dieguo10++;
+				continue;
+			}
+			Integer s=(int ) (Math.rint(po.getAftrate())*100);
+
+			int p=diantu.get(s+10);
+			p++;
+			diantu.set(s+10,p);
+
+
+
+
 
 
 		}
+		List<Integer> shanxingtu=new ArrayList();
+		shanxingtu.add(fu5dao10);
+		shanxingtu.add(fu0dao5);
+		shanxingtu.add(zheng0dao5);
+		shanxingtu.add(zheng5dao10);
 
 
+
+
+//		return new MarketInfoVO(volume,chaoguo10,dieguo10,wushuju,shanxingtu,);
 		return null;
 	}
 
@@ -330,31 +353,116 @@ public class StockLogicImpl implements StockLogicInterface{
 				||stocksetname.equals("ZXB") )
 			usernam=null;
 		List<String> stocklistname=idi.getStockSetInfo(stocksetname,usernam);
-
+		List<Double> heng=new ArrayList<>();
+		List<Double> zong1=new ArrayList<>();
+		List<Double> zong2=new ArrayList<>();
 
 
 		if (name.equals("动量策略")) {
 			if (hengzhou.equals("形成期")){
-
-
+				for (int i=0;i<50;i+=5){
+					heng.add(i*1.0);
+					SaleVO saleVO=new SaleVO(geiding,"收盘价");
+					List<Object> list=new ArrayList<>();
+					list.add(new Integer(i));
+					StrategyConditionVO strategyConditionVO=new StrategyConditionVO(name,list,10);
+					Return stra=new Return(stocklistname,begin,end,saleVO,strategyConditionVO);
+					try {
+						List<Double> celueshouyi=stra.getStragetyReturn();
+						List<Double> jizhunshouyi=stra.getBasicReturn();
+						double a1=(celueshouyi.get(celueshouyi.size()-1)-jizhunshouyi.get(jizhunshouyi.size()))/jizhunshouyi.get(jizhunshouyi.size());
+						zong1.add(a1);
+						int index=0;
+						for (int j=0;j<celueshouyi.size();j++){
+							if (celueshouyi.get(i)>jizhunshouyi.get(i))
+								index++;
+						}
+						zong2.add(1.0*index/jizhunshouyi.size());
+					} catch (NullStockIDException e) {
+						e.printStackTrace();
+					} catch (PriceTypeException e) {
+						e.printStackTrace();
+					}
+				}
 			}
 
 			else
 				if (hengzhou.equals("持有期")){
+					for (int i=0;i<50;i+=5){
+						heng.add(i*1.0);
+						SaleVO saleVO=new SaleVO(i,"收盘价");
+						List<Object> list=new ArrayList<>();
+						list.add(new Integer(geiding));
+						StrategyConditionVO strategyConditionVO=new StrategyConditionVO(name,list,10);
+						Return stra=new Return(stocklistname,begin,end,saleVO,strategyConditionVO);
+						try {
+							List<Double> celueshouyi=stra.getStragetyReturn();
+							List<Double> jizhunshouyi=stra.getBasicReturn();
+							double a1=(celueshouyi.get(celueshouyi.size()-1)-jizhunshouyi.get(jizhunshouyi.size()))/jizhunshouyi.get(jizhunshouyi.size());
+							zong1.add(a1);
+							int index=0;
+							for (int j=0;j<celueshouyi.size();j++){
+								if (celueshouyi.get(i)>jizhunshouyi.get(i))
+									index++;
+							}
+							zong2.add(1.0*index/jizhunshouyi.size());
+						} catch (NullStockIDException e) {
+							e.printStackTrace();
+						} catch (PriceTypeException e) {
+							e.printStackTrace();
+						}
 
+
+
+
+					}
 				}
 		}
+		else
+			if (name.equals("均值策略")){
+
+				for (int i=0;i<50;i+=5){
+					heng.add(i*1.0);
+					SaleVO saleVO=new SaleVO(i,"收盘价");
+					List<Object> list=new ArrayList<>();
+					list.add(new Integer(geiding));
+					StrategyConditionVO strategyConditionVO=new StrategyConditionVO(name,list,10);
+					Return stra=new Return(stocklistname,begin,end,saleVO,strategyConditionVO);
+					try {
+						List<Double> celueshouyi=stra.getStragetyReturn();
+						List<Double> jizhunshouyi=stra.getBasicReturn();
+						double a1=(celueshouyi.get(celueshouyi.size()-1)-jizhunshouyi.get(jizhunshouyi.size()))/jizhunshouyi.get(jizhunshouyi.size());
+						zong1.add(a1);
+						int index=0;
+						for (int j=0;j<celueshouyi.size();j++){
+							if (celueshouyi.get(i)>jizhunshouyi.get(i))
+								index++;
+						}
+						zong2.add(1.0*index/jizhunshouyi.size());
+					} catch (NullStockIDException e) {
+						e.printStackTrace();
+					} catch (PriceTypeException e) {
+						e.printStackTrace();
+					}
 
 
 
 
+				}
 
-		return null;
+			}
+
+
+
+		List<List<Double>> res=new ArrayList<>();
+			res.add(heng);
+			res.add(zong1);
+			res.add(zong2);
+		return res;
 	}
 
 	@Override
 	public List<String> getIndustryList() throws RemoteException {
-		// TODO Auto-generated method stub
 		return idi.getIndustryList();
 	}
 

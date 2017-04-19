@@ -2,7 +2,6 @@ package presentation.chart.lineChart;
 
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import presentation.chart.function.ListToArray;
 import presentation.chart.function.ListToArrayService;
 import vo.EMAInfoVO;
@@ -10,6 +9,8 @@ import vo.EMAInfoVO;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import en_um.ChartKind;
 
 /**
  * Created by huihantao on 2017/3/9.
@@ -45,7 +46,7 @@ public class EMAChart extends ComparedChart {
     	for( EMAInfoVO ema : EMAList)
     		doubleList.add( listToArray.changeDouble(ema.getEMA()) );
     	
-    	comparedChart = new ComparedChart( date, doubleList, dataName );
+    	comparedChart = new ComparedChart( date, doubleList, dataName, ChartKind.EMA);
     }
 
     @Override
