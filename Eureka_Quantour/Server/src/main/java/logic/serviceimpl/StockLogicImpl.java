@@ -214,7 +214,8 @@ public class StockLogicImpl implements StockLogicInterface{
 
 
 
-		return new MarketInfoVO(volume,chaoguo10,dieguo10,wushuju,shanxingtu,);
+//		return new MarketInfoVO(volume,chaoguo10,dieguo10,wushuju,shanxingtu,);
+		return null;
 	}
 
 	@Override

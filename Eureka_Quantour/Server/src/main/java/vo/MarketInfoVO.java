@@ -13,7 +13,7 @@ public class MarketInfoVO implements Serializable{
 	
 	private static final long serialVersionUID = -8022819757439228511L;
 
-	
+
 	private long volume = 0;
 	private int zhangting=0;
 	private int dieting=0;
