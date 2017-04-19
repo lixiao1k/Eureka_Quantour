@@ -99,127 +99,133 @@ public class Return {
 
     public List<Double> getBasicReturn ()
             throws PriceTypeException, NullStockIDException {
-
-        List<Double> list=new ArrayList<>();
-
-
-        LocalDate iter=LocalDate.of(begin.getYear(),begin.getMonth(),begin.getDayOfMonth());
-
-        double init=100.0;
-        try {
-            for (;
-                 iter.compareTo(end)<=0;
-                 iter=idi.addDays(iter,days))
-            {
-                double zheci=0;
-                double shangci=0;
-
-                    for (String name : stockcode) {
-                        try {
-                        SingleStockInfoPO po1 = idi.getSingleStockInfo(name, iter);
-                        SingleStockInfoPO po2 = idi.getSingleStockInfo(name, idi.addDays(iter, days));
-                        zheci = zheci + getjiage(po1);
-                        shangci = shangci + getjiage(po2);
-                        }
-                        catch (NullDateException e) {
-                            continue;
-                        }
-                    }
-
-                    if(zheci==0)
-                        continue;
+    	if(jizhunshouyilv==null){
+    		 List<Double> list=new ArrayList<>();
 
 
-                    timelist.add(iter);
-                jizhunfudu.add(shangci/zheci);
-               System.out.println(zheci+"  "+shangci);
-                init=init*(shangci/zheci);
-                double rate=(init-100)/100;
-                list.add(rate);
+    	        LocalDate iter=LocalDate.of(begin.getYear(),begin.getMonth(),begin.getDayOfMonth());
 
-            }
-        } catch (DateOverException e) {
-            e.printStackTrace();
-        }
-        jizhunshouyilv=list;
+    	        double init=100.0;
+    	        try {
+    	            for (;
+    	                 iter.compareTo(end)<=0;
+    	                 iter=idi.addDays(iter,days))
+    	            {
+    	                double zheci=0;
+    	                double shangci=0;
 
-        return jizhunshouyilv;
+    	                    for (String name : stockcode) {
+    	                        try {
+    	                        SingleStockInfoPO po1 = idi.getSingleStockInfo(name, iter);
+    	                        SingleStockInfoPO po2 = idi.getSingleStockInfo(name, idi.addDays(iter, days));
+    	                        zheci = zheci + getjiage(po1);
+    	                        shangci = shangci + getjiage(po2);
+    	                        }
+    	                        catch (NullDateException e) {
+    	                            continue;
+    	                        }
+    	                    }
+
+    	                    if(zheci==0) {
+    	                        continue;
+    	                    }
+    	                    timelist.add(iter);
+    	                jizhunfudu.add(shangci/zheci);
+    	               System.out.println(zheci+"  "+shangci);
+    	                init=init*(shangci/zheci);
+    	                double rate=(init-100)/100;
+    	                list.add(rate);
+
+    	            }
+    	        } catch (DateOverException e) {
+    	            e.printStackTrace();
+    	        }
+    	        jizhunshouyilv=list;
+
+    	        return jizhunshouyilv;
+    	}
+    	else{
+    		return jizhunshouyilv;
+    	}
     }
 
 
 
 
     public List<Double> getStragetyReturn ( ) throws  NullStockIDException, PriceTypeException {
-        double init=100.0;
-        List<Double> list=new ArrayList<>();
-        LocalDate iter=LocalDate.of(begin.getYear(),begin.getMonth(),begin.getDayOfMonth());
-        try {
-            for (;
-                 iter.compareTo(end)<=0;
-                 iter=idi.addDays(iter,days))
-            {
-                double zheci=0;
-                double shangci=0;
-                List<SingleStockInfoPO> polist=new ArrayList<>();
+        if(celueshouyilv==null){
+        	double init=100.0;
+            List<Double> list=new ArrayList<>();
+            LocalDate iter=LocalDate.of(begin.getYear(),begin.getMonth(),begin.getDayOfMonth());
+            try {
+                for (;
+                     iter.compareTo(end)<=0;
+                     iter=idi.addDays(iter,days))
+                {
+                    double zheci=0;
+                    double shangci=0;
+                    List<SingleStockInfoPO> polist=new ArrayList<>();
 
-                for(String name:stockcode){
-                    try {
+                    for(String name:stockcode){
+                        try {
 
-                        polist.add(idi.getSingleStockInfo(name,iter));
-                    } catch (NullDateException e) {
-                        continue;
+                            polist.add(idi.getSingleStockInfo(name,iter));
+                        } catch (NullDateException e) {
+                            continue;
+                        }
                     }
-                }
-                if(polist.size()==0) continue;
-
-                Collections.sort(polist,comparator);
-
-//                for (int as=0;as<polist.size();as++)
-//                System.out.println(polist.get(as).getName());
-
-                List<String> jilu=new ArrayList<>();
+                    if(polist.size()==0) continue;
 
 
+                    Collections.sort(polist,comparator);
+//                    for (int as=0;as<polist.size();as++)
+//                    System.out.println(polist.get(as).getName());
 
-                int i=0;
-                int j=0;
+                    List<String> jilu=new ArrayList<>();
 
-                while (j<Math.min(strategyConditionVO.getNums(),polist.size())&&i<Math.min(strategyConditionVO.getNums(),polist.size())){
-//                    System.out.print(getjiage(polist.get(i)));
-                    
-                    SingleStockInfoPO pozheci=polist.get(i);
-                    i++;
-                    SingleStockInfoPO poshangci = null;
 
-                    try {
-                        poshangci = idi.getSingleStockInfo(pozheci.getCode(),idi.addDays(iter,days));
-                    } catch (NullDateException e) {
-                        continue;
+
+//                    System.out.println("assd");
+                    int i=0;
+                    int j=0;
+                    while (j<Math.min(strategyConditionVO.getNums(),polist.size())&&i<Math.min(strategyConditionVO.getNums(),polist.size())){
+//                        System.out.print(getjiage(polist.get(i)));
+                        
+                        SingleStockInfoPO pozheci=polist.get(i);
+                        i++;
+                        SingleStockInfoPO poshangci = null;
+
+                        try {
+                            poshangci = idi.getSingleStockInfo(pozheci.getCode(),idi.addDays(iter,days));
+                        } catch (NullDateException e) {
+//                            System.out.println("as");
+                            continue;
+                        }
+                        zheci=zheci+getjiage(pozheci);
+                        shangci+=getjiage(poshangci);
+                        
+                        j++;
                     }
-                    zheci=zheci+getjiage(pozheci);
-                    shangci+=getjiage(poshangci);
+
                     
-                    j++;
+                    if(zheci==0) System.exit(0);
+                    celuefudu.add(shangci/zheci);
+                    init=init*(shangci/zheci);
+
+                    double rate=(init-100)/100;
+                    list.add(rate);
+
+
                 }
-
-
-
-
-                
-                if(zheci==0) System.exit(0);
-                celuefudu.add(shangci/zheci);
-                init=init*(shangci/zheci);
-
-                double rate=(init-100)/100;
-                list.add(rate);
-
-
+            } catch (DateOverException e) {
+//                e.printStackTrace();
             }
-        } catch (DateOverException e) {
-//            e.printStackTrace();
+            celueshouyilv=list;
+            return list;
         }
-        celueshouyilv=list;
-        return list;
+        else{
+        	return celueshouyilv;
+        }
     }
 
 
