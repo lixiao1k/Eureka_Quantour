@@ -59,7 +59,7 @@ public class PointChart implements chartService{
     		if( i==10 )
     			yieldRange[i] = "0%";
     		else
-    		yieldRange[i] = nf.format(k);
+    			yieldRange[i] = nf.format(k);
     	}
 //    	ObservableList<String> yields = FXCollections.observableList(yieldRange);
     	
@@ -95,9 +95,9 @@ public class PointChart implements chartService{
         		if( j<numt.length && numt[j]!=Integer.MAX_VALUE ){
         			if( kind==ChartKind.POINTFULL )
         				for( int h=1; h<=numt[j]; h++ )
-        					serie.getData().add( new XYChart.Data<>( yieldt[j]/100, h) );
+        					serie.getData().add( new XYChart.Data<>( yieldt[j]/100.0, h) );
         			else if( kind==ChartKind.POINTONE )
-        				serie.getData().add( new XYChart.Data<>( yieldt[j]/100, numt[j]) );
+        				serie.getData().add( new XYChart.Data<>( yieldt[j]/100.0, numt[j]) );
         			
         			if( dataStrings[j]!=null )
 	        			dataStrings[j] += "/"+name+" : "+numt[j];
