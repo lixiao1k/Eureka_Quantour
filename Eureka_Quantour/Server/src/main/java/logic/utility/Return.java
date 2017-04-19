@@ -116,7 +116,7 @@ public class Return {
                     for (String name : stockcode) {
                         try {
                         SingleStockInfoPO po1 = idi.getSingleStockInfo(name, iter);
-                        SingleStockInfoPO po2 = idi.getSingleStockInfo(name, idi.addDays(iter, -days));
+                        SingleStockInfoPO po2 = idi.getSingleStockInfo(name, idi.addDays(iter, days));
                         zheci = zheci + getjiage(po1);
                         shangci = shangci + getjiage(po2);
                         }
@@ -129,9 +129,9 @@ public class Return {
                         continue;
                     }
                     timelist.add(iter);
-                jizhunfudu.add(zheci/shangci);
-//                System.out.println(zheci+"  "+shangci);
-                init=init*(zheci/shangci);
+                jizhunfudu.add(shangci/zheci);
+               System.out.println(zheci+"  "+shangci);
+                init=init*(shangci/zheci);
                 double rate=(init-100)/100;
                 list.add(rate);
 
@@ -171,8 +171,8 @@ public class Return {
                 if(polist.size()==0) continue;
 
                 Collections.sort(polist,comparator);
-                for (int as=0;as<polist.size();as++)
-                System.out.println(polist.get(as).getName());
+//                for (int as=0;as<polist.size();as++)
+//                System.out.println(polist.get(as).getName());
 
                 List<String> jilu=new ArrayList<>();
 
@@ -181,10 +181,11 @@ public class Return {
 //                System.out.println("assd");
                 int i=0;
                 int j=0;
-                while (j<Math.min(strategyConditionVO.getNums(),polist.size())){
+                while (j<Math.min(strategyConditionVO.getNums(),polist.size())&&i<Math.min(strategyConditionVO.getNums(),polist.size())){
 //                    System.out.print(getjiage(polist.get(i)));
-                    i++;
+                    
                     SingleStockInfoPO pozheci=polist.get(i);
+                    i++;
                     SingleStockInfoPO poshangci = null;
 
                     try {
@@ -195,15 +196,15 @@ public class Return {
                     }
                     zheci=zheci+getjiage(pozheci);
                     shangci+=getjiage(poshangci);
+                    
                     j++;
                 }
 
 
 
 
-
-                if(zheci==0) continue;
-//                System.out.println(zheci+"  "+shangci);
+                
+                if(zheci==0) System.exit(0);
                 celuefudu.add(shangci/zheci);
                 init=init*(shangci/zheci);
 
@@ -276,10 +277,8 @@ public class Return {
                 e.printStackTrace();
             }
 
-            int p=(int)rate1*100;
-            int q=(int)rate2*100;
-
-
+            int p=(int)(rate1*10000);
+            int q=(int)(rate2*10000);
 
 
             return q-p;
@@ -342,9 +341,8 @@ public class Return {
 
             rate1=(o1.getAftClose()-o3.getAftClose())/o3.getAftClose();
             rate2=(o2.getAftClose()-o4.getAftClose())/o4.getAftClose();
-            int p=(int)rate1*100;
-            int q=(int)rate2*100;
-
+            int p=(int)(rate1*10000);
+            int q=(int)(rate2*10000);
 
 
 
