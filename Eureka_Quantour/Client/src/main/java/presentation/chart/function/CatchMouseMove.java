@@ -336,4 +336,11 @@ public class CatchMouseMove implements CatchMouseMoveService{
 			
 		return cursorCoords;
 	}
+
+	@Override
+	public Label catchMouseReturnInfoForYieldDistributeChart(XYChart<String, Number> chart, Map<String, String> dataMap,
+			String[] dates, String name, int index) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

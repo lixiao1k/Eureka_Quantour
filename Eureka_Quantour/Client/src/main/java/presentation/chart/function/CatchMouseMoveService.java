@@ -21,7 +21,7 @@ public interface CatchMouseMoveService {
 	 * @return: Label
 	 */
 	Label catchMouseReturnInfoForAnchorPaneSN( 
-			XYChart<String, Number> chart, Map<String, String> dataMap, String[] dates, String name,int index );
+			XYChart<String, Number> chart, Map<String, String> dataMap, String[] dates, String name, int index);
 
 	/**
 	 * @Description: according to StackPane's feature and mouse's location, 
@@ -31,11 +31,21 @@ public interface CatchMouseMoveService {
 	 * @return: Label
 	 */
 	Label catchMouseReturnInfoForStackPaneSN( 
-			XYChart<String, Number> chart, Map<String, String> dataMap, String[] dates, String name,int index );
+			XYChart<String, Number> chart, Map<String, String> dataMap, String[] dates, String name, int index);
 	
 	Label catchMouseReturnInfoForStackPaneNN( XYChart<Number, Number> chart, 
 			Map<String, String> dataMap, String[] dates, String name, int index, ChartKind kind);
 
 	Label catchMouseReturnInfoForStackPaneNS( XYChart<Number, String> chart, 
-			Map<String, String> dataMap, String[] dates, String name,int index, ChartKind kind);
+			Map<String, String> dataMap, String[] dates, String name, int index, ChartKind kind);
+	
+	/**
+	 * @Description: according to AnchorPane's feature and mouse's location, 
+	 * 				 set label's layoutX and layoutY
+	 * @author: hzp
+	 * @time: 2017年4月12日
+	 * @return: Label
+	 */
+	Label catchMouseReturnInfoForYieldDistributeChart( 
+			XYChart<String, Number> chart, Map<String, String> dataMap, String[] dates, String name, int index);
 }

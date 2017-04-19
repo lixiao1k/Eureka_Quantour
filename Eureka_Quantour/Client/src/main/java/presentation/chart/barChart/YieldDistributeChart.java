@@ -38,7 +38,7 @@ public class YieldDistributeChart implements chartService{
 	private AnchorPane pane = new AnchorPane();
 	private StackPane chartpane = new StackPane();
 	private StackPane datepane = new StackPane();
-	private Label info = new Label();
+//	private Label info = new Label();
 	
 	private CategoryAxis xAxis;
 	private NumberAxis yAxis;
@@ -163,10 +163,10 @@ public class YieldDistributeChart implements chartService{
     	barChart.setMaxSize(width, height);
     	barChart.setMinSize(width, height);
    
-    	info = catchMouseMove.catchMouseReturnInfoForStackPaneSN(barChart, dataMap, yield, "收益率", 0);
+//    	info = catchMouseMove.catchMouseReturnInfoForStackPaneSN(barChart, dataMap, yield, "收益率", 0);
     	
     	chartpane.getChildren().add(barChart);
-    	chartpane.getChildren().add(info);
+//    	chartpane.getChildren().add(info);
     	
     	pane.getChildren().add(chartpane);
     	AnchorPane.setTopAnchor(chartpane, chartgap);
