@@ -100,31 +100,32 @@ public class StockLogicImpl implements StockLogicInterface{
 		} catch (NullStockIDException e) {
 			e.printStackTrace();
 		}
-
-		String name1=idi.codeToname(stockCodeA);
 		LocalDate itr=LocalDate.of(begin.getYear(),begin.getMonth(),begin.getDayOfMonth());
-		double low1=10000000;
-		double high1=0;
-		double diyitian=0;
-		double zuihouyitian=0;
-		List<Double> shoupanlist=new ArrayList<>();
+
 		List<Double> duishushouyiilv=new ArrayList<>();
+		List<Integer> diantu=new ArrayList<>();
+		for (int i=0;i<21;i++){
+			diantu.add(0);
+		}
 		List<LocalDate> timelist=new ArrayList<>();
+
 		try {
 			for (;itr.compareTo(end)<=0;
                     itr=idi.addDays(itr,1)){
 				try {
 					SingleStockInfoPO po1=idi.getSingleStockInfo(stockCodeA,itr);
-					if (diyitian==0)
-						diyitian=po1.getAftClose();
-					zuihouyitian=po1.getAftClose();
-					low1=Math.min(low1,po1.getLow());
-					high1=Math.max(high1,po1.getHigh());
 
 
-					shoupanlist.add(po1.getClose());
 					duishushouyiilv.add(Math.log(po1.getAftClose()));
+
 					timelist.add(itr);
+					if(Math.abs(po1.getAftrate())>0.1) continue;
+					Integer s=(int ) (Math.rint(po1.getAftrate())*100);
+
+					int p=diantu.get(s+10);
+					p++;
+					diantu.set(s+10,p);
+
 
 				} catch (NullStockIDException e) {
 					e.printStackTrace();
@@ -134,14 +135,10 @@ public class StockLogicImpl implements StockLogicInterface{
 
 			}
 		} catch (DateOverException e) {
-			e.printStackTrace();
 		}
-		if (diyitian==0)
-			throw  new DateInvalidException();
-		double fangcha=utility.getCorvariance(duishushouyiilv,duishushouyiilv);
 
-		return  new ComparedInfoVO(name1,stockCodeA,low1,high1,zuihouyitian/diyitian,shoupanlist,duishushouyiilv,fangcha,timelist);
 
+		return new ComparedInfoVO(duishushouyiilv,timelist,diantu);
 	}
 
 	@Override
@@ -171,25 +168,25 @@ public class StockLogicImpl implements StockLogicInterface{
 			}
 			volume+=po.getVolume();
 
-			if (po.getAftrate()<10 && po.getAftrate()>=5){
+			if (po.getAftrate()<0.1 && po.getAftrate()>=0.05){
 				zheng5dao10++;
 			}
-			if (po.getAftrate()>-10 && po.getAftrate()<=-5){
+			if (po.getAftrate()>-0.1 && po.getAftrate()<=-0.05){
 				fu5dao10++;
 			}
 
-			if (po.getAftrate()<5 && po.getAftrate()>=0){
+			if (po.getAftrate()<0.05 && po.getAftrate()>=0){
 				zheng0dao5++;
 			}
-			if (po.getAftrate()>-5 && po.getAftrate()<0){
+			if (po.getAftrate()>-0.05 && po.getAftrate()<0){
 				fu0dao5++;
 			}
 
-			if (po.getAftrate()>=10){
+			if (po.getAftrate()>=0.1){
 				chaoguo10++;
 				continue;
 			}
-			if (po.getAftrate()<=-10){
+			if (po.getAftrate()<=-0.1){
 				dieguo10++;
 				continue;
 			}
@@ -198,12 +195,6 @@ public class StockLogicImpl implements StockLogicInterface{
 			int p=diantu.get(s+10);
 			p++;
 			diantu.set(s+10,p);
-
-
-
-
-
-
 		}
 		List<Integer> shanxingtu=new ArrayList();
 		shanxingtu.add(fu5dao10);
@@ -212,10 +203,7 @@ public class StockLogicImpl implements StockLogicInterface{
 		shanxingtu.add(zheng5dao10);
 
 
-
-
-//		return new MarketInfoVO(volume,chaoguo10,dieguo10,wushuju,shanxingtu,);
-		return null;
+		return new MarketInfoVO(volume,chaoguo10,dieguo10,wushuju,shanxingtu,diantu);
 	}
 
 	@Override

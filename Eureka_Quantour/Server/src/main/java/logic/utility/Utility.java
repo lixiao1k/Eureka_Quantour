@@ -136,9 +136,14 @@ public class Utility {
         }
         p=p/A.size();
         return p-avecelue*avejizhun;
+    }
 
-
-
+    public double getAverage(List<Double> A){
+        double zonghe=0;
+        for (int i=0;i<A.size();i++){
+            zonghe+=A.get(i);
+        }
+        return  zonghe/A.size();
     }
 
 }
