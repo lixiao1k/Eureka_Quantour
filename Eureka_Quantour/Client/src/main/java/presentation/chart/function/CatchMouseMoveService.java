@@ -2,6 +2,7 @@ package presentation.chart.function;
 
 import java.util.Map;
 
+import en_um.ChartKind;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.text.Text;
@@ -33,5 +34,5 @@ public interface CatchMouseMoveService {
 			XYChart<String, Number> chart, Map<String, String> dataMap, String[] dates, String name,int index );
 	
 	Label catchMouseReturnInfoForStackPaneNN( 
-			XYChart<Number, Number> chart, Map<String, String> dataMap, String[] dates, String name,int index );
+			XYChart<Number, Number> chart, Map<String, String> dataMap, String[] dates, String name, int index, ChartKind kind);
 }

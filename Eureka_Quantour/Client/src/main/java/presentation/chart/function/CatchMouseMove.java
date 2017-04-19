@@ -2,6 +2,7 @@ package presentation.chart.function;
 
 import java.util.Map;
 
+import en_um.ChartKind;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -173,7 +174,7 @@ public class CatchMouseMove implements CatchMouseMoveService{
 
 	@Override
 	public Label catchMouseReturnInfoForStackPaneNN(XYChart<Number, Number> chart, Map<String, String> dataMap,
-			String[] dates, String name, int index) {
+			String[] dates, String name, int index, ChartKind kind) {
 		// TODO Auto-generated method stub
 		
 		Axis<Number> xAxis = chart.getXAxis();
@@ -199,7 +200,11 @@ public class CatchMouseMove implements CatchMouseMoveService{
 		chartBackground.setOnMouseMoved(new EventHandler<MouseEvent>() {
 			
 	    	public void handle(MouseEvent mouseEvent) {
-	    		double temp = (mouseEvent.getX()-index)*(dates.length-1)/(xAxis.getWidth()-index);
+	    		double temp = 0.0;
+	    		if( kind==ChartKind.POINTFULL || kind==ChartKind.POINTONE )
+	    			temp = (mouseEvent.getX()-index)*(dates.length-1)/(xAxis.getWidth()-2*index);
+	    		else
+	    			temp = (mouseEvent.getX()-index)*(dates.length-1)/(xAxis.getWidth()-index);
 	    		
 	    		if( mouseEvent.getX()>chart.getXAxis().getWidth()/2 )
 	    			StackPane.setAlignment(cursorCoords, Pos.TOP_LEFT);			

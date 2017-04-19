@@ -3,6 +3,7 @@ package presentation.chart.scatterchart;
 import java.util.ArrayList;
 import java.util.List;
 
+import en_um.ChartKind;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
@@ -16,12 +17,12 @@ public class test extends Application{
 	private List<int[]> num = new ArrayList<>();
 	private List<String> dataName = new ArrayList<>();
 	private void testPointChart(){
-		Double[] yieldD = new Double[20];
-		int[] numI = new int[20];
+		Double[] yieldD = new Double[21];
+		int[] numI = new int[21];
 		dataName.add("test");
 		
 		Double j = -10.0;
-		for( int i=0; i<20; i++, j++)
+		for( int i=0; i<=20; i++, j++)
 			yieldD[i] = j;
 		numI[0] = 5;
 		numI[1] = 6;
@@ -44,11 +45,12 @@ public class test extends Application{
 		numI[17] = 8;
 		numI[18] = 6;
 		numI[19] = 3;
+		numI[20] = 2;
 	
 		yield.add(yieldD);
 		num.add(numI);
 		
-		pointChart = new PointChart( yield, num, dataName );
+		pointChart = new PointChart( yield, num, dataName, ChartKind.POINTFULL);
 	}
 	
 	@Override
