@@ -52,7 +52,7 @@ public class PointChart implements chartService{
     private Map<String, String> dataMap = new HashMap<String,String>();
     private String[] yieldRange;
     
-    public PointChart(List<Double[]> yield, List<int[]> num, List<String> dataName, ChartKind kind){
+    protected PointChart(List<int[]> yield, List<int[]> num, List<String> dataName, ChartKind kind){
     	yieldRange = new String[21];
     	double k = -0.1, gap = 0.01;
     	for( int i=0; i<=20; i++, k+=gap ){
@@ -79,7 +79,6 @@ public class PointChart implements chartService{
         yAxis.forceZeroInRangeProperty().setValue(true);
         
         scatterChart = new ScatterChart<>(xAxis, yAxis);
-        scatterChart.setHorizontalGridLinesVisible(false);
         scatterChart.setVerticalGridLinesVisible(false);
         scatterChart.setLegendVisible(false);
         
@@ -87,7 +86,7 @@ public class PointChart implements chartService{
         String[] dataStrings = new String[21];
         for( int i=0; i<yield.size(); i++ ){
         	XYChart.Series<Number, Number> serie = new XYChart.Series<>();
-        	Double[] yieldt = yield.get(i);
+        	int[] yieldt = yield.get(i);
         	int[] numt = num.get(i);
         	String name = dataName.get(i);
         	
@@ -135,6 +134,7 @@ public class PointChart implements chartService{
         			getClass().getResource("/styles/DateLabel.css").toExternalForm() );
     	}
     	else{
+    		scatterChart.setHorizontalGridLinesVisible(false);
     		scatterChart.getYAxis().setTickLabelsVisible(false);
     		scatterChart.getYAxis().setPrefWidth(1);
     		scatterChart.getYAxis().setOpacity(0);
@@ -166,6 +166,6 @@ public class PointChart implements chartService{
 	@Override
 	public void setName(String name) {
 		// TODO Auto-generated method stub
-		
+		scatterChart.setTitle(name);
 	}
 }
