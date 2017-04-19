@@ -8,7 +8,7 @@ import presentation.chart.chartService;
 public class YieldFanChart implements chartService{
 
 	private FanChart fanChart;
-	protected YieldFanChart(List<Integer> nums) {
+	public YieldFanChart(List<Integer> nums) {
 		// TODO Auto-generated constructor stub
 		String[] nameOfContent = {"-10% ~ -5%", "-5% ~ 0", "0 ~ 5%", "5% ~ 10%"};
 		int[] num = new int[4];
