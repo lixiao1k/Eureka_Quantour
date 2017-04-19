@@ -8,9 +8,11 @@ import java.util.ResourceBundle;
 import org.controlsfx.control.Notifications;
 
 import dataController.DataContorller;
+import en_um.ChartKind;
 import exception.BeginInvalidException;
 import exception.DateInvalidException;
 import exception.EndInvalidException;
+import exception.NullMarketException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -20,7 +22,11 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import logic.service.StockLogicInterface;
+import presentation.chart.chartService;
+import presentation.chart.piechart.YieldFanChart;
+import presentation.chart.scatterchart.YieldPointChart;
 import rmi.RemoteHelper;
 import vo.MarketInfoVO;
 
@@ -41,7 +47,29 @@ public class StatisticsUIController implements Initializable {
 	AnchorPane meanPane;
 	
 	@FXML
-	HBox infoHBox;
+	Label zhangtingLabel;
+	
+	@FXML
+	Label dietingLabel;
+	
+	@FXML
+	Label tingpaiLabel;
+	
+	@FXML
+	Label volumeLabel;
+	
+	@FXML
+	Label zhangtingvalue;
+	
+	@FXML
+	Label dietingValue;
+	
+	@FXML
+	Label tingpaiValue;
+	
+	@FXML
+	Label volumeValue;
+	
 	
 	private DataContorller dataController;
 	
@@ -53,11 +81,8 @@ public class StatisticsUIController implements Initializable {
 		try {
 			MarketInfoVO marketInfoVO = stockLogicInterface.getMarketInfo((LocalDate)dataController.get("SystemTime"),
 					marketComboBox.getValue());
-			System.out.println(marketInfoVO);
-			System.out.println(marketInfoVO.getDieting());
-			System.out.println(marketInfoVO.getTingpai());
-			System.out.println(marketInfoVO.getVolume());
-			System.out.println(marketInfoVO.getZhangting());
+			initialAllPane(marketInfoVO);
+
 		} catch (RemoteException e1) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("网络连接异常").text(e1.toString()).showWarning();
@@ -74,7 +99,26 @@ public class StatisticsUIController implements Initializable {
 			// TODO Auto-generated catch block
 			Notifications.create().title("日期异常").text(e1.toString()).showWarning();
 			e1.printStackTrace();
+		}catch (NullMarketException e1) {
+			// TODO: handle exception
+			Notifications.create().title("数据异常").text(e1.toString()).showWarning();
+			e1.printStackTrace();
 		}
+	}
+	
+	private void initialAllPane(MarketInfoVO marketInfoVO){
+		zhangtingvalue.setText(Integer.toString(marketInfoVO.getZhangting()));
+		dietingValue.setText(Integer.toString(marketInfoVO.getDieting()));
+		tingpaiValue.setText(Integer.toString(marketInfoVO.getTingpai()));
+		volumeValue.setText(Long.toString(marketInfoVO.getVolume()));
+		chartService chartservice = new YieldFanChart(marketInfoVO.getShanxingtu());
+		Pane piePane = chartservice.getchart(334,276, true);
+		RAFPieChartPane.getChildren().clear();
+		RAFPieChartPane.getChildren().add(piePane);
+		chartService chartService2 = new YieldPointChart(marketInfoVO.getDiantu(),ChartKind.POINTFULL);
+		Pane dianPane = chartService2.getchart(334, 276, true);
+		RAFContributionPane.getChildren().clear();
+		RAFContributionPane.getChildren().add(dianPane);
 	}
 
 	@Override
@@ -84,6 +128,24 @@ public class StatisticsUIController implements Initializable {
 		nameLabel.setStyle(
 				"-fx-font-size:45;"
 				+ "-fx-text-fill: rgb(255, 0, 0, 0.9);"
+				+ "-fx-font-weight:bold");
+		zhangtingLabel.setStyle("-fx-font-size:20;"
+				+ "-fx-text-fill: #EE5C42;"
+				+ "-fx-font-weight:bold");
+		dietingLabel.setStyle("-fx-font-size:20;"
+				+ "-fx-text-fill: #C0FF3E;"
+				+ "-fx-font-weight:bold");
+		tingpaiLabel.setStyle("-fx-font-size:20;"
+				+ "-fx-text-fill: rgb(255, 255, 255, 0.8);"
+				+ "-fx-font-weight:bold");
+		volumeLabel.setStyle("-fx-font-size:20;"
+				+ "-fx-text-fill: rgb(255, 255, 255, 0.8);"
+				+ "-fx-font-weight:bold");
+		zhangtingvalue.setStyle("-fx-font-size:20;"
+				+ "-fx-text-fill: #EE5C42;"
+				+ "-fx-font-weight:bold");
+		dietingValue.setStyle("-fx-font-size:20;"
+				+ "-fx-text-fill: #C0FF3E;"
 				+ "-fx-font-weight:bold");
 		ObservableList<String> marketList = FXCollections.observableArrayList();
 		marketList.addAll("SHA","SHB","SZA","SZB","CYB","ZXB","HS300");
