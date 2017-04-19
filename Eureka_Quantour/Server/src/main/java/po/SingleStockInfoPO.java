@@ -37,11 +37,11 @@ public class SingleStockInfoPO
 //	private double subavg_30;//前复权30日均线
 //	private double subavg_60;//前复权60日均线
 //	
-//	private double aftavg_5;//前复权5日均线
-//	private double aftavg_10;//前复权10日均线
-//	private double aftavg_20;//前复权20日均线
-//	private double aftavg_30;//前复权30日均线
-//	private double aftavg_60;//前复权60日均线
+	private double aftavg_5;//后复权5日均线
+//	private double aftavg_10;//后复权10日均线
+//	private double aftavg_20;//后复权20日均线
+//	private double aftavg_30;//后复权30日均线
+//	private double aftavg_60;//后复权60日均线
 	
 	public SingleStockInfoPO(){
 	}
@@ -170,6 +170,7 @@ public class SingleStockInfoPO
 //		setSubavg_60(strTodouble(input[21]));
 //		
 //		setAftavg_5(strTodouble(input[14]));
+		setAftavg_5(0);
 //		setAftavg_10(strTodouble(input[16]));
 //		setAftavg_20(strTodouble(input[18]));
 //		setAftavg_30(strTodouble(input[20]));
@@ -529,18 +530,18 @@ public class SingleStockInfoPO
 //	public void setSubavg_60(double subavg_60) {
 //		this.subavg_60 = subavg_60;
 //	}
-//	/**
-//	 * @return the aftavg_5
-//	 */
-//	public double getAftavg_5() {
-//		return aftavg_5;
-//	}
-//	/**
-//	 * @param aftavg_5 the aftavg_5 to set
-//	 */
-//	public void setAftavg_5(double aftavg_5) {
-//		this.aftavg_5 = aftavg_5;
-//	}
+	/**
+	 * @return the aftavg_5
+	 */
+	public double getAftavg_5() {
+		return aftavg_5;
+	}
+	/**
+	 * @param aftavg_5 the aftavg_5 to set
+	 */
+	public void setAftavg_5(double aftavg_5) {
+		this.aftavg_5 = aftavg_5;
+	}
 //	/**
 //	 * @return the aftavg_10
 //	 */

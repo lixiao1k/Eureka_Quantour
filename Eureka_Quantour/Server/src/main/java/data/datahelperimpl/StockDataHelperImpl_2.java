@@ -19,10 +19,10 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
 
+import data.common.DateBufferTrie;
 import data.common.DateTrie;
 import data.common.IndexTree;
 import data.datahelperservice.IStockDataHelper_2;
-import data.fetchdataimpl.DailyFetchThread;
 import data.fetchdataimpl.StockDataFetchImpl;
 import data.fetchdataservice.IStockDataFetch;
 import data.parse.Parse;
@@ -55,15 +55,12 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 	private int datalength;
 	private int positionlength;
 	
-	private byte[] dst_BUFFERSIZE;
-	
 	private String stockInfo;
 	
+//	private DateBufferTrie datebuffer;
 	
 	private StockIndexBuffer indexBuffer;
 	private StockIndexBuffer dataBuffer;
-	private DataBuffer_ByInputStream dataBuffer_is;
-	private DataBuffer_ByInputStream indexBuffer_is;
 	private byte[] dst_MainIndex;
 	
 	private InitEnvironment ie;
@@ -95,12 +92,12 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 		
 		indexBuffer=new StockIndexBuffer(3300);
 		dataBuffer=new StockIndexBuffer(3000);
-		indexBuffer_is=new DataBuffer_ByInputStream(3300);
-		dataBuffer_is=new DataBuffer_ByInputStream(100);
+		
+		
+		
+//		datebuffer=new DateBufferTrie(3000);
 		
 		stockInfo=ie.getPath("stockinfo");
-		
-		dst_BUFFERSIZE=new byte[BUFFER_SIZE];
 		
 		dst_MainIndex=new byte[8];
 		
@@ -121,6 +118,15 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 		fetch=StockDataFetchImpl.getInstance();
 		parse=Parse.getInstance();
 		infopath=new File(ie.getPath("stockinfo"));
+		File file=new File("config/stock/stockset/Industry");
+		if(!file.exists()){
+			try {
+				fetch.fetchIndustryList();
+			} catch (InternetdisconnectException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 //		DailyFetchThread thread=new DailyFetchThread();
 		if(!infopath.exists()&&!infopath.isDirectory()){
 			try {
@@ -234,16 +240,18 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 			dst2=null;
 			is2.close();
 			BufferedReader br=new BufferedReader(new FileReader("config/resources/date/totalCalendar"));
-			int count=0;
 			while(br.ready()){
 				String out=br.readLine();
 				int cal=Integer.valueOf(out.substring(0, 8));
 				int row=Integer.parseInt(out.substring(8));
+//				if(!datebuffer.add(cal, row)){
+//					System.exit(0);
+//				}
+
 				pointerToposition.add(row);
-				dateIndex.put(cal, count);
+				dateIndex.put(cal, datesize);
 				datesort.add(cal);
 				datesize++;
-				count++;
 			}
 			File path=new File("config/stock/info");
 			String[] t=path.list();
@@ -483,17 +491,16 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 			File path=new File("config/stock/info");
 			String[] t=path.list();
 			long ttt1=System.currentTimeMillis();
-			for(String code:t){
-				try{
-					Integer.valueOf(code);
-				}catch(NumberFormatException e){
-					continue;
-				}
-				try {
-					System.out.println(getSingleInfo(b1, code));
-				} catch (StockHaltingException | NullDateException e) {
-				}
-			}
+			
+//			for(int cal:datesort){
+//					for(String code:t){
+//						try {
+//							getSingleInfo2(cal, code);
+//						} catch (StockHaltingException | NullDateException e) {
+//						}
+//					}
+//				}
+
 			Runtime.getRuntime().gc();
 //			Collection<StockLeaf> it=datetree.get(b1).values();
 //			for(StockLeaf i:it){
@@ -501,7 +508,22 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 //			}
 			long ttt2=System.currentTimeMillis();
 			System.out.println("读取时间"+(ttt2-ttt1));
+			long t1=System.currentTimeMillis();
 			
+			for(int cal:datesort){
+				for(String code:t){
+					try {
+						getSingleInfo(cal, code);
+					} catch (StockHaltingException | NullDateException e) {
+					}
+				}
+			}
+//			Collection<StockLeaf> it=datetree.get(b1).values();
+//			for(StockLeaf i:it){
+//				readPosition(i.getDateinfo());
+//			}
+			long t2=System.currentTimeMillis();
+			System.out.println("读取时间"+(t2-t1));
 //			long m1=System.currentTimeMillis();
 //			for(int i=0;i<k;i++) stocktree.get(b2);
 //			long m2=System.currentTimeMillis();
@@ -682,6 +704,35 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 		LocalDate cal=LocalDate.parse(pro.getProperty("last_day"));
 		return cal;
 	}
+//	/**
+//	 * 获取指定股票指定日期的信息
+//	 * @param cal 日期，形如XXXXXXXX,20170328
+//	 * @param code 股票编号，形如000001,1
+//	 * @return 股票信息，不存在时抛出异常
+//	 * @throws StockHaltingException 不存在股票数据时抛出该异常
+//	 * @throws NullDateException 不存在该日期时抛出该异常
+//	 */
+//	public String getSingleInfo2(int cal,String code) throws StockHaltingException, NullDateException{
+//		if(!datebuffer.hasday(cal)){
+//			throw new NullDateException(cal);
+//		}
+//		else{
+//			int pointer=datebuffer.get(cal);
+//			MappedByteBuffer mbb=indexBuffer.getMbb(Integer.valueOf(code), stockInfo+"/"+code+"/mainIndex");
+//			MappedByteBuffer mbb_data=null;
+//			try {
+//				mbb_data = datebuffer.getMbbbyCal(cal);
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//			String str=getIndexByMbb(mbb,datebuffer.getIndex(cal));
+//			int relative=Integer.valueOf(str.substring(0,4));
+//			if(relative==9999){
+//				throw new NullDateException(cal);
+//			}
+//			return readPosition(pointer+relative, mbb_position, mbb_data);
+//		}
+//	}
 	/**
 	 * 获取指定股票指定日期的信息
 	 * @param cal 日期，形如XXXXXXXX,20170328
@@ -699,46 +750,6 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 			int pointer=pointerToposition.get(index);
 			MappedByteBuffer mbb=indexBuffer.getMbb(Integer.valueOf(code), stockInfo+"/"+code+"/mainIndex");
 			MappedByteBuffer mbb_data=dataBuffer.getMbb(cal, "config/resources/date/calendarDate/"+cal);
-			String str=getIndexByMbb(mbb,index);
-			int relative=Integer.valueOf(str.substring(0,4));
-			if(relative==9999){
-				throw new NullDateException(cal);
-			}
-//			MappedByteBuffer mbb_main=null;
-//			try {
-//				mbb_main = loadStockDateIndex("config/resources/mainData");
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//			MappedByteBuffer mbb_position=null;
-//			try {
-//				mbb_position = loadStockDateIndex("config/resources/date/mainPosition");
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-			return readPosition(pointer+relative, mbb_position, mbb_data);
-		}
-	}
-	
-	/**
-	 * 获取指定股票指定日期的信息
-	 * @param cal 日期，形如XXXXXXXX,20170328
-	 * @param code 股票编号，形如000001,1
-	 * @return 股票信息，不存在时抛出异常
-	 * @throws StockHaltingException 不存在股票数据时抛出该异常
-	 * @throws NullDateException 不存在该日期时抛出该异常
-	 */
-	public String getSingleInfo2(int cal,String code) throws StockHaltingException, NullDateException{
-		int index=dateIndex.getOrDefault(cal, -1);
-		if(index<0){
-			throw new NullDateException(cal);
-		}
-		else{
-			int pointer=pointerToposition.get(index);
-			MappedByteBuffer mbb=indexBuffer.getMbb(Integer.valueOf(code), stockInfo+"/"+code+"/mainIndex");
-			byte[] mbb_data=dataBuffer_is.getMbb(cal, "config/resources/date/calendarDate/"+cal);
 			String str=getIndexByMbb(mbb,index);
 			int relative=Integer.valueOf(str.substring(0,4));
 			if(relative==9999){
@@ -784,18 +795,6 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 		return t;
 	}
 	/**
-	 * 读取数据文件
-	 * @param start 数据的起始位置
-	 * @param size 数据的字节
-	 * @return 需要读的数据
-	 */
-	private String read(int start,int size,byte[] mbb_data){
-		byte[] dst=new byte [size];
-		System.arraycopy(dst, 0, mbb_data, start, size);
-		String t=new String(dst);
-		return t;
-	}
-	/**
 	 * 读取索引文件(常规方式)
 	 * @param row 索引所处的行数
 	 * @return 数据文件的索引
@@ -812,43 +811,10 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 		int c=Integer.parseInt(new String(receive,9,6));
 		return read(c,b,mbb_data);
 	}
-	/**
-	 * 读取索引文件(常规方式)
-	 * @param row 索引所处的行数
-	 * @return 数据文件的索引
-	 */
-	private String readPosition(int row,MappedByteBuffer mbb_position,byte[] mbb_data){
-		int position=row*16;
-		mbb_position.position(position);
-		try{
-		mbb_position.get(receive);
-		}catch(BufferUnderflowException e){
-			System.out.println(position);
-		}
-		int b=Integer.parseInt(new String(receive,6,3));
-		int c=Integer.parseInt(new String(receive,9,6));
-		return read(c,b,mbb_data);
-	}
 	private String getIndexByMbb(MappedByteBuffer mbb,int Index){
 		int position=Index*9;
 		mbb.position(position);
 		mbb.get(dst_MainIndex);
 		return new String(dst_MainIndex);
-	}
-	private MappedByteBuffer loadStockDateIndex(String path) throws IOException{
-		FileInputStream is=new FileInputStream(path);
-		FileChannel fc=is.getChannel();
-		MappedByteBuffer mbb=fc.map(MapMode.READ_ONLY, 0, fc.size());
-//		byte[] tempdst=new byte[(int) (fc.size()%BUFFER_SIZE)];
-//		for(int i=0;i<fc.size();i+=BUFFER_SIZE){
-//			if(fc.size()-i>BUFFER_SIZE){
-//				mbb.get(dst_BUFFERSIZE);
-//			}
-//			else{
-//				mbb.get(tempdst);
-//			}
-//		}
-		is.close();
-		return mbb;
 	}
 }

@@ -40,6 +40,10 @@ public class StockDataFetchImpl implements IStockDataFetch{
 		setByweb.getIndustryList();
 	}
 	@Override
+	public void fetchIndustryList() throws InternetdisconnectException {
+		setByweb.getIndustryList();
+	}
+	@Override
 	public void fetchAllStockInfo() throws InternetdisconnectException {
 		System.out.println("开始爬取股票信息");
 		infoByweb.fetchAllStockInfo();

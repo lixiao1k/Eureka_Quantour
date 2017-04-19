@@ -12,6 +12,7 @@ public interface IStockDataFetch {
 	 * @throws InternetdisconnectException 当无法从网络获取信息时抛出该异常
 	 */
 	public void fetchAllStockSet() throws InternetdisconnectException;
+	public void fetchIndustryList() throws InternetdisconnectException;
 	/**
 	 * 获取手工添加的股票池
 	 * @return 名字与编号组成的String的列表（格式:"编号名字"）
