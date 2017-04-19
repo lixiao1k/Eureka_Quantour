@@ -1,6 +1,5 @@
 package presentation.chart.barChart;
 
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,8 +13,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
@@ -24,11 +21,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
-import javafx.scene.text.Text;
 import presentation.chart.chartService;
 import presentation.chart.function.CatchMouseMove;
 import presentation.chart.function.CatchMouseMoveService;
@@ -41,7 +33,6 @@ public class YieldDistributeChart implements chartService{
 	private CatchMouseMoveService catchMouseMove = new CatchMouseMove();
 	private CommonSetService commonSet = new CommonSet();
 	
-	private DecimalFormat df = new DecimalFormat("0.00");
 	private NumberFormat nf = NumberFormat.getPercentInstance();
 	
 	private AnchorPane pane = new AnchorPane();
@@ -49,12 +40,10 @@ public class YieldDistributeChart implements chartService{
 	private StackPane datepane = new StackPane();
 	private Label info = new Label();
 	
-//	private NumberAxis yAxis;
-	private CategoryAxis yAxis;
-//  private CategoryAxis xAxis;
-	private NumberAxis xAxis;
+	private CategoryAxis xAxis;
+	private NumberAxis yAxis;
 
-    private BarChart<Number, String> barChart;
+    private BarChart<String, Number> barChart;
     private Map<String, String> dataMap = new HashMap<String,String>();
     private String[] yield;
     private Map<Double,List<Integer>> zuhe;
@@ -74,35 +63,28 @@ public class YieldDistributeChart implements chartService{
 			min -= 5;
 		if( max<100 )
 			max += 5;
-			
-		List<String> value = new ArrayList<>();
-		double k = min, gap = 5;
-		for( ; k<=max; k+=gap )
-			value.add( nf.format(k/100) );
-		ObservableList<String> values = FXCollections.observableList(value);
 		
-//		xAxis = new CategoryAxis(values);
-		xAxis = new NumberAxis();
+		String[] value = new String[(max-min)/5+1];
+		int k = min;
+		for( int i=0; i<value.length; i++, k+=5){
+				value[i] = nf.format(k/100.0);
+		}
+		ObservableList<String> values = FXCollections.observableArrayList(value);
+		
+		xAxis = new CategoryAxis(values);
         xAxis.setTickMarkVisible(false);
         xAxis.setTickLabelsVisible(false);
-//        xAxis.setStartMargin(0);
         xAxis.setOpacity(0.7);
-        xAxis.setLowerBound(min);
-        xAxis.setUpperBound(max);
 	        
-//        yAxis = new NumberAxis();
-        yAxis = new CategoryAxis();
-        yAxis.autoRangingProperty().set(false);
-//        yAxis.autoRangingProperty().set(true);
-//        yAxis.setAnimated(true);
-//        yAxis.forceZeroInRangeProperty().setValue(false); 
-//        yAxis.setLowerBound(0);
+        yAxis = new NumberAxis();
+        yAxis.autoRangingProperty().set(true);
+        yAxis.setAnimated(true);
+        yAxis.forceZeroInRangeProperty().setValue(false);
         yAxis.setOpacity(0.7);
 	    
         barChart = new BarChart<>(xAxis, yAxis);
         barChart.setVerticalGridLinesVisible(false);
         barChart.setBarGap(0);
-//        barChart.setPadding(new Insets(10,10,10,10));
         barChart.setCategoryGap(0);
         barChart.setLegendVisible(false);
         barChart.setOpacity(0.9);
@@ -113,22 +95,19 @@ public class YieldDistributeChart implements chartService{
         }
 	     
         String[] dataStrings = new String[yield.length];
-
-        List<Integer> pandm = new ArrayList<>();
 	     
-        XYChart.Series<Number, String> seriem = new XYChart.Series<>();
-        XYChart.Series<Number, String> seriep = new XYChart.Series<>();
+        XYChart.Series<String, Number> seriep = new XYChart.Series<>();
+        XYChart.Series<String, Number> seriem = new XYChart.Series<>();
+        List<Integer> pandm;
         
         String namep = "正收益",  namem= "负收益";
-        int maxNum = 0;
         for( int i=0; i<yield.length; i++){
         	pandm = zuhe.get(yieldL.get(i));
-        	if( Math.abs(pandm.get(0))>maxNum )
-        		maxNum = Math.abs(pandm.get(0));
-        	if( Math.abs(pandm.get(1))>maxNum )
-        		maxNum = Math.abs(pandm.get(1));
-        	XYChart.Data<Number,String> sp= new XYChart.Data<>(yieldL.get(i)/100 , ""+Math.abs(pandm.get(0)));
-            XYChart.Data<Number,String> sm= new XYChart.Data<>(yieldL.get(i)/100 , ""+Math.abs(pandm.get(1)));
+        	XYChart.Data<String,Number> sp= new XYChart.Data<>(
+        			nf.format( yieldL.get(i)/100 ), Math.abs(pandm.get(0)));
+            XYChart.Data<String,Number> sm= new XYChart.Data<>(
+            		nf.format( yieldL.get(i)/100 ), Math.abs(pandm.get(1)));
+            
             sp.nodeProperty().addListener(new ChangeListener<Node>() {
                 @Override
                 public void changed(ObservableValue<? extends Node> observable, Node oldValue, Node newValue) {
@@ -149,11 +128,6 @@ public class YieldDistributeChart implements chartService{
         	seriem.getData().add( sm );
         	dataStrings[i] = namep+" : "+pandm.get(0)+"/"+namem+" : "+pandm.get(1);
         }
-        List<String> yvalue = new ArrayList<>();
-		for( int i=0; i<=maxNum+2; i++ )
-			yvalue.add( i+"" );
-		ObservableList<String> yvalues = FXCollections.observableList(value);
-		yAxis.setCategories(yvalues);
 		
         barChart.getData().add(seriep);
         barChart.getData().add(seriem);
@@ -189,7 +163,7 @@ public class YieldDistributeChart implements chartService{
     	barChart.setMaxSize(width, height);
     	barChart.setMinSize(width, height);
    
-    	info = catchMouseMove.catchMouseReturnInfoForStackPaneNS(barChart, dataMap, yield, "收益率", 0, ChartKind.YIELDDISTRIBUTE);
+    	info = catchMouseMove.catchMouseReturnInfoForStackPaneSN(barChart, dataMap, yield, "收益率", 0);
     	
     	chartpane.getChildren().add(barChart);
     	chartpane.getChildren().add(info);
