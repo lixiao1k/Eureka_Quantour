@@ -38,13 +38,13 @@ public class YieldPointChart implements chartService{
 	@Override
 	public Pane getchart(int width, int height, boolean withdate) {
 		// TODO Auto-generated method stub
-		return null;
+		return pointChart.getchart(width, height, withdate);
 	}
 
 	@Override
 	public void setName(String name) {
 		// TODO Auto-generated method stub
-		
+		pointChart.setName(name);
 	}
 
 }
