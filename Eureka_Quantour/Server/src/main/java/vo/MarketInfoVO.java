@@ -1,6 +1,7 @@
 package vo;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 
@@ -12,80 +13,68 @@ public class MarketInfoVO implements Serializable{
 	
 	private static final long serialVersionUID = -8022819757439228511L;
 
-	/**
-	 * EFP: exceed five percent
-	 * LTFP: less than five percent
-	 * OMC: open minus close
-	 *@param: volume: the total trade of stock today
-	 *@param: numOfRiseStop: the number of stock which limits up today
-	 *@param: numOfDropStop: the number of stock which limits down today
-	 *@param: numOfRiseEFP: the number of stock which rises EFP
-	 *@param: numOfDropEFP: the number of stock which drops EFP
-	 *@param: numOfOMCEFP: the number of stock whose OMC EFP
-	 *@param: numOfOMCLTFP: the number of stock whose OMC LTFP
-	 */
-	private long volume = 0;
-	private int numOfRiseStop = 0;
-	private int numOfDropStop = 0;
-	private int numOfRiseEFP =0;
-	private int numOfDropEFP =0;
-	private int numOfOMCEFP = 0;
-	private int numOfOMCLTFP = 0;
-
-
-
-
-	public long getVolume(){
-		return this.volume;
-	}
-	public int getNumOfRiseStop(){
-		return this.numOfRiseStop;
-	}
-	public int getNumOfDropStop(){
-		return this.numOfDropStop;
-	}
-	public int getNumOfRiseEFP(){
-		return this.numOfRiseEFP;
-	}
-	public int getNumOfDropEFP(){
-		return this.numOfDropEFP;
-	}
-	public int getNumOfOMCEFP(){
-		return this.numOfOMCEFP;
-	}
-	public int getNumOfOMCLTFP(){
-		return this.numOfOMCLTFP;
-	}
 	
-	public void setVolume(long volume){
-		this.volume = volume;
-	}
-	public void setNumOfRiseStop(int numOfRiseStop){
-		this.numOfRiseStop = numOfRiseStop;
-	}
-	public void setNumOfDropStop(int numOfDropStop){
-		this.numOfDropStop = numOfDropStop;
-	}
-	public void setNumOfRiseEFP(int numOfRiseEFP){
-		this.numOfRiseEFP = numOfRiseEFP;
-	}
-	public void setNumOfDropEFP(int numOfDropEFP){
-		this.numOfDropEFP = numOfDropEFP;
-	}
-	public void setNumOfOMCEFP(int numOfOMCEFP){
-		this.numOfOMCEFP = numOfOMCEFP;
-	}
-	public void setNumOfOMCLTFP(int numOfOMCLTFP){
-		this.numOfOMCLTFP = numOfOMCLTFP;
+	private long volume = 0;
+	private int zhangting=0;
+	private int dieting=0;
+	private int tingpai;
+	private List<Integer> shanxingtu;
+	private List<Integer> diantu;
+
+	public long getVolume() {
+		return volume;
 	}
 
-	public MarketInfoVO(long volume, int numOfRiseStop, int numOfDropStop, int numOfRiseEFP, int numOfDropEFP, int numOfOMCEFP, int numOfOMCLTFP) {
+	public void setVolume(long volume) {
 		this.volume = volume;
-		this.numOfRiseStop = numOfRiseStop;
-		this.numOfDropStop = numOfDropStop;
-		this.numOfRiseEFP = numOfRiseEFP;
-		this.numOfDropEFP = numOfDropEFP;
-		this.numOfOMCEFP = numOfOMCEFP;
-		this.numOfOMCLTFP = numOfOMCLTFP;
+	}
+
+	public int getZhangting() {
+		return zhangting;
+	}
+
+	public void setZhangting(int zhangting) {
+		this.zhangting = zhangting;
+	}
+
+	public int getDieting() {
+		return dieting;
+	}
+
+	public void setDieting(int dieting) {
+		this.dieting = dieting;
+	}
+
+	public int getTingpai() {
+		return tingpai;
+	}
+
+	public void setTingpai(int tingpai) {
+		this.tingpai = tingpai;
+	}
+
+	public List<Integer> getShanxingtu() {
+		return shanxingtu;
+	}
+
+	public void setShanxingtu(List<Integer> shanxingtu) {
+		this.shanxingtu = shanxingtu;
+	}
+
+	public List<Integer> getDiantu() {
+		return diantu;
+	}
+
+	public void setDiantu(List<Integer> diantu) {
+		this.diantu = diantu;
+	}
+
+	public MarketInfoVO(long volume, int zhangting, int dieting, int tingpai, List<Integer> shanxingtu, List<Integer> diantu) {
+		this.volume = volume;
+		this.zhangting = zhangting;
+		this.dieting = dieting;
+		this.tingpai = tingpai;
+		this.shanxingtu = shanxingtu;
+		this.diantu = diantu;
 	}
 }
