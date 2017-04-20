@@ -168,6 +168,8 @@ public class StrategyUIController implements Initializable{
 	
 	@FXML
 	protected void makeStrategy(ActionEvent e){
+		anchorPane4.getChildren().clear();
+		anchorPane5.getChildren().clear();
 		StrategyConditionVO strategyConditionVO;
 		SaleVO saleVO;
 		String stockSet = "";
