@@ -119,8 +119,8 @@ public class StockLogicImpl implements StockLogicInterface{
 					duishushouyiilv.add(Math.log(po1.getAftClose()));
 
 					timelist.add(itr);
-					if(Math.abs(po1.getAftrate())>0.1) continue;
-					Integer s=(int ) (Math.rint(po1.getAftrate())*100);
+					if(Math.abs(po1.getAftrate())>10) continue;
+					Integer s=(int ) (Math.rint(po1.getAftrate()));
 
 					int p=diantu.get(s+10);
 					p++;
@@ -175,14 +175,14 @@ public class StockLogicImpl implements StockLogicInterface{
 			if (po.getRate()<10 && po.getRate()>=5){
 				zheng5dao10++;
 			}
-			if (po.getRate()>-10 && po.getRate()<=5){
+			if (po.getRate()>-10 && po.getRate()<=-5){
 				fu5dao10++;
 			}
 
-			if (po.getAftrate()<5 && po.getRate()>=0){
+			if (po.getRate()<5 && po.getRate()>=0){
 				zheng0dao5++;
 			}
-			if (po.getRate()>5 && po.getRate()<0){
+			if (po.getRate()>-5 && po.getRate()<0){
 				fu0dao5++;
 			}
 
@@ -364,72 +364,7 @@ public class StockLogicImpl implements StockLogicInterface{
 		List<Double> heng=new ArrayList<>();
 		List<Double> zong1=new ArrayList<>();
 		List<Double> zong2=new ArrayList<>();
-
-
-		if (name.equals("动量策略")) {
-			if (hengzhou.equals("形成期")){
-				for (int i=0;i<50;i+=5){
-					heng.add(i*1.0);
-					SaleVO saleVO=new SaleVO(geiding,"收盘价");
-					List<Object> list=new ArrayList<>();
-					list.add(new Integer(i));
-					StrategyConditionVO strategyConditionVO=new StrategyConditionVO(name,list,10);
-					Return stra=new Return(stocklistname,begin,end,saleVO,strategyConditionVO);
-					try {
-						List<Double> celueshouyi=stra.getStragetyReturn();
-						List<Double> jizhunshouyi=stra.getBasicReturn();
-						double a1=(celueshouyi.get(celueshouyi.size()-1)-jizhunshouyi.get(jizhunshouyi.size()))/jizhunshouyi.get(jizhunshouyi.size());
-						zong1.add(a1);
-						int index=0;
-						for (int j=0;j<celueshouyi.size();j++){
-							if (celueshouyi.get(i)>jizhunshouyi.get(i))
-								index++;
-						}
-						zong2.add(1.0*index/jizhunshouyi.size());
-					} catch (NullStockIDException e) {
-						e.printStackTrace();
-					} catch (PriceTypeException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-
-			else
-				if (hengzhou.equals("持有期")){
-					for (int i=0;i<50;i+=5){
-						heng.add(i*1.0);
-						SaleVO saleVO=new SaleVO(i,"收盘价");
-						List<Object> list=new ArrayList<>();
-						list.add(new Integer(5));
-						StrategyConditionVO strategyConditionVO=new StrategyConditionVO(name,list,10);
-						Return stra=new Return(stocklistname,begin,end,saleVO,strategyConditionVO);
-						try {
-							List<Double> celueshouyi=stra.getStragetyReturn();
-							List<Double> jizhunshouyi=stra.getBasicReturn();
-							double a1=(celueshouyi.get(celueshouyi.size()-1)-jizhunshouyi.get(jizhunshouyi.size()))/jizhunshouyi.get(jizhunshouyi.size());
-							zong1.add(a1);
-							int index=0;
-							for (int j=0;j<celueshouyi.size();j++){
-								if (celueshouyi.get(i)>jizhunshouyi.get(i))
-									index++;
-							}
-							zong2.add(1.0*index/jizhunshouyi.size());
-						} catch (NullStockIDException e) {
-							e.printStackTrace();
-						} catch (PriceTypeException e) {
-							e.printStackTrace();
-						}
-
-
-
-
-					}
-				}
-		}
-		else
-			if (name.equals("均值策略")){
-
-				for (int i=0;i<50;i+=5){
+				for (int i=5;i<30;i+=5){
 					heng.add(i*1.0);
 					SaleVO saleVO=new SaleVO(i,"收盘价");
 					List<Object> list=new ArrayList<>();
@@ -458,7 +393,7 @@ public class StockLogicImpl implements StockLogicInterface{
 
 				}
 
-			}
+
 
 
 

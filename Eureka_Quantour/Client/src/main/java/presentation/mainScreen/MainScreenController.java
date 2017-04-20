@@ -2,6 +2,8 @@ package presentation.mainScreen;
 
 import java.io.IOException;
 import java.net.URL;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -26,6 +28,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import presentation.marketUI.MarketUIController;
 import presentation.stockSetUI.StockSetUIController;
+import rmi.RemoteHelper;
 
 public class MainScreenController implements Initializable{
 	
@@ -146,6 +149,11 @@ public class MainScreenController implements Initializable{
 	@FXML
 	protected void exit(ActionEvent e){
 		Stage root = (Stage) exitButton.getScene().getWindow();
+		try {
+			RemoteHelper.getInstance().getClientLogic().signOut((String) dataController.get("UserName"));
+		} catch (RemoteException e1) {
+			e1.printStackTrace();
+		}
 		root.close();
 	}
 

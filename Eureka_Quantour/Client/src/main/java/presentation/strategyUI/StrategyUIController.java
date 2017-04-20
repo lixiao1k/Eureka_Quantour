@@ -132,7 +132,6 @@ public class StrategyUIController implements Initializable{
 		StockLogicInterface stockLogicInterface = remote.getStockLogic();
 		List<List<Double>> datelist1=new ArrayList<>();
 		List<List<Double>> datelist2=new ArrayList<>();
-		FlowPane pane=new FlowPane();
 		try {
 			if(momentumRadioButton.isSelected()) {
 				datelist1 = stockLogicInterface.getDantengchart("动量策略", (LocalDate) dataController.get("BeginTime"), (LocalDate) dataController.get("SystemTime"), "持有期", (String) dataController.get("UserName"), stockSetComboBox.getValue(), Integer.parseInt(xinchengqi));
@@ -143,15 +142,15 @@ public class StrategyUIController implements Initializable{
 
 //				//
 //				需补全参数的
-//				pane.getChildren().add(service1.getchart());
-//				pane.getChildren().add(service2.getchart());
+				anchorPane4.getChildren().add(service1.getchart(200,200,true));
+				anchorPane5.getChildren().add(service2.getchart(200,200,true));
 				//
 
 			}else{
 				datelist1 = stockLogicInterface.getDantengchart("均值策略", (LocalDate) dataController.get("BeginTime"), (LocalDate) dataController.get("SystemTime"), "持有期", (String) dataController.get("UserName"), stockSetComboBox.getValue(), Integer.parseInt(xinchengqi));
 				chartService service1=new DanTengChart(datelist1.get(1),datelist1.get(2));
 //				//同上
-//				pane.getChildren().add(service1.getchart());
+				anchorPane4.getChildren().add(service1.getchart(200,200,true));
 			}
 //			主pane上把pane加上
 		} catch (RemoteException e1) {
