@@ -30,7 +30,7 @@ public class YieldPointChart implements chartService{
 		num.add(numt);
 		
 		List<String> dataName = new ArrayList<>();
-		dataName.add("YieldPoint");
+		dataName.add("Num");
 
 		pointChart = new PointChart( yield, num, dataName, kind);
 	}

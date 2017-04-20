@@ -142,7 +142,7 @@ public class PointChart implements chartService{
     	scatterChart.setMaxSize(width, height);
     	scatterChart.setMinSize(width, height);
     	
-    	info = catchMouseMove.catchMouseReturnInfoForStackPaneNN(scatterChart, dataMap, yieldRange, "yield", 10, ChartKind.POINTFULL);
+    	info = catchMouseMove.catchMouseReturnInfoForStackPaneNN(scatterChart, dataMap, yieldRange, "Yield", 10, ChartKind.POINTFULL);
     	
     	chartpane.getChildren().add(scatterChart);
     	chartpane.getChildren().add(info);
