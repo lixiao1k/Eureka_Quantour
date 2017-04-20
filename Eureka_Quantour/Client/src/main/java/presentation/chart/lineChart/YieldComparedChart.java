@@ -70,8 +70,8 @@ public class YieldComparedChart implements chartService {
     	Label alpha = new Label();
     	Label beta = new Label();
     	Label sharpe = new Label();
-    	Label yieldbodong = new Label();
-    	Label infobilv = new Label();
+//    	Label yieldbodong = new Label();
+//    	Label infobilv = new Label();
     	Label maxre = new Label();
     	
     	yearyield.setPrefSize(layout, space);
@@ -79,8 +79,8 @@ public class YieldComparedChart implements chartService {
     	alpha.setPrefSize(layout*3/5, space);
     	beta.setPrefSize(layout*3/5, space);
     	sharpe.setPrefSize(layout, space);
-    	yieldbodong.setPrefSize(layout, space);
-    	infobilv.setPrefSize(layout, space);
+//    	yieldbodong.setPrefSize(layout, space);
+//    	infobilv.setPrefSize(layout, space);
     	maxre.setPrefSize(layout, space);
     	
     	yearyield.setText( "年化收益率\n" + nf.format( ycd.getYearreturn() ) );
@@ -88,17 +88,17 @@ public class YieldComparedChart implements chartService {
     	alpha.setText( "α\n" + nf.format( ycd.getAlpha() ) );
     	beta.setText( "β\n" + df.format( ycd.getBeta() ) );
     	sharpe.setText( "夏普比率\n" + df.format( ycd.getSharpe() ) );
-    	yieldbodong.setText( "收益波动率\n" + nf.format( 0.249 ) );
-    	infobilv.setText( "信息比率\n" + df.format( 1.03 ) );
-    	maxre.setText( "最大回撤\n" + nf.format( 0.238 ) );
+//    	yieldbodong.setText( "收益波动率\n" + nf.format( 0.249 ) );
+//    	infobilv.setText( "信息比率\n" + df.format( 1.03 ) );
+    	maxre.setText( "最大回撤\n" + nf.format( ycd.getZuidahuiche() ) );
 
     	yearyield.getStyleClass().add("label-1");
     	basicyearyield.getStyleClass().add("label-1");
     	alpha.getStyleClass().add("label-2");
     	beta.getStyleClass().add("label-2");
     	sharpe.getStyleClass().add("label-2");
-    	yieldbodong.getStyleClass().add("label-3");
-    	infobilv.getStyleClass().add("label-3");
+//    	yieldbodong.getStyleClass().add("label-3");
+//    	infobilv.getStyleClass().add("label-3");
     	maxre.getStyleClass().add("label-3");
     	
     	infopane.getChildren().add(yearyield);
@@ -106,8 +106,8 @@ public class YieldComparedChart implements chartService {
     	infopane.getChildren().add(alpha);
     	infopane.getChildren().add(beta);
     	infopane.getChildren().add(sharpe);
-    	infopane.getChildren().add(yieldbodong);
-    	infopane.getChildren().add(infobilv);
+//    	infopane.getChildren().add(yieldbodong);
+//    	infopane.getChildren().add(infobilv);
     	infopane.getChildren().add(maxre);
     	
     	double index = 10;
@@ -125,11 +125,11 @@ public class YieldComparedChart implements chartService {
     	index += layout*3/5;
     	AnchorPane.setLeftAnchor(sharpe, index);
     	
-    	index += layout;
-    	AnchorPane.setLeftAnchor(yieldbodong, index);
+//    	index += layout;
+//    	AnchorPane.setLeftAnchor(yieldbodong, index);
     	
-    	index += layout;
-    	AnchorPane.setLeftAnchor(infobilv, index);
+//    	index += layout;
+//    	AnchorPane.setLeftAnchor(infobilv, index);
     	
     	index += layout;
     	AnchorPane.setLeftAnchor(maxre, index);
