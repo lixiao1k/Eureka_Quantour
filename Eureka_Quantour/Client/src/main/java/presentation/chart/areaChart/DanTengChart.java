@@ -9,10 +9,8 @@ public class DanTengChart implements chartService{
 	
 	private AreaLineChart areaLineChart;
 	
-	public DanTengChart(List<Double> xingchengqi, List<Double> shenglv){
-		int[] cycle = new int[xingchengqi.size()];
-		for( int i=0; i<cycle.length; i++)
-			cycle[i] = (int)( (double)xingchengqi.get(i) );
+	public DanTengChart( List<Double> shenglv ){
+		int[] cycle = {0, 5, 10, 15, 20, 25, 30};
 		
 		Double[] dataList = new Double[shenglv.size()];
 		for( int i=0; i<dataList.length; i++ )

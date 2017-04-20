@@ -47,7 +47,7 @@ public class test extends Application{
 			else
 				datalist.add( Math.random() );
 		}
-		danTengChart = new DanTengChart(cycle, datalist);
+		danTengChart = new DanTengChart(datalist);
 	}
 	
 	@Override
