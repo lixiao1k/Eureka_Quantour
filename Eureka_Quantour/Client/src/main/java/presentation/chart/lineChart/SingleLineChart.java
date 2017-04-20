@@ -7,6 +7,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import presentation.chart.chartService;
 import presentation.chart.function.CatchMouseMove;
 import presentation.chart.function.CatchMouseMoveService;
@@ -32,9 +33,9 @@ public class SingleLineChart implements chartService{
 	private CommonSetService commonSet = new CommonSet();
 
 	private AnchorPane pane = new AnchorPane();
+	private StackPane chartpane = new StackPane();
+	private StackPane datepane = new StackPane();
 	private Label info = new Label();
-	private Label begin = new Label();
-	private Label end = new Label();
 	
     private NumberAxis yAxis;
     private CategoryAxis xAxis;
@@ -61,6 +62,7 @@ public class SingleLineChart implements chartService{
         lineChart.setHorizontalGridLinesVisible(false);
         lineChart.setVerticalGridLinesVisible(false);
         lineChart.setCreateSymbols(false);
+        lineChart.setLegendVisible(false);
         
         dates = listToArray.formatLocalDate(date);
         
@@ -97,28 +99,44 @@ public class SingleLineChart implements chartService{
     }
     
     @Override
-    public Pane getchart(int width, int height, boolean withdate) {
-    	double space = 20;
-    	int heightT = (int)(height-space);
-    	
+    public Pane getchart(int width, int height, boolean withdate) {	
     	if( width<=0 )
     		width = 334;
     	if( height<=0 )
     		height = 200;
+    	double chartsmall = 5, dateheight = 10, dategap = 10;
+    	if( withdate ){
+    		lineChart.getYAxis().setOpacity(0.9);
+    		height -= dateheight;
+    		String bdate = dates[0];
+    		String mdate = dates[dates.length/2];
+    		String edate = dates[dates.length-1];
+    		datepane.getChildren().addAll( 
+    				commonSet.dateForStackPane(bdate, mdate, edate).getChildren() );
+    		datepane.setPrefSize(width-10, dateheight);
+    		datepane.getStylesheets().add(
+        			getClass().getResource("/styles/DateLabel.css").toExternalForm() );
+    	}
+    	else{
+    		lineChart.getYAxis().setTickLabelsVisible(false);
+    		lineChart.getYAxis().setPrefWidth(1);
+    		lineChart.getYAxis().setOpacity(0);
+    	}
+    	lineChart.setMaxSize(width, height);
+    	lineChart.setMinSize(width, height);
     	
-    	lineChart.setMaxSize(width, heightT);
-    	lineChart.setMinSize(width, heightT);
+    	info = catchMouseMove.catchMouseReturnInfoForStackPaneSN(lineChart, dataMap, dates, "date", 0);
     	
-    	info = catchMouseMove.catchMouseReturnInfoForAnchorPaneSN(lineChart, dataMap, dates, "date", 0);
-    	begin = commonSet.beignDateForAnchorPane(dates[0], height);
-    	end = commonSet.endDateForAnchorPane(dates[dates.length-1], width, height);
+    	chartpane.getChildren().add(lineChart);
+    	chartpane.getChildren().add(info);
+    	pane.getChildren().add(chartpane);
+    	AnchorPane.setTopAnchor(chartpane, chartsmall);
     	
-    	pane.getChildren().add(lineChart);
-    	pane.getChildren().add(info);
-    	pane.getChildren().add(begin);
-    	pane.getChildren().add(end);
-    	AnchorPane.setTopAnchor(lineChart, space);
-    	
+    	if( withdate ){
+    		pane.getChildren().add(datepane);
+    		AnchorPane.setTopAnchor(datepane, height+chartsmall);
+    		AnchorPane.setLeftAnchor(datepane, dategap);
+    	}
     	info.getStylesheets().add(
     			getClass().getResource("/styles/InfoLabel.css").toExternalForm() );
     	pane.getStylesheets().add(

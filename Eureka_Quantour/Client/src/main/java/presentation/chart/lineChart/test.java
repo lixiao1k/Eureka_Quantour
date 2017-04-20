@@ -68,7 +68,7 @@ public class test extends Application{
     		d1[i] = jizhunlist.get(i);
     	}
 		singleLineChart = new SingleLineChart(dates, d1, "hello");
-		singleLineChart.setName("SingleLineChart");
+//		singleLineChart.setName("SingleLineChart");
     }
     
     private void testEMAChart(){
@@ -123,7 +123,7 @@ public class test extends Application{
 	        dialogStage.initOwner(primaryStage);
 	        
 //	        Scene scene = new Scene(yieldComparedChart.getchart(800, 300, true));
-	        Scene scene = new Scene(singleLineChart.getchart(334, 200, false));
+	        Scene scene = new Scene(singleLineChart.getchart(334, 200, true));
 //	        Scene scene = new Scene(emaChart.getchart(500, 300, true));
 	        dialogStage.setScene(scene);
 
