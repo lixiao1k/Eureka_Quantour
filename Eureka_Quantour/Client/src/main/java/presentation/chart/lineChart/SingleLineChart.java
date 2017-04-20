@@ -19,6 +19,7 @@ import presentation.chart.function.ListToArrayService;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -44,7 +45,7 @@ public class SingleLineChart implements chartService{
     private Map<String, String> dataMap = new HashMap<String,String>();
     private String[] dates;
 
-    public SingleLineChart(LocalDate[] date, Double[] doubleList, String dataName) {
+    public SingleLineChart(List<LocalDate> date, List<Double> doubleList, String dataName) {
         xAxis = new CategoryAxis();
         xAxis.setGapStartAndEnd(false);
         xAxis.setTickLabelsVisible(false);
@@ -66,13 +67,13 @@ public class SingleLineChart implements chartService{
         
         dates = listToArray.formatLocalDate(date);
         
-        Double[] datas = doubleList;
-        String[] dataStrings = new String[date.length];
+        Double[] datas = listToArray.changeDouble( doubleList );
+        String[] dataStrings = new String[date.size()];
         
         XYChart.Series<String, Number> serie = new XYChart.Series<>();
         serie.setName(dataName);
 
-        for(int j=0; j<date.length; j++){
+        for(int j=0; j<date.size(); j++){
 	        if( j<datas.length && datas[j]!=0 && datas[j]!=Integer.MIN_VALUE ){
 	        	serie.getData().add( new XYChart.Data<>(dates[j], datas[j]) );
 	        	
@@ -91,7 +92,7 @@ public class SingleLineChart implements chartService{
         }
         lineChart.getData().add(serie);
         
-        for(int i=0; i<date.length; i++){
+        for(int i=0; i<date.size(); i++){
         	if( dataStrings[i].length()!=0 )
         		dataMap.put(dates[i], dataStrings[i]);
         }

@@ -61,13 +61,13 @@ public class test extends Application{
     		datelist.add( LocalDate.of(2014, 3, j));
     		jizhunlist.add( Math.random() ); 
     	}
-    	LocalDate[] dates = new LocalDate[datelist.size()];
-    	Double[] d1 = new Double[jizhunlist.size()];
-    	for(int i=0; i<datelist.size(); i++){
-    		dates[i] = datelist.get(i);
-    		d1[i] = jizhunlist.get(i);
-    	}
-		singleLineChart = new SingleLineChart(dates, d1, "hello");
+//    	LocalDate[] dates = new LocalDate[datelist.size()];
+//    	Double[] d1 = new Double[jizhunlist.size()];
+//    	for(int i=0; i<datelist.size(); i++){
+//    		dates[i] = datelist.get(i);
+//    		d1[i] = jizhunlist.get(i);
+//    	}
+		singleLineChart = new SingleLineChart(datelist, jizhunlist, "hello");
 //		singleLineChart.setName("SingleLineChart");
     }
     
