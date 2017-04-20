@@ -71,7 +71,7 @@ public class AreaLineChart implements chartService {
         XYChart.Series<String, Number> serie = new XYChart.Series<>();
         serie.setName(dataName);
         for(int j=0; j<cycles.length; j++){
-	        if( j<datas.length && datas[j]!=0 && datas[j]!=Integer.MIN_VALUE ){
+	        if( j<datas.length && datas[j]!=Integer.MIN_VALUE ){
 	        	serie.getData().add( new XYChart.Data<>(cycleSave[j], datas[j]) );
 	        		
 	        	String dataFormat = NumberFormat.getPercentInstance().format(datas[j]);
