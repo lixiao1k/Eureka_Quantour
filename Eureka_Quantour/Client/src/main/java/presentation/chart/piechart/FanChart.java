@@ -38,19 +38,41 @@ public class FanChart implements chartService{
 		for( int i=0; i<num.length; i++)
 			count += num[i];
 		
-//		caption = new Label("");
-//		caption.setTextFill( Color.DARKORANGE );
-//		caption.setStyle("-fx-font: 24 arial;");
-//		for (final PieChart.Data data : chart.getData()) {
+		caption = new Label("");
+		caption.setTextFill( Color.DARKORANGE );
+		caption.setStyle("-fx-font: 24 arial;");
+		caption.setLayoutX(5);
+    	caption.setLayoutY(5);
+		for (final PieChart.Data data : chart.getData()) {
 //		    data.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED,
 //		        new EventHandler<MouseEvent>() {
 //		            @Override public void handle(MouseEvent e) {
-//		                caption.setTranslateX(e.getSceneX());
-//		                caption.setTranslateY(e.getSceneY());
-//		                caption.setText( nf.format(data.getPieValue()/count) );
+//		            	caption.setText( nf.format(data.getPieValue()/count) );
+//		            	caption.setVisible(true);
 //		             }
 //		        });
-//		}
+		    data.getNode().addEventHandler(MouseEvent.MOUSE_ENTERED,
+			        new EventHandler<MouseEvent>() {
+			            @Override public void handle(MouseEvent e) {
+			            	caption.setText( nf.format(data.getPieValue()/count) );
+			            	caption.setVisible(true);
+			             }
+			        });
+		    data.getNode().addEventHandler(MouseEvent.MOUSE_EXITED,
+			        new EventHandler<MouseEvent>() {
+			            @Override public void handle(MouseEvent e) {
+			            	caption.setText("");
+			            	caption.setVisible(false);
+			             }
+			        });
+//		    data.getNode().setOnMouseEntered(
+//		    		new EventHandler<MouseEvent>() {
+//			            @Override public void handle(MouseEvent e) {
+//			            	caption.setText( nf.format(data.getPieValue()/count) );
+//			            	caption.setVisible(true);
+//			             }
+//			        });
+		}
 		
 
         for (PieChart.Data d : pieChartData) {
@@ -73,7 +95,7 @@ public class FanChart implements chartService{
     	chart.setPrefSize(width, height);
     	pane.setPrefSize(width, height);
     	pane.getChildren().add(chart);
-//    	pane.getChildren().add(caption);
+    	pane.getChildren().add(caption);
     	pane.getStylesheets().add(
     			getClass().getResource("/styles/PieChart.css").toExternalForm() );
     	return pane;
@@ -127,8 +149,6 @@ public class FanChart implements chartService{
 			}
 		 
 			double radius = maxX - minX;
-//			System.out.println("cos:" + cos);
-//			System.out.println("sin" + sin);
 			TranslateTransitionBuilder.create()
 			.toX((radius * ANIMATION_DISTANCE) * cos)
 			.toY((radius * ANIMATION_DISTANCE) * (-sin))
