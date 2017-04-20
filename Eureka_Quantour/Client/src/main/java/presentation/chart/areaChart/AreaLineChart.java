@@ -35,7 +35,7 @@ public class AreaLineChart implements chartService {
 	private AnchorPane pane = new AnchorPane();
 	private StackPane chartpane = new StackPane();
 	private StackPane datepane = new StackPane();
-	private Label info = new Label();
+//	private Label info = new Label();
 	
     private NumberAxis yAxis;
     private CategoryAxis xAxis;
@@ -122,10 +122,10 @@ public class AreaLineChart implements chartService {
     	areaChart.setMaxSize(width, height);
     	areaChart.setMinSize(width, height);
     	
-    	info = catchMouseMove.catchMouseReturnInfoForStackPaneSN(areaChart, dataMap, cycleSave, "周期", 5);
+//    	info = catchMouseMove.catchMouseReturnInfoForStackPaneSN(areaChart, dataMap, cycleSave, "周期", 5);
     	
     	chartpane.getChildren().add(areaChart);
-    	chartpane.getChildren().add(info);
+//    	chartpane.getChildren().add(info);
     	
     	pane.getChildren().add(chartpane);
     	AnchorPane.setTopAnchor(chartpane, chartsmall);
@@ -135,8 +135,8 @@ public class AreaLineChart implements chartService {
     		AnchorPane.setLeftAnchor(datepane, dategap);
     	}	
     	
-    	info.getStylesheets().add(
-    			getClass().getResource("/styles/InfoLabel.css").toExternalForm() );
+//    	info.getStylesheets().add(
+//    			getClass().getResource("/styles/InfoLabel.css").toExternalForm() );
     	pane.getStylesheets().add(
     			getClass().getResource("/styles/AreaChart.css").toExternalForm() );
         return pane;
