@@ -145,5 +145,14 @@ public class Utility {
         }
         return  zonghe/A.size();
     }
+    public int getdanteng(String str){
+        char[] s=str.toCharArray();
+        int d=0;
+        for (int i=0;i<s.length;i++){
+            d+=s[i];
+        }
+        return d;
+
+    }
 
 }

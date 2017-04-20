@@ -288,7 +288,7 @@ public class StockLogicImpl implements StockLogicInterface{
 
 			for (int i=0;i<jizhunlist.size();i++){
 				double hengzhou=Math.rint(jizhunlist.get(i)*20)*5;
-				System.out.println(hengzhou);
+//				System.out.println(hengzhou);
 				if (zuhe.get(hengzhou)==null) {
 					zuhe.put(hengzhou, Arrays.asList(0, 0));
 				}
@@ -302,7 +302,7 @@ public class StockLogicImpl implements StockLogicInterface{
 					judge=celuelist.get(i)/celuelist.get(i-1)>=jizhunlist.get(i)/jizhunlist.get(i-1);
 				}
 				if(judge){
-					System.out.println("haha");
+//					System.out.println("haha");
 					int shuzi=zuhe.get(hengzhou).get(0);
 					shuzi++;
 					zuhe.get(hengzhou).set(0,shuzi);
@@ -315,7 +315,7 @@ public class StockLogicImpl implements StockLogicInterface{
 				}
 
 			}
-			System.out.println("--------"+zuhe);
+//			System.out.println("--------"+zuhe);
 			return new YieldDistributionHistogramDataVO(zuhe);
 
 
@@ -357,19 +357,24 @@ public class StockLogicImpl implements StockLogicInterface{
 
 	@Override
 	public List<List<Double>> getDantengchart(String name, LocalDate begin, LocalDate end, String hengzhou, String usernam, String stocksetname,int geiding) {
-		if (stocksetname.equals("SHA") ||stocksetname.equals("SZA") ||stocksetname.equals("SHB")|| stocksetname.equals("SZB")||stocksetname.equals("CYB")||stocksetname.equals("HS300")
-				||stocksetname.equals("ZXB") )
-			usernam=null;
-		List<String> stocklistname=idi.getStockSetInfo(stocksetname,usernam);
+		int i=0;
 		List<Double> zong1=new ArrayList<>();
 		List<Double> zong2=new ArrayList<>();
-
-		for (int i=0;i<=30;i+=5){
-			zong1.add(Math.random()*2-1);
-			zong2.add(Math.random()*2-1);
+		LocalDate ite=LocalDate.of(begin.getYear(),begin.getMonth(),begin.getDayOfMonth());
+		for (;
+				ite.compareTo(end)<0;
+				ite=ite.plusDays(1)){
+			i++;
 		}
-		System.out.println(zong1);
-		System.out.println(zong2);
+
+		int j=0;
+		j=utility.getdanteng(name)+i+utility.getdanteng(hengzhou)+utility.getdanteng(usernam)+utility.getdanteng(stocksetname)+geiding;
+		for (int k=5;k<10;k++){
+			zong1.add(1.0*(j%k)/k);
+		}
+		for (int k=10;k<15;k++){
+			zong2.add(1.0*(j%k)/k);
+		}
 
 		List<List<Double>> res=new ArrayList<>();
 			res.add(new ArrayList<>());

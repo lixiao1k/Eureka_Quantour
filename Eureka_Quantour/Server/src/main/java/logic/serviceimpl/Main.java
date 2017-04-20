@@ -64,8 +64,6 @@ public class Main {
 //        }
         s.setStrategy(stragetyConditionVo,saleVO,LocalDate.of(2015,04,15),LocalDate.of(2017,4,7),"SHA",null);
         YieldChartDataVO vo=s.getYieldChartData();
-        System.out.println(vo.getJizhunlist().size());
-        System.out.println(vo.getCeluelist().size());
 //        System.out.print(s.getYieldChartData().getSharpe());
 //        System.out.println();
 //        System.out.print(s.getYieldChartData().getCeluelist().size());

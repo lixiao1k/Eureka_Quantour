@@ -139,7 +139,6 @@ public class Return {
     	                    }
     	                    timelist.add(iter);
     	                jizhunfudu.add(shangci/zheci);
-    	               System.out.println(zheci+"  "+shangci);
     	                init=init*(shangci/zheci);
     	                double rate=(init-100)/100;
     	                list.add(rate);
