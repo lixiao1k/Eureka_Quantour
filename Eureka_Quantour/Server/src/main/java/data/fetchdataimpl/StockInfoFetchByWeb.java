@@ -1,6 +1,7 @@
 package data.fetchdataimpl;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -22,6 +23,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import data.common.DateLeaf;
 import data.common.DateTrie;
@@ -110,6 +113,66 @@ public class StockInfoFetchByWeb {
 			count++;
 			System.out.println("正在处理第"+count+"个，总共"+i+"个"+"剩余"+(i-count)+"个。");
 			String date2=fetchdate(stock,enddate);
+			if(flag){
+				if(date2!=null){
+					int tempdate=Parse.getInstance().getIntDate(date2);
+					if(tempdate>date1){
+						date1=tempdate;
+						lastday=date2;
+						if(date2.equals(enddate)){
+							flag=false;
+						}
+					}
+				}
+			}
+		}
+		OutputStream os=new FileOutputStream("config/stock/dataconfig.properties");
+		if(flag){
+			pro.setProperty("lastday", lastday);
+		}
+		else{	
+			pro.setProperty("lastday", enddate);
+		}
+		pro.setProperty("lastUpdateDay", enddate);
+		pro.store(os, "update personalSize");
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+		long time1=System.currentTimeMillis();
+		System.out.println("花费时间：" +(time1-time)+"ms");
+	}
+	/**
+	 * 获取股票信息
+	 * @throws InternetdisconnectException 网络无法链接时抛出异常
+	 */
+	public void fetchAllStockInfo2() throws InternetdisconnectException{
+		webmethod.testInternet();
+		File root=new File(stockroot);
+		String[] stocklist=root.list();
+		int i=stocklist.length;
+		int count=0;
+		Calendar cal=Calendar.getInstance();
+		if(cal.get(Calendar.HOUR_OF_DAY)<18){
+			cal.set(Calendar.DATE, cal.get(Calendar.DATE)-1);
+		}
+		String enddate=sdf.format(cal.getTime());
+		long time=System.currentTimeMillis();
+		try{
+			Properties pro=new Properties();
+			File profile=new File("config/stock/dataconfig.properties");
+			if(!profile.exists()){
+				profile.createNewFile();
+			}
+			InputStream is=new FileInputStream("config/stock/dataconfig.properties");
+			pro.load(is);
+			is.close();
+			String lastday=pro.getProperty("lastday");
+			int date1=Parse.getInstance().getIntDate(lastday);
+		boolean flag=true;
+		for(String stock:stocklist){
+			count++;
+			System.out.println("正在处理第"+count+"个，总共"+i+"个"+"剩余"+(i-count)+"个。");
+			String date2=fetchdate2(stock,enddate);
 			if(flag){
 				if(date2!=null){
 					int tempdate=Parse.getInstance().getIntDate(date2);
@@ -393,7 +456,6 @@ public class StockInfoFetchByWeb {
 			pro.load(is);
 			is.close();
 			int prepssize=Integer.valueOf(pro.getProperty("personalSize", "0"));
-			
 			
 			DateLeaf p=trie.getMin();
 			int code1=Integer.valueOf(code);
@@ -783,7 +845,64 @@ public class StockInfoFetchByWeb {
 			e.printStackTrace();
 		}
 	}
-	
+	/**
+	 * 爬取股票信息
+	 * @param code 股票编号
+	 * @param enddate 结束日期
+	 */
+	private String fetchdate2(String code,String enddate){
+		try {
+			String codepath=stockroot+"/"+code+"/";
+			Properties pro=new Properties();
+			BufferedInputStream is = new BufferedInputStream(
+					new FileInputStream(codepath+"config.properties"));
+			pro.load(is);
+			is.close();
+			String startdate="";
+			String tempdate=pro.getProperty("update_day",null);
+			if(tempdate==null){
+				startdate=pro.getProperty("first_day");
+			}
+			else{
+				Calendar cal=Calendar.getInstance();
+				try {
+					cal.setTime(sdf.parse(tempdate));
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				cal.add(Calendar.DATE, 1);
+				startdate=sdf.format(cal.getTime());
+			}
+			startdate=encodeDate(startdate);
+			enddate=encodeDate(enddate);
+			String url="";
+			try {
+				url=generateUrl2(code,matchMarketCode(code),startdate,enddate);
+			} catch (NoneMatchedMarketException e) {
+				System.out.println(e.toString()+" :"+code);
+			}
+			String resultdate="";
+			resultdate=saveToFile2(url, codepath+"data");		
+			if(!resultdate.equals("")){
+				OutputStream out=new FileOutputStream(codepath+"config.properties");
+				String[] date=resultdate.split(":");
+				if(tempdate==null){
+					pro.setProperty("first_day", date[1]);
+				}
+				BufferedWriter bw=new BufferedWriter(new FileWriter(log));
+				bw.write(date[1]+":"+date[0]+"\n");
+				bw.close();
+				pro.setProperty("last_day", date[0]);
+				pro.setProperty("update_day", decodeDate(enddate));
+				pro.store(out, "update info up to" + date[0]);
+				return date[0];
+			}
+			return null;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 	
 	/**
 	 * 爬取股票信息
@@ -869,6 +988,33 @@ public class StockInfoFetchByWeb {
 		return result;
 	}
 	/**
+	 * 生成获取指定股票日期内的数据的URL
+	 * @param code 股票编号
+	 * @param marketcode 市场编号
+	 * @param startdate 开始日期,格式为20150509(表示2015年5月9日)
+	 * @param enddate 结束日期
+	 * @return 生成的URL
+	 */
+	private String generateUrl2(String code,String marketcode,String startdate,String enddate){		
+		String result=
+				"http://q.stock.sohu.com/hisHq?code=cn_"
+				+ code
+				+ "&start="
+				+ startdate
+				+ "&end="
+				+ enddate
+				+ "&stat=1&order=D&period=d&callback=historySearchHandler&rt=jsonp";
+		try {
+			BufferedWriter bw=new BufferedWriter(new FileWriter(log));
+			bw.write(code+":"+startdate+":"+enddate+"\n");
+			bw.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+	/**
 	 * 根据股票编号生成市场编号
 	 * @param code 股票编好
 	 * @return 市场编号
@@ -941,6 +1087,84 @@ public class StockInfoFetchByWeb {
 			}
 		}  	
   		fos.write(total);
+  		fos.close();
+  		bis.close();
+  		httpUrl.disconnect();
+  		return resultdate;
+	}
+	/**
+	 * 从网站上爬取股票信息
+	 * @param destUrl 获取信息的URL
+	 * @param stockpath 股票信息的存储路径
+	 * @return 网站上的信息
+	 * @throws IOException 
+	 */
+	private String saveToFile2(String destUrl, String fileName) throws IOException {
+		BufferedWriter fos = null;
+		BufferedInputStream bis = null;
+		HttpURLConnection httpUrl = null;
+		URL url = null;
+		url = new URL(destUrl);
+		httpUrl = (HttpURLConnection) url.openConnection();
+		httpUrl.connect();
+		bis = new BufferedInputStream(httpUrl.getInputStream());
+		fos = new BufferedWriter(new FileWriter(fileName,true));
+		String total="";
+		String resultdate="";
+		int BUFFER_SIZE = 8096;
+		byte[] buf = new byte[BUFFER_SIZE];
+		int size = 0;
+		while ((size = bis.read(buf)) != -1){
+			total=total+new String(buf);
+		}
+		total=total.substring(40);
+		boolean has=false;
+		String p="\\[.*?\\]";
+		 Pattern pat=Pattern.compile(p);
+		 Matcher m=pat.matcher(total);
+		 String date="";
+		 String beforedate="";
+		 String lastday="";
+		 String result="";
+		 DecimalFormat   df=new   DecimalFormat("0.00"); 
+		 while(m.find()){	
+		  	String column=m.group();
+		  	String p1="\".*?\"";
+			Pattern pat1=Pattern.compile(p1);
+			Matcher m1=pat1.matcher(column);
+			m1.find();
+			beforedate=date;
+			date=m1.group();
+			date=date.substring(1,date.length()-1);
+			if(date.length()>8){
+				if(!has){
+					lastday=date;
+				}
+				has=true;
+				m1.find();
+				String open=m1.group().substring(1,m1.group().length()-1);
+				m1.find();
+				String close=m1.group().substring(1,m1.group().length()-1);
+				m1.find();
+				String before=m1.group().substring(1,m1.group().length()-1);
+				m1.find();
+				String rate=m1.group().substring(1,m1.group().length()-2);
+				m1.find();
+				String low=m1.group().substring(1,m1.group().length()-1);
+				m1.find();
+				String high=m1.group().substring(1,m1.group().length()-1);
+				m1.find();
+				String volume=m1.group().substring(1,m1.group().length()-1);
+				
+				String tclose=df.format(Double.parseDouble(close)+Double.parseDouble(before));
+				result=date+","+open+","+high+","+low+","+close+","+tclose+","+rate+","+volume+"00"+"\n"+result;
+			}
+		 }
+		String startday=beforedate;
+  		if(has){
+  			fos.write(result);
+  			resultdate=lastday+":"+startday;
+  		}
   		fos.close();
   		bis.close();
   		httpUrl.disconnect();

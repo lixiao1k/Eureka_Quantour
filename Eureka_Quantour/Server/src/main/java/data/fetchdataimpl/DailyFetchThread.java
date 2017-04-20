@@ -59,4 +59,5 @@ public class DailyFetchThread {
 	public void waitoneday(){
         start(1440);
 	}
+	
 }

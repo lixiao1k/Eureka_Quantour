@@ -134,6 +134,7 @@ public class DataDriver {
 				inputtime=System.currentTimeMillis();
 				try {
 					System.out.println(data.getSingleStockInfo(stockcode, date).toString());
+					System.out.println(data.getSingleStockInfo(stockcode, date).getAftavg_5());
 				} catch (NullStockIDException e) {
 					System.out.println(e.toString());
 				} catch (NullDateException e) {
