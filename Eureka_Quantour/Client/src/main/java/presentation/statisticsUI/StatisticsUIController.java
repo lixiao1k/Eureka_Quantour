@@ -75,6 +75,15 @@ public class StatisticsUIController implements Initializable {
 	@FXML
 	Label varianValue;
 	
+	@FXML
+	Label RAFfengbuLabel;
+	
+	@FXML
+	Label meanLabel;
+	
+	@FXML
+	Label varianLabel;
+	
 	
 	private DataContorller dataController;
 	
@@ -138,24 +147,34 @@ public class StatisticsUIController implements Initializable {
 				"-fx-font-size:45;"
 				+ "-fx-text-fill: rgb(255, 0, 0, 1);"
 				+ "-fx-font-weight:bold");
-		zhangtingLabel.setStyle("-fx-font-size:20;"
+		zhangtingLabel.setStyle("-fx-font-size:18;"
 				+ "-fx-text-fill: #EE5C42;"
 				+ "-fx-font-weight:bold");
-		dietingLabel.setStyle("-fx-font-size:20;"
+		dietingLabel.setStyle("-fx-font-size:18;"
 				+ "-fx-text-fill: #C0FF3E;"
 				+ "-fx-font-weight:bold");
-		tingpaiLabel.setStyle("-fx-font-size:20;"
+		tingpaiLabel.setStyle("-fx-font-size:18;"
 				+ "-fx-text-fill: rgb(255, 255, 255, 1);"
 				+ "-fx-font-weight:bold");
-		volumeLabel.setStyle("-fx-font-size:20;"
+		volumeLabel.setStyle("-fx-font-size:18;"
 				+ "-fx-text-fill: rgb(255, 255, 255, 1);"
 				+ "-fx-font-weight:bold");
-		zhangtingvalue.setStyle("-fx-font-size:20;"
+		varianLabel.setStyle("-fx-font-size:18;"
+				+ "-fx-text-fill: rgb(255, 255, 255, 1);"
+				+ "-fx-font-weight:bold");
+		RAFfengbuLabel.setStyle("-fx-font-size:20;"
+				+ "-fx-text-fill: rgb(255, 255, 255, 1);"
+				+ "-fx-font-weight:bold");
+		meanLabel.setStyle("-fx-font-size:18;"
+				+ "-fx-text-fill: rgb(255, 255, 255, 1);"
+				+ "-fx-font-weight:bold");
+		zhangtingvalue.setStyle("-fx-font-size:18;"
 				+ "-fx-text-fill: #EE5C42;"
 				+ "-fx-font-weight:bold");
-		dietingValue.setStyle("-fx-font-size:20;"
+		dietingValue.setStyle("-fx-font-size:18;"
 				+ "-fx-text-fill: #C0FF3E;"
 				+ "-fx-font-weight:bold");
+
 		ObservableList<String> marketList = FXCollections.observableArrayList();
 		marketList.addAll("SHA","SHB","SZA","SZB","CYB","ZXB","HS300");
 		marketComboBox.getItems().addAll(marketList);
