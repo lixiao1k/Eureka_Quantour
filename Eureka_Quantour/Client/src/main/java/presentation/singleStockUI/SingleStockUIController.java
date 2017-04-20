@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 import org.controlsfx.control.Notifications;
 
 import dataController.DataContorller;
+import en_um.ChartKind;
 import exception.BeginInvalidException;
 import exception.DateInvalidException;
 import exception.DateOverException;
@@ -28,6 +29,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import logic.service.StockLogicInterface;
@@ -35,7 +37,9 @@ import logic.service.Stub;
 import presentation.chart.chartService;
 import presentation.chart.klineChart.KLineChart;
 import presentation.chart.lineChart.EMAChart;
+import presentation.chart.scatterchart.YieldPointChart;
 import rmi.RemoteHelper;
+import vo.ComparedInfoVO;
 import vo.EMAInfoVO;
 import vo.SingleStockInfoVO;
 
@@ -119,11 +123,33 @@ public class SingleStockUIController implements Initializable{
 		RemoteHelper remote = RemoteHelper.getInstance();
 		StockLogicInterface stockLogicInterface = remote.getStockLogic();
 		SingleStockInfoVO vo;
-
+		ComparedInfoVO vo1 = null;
+		LocalDate end = (LocalDate)dataContorller.get("SystemTime");
+		LocalDate begin = end.minusDays(200);
+		try {
+			vo1 = stockLogicInterface.getComparedInfo((String)dataContorller.get("SingleStockNow"),
+					begin, end);
+		} catch (RemoteException e1) {
+			// TODO Auto-generated catch block
+		    Notifications.create().title("网络连接异常").text(e1.toString()).showWarning();
+			e1.printStackTrace();
+		} catch (DateInvalidException e1) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("日期异常").text(e1.toString()).showWarning();
+			e1.printStackTrace();
+		} catch (BeginInvalidException e1) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("日期异常").text(e1.toString()).showWarning();
+			e1.printStackTrace();
+		} catch (EndInvalidException e1) {
+			// TODO Auto-generated catch block
+			Notifications.create().title("日期异常").text(e1.toString()).showWarning();
+			e1.printStackTrace();
+		}
 		try {
 			String code = stockLogicInterface.nameToCode(name);
 			vo = stockLogicInterface.getStockBasicInfo(code, (LocalDate)dataController.get("SystemTime"));
-			setBasicInfoPane(vo);
+			setBasicInfoPane(vo,vo1);
 			
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
@@ -141,11 +167,19 @@ public class SingleStockUIController implements Initializable{
 		
 	}
 	
-	public void setBasicInfoPane(SingleStockInfoVO vo){
+	public void setBasicInfoPane(SingleStockInfoVO vo,ComparedInfoVO vo1){
 		setStockInfoPane(vo.getCode(), vo.getName(), vo.getClose(), vo.getFudu(), vo.getHigh(),
 			    vo.getLow(), vo.getOpen(), vo.getVolume());
 		setKlinePane(vo.getCode());
 		setEMAChartPane(vo.getCode());
+		setDotPane(vo1.getDiantu());
+	}
+	
+	private void setDotPane(List<Integer> list){
+		chartService chartservice = new YieldPointChart(list, ChartKind.POINTFULL);
+		Pane pane = chartservice.getchart(271, 203, true);
+		RAFdistributionPane.getChildren().clear();
+		RAFdistributionPane.getChildren().add(pane);
 	}
 	/*
 	 * @description初始化股票基本信息界面
