@@ -167,9 +167,9 @@ public class ComparedChart implements chartService{
     	chartpane.getChildren().add(lineChart);
     	chartpane.getChildren().add(info);
     	StackPane.setAlignment(lineChart, Pos.CENTER);
-    	
     	pane.getChildren().add(chartpane);
     	AnchorPane.setTopAnchor(chartpane, 3.0);
+    	
     	if( withdate ){
     		pane.getChildren().add(datepane);
     		AnchorPane.setTopAnchor(datepane, height+3.0);

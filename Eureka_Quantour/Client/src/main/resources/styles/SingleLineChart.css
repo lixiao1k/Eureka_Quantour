@@ -4,6 +4,10 @@
 
 .chart{
 	-fx-background-color:transparent;
+	-fx-padding: 0px;
+}
+.chart-content {
+    -fx-padding: 0px; 
 }
 .chart-plot-background {
 	-fx-background-color: transparent;
@@ -19,7 +23,7 @@
 }
 .chart-legend {
  -fx-background-color: transparent;
-   -fx-padding: 20px;
+   -fx-padding: 0px;
 } 
 
 .chart-legend-item-symbol{
@@ -36,7 +40,7 @@
 .axis {
     -fx-tick-label-fill: #f2eada ;
     -fx-font-family: Tahoma;
-    -fx-tick-label-font-size: 0.9em;
+    -fx-tick-label-font-size: 0.8em;
     -fx-tick-length: 0;
     -fx-minor-tick-length: 0;
 }

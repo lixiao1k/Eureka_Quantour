@@ -61,14 +61,14 @@ public class test extends Application{
     		datelist.add( LocalDate.of(2014, 3, j));
     		jizhunlist.add( Math.random() ); 
     	}
-    	LocalDate[] dates = new LocalDate[datelist.size()];
-    	Double[] d1 = new Double[jizhunlist.size()];
-    	for(int i=0; i<datelist.size(); i++){
-    		dates[i] = datelist.get(i);
-    		d1[i] = jizhunlist.get(i);
-    	}
-		singleLineChart = new SingleLineChart(dates, d1, "hello");
-		singleLineChart.setName("SingleLineChart");
+//    	LocalDate[] dates = new LocalDate[datelist.size()];
+//    	Double[] d1 = new Double[jizhunlist.size()];
+//    	for(int i=0; i<datelist.size(); i++){
+//    		dates[i] = datelist.get(i);
+//    		d1[i] = jizhunlist.get(i);
+//    	}
+		singleLineChart = new SingleLineChart(datelist, jizhunlist, "hello");
+//		singleLineChart.setName("SingleLineChart");
     }
     
     private void testEMAChart(){
@@ -123,7 +123,7 @@ public class test extends Application{
 	        dialogStage.initOwner(primaryStage);
 	        
 //	        Scene scene = new Scene(yieldComparedChart.getchart(800, 300, true));
-	        Scene scene = new Scene(singleLineChart.getchart(334, 200, false));
+	        Scene scene = new Scene(singleLineChart.getchart(334, 200, true));
 //	        Scene scene = new Scene(emaChart.getchart(500, 300, true));
 	        dialogStage.setScene(scene);
 

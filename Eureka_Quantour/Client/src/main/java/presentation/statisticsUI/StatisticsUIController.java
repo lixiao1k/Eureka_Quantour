@@ -2,6 +2,8 @@ package presentation.statisticsUI;
 
 import java.net.URL;
 import java.rmi.RemoteException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
@@ -44,9 +46,6 @@ public class StatisticsUIController implements Initializable {
 	AnchorPane RAFContributionPane;
 	
 	@FXML
-	AnchorPane meanPane;
-	
-	@FXML
 	Label zhangtingLabel;
 	
 	@FXML
@@ -69,6 +68,12 @@ public class StatisticsUIController implements Initializable {
 	
 	@FXML
 	Label volumeValue;
+	
+	@FXML
+	Label meanValue;
+	
+	@FXML
+	Label varianValue;
 	
 	
 	private DataContorller dataController;
@@ -107,10 +112,14 @@ public class StatisticsUIController implements Initializable {
 	}
 	
 	private void initialAllPane(MarketInfoVO marketInfoVO){
+	    NumberFormat nf = NumberFormat.getInstance();
+		nf.setMinimumFractionDigits(4);
 		zhangtingvalue.setText(Integer.toString(marketInfoVO.getZhangting()));
 		dietingValue.setText(Integer.toString(marketInfoVO.getDieting()));
 		tingpaiValue.setText(Integer.toString(marketInfoVO.getTingpai()));
 		volumeValue.setText(Long.toString(marketInfoVO.getVolume()));
+		meanValue.setText(nf.format(marketInfoVO.getJunzhi()));
+		varianValue.setText(nf.format(marketInfoVO.getFangcha()));
 		chartService chartservice = new YieldFanChart(marketInfoVO.getShanxingtu());
 		Pane piePane = chartservice.getchart(334,276, true);
 		RAFPieChartPane.getChildren().clear();
