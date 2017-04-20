@@ -174,7 +174,7 @@ public class  CandleStickChart extends XYChart<String, Number> {
                     candle.setLayoutY(y);
                 }
                 if( seriesPath != null ){
-                	double datapoint = ( bar.getHigh()+bar.getLow() )/2;
+                	double datapoint = bar.getAve();
                 	if( datapoint!=Integer.MAX_VALUE ){
 	                    if(seriesPath.getElements().isEmpty()) {
 	                        seriesPath.getElements().add(
