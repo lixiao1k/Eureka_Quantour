@@ -261,10 +261,10 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 				}catch(NumberFormatException e){
 					continue;
 				}
-				try {
-					getSingleInfo(20170328, code);
-				} catch (StockHaltingException | NullDateException e) {
-				}
+				indexBuffer.getMbb(Integer.valueOf(code), stockInfo+"/"+code+"/mainIndex");
+			}
+			for(int cal:datesort){
+				dataBuffer.getMbb(cal, "config/resources/date/calendarDate/"+cal);
 			}
 			br.close();
 		} catch (IOException e) {

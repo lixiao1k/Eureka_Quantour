@@ -162,15 +162,14 @@ public class SingleStockInfoPO
 		setRate(strTodouble2(input[5]));
 		setSubrate(strTodouble2(input[9]));
 		setAftrate(strTodouble2(input[12]));
-		
-//		setSubavg_5(strTodouble(input[13]));
+	
+//		setSubavg_5(strTodouble2(input[13]));
 //		setSubavg_10(strTodouble(input[15]));
 //		setSubavg_20(strTodouble(input[17]));
 //		setSubavg_30(strTodouble(input[19]));
 //		setSubavg_60(strTodouble(input[21]));
 //		
-//		setAftavg_5(strTodouble(input[14]));
-		setAftavg_5(0);
+		setAftavg_5(strTodouble2(input[14]));
 //		setAftavg_10(strTodouble(input[16]));
 //		setAftavg_20(strTodouble(input[18]));
 //		setAftavg_30(strTodouble(input[20]));
