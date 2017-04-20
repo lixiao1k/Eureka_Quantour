@@ -93,7 +93,11 @@ public class Return {
     }
 
     public Double getzuidaguiceh(){
-        return 0.0;
+        double max=0;
+        for (int i=1;i<celueshouyilv.size();i++){
+            max=Math.max(max,(celueshouyilv.get(i-1)-celueshouyilv.get(i)/celueshouyilv.get(i-1)));
+        }
+        return max;
     }
 
 

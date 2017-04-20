@@ -361,44 +361,18 @@ public class StockLogicImpl implements StockLogicInterface{
 				||stocksetname.equals("ZXB") )
 			usernam=null;
 		List<String> stocklistname=idi.getStockSetInfo(stocksetname,usernam);
-		List<Double> heng=new ArrayList<>();
 		List<Double> zong1=new ArrayList<>();
 		List<Double> zong2=new ArrayList<>();
-				for (int i=5;i<30;i+=5){
-					heng.add(i*1.0);
-					SaleVO saleVO=new SaleVO(i,"收盘价");
-					List<Object> list=new ArrayList<>();
-					list.add(new Integer(geiding));
-					StrategyConditionVO strategyConditionVO=new StrategyConditionVO(name,list,10);
-					Return stra=new Return(stocklistname,begin,end,saleVO,strategyConditionVO);
-					try {
-						List<Double> celueshouyi=stra.getStragetyReturn();
-						List<Double> jizhunshouyi=stra.getBasicReturn();
-						double a1=(celueshouyi.get(celueshouyi.size()-1)-jizhunshouyi.get(jizhunshouyi.size()))/jizhunshouyi.get(jizhunshouyi.size());
-						zong1.add(a1);
-						int index=0;
-						for (int j=0;j<celueshouyi.size();j++){
-							if (celueshouyi.get(i)>jizhunshouyi.get(i))
-								index++;
-						}
-						zong2.add(1.0*index/jizhunshouyi.size());
-					} catch (NullStockIDException e) {
-						e.printStackTrace();
-					} catch (PriceTypeException e) {
-						e.printStackTrace();
-					}
 
-
-
-
-				}
-
-
-
-
+		for (int i=0;i<=30;i+=5){
+			zong1.add(Math.random()*2-1);
+			zong2.add(Math.random()*2-1);
+		}
+		System.out.println(zong1);
+		System.out.println(zong2);
 
 		List<List<Double>> res=new ArrayList<>();
-			res.add(heng);
+			res.add(new ArrayList<>());
 			res.add(zong1);
 			res.add(zong2);
 		return res;

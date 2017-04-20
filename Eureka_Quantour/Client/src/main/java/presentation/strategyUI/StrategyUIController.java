@@ -134,23 +134,30 @@ public class StrategyUIController implements Initializable{
 		List<List<Double>> datelist2=new ArrayList<>();
 		try {
 			if(momentumRadioButton.isSelected()) {
+				anchorPane4.getChildren().clear();
+				anchorPane5.getChildren().clear();
 				datelist1 = stockLogicInterface.getDantengchart("动量策略", (LocalDate) dataController.get("BeginTime"), (LocalDate) dataController.get("SystemTime"), "持有期", (String) dataController.get("UserName"), stockSetComboBox.getValue(), Integer.parseInt(xinchengqi));
 				datelist2 = stockLogicInterface.getDantengchart("动量策略", (LocalDate) dataController.get("BeginTime"), (LocalDate) dataController.get("SystemTime"), "形成期", (String) dataController.get("UserName"), stockSetComboBox.getValue(), Integer.parseInt(chiyouqi));
-
-				chartService service1=new DanTengChart(datelist1.get(1),datelist1.get(2));
-				chartService service2=new DanTengChart(datelist2.get(1),datelist1.get(2));
+				System.out.println(datelist1.get(1));
+				System.out.println(datelist1.get(2));
+				chartService service1=new DanTengChart(datelist1.get(1));
+				chartService service2=new DanTengChart(datelist1.get(2));
+//				chartService service2=new DanTengChart(datelist2.get(1),datelist1.get(2));
 
 //				//
 //				需补全参数的
-				anchorPane4.getChildren().add(service1.getchart(200,200,true));
-				anchorPane5.getChildren().add(service2.getchart(200,200,true));
+				service1.setName( "超额收益率");
+				service2.setName( "策略胜率");
+				anchorPane4.getChildren().add(service1.getchart(400,200,false));
+				anchorPane5.getChildren().add(service2.getchart(400,200,false));
 				//
 
 			}else{
+				anchorPane4.getChildren().clear();
 				datelist1 = stockLogicInterface.getDantengchart("均值策略", (LocalDate) dataController.get("BeginTime"), (LocalDate) dataController.get("SystemTime"), "持有期", (String) dataController.get("UserName"), stockSetComboBox.getValue(), Integer.parseInt(xinchengqi));
-				chartService service1=new DanTengChart(datelist1.get(1),datelist1.get(2));
+				chartService service1=new DanTengChart(datelist1.get(1));
 //				//同上
-				anchorPane4.getChildren().add(service1.getchart(200,200,true));
+				anchorPane4.getChildren().add(service1.getchart(200,200,false));
 			}
 //			主pane上把pane加上
 		} catch (RemoteException e1) {

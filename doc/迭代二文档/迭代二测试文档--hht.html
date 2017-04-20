@@ -1,0 +1,168 @@
+<!doctype html>
+<html>
+	<head>
+	<meta charset="UTF-8">
+	<title>单元测试文档</title>
+	<style>	
+/*	#divfont
+	{	font-family:"STXINGKA";
+		margin:0 auto;
+		width:50%;
+	}*/
+	body{
+			background-color:rgb(199,237,204);
+			margin-left: 20%;
+			margin-right: 20%;
+			border:2px dotted black;
+			padding:10px 10px 10px 10px;
+			font-family: sans-serif;
+		}
+/*	table{width:960px;word-break:break-all; word-wrap:break-all;}
+	.t1{width:200px}.t2{width:160px}.t3{width:160px}.t4{width:160px}.t5{width:100px}.t6{width:180px}*/
+	</style>
+	</head>
+	<body>
+		<div id="divfont">
+<h2 align="center">单元测试文档 迭代二 1.0</h2>
+<h3 align="center">2017/3/17</h3>
+<table>
+<tbody>
+<tr><th>版本号</th><th>变更人员</th><th>变更原因</th><th>变更日期</th></tr>
+<tr>
+<td>单元测试文档 1.0</td>
+<td>惠晗涛</td>
+<td>数据层测试用例</td>
+<td>2017/4/17</td>
+</tr>
+</tbody>
+</table>
+<h3>Unit Test Case L1</h3>
+<p>被测单元名称:</p>
+<pre>getStockSetSortedInfo</pre>
+<p>测试用例列表</p>
+<table border="1">
+<tbody>
+<tr><th class="t1">测试用例ID</th><th class="t2">输入数据</th><th class="t3">预期输出</th><th class="t4">实际输出</th><th class="t5">Pass/Fail</th><th class="t6">备注</th></tr>
+<tr>
+<td>testSortedStockSet</td>
+<td>用户名,股票池名</td>
+<td>按照顺序的股票池中所有股票数据</td>
+<td>按照顺序的股票池中所有股票数据</td>
+<td>Pass</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<br /><br />
+<h3>Unit Test Case L2</h3>
+<p>被测单元名称:</p>
+<pre>getSingleStockInfoByTime</pre>
+<p>测试用例列表</p>
+<table style="height: 85px;" border="1" width="420">
+<tbody>
+<tr><th>测试用例ID</th><th class="t2">输入数据</th><th class="t3">预期输出</th><th class="t4">实际输出</th><th>Pass/Fail</th><th class="t6">备注</th></tr>
+<tr>
+<td>testStockbyTime</td>
+<td>股票编号，开始结束日期</td>
+<td>该段时间内所有股票信息</td>
+<td>该段时间内所有股票信息</td>
+<td>Pass</td>
+<td>无</td>
+</tr>
+</tbody>
+</table>
+<br /><br />
+<h3>Unit Test Case L3</h3>
+<p>被测单元名称:</p>
+<pre>getMarketInfo</pre>
+<p>测试用例列表</p>
+<table border="1">
+<tbody>
+<tr><th>测试用例ID</th><th class="t2">输入数据</th><th class="t3">预期输出</th><th class="t4">实际输出</th><th>Pass/Fail</th><th class="t6">备注</th></tr>
+<tr>
+<td>testMarketInfo</td>
+<td>日期，市场名称</td>
+<td>显示某天市场的统计数据</td>
+<td>显示某天市场的统计数据</td>
+<td>Pass</td>
+<td>无</td>
+</tr>
+</tbody>
+</table>
+<br /><br />
+<h3>Unit Test Case L4</h3>
+<p>被测单元名称:</p>
+<pre>getComparedInfo</pre>
+<p>测试用例列表</p>
+<table border="1">
+<tbody>
+<tr><th>测试用例ID</th><th class="t2">输入数据</th><th class="t3">预期输出</th><th class="t4">实际输出</th><th>Pass/Fail</th><th class="t6">备注</th></tr>
+<tr>
+<td>testComparedInfo</td>
+<td>开始结束日期，股票编号</td>
+<td>股票该段时间的统计数据</td>
+<td>股票该段时间的统计数据</td>
+<td>Pass</td>
+<td>无</td>
+</tr>
+</tbody>
+</table>
+<br /><br />
+<h3>Unit Test Case L5</h3>
+<p>被测单元名称:</p>
+<pre>getYieldChartData</pre>
+<p>测试用例列表</p>
+<table border="1">
+<tbody>
+<tr><th>测试用例ID</th><th class="t2">输入数据</th><th class="t3">预期输出</th><th class="t4">实际输出</th><th>Pass/Fail</th><th class="t6">备注</th></tr>
+<tr>
+<td>testYieldChartData</td>
+<td>策略信息</td>
+<td>策略收益率折现图</td>
+<td>策略收益率折线图</td>
+<td>Pass</td>
+<td>无</td>
+</tr>
+</tbody>
+</table>
+<br /><br />
+<h3>Unit Test Case L6</h3>
+<p>被测单元名称:</p>
+<pre>getYieldDistributionHistogramData</pre>
+<p>测试用例列表</p>
+<table border="1">
+<tbody>
+<tr><th>测试用例ID</th><th class="t2">输入数据</th><th class="t3">预期输出</th><th class="t4">实际输出</th><th>Pass/Fail</th><th class="t6">备注</th></tr>
+<tr>
+<td>testYieldDistributionHistogramData</td>
+<td>策略信息</td>
+<td>策略收益率分布图</td>
+<td>策略收益率分布图</td>
+<td>Pass</td>
+<td>无</td>
+</tr>
+</tbody>
+</table>
+<br /><br />
+<h3>Unit Test Case L7</h3>
+<p>被测单元名称:</p>
+<pre>getEMAInfo</pre>
+<p>测试用例列表</p>
+<table border="1">
+<tbody>
+<tr><th>测试用例ID</th><th class="t2">输入数据</th><th class="t3">预期输出</th><th class="t4">实际输出</th><th>Pass/Fail</th><th class="t6">备注</th></tr>
+<tr>
+<td>testEMAInfo</td>
+<td>股票编号，开始结束日期</td>
+<td>该日期该股票均值数据</td>
+<td>该日期该股票均值数据</td>
+<td>Pass</td>
+<td>无</td>
+</tr>
+
+</tbody>
+</table>
+<br />&nbsp;</div>
+<p><a href="Eureka_Quantour迭代一文档.html">返回首页</a></p>
+	</body>
+</html>
