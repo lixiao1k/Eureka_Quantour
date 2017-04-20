@@ -35,6 +35,7 @@
             <Label fx:id="volumeLabel" layoutX="179.5" layoutY="90.5" prefHeight="17.0" prefWidth="90.0" AnchorPane.leftAnchor="178.0" AnchorPane.topAnchor="89.0" />
          </children></AnchorPane>
       <AnchorPane fx:id="RAFdistributionPane" layoutX="951.0" layoutY="152.0" prefHeight="203.0" prefWidth="271.0" />
-      <AnchorPane fx:id="logPane" layoutX="951.0" layoutY="355.0" prefHeight="212.0" prefWidth="271.0" />
+      <AnchorPane fx:id="logPane" layoutX="951.0" layoutY="424.0" prefHeight="212.0" prefWidth="271.0" />
+      <Label fx:id="shouyilvLabel" layoutX="1043.0" layoutY="371.0" prefHeight="17.0" prefWidth="102.0" text="收益率分布图" />
    </children>
 </AnchorPane>

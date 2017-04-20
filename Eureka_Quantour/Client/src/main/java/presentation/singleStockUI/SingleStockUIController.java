@@ -37,6 +37,7 @@ import logic.service.Stub;
 import presentation.chart.chartService;
 import presentation.chart.klineChart.KLineChart;
 import presentation.chart.lineChart.EMAChart;
+import presentation.chart.lineChart.SingleLineChart;
 import presentation.chart.scatterchart.YieldPointChart;
 import rmi.RemoteHelper;
 import vo.ComparedInfoVO;
@@ -92,6 +93,9 @@ public class SingleStockUIController implements Initializable{
 	@FXML
 	AnchorPane logPane;//对数收益率图
 	
+	@FXML
+	Label shouyilvLabel;
+	
 	private DataContorller dataController;
 	/*
 	 * @description添加至股池，弹出相应界面
@@ -127,8 +131,11 @@ public class SingleStockUIController implements Initializable{
 		LocalDate end = (LocalDate)dataContorller.get("SystemTime");
 		LocalDate begin = end.minusDays(200);
 		try {
+			System.out.println("sa");
 			vo1 = stockLogicInterface.getComparedInfo((String)dataContorller.get("SingleStockNow"),
 					begin, end);
+			System.out.println(vo1);
+			System.out.println("sa");
 		} catch (RemoteException e1) {
 			// TODO Auto-generated catch block
 		    Notifications.create().title("网络连接异常").text(e1.toString()).showWarning();
@@ -173,10 +180,20 @@ public class SingleStockUIController implements Initializable{
 		setKlinePane(vo.getCode());
 		setEMAChartPane(vo.getCode());
 		setDotPane(vo1.getDiantu());
+		setLogPane(vo1);
 	}
 	
+	private void setLogPane(ComparedInfoVO vo){
+		chartService chartservice = new SingleLineChart(vo.getDate(),vo.getLogYieldA(), "对数收益率");
+		Pane pane = chartservice.getchart(271, 212, true);
+		logPane.getChildren().clear();
+		logPane.getChildren().add(pane);
+	}
+	/*
+	 * 画收益率分布图
+	 */
 	private void setDotPane(List<Integer> list){
-		chartService chartservice = new YieldPointChart(list, ChartKind.POINTFULL);
+		chartService chartservice = new YieldPointChart(list, ChartKind.POINTONE);
 		Pane pane = chartservice.getchart(271, 203, true);
 		RAFdistributionPane.getChildren().clear();
 		RAFdistributionPane.getChildren().add(pane);

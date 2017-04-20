@@ -9,7 +9,7 @@
    <children>
       <ComboBox fx:id="marketComboBox" layoutX="192.0" layoutY="76.0" onAction="#setMarket" prefHeight="23.0" prefWidth="93.0" />
       <Label fx:id="nameLabel" layoutX="80.0" layoutY="24.0" prefHeight="52.0" prefWidth="195.0" />
-      <Label layoutX="351.0" layoutY="25.0" prefHeight="20.0" prefWidth="103.0" text="涨跌幅分布：" />
+      <Label fx:id="RAFfengbuLabel" layoutX="351.0" layoutY="25.0" prefHeight="22.0" prefWidth="235.0" text="涨跌幅分布：" />
       <AnchorPane fx:id="RAFPieChartPane" layoutX="351.0" layoutY="44.0" prefHeight="276.0" prefWidth="334.0" />
       <AnchorPane fx:id="RAFContributionPane" layoutX="351.0" layoutY="354.0" prefHeight="276.0" prefWidth="334.0" />
       <Label fx:id="zhangtingLabel" layoutX="80.0" layoutY="128.0" text="涨停：" />
@@ -20,9 +20,9 @@
       <Label fx:id="dietingValue" layoutX="158.0" layoutY="182.0" prefHeight="22.0" prefWidth="127.0" />
       <Label fx:id="tingpaiValue" layoutX="158.0" layoutY="238.0" prefHeight="22.0" prefWidth="127.0" />
       <Label fx:id="volumeValue" layoutX="158.0" layoutY="292.0" prefHeight="22.0" prefWidth="127.0" />
-      <Label layoutX="32.0" layoutY="343.0" text="涨跌幅均值：" />
+      <Label fx:id="meanLabel" layoutX="32.0" layoutY="343.0" text="涨跌幅均值：" />
       <Label fx:id="meanValue" layoutX="158.0" layoutY="343.0" prefHeight="22.0" prefWidth="127.0" />
-      <Label layoutX="32.0" layoutY="396.0" text="涨跌幅方差：" />
+      <Label fx:id="varianLabel" layoutX="32.0" layoutY="396.0" text="涨跌幅方差：" />
       <Label fx:id="varianValue" layoutX="158.0" layoutY="396.0" prefHeight="22.0" prefWidth="127.0" />
    </children>
 </AnchorPane>
