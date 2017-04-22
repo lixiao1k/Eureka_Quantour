@@ -256,18 +256,10 @@ public class StrategyUIController implements Initializable{
 				try {
 					stockLogicInterface.setStrategy(strategyConditionVO, saleVO,(LocalDate)dataController.get("BeginTime"),
 							(LocalDate)dataController.get("SystemTime"), stockSet,(String)dataController.get("UserName"));
-					System.out.println(strategyConditionVO.getName());
-					System.out.println(strategyConditionVO.getNums());
-					System.out.println(strategyConditionVO.getExtra().get(0));
-					System.out.println(saleVO.getTiaocangjiage());
-					System.out.println(saleVO.getTiaocangqi());
-					System.out.println((LocalDate)dataController.get("BeginTime"));
-					System.out.println((LocalDate)dataController.get("SystemTime"));
-					System.out.println((String)dataController.get("UserName"));
+
 					YieldDistributionHistogramDataVO yieldDistributionHistogramDataVO = stockLogicInterface.getYieldDistributionHistogramData();
 					YieldChartDataVO yieldChartDataVO = stockLogicInterface.getYieldChartData();
-					System.out.println(yieldDistributionHistogramDataVO);
-					System.out.println(yieldChartDataVO);
+
 					chartService chartservice = new YieldComparedChart(yieldChartDataVO);
 					Pane pane = chartservice.getchart(900,250,true);
 					chartservice = new YieldDistributeChart(yieldDistributionHistogramDataVO);
@@ -358,16 +350,10 @@ public class StrategyUIController implements Initializable{
 				try {
 					stockLogicInterface.setStrategy(strategyConditionVO2, saleVO2,(LocalDate)dataController.get("BeginTime"),
 							(LocalDate)dataController.get("SystemTime"), stockSet, (String)dataController.get("UserName"));
-					System.out.println("均值股票池："+stockSet);
-					System.out.println("均值策略："+"均值");
-					System.out.println("均值持有期："+holddays);
-					System.out.println("均值价格："+price);
-					System.out.println("均值股票数："+nums);
-					System.out.println("均值几日股票："+meandays);
+
 					YieldDistributionHistogramDataVO yieldDistributionHistogramDataVO1 = stockLogicInterface.getYieldDistributionHistogramData();
 					YieldChartDataVO yieldChartDataVO1 = stockLogicInterface.getYieldChartData();
-					System.out.println(yieldDistributionHistogramDataVO1);
-					System.out.println(yieldChartDataVO1);
+
 					chartService chartservice = new YieldComparedChart(yieldChartDataVO1);
 					Pane pane = chartservice.getchart(900,250,true);
 					chartservice = new YieldDistributeChart(yieldDistributionHistogramDataVO1);

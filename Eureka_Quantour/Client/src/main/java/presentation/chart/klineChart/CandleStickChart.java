@@ -178,11 +178,11 @@ public class  CandleStickChart extends XYChart<String, Number> {
                 	if( datapoint!=Integer.MAX_VALUE ){
 	                    if(seriesPath.getElements().isEmpty()) {
 	                        seriesPath.getElements().add(
-	                        		new MoveTo(x, getYAxis().getDisplayPosition( datapoint )));
+	                        		new MoveTo(x, getYAxis().getDisplayPosition( bar.getAve() )));
 	                    }
 	                    else{
 	                        seriesPath.getElements().add(
-	                        		new LineTo(x, getYAxis().getDisplayPosition( datapoint )));
+	                        		new LineTo(x, getYAxis().getDisplayPosition( bar.getAve() )));
 	                    }
                 	}
                 }
@@ -317,7 +317,7 @@ public class  CandleStickChart extends XYChart<String, Number> {
             yData = new ArrayList<>();
         }
         if (xData != null || yData != null) {
-            System.out.println("1");
+//            System.out.println("1");
             for (Series<String, Number> series : getData()) {
                 for (Data<String, Number> data : series.getData()) {
                     if (xData != null) {

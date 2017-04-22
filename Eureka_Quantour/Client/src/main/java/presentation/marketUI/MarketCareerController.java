@@ -43,7 +43,7 @@ public class MarketCareerController implements Initializable{
 			list = stockLogicInterface.getIndustryList();
 			int length = list.size();
 			list = list.subList(1, length);
-			System.out.println(list.size());
+//			System.out.println(list.size());
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -123,7 +123,7 @@ public class SingleStockUIController implements Initializable{
 	private void initialAllPane(){
 		DataContorller dataContorller = DataContorller.getInstance();
 		String name = (String)dataContorller.get("SingleStockNow");
-		System.out.println("Single"+name);
+//		System.out.println("Single"+name);
 		RemoteHelper remote = RemoteHelper.getInstance();
 		StockLogicInterface stockLogicInterface = remote.getStockLogic();
 		SingleStockInfoVO vo;
@@ -131,11 +131,11 @@ public class SingleStockUIController implements Initializable{
 		LocalDate end = (LocalDate)dataContorller.get("SystemTime");
 		LocalDate begin = end.minusDays(200);
 		try {
-			System.out.println("sa");
+//			System.out.println("sa");
 			vo1 = stockLogicInterface.getComparedInfo((String)dataContorller.get("SingleStockNow"),
 					begin, end);
-			System.out.println(vo1);
-			System.out.println("sa");
+//			System.out.println(vo1);
+//			System.out.println("sa");
 		} catch (RemoteException e1) {
 			// TODO Auto-generated catch block
 		    Notifications.create().title("网络连接异常").text(e1.toString()).showWarning();
@@ -263,9 +263,7 @@ public class SingleStockUIController implements Initializable{
 			vo = stockLogicInterface.getSingleStockInfoByTime(code,
 				beginTime,systime);
 			chartservice = new KLineChart(vo);
-			for(SingleStockInfoVO s :vo){
-				System.out.println(s.getDate().toString());
-			}
+
 			kChartAnchorPane.getChildren().add(chartservice.getchart(758, 320,true));
 			
 		} catch (RemoteException e) {

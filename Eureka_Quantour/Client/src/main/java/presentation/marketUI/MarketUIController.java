@@ -181,7 +181,7 @@ public class MarketUIController implements Initializable {
 				StockLogicInterface stockLogicInterface = remote.getStockLogic();
 				try {
 					setStocks = stockLogicInterface.getStockSetSortedInfo("SHB",systime, null);
-					System.out.println(setStocks.size());
+//					System.out.println(setStocks.size());
 					initialAllStocksPane(setStocks);
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
@@ -567,9 +567,9 @@ public class MarketUIController implements Initializable {
 	
 	
 	private void initialStocksFlowPane(List<SingleStockInfoVO> list){
-		System.out.println(list.size());
+//		System.out.println(list.size());
 		int length = (int) Math.ceil(list.size()/50.0);
-		System.out.println(length);
+//		System.out.println(length);
 		initialPagination(length);
 		if(length==1){
 			int sublength = list.size();
