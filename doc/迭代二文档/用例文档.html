@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title> Quantour 迭代二用例文档</title>
+	<style>
+		.tdl {width:100px;}
+		.tdr {width:150px;}
+		.tdh {width:100px;text-align: center}
+		.kfont {font-family:"楷体";}
+		body{
+			background-color:rgb(199,237,204);
+			margin-left: 20%;
+			margin-right: 20%;
+			border:2px dotted black;
+			padding:10px 10px 10px 10px;
+			font-family: sans-serif;
+		}
+	</style>
+</head>
+<body>
+<h2 class="kfont" align="left">1.用例列表</h2>
+<h3 class="kfont" align="left">1.1 查看市场温度计</h3>
+<table style="font-family: 楷体;" border="2" width="600px" cellspacing="0" align="center"><!--	<caption> 查询某段日期单支股票数据 </caption> -->
+<tbody>
+<tr><th class="tdl">ID</th>
+<td>1</td>
+<th class="tdr">名称</th>
+<td>查看市场温度计</td>
+</tr>
+<tr><th class="tdl">创建者</th>
+<td>李晓冬</td>
+<th class="tdr">最后一次更新者</th>
+<td>&nbsp;</td>
+</tr>
+<tr><th class="tdl">创建日期</th>
+<td>2017/3/21</td>
+<th class="tdr">最后更新日期</th>
+<td>&nbsp;</td>
+</tr>
+<tr><th>参与者</th>
+<td colspan="3">用户，目标是快速了解某市场行情</td>
+</tr>
+<tr><th>触发条件</th>
+<td colspan="3">用户想要了解某市场基本行情</td>
+</tr>
+<tr><th>前置条件</th>
+<td colspan="3">用户已登录</td>
+</tr>
+<tr><th>后置条件</th>
+<td colspan="3">无</td>
+</tr>
+<tr><th>优先级</th>
+<td colspan="3">高</td>
+</tr>
+<tr><th>正常流程</th>
+<td colspan="3">
+<ol style="margin-top: 5px; margin-bottom: 5px;">
+<li>用户输入查看的某一日期并选择市场，点击搜索</li>
+<li>系统显示该天市场的市场温度计信息、股票涨跌幅排名、大盘指数、所有股票信息列表</li>
+<li>市场温度计信息包括：当日总交易量、涨停股票数、跌停股票数、涨幅超过5%的股票数，跌幅超过5%的股票数，开盘‐收盘大于5%*上一个交易日收盘价的股票个数、开盘‐收盘小于‐5%*上一个交易日收盘价的股票个数。</li>
+<li>股票涨跌幅排名只需各显示10条数据，每条数据包括编号、名称、涨跌额、涨跌幅</li>
+<li>大盘指数只当天的大盘指数</li>
+<li>股票信息列表中每条信息包括序号、代码、名称、最新价、涨跌幅、涨跌额、开收盘价、最高低价、交易量</li>
+</ol>
+</td>
+</tr>
+<tr><th>扩展流程</th>
+<td colspan="3">
+<ol style="margin-top: 5px; margin-bottom: 5px;">
+<li>1.系统提示日期不在有效范围内，并要求重新输入</li>
+<li>2.用户在浏览股票信息时，可以查看单只股票的基本信息，包括涨跌幅、涨跌额、开收盘价、最高低价、交易量、K线均线图。</li>
+</ol>
+</td>
+</tr>
+<tr><th>特殊需求</th>
+<td colspan="3">
+<ol style="margin-top: 5px; margin-bottom: 5px;">
+<li>日期显示</li>
+<li>K线均线图的范围根据选择的日期向前推适当天数</li>
+</ol>
+</td>
+</tr>
+</tbody>
+</table>
+<br><br>
+<h2>2.用户制定策略</h2>
+<table border="2" width="600px" cellspacing="0" align="center">
+<tbody>
+<tr><th class="tdl">ID</th>
+<td>&nbsp;</td>
+<th class="tdr">名称</th>
+<td>用户制定策略</td>
+</tr>
+<tr><th class="tdl">创建者</th>
+<td>惠晗涛</td>
+<th class="tdr">最后一次更新者</th>
+<td>&nbsp;惠晗涛</td>
+</tr>
+<tr><th class="tdl">创建日期</th>
+<td>2017/3/23</td>
+<th class="tdr">最后更新日期</th>
+<td>2017/3/23&nbsp;</td>
+</tr>
+<tr><th>参与者</th>
+<td colspan="3">用户，目标是使用户制定筛选股票的策略，从而提高收益率</td>
+</tr>
+<tr><th>触发条件</th>
+<td colspan="3">用户选择制定策略</td>
+</tr>
+<tr><th>前置条件</th>
+<td colspan="3">用户已完成股票池的选择</td>
+</tr>
+<tr><th>后置条件</th>
+<td colspan="3">显示策略所对应的图像与参数，来预估策略的收益率与风险程度</td>
+</tr>
+<tr><th>优先级</th>
+<td colspan="3">高</td>
+</tr>
+<tr><th>正常流程</th>
+<td colspan="3">
+<ol class="dis">
+<li>用户设置策略相关参数，股票数量，调仓时间，调仓价格，股票池，数据开始时间，删选条件，删选数量</li>
+<li>用户选择生成策略</li>
+<li>系统显示策略所对应的相关图像，包括收益率图，超额收益率与侧略胜率图像</li>
+<li>系统显示策略的相关参数，阿尔法，贝塔，最大回撤率，收益波动率</li>
+</ol>
+</td>
+</tr>
+<tr><th>扩展流程</th>
+<td colspan="3">
+<pre class="dis">1a:用户设置股票数量大于股票池数量
+1.弹出错误框，并要求用户重新输入<br />1b:调仓时间不超过100天<br />1.弹出错误框，并要求用户重新输入<br />1c：数据开始时间距离现在时间小于一年<br />1.弹出错误框，并要求用户重新输入</pre>
+</td>
+</tr>
+<tr><th>特殊需求</th>
+<td colspan="3">
+<p>1.调仓价格限定在开盘价，收盘价，最高价于最低价算术平均值</p>
+<p>2.筛选条件至少包括动量策略（形成期内收益率的排序），与均值策略（调仓价于均线图偏离率的排序）。</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<h3 class="kfont" align="left">3 收藏股票</h3>
+<table style="font-family: 楷体;" border="2" width="600px" cellspacing="0" align="center">
+<tbody>
+<tr><th class="tdl">ID</th>
+<td></td>
+<th class="tdr">名称</th>
+<td>收藏某只股票</td>
+</tr>
+<tr><th class="tdl">创建者</th>
+<td>黄泽鹏</td>
+<th class="tdr">最后一次更新者</th>
+<td></td>
+</tr>
+<tr><th class="tdl">创建日期</th>
+<td>2017/3/21</td>
+<th class="tdr">最后更新日期</th>
+<td></td>
+</tr>
+<tr><th>参与者</th>
+<td colspan="3">用户，目标是方便以后快速查询收藏的股票信息</td>
+</tr>
+<tr><th>触发条件</th>
+<td colspan="3">用户正在浏览某支股票信息</td>
+</tr>
+<tr><th>前置条件</th>
+<td colspan="3">用户已登录</td>
+</tr>
+<tr><th>后置条件</th>
+<td colspan="3">无</td>
+</tr>
+<tr><th>优先级</th>
+<td colspan="3">中</td>
+</tr>
+<tr><th>正常流程</th>
+<td colspan="3">
+<ol class="dis">
+<li>用户正在浏览某只股票信息</li>
+<li>用户选择“收藏股票”</li>
+<li>系统提示收藏成功，并添加该股票进入收藏列表</li>
+</ol>
+</td>
+</tr>
+<tr><th>扩展流程</th>
+<td colspan="3">
+<pre class="dis" style="font-family: 楷体;"> 2a:用户选择“取消收藏”
+   1.系统提示取消收藏成功，并将该股票移除收藏列表
+</pre>
+</td>
+</tr>
+<tr><th>特殊需求</th>
+<td colspan="3"></td>
+</tr>
+</table>
+
+<br/>
+
+<h3 class="kfont" align="left">4 查看股票收藏列表</h3>
+<table style="font-family: 楷体;" border="2" width="600px" cellspacing="0" align="center">
+<tbody>
+<tr><th class="tdl">ID</th>
+<td></td>
+<th class="tdr">名称</th>
+<td>查看股票收藏列表</td>
+</tr>
+<tr><th class="tdl">创建者</th>
+<td>黄泽鹏</td>
+<th class="tdr">最后一次更新者</th>
+<td></td>
+</tr>
+<tr><th class="tdl">创建日期</th>
+<td>2017/3/21</td>
+<th class="tdr">最后更新日期</th>
+<td></td>
+</tr>
+<tr><th>参与者</th>
+<td colspan="3">用户，目标是浏览已经收藏的股票</td>
+</tr>
+<tr><th>触发条件</th>
+<td colspan="3">用户想要查看自己收藏的所有股票</td>
+</tr>
+<tr><th>前置条件</th>
+<td colspan="3">用户已登录</td>
+</tr>
+<tr><th>后置条件</th>
+<td colspan="3">无</td>
+</tr>
+<tr><th>优先级</th>
+<td colspan="3">中</td>
+</tr>
+<tr><th>正常流程</th>
+<td colspan="3">
+<ol class="dis">
+<li>用户选择股票收藏列表</li>
+<li>系统显示用户收藏的所有股票</li>
+</ol>
+</td>
+</tr>
+<tr><th>扩展流程</th>
+<td colspan="3">
+<pre class="dis" style="font-family: 楷体;"> 3a:用户在某只股票上选择“取消收藏”
+   1.系统提示取消收藏成功，并将该股票移除收藏列表
+</pre>
+</td>
+</tr>
+<tr><th>特殊需求</th>
+<td colspan="3"></td>
+</tr>
+</table>
+
+<br/>
+<h3>用例4	用户管理</h3>	
+		<table style="font-family:楷体" border="2" align="center" width="600px" cellspacing="0">
+			<tr>
+				<th class=tdl>ID</th>		<td>1</td>		<th class=tdr>名称</th>	<td>用户管理</td>
+			</tr>
+			<tr>
+				<th class=tdl>创建者</th>		<td>刘宇翔</td>		<th class=tdr>最后一次更新者</th>	<td>刘宇翔</td>
+			</tr>
+			<tr>
+				<th class=tdl>创建日期</th>		<td>2017年3月21日</td>		<th class=tdr>最后更新日期</th>		<td>2017年3月21日</td>
+			</tr>
+			<tr>
+					<th>参与者</th>		<td colspan='3'>用户，目标是注册该软件的一个账户，从而实现对于股票的收藏关注功能。</td>
+			</tr>
+			<tr>
+				<th>触发条件</th>		<td colspan='3'>用户在登录界面点击登录或注册</td>
+			</tr>
+			<tr>
+				<th>前置条件</th> 		<td colspan='3'>用户的用户名与密码符合规定由数字和字母组成且大于6位并且少于10位。</td>
+			</tr>
+			<tr>
+				<th>后置条件</th>		<td colspan='3'>无</td>
+			</tr>
+			<tr>	
+				<th>优先级</th>			<td colspan='3'>中</td>
+			</tr>
+			<tr>
+				<th>正常流程</th>	
+				<td colspan='3'> 
+					<ol style="margin-top:5px;margin-bottom:5px">
+				     <li>用户选择注册</li>
+					 <li>系统显示用户名，密码，重复密码的输入框。</li>
+					 <li>用户输入用户名，密码，重复密码。</li>
+					 <li>系统显示注册成功并进入股市行情界面。</li>
+					 </ol>
+				</td>
+			</tr>
+			<tr>
+				<th>扩展流程</th>
+				<td colspan='3'>
+					<pre style="margin-top:5px;margin-bottom:5px;font-family:楷体;margin-left:13px">
+1a. 用户选择登录
+	1.用户输入用户名与密码
+	2.系统显示登录成功，进入股市行情界面
+	2a.用户输入错误的用户名或密码
+		1.系统显示用户名或密码不正确
+4a. 用户输入的用户名或密码不是由数字和字母组成并且大于6位并小于10位
+	1.系统提示输入了不合法的用户名或密码
+	2.回到正常流程2
+4b. 用户输入的重复密码与密码不一致
+	1.系统提示输入了不一致的重复密码与密码
+	2.回到正常流程2
+4c. 用户选择登出
+	1.系统登出该用户账号
+                    </pre>    						
+				</td>
+			</tr>
+			<tr>
+				<th>特殊需求</th>
+				<td colspan='3'>
+					<ol style="margin-top:5px;margin-bottom:5px;">
+						<li>用户的用户名与密码符合规定由数字和字母组成且大于6位并且少于10位。</li>
+					</ol>	
+				</td>
+			</tr>
+			</table>
+</body>
+</html>

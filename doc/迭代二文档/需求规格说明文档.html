@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+	<title> 功能需求</title>
+	<style>
+		.tdl {width:100px;}
+		.tdr {width:150px;}
+		.tdh {width:100px;text-align: center}
+		.kfont {font-family:"楷体";}
+		body{
+			background-color:rgb(199,237,204);
+			margin-left: 20%;
+			margin-right: 20%;
+			border:2px dotted black;
+			padding:10px 10px 10px 10px;
+			font-family: sans-serif;
+		}
+	</style>
+</head>
+<body>
+<div style="margin:0 auto;">
+<h3 class="kfont">3.2.1 &nbsp;制定策略</h3>
+<h4 class="kfont">3.2.1.1 特性描述</h4>
+<p class="kfont">用户在选定一定的股票池的条件下，可以自己制定一定的策略用以筛选特殊的股票进行交易，太最大化自己的收益率。</p>
+<p class="kfont">优先级=高。</p>
+<h4 class="kfont">3.2.1.2 刺激/响应序列</h4>
+<pre class="kfont">刺激：用户在设置好参数（股票数量，调仓时间，调仓价格，股票池，数据开始时间，删选条件，删选数量）后选择生成策略
+响应：系统提示生成策略成功</pre>
+<pre class="kfont">刺激：用户选择查看策略的收益率图
+响应：系统显示策略的收益率图，以及相关参数，阿尔法，贝塔，最大回撤率，收益波动率
+</pre>
+<pre class="kfont">刺激：用户选择查看超额收益率与策略成功率图
+响应：系统显示策略的超额收益率于策略成功率的图像
+</pre>
+<pre class="kfont">刺激：用户选择查看策略胜率图
+响应：系统显示策略的胜率图
+</pre>
+<pre class="kfont">刺激：用户查看股票收藏列表
+响应：系统显示该公户收藏的所有股票列表
+</pre>
+<h4 class="kfont">3.2.1.3 相关功能需求</h4>
+<table border="2" width="600px" cellspacing="0">
+<tbody>
+<tr>
+<td>Strategy.input</td>
+<td>系统应允许客户浏览某支股票信息</td>
+</tr>
+<tr>
+<td>Stock.Info.Collect</td>
+<td>用户浏览某只股票信息时，收藏该股票，系统作出响应，参见Stock.Collect</td>
+</tr>
+<tr>
+<td>Stock.Info.Remove</td>
+<td>用户浏览某只股票信息时（或浏览收藏的股票列表时），取消收藏该股票，系统作出响应，参见Stock.Remove</td>
+</tr>
+<tr>
+<td>Stock.Collect.Succeed</td>
+<td>用户收藏股票成功，系统提示收藏成功并将该只股票添加到股票收藏列表中</td>
+</tr>
+<tr>
+<td>Stock.Collect.Fail</td>
+<td>用户收藏股票失败，系统提示收藏失败并要求用户再次尝试</td>
+</tr>
+<tr>
+<td>Stock.Collect.List</td>
+<td>用户查看收藏的股票列表，系统显示该用户收藏的股票列表</td>
+</tr>
+<tr>
+<td>Stock.Remove.Succeed</td>
+<td>用户取消收藏股票成功，系统提示取消收藏成功并将该只股票移除到股票收藏列表中</td>
+</tr>
+<tr>
+<td>Stock.Remove.Fail</td>
+<td>用户取消收藏股票失败，系统提示取消收藏失败并要求用户再次尝试</td>
+</tr>
+</tbody>
+</table>
+		<h3>3.2.2 查看市场温度计</h3>
+		<h4>3.2.2.1 特性描述</h4>
+		<p style="text-indent:2em">
+			当用户希望去了解当天的某一市场的整体情况时，可以使用此功能
+		</p>
+		<p style="text-indent:2em">
+			优先级=高
+		</p>
+		<h4>3.2.2.2 刺激响应序列</h4>
+		<p style="text-indent:2em">刺激：用户选择查看市场的热点</p>
+		<p style="text-indent:2em">响应：系统显示系统时间当天的大盘指数、股票排名、收藏股票的当天信息</p>
+		<p style="text-indent:2em">刺激：用户选择查看各股票池状况</p>
+		<p style="text-indent:2em">响应：系统显示系统时间当天的股票池状况，包括各股票行情</p>
+		<p style="text-indent:2em">刺激：用户修改当天时间</p>
+		<p style="text-indent:2em">响应：系统修改当天时间，并更改显示内容</p>
+		<h4 class="kfont">3.2.2.3 相关功能需求</h4>
+<table style="font-family:楷体;" border="2" width="600px" cellspacing="0">
+<tr>
+<td>Market.Browse.SetTime</td>
+<td>系统允许用户修改当今时间</td>
+</tr>
+<tr>
+<td>Market.Browse.ChooseMarket</td>
+<td>用户选择市场时，系统显示市场热点信息</td>
+</tr>
+<tr>
+<td>Market.Browse.ChooseBlock</td>
+<td>系统选择浏览板块信息时，系统显示相应板块信息</td>
+</tr>
+<tr>
+<td>Market.Browse.TimeInput.Invalid</td>
+<td>用户输入日期不在范围内时，系统提示日期超出范围</td>
+</table>
+<h3>3.2.3 用户管理</h3>
+		<h4>3.2.3.1 特性描述</h4>
+		<p style="text-indent:2em">
+			当用户希望去对于自己所选中的股票进行持续性的关注，并且使用该软件的一些功能时，用户需要去注册或是登录自己的账号
+		</p>
+		<p style="text-indent:2em">
+			优先级=中
+		</p>
+		<h4>3.2.3.2 刺激响应序列</h4>
+		<p style="text-indent:2em">刺激：用户选择注册账号。</p>
+		<p style="text-indent:2em">响应：系统显示用户名，密码，重复密码的输入框。</p>
+		<p style="text-indent:2em">刺激：用户输入不合法的用户名或密码。</p>
+		<p style="text-indent:2em">响应：系统提示用户名或密码不合法。</p>
+		<p style="text-indent:2em">刺激：用户输入的重复密码与密码不一致。</p>
+		<p style="text-indent:2em">响应：系统提示重复密码与密码不一致。</p>
+		<p style="text-indent:2em">刺激：用户选择登录。</p>
+		<p style="text-indent:2em">响应：系统显示用户名，密码的输入框。</p>
+		<p style="text-indent:2em">刺激：用户输入不正确的用户名或密码。</p>
+		<p style="text-indent:2em">响应：系统提示用户名或密码不正确。</p>
+		<p style="text-indent:2em">刺激：用户选择登出账号。</p>
+		<p style="text-indent:2em">响应：系统登出用户账号，关闭软件。</p>
+		<h4>3.2.3.3 相关功能需求</h4>
+		<table style="font-family:楷体;" border="2" width="600px" cellspacing="0">
+			<tr>
+				<td class=tdl>
+				User_Management.Input<br>
+				User_Management.Input.UserName<br>
+				User_Management.Input.Password<br>
+				User_Management.Input.Repeatpassword
+				</td>
+				<td class=tdr> 
+				系统应该允许用户进行键盘输入。<br>
+				系统需要接收用户输入的用户名。<br>
+				系统需要接收用户输入的密码。<br>
+				系统需要接收用户输入的重复密码。
+				</td>
+			</tr>
+			<tr>
+				<td> 
+				User_Management.Judge<br>
+				User_Management.Judge.Invalid<br>
+				User_Management.Judge.Samepassword<br>
+				User_Management.Judge.Log<br>
+				</td>
+				<td> 
+				系统会对于用户的输入进行判断。<br>
+				系统判断所接收的用户名与密码是否合法，如不正确，跳转到.Error.Invalid。<br>
+				系统判断所接收的密码与重复密码是否一致，如果不一致则跳转到.Error.Samepassword。<br>
+				系统判断所接收的用户名和密码是否匹配，如果不匹配则跳转到.Error.Log。
+				</td>
+			</tr>
+			<tr>
+				<td> 
+				User_Management.Error<br>
+				User_Management.Error.Invalid<br>
+				User_Management.Error.Samepassword<br>
+				User_Management.Error.Log
+				</td>
+				<td> 
+				系统对于错误的操作进行提示。<br>
+				系统提示用户名或密码不合法。<br>
+				系统提示重复密码与密码不一致。<br>
+				系统提示用户名或密码不正确。
+				</td>
+			</tr>
+			<tr>
+				<td> 
+				User_Management.Exit
+				</td>
+				<td> 
+				系统将用户登录状态置为0（登出状态）并关闭软件。
+				</td>
+			</tr>
+		</table>
+		<h3 class="kfont">3.2.4 收藏某支股票并查看股票收藏列表</h3>
+<h4 class="kfont">3.2.4.1 特性描述</h4>
+<p class="kfont">用户在查看某只股票信息的时候，有收藏该股票的意愿，
+用户选择“收藏股票”，系统提示收藏成功，并将该股票加入收藏列表中。</p>
+<p class="kfont">优先级=中。</p>
+	
+<h4 class="kfont">3.2.4.2 刺激/响应序列</h4>
+<pre class="kfont">
+刺激：用户查看某只未收藏股票信息时点击“收藏”
+响应：系统提示收藏成功，并将该股票加入收藏列表
+</pre>
+
+<pre class="kfont">
+刺激：用户查看某只未收藏股票信息时点击“收藏”
+响应：系统提示收藏失败，并要求用户再次尝试
+</pre>
+
+<pre class="kfont">
+刺激：用户查看某只已收藏股票信息时点击“取消收藏”
+响应：系统提示取消收藏成功，并将该股票移除收藏列表
+</pre>
+
+<pre class="kfont">
+刺激：用户查看某只已收藏股票信息时点击“取消收藏”
+响应：系统提示取消收藏失败，并要求用户再次尝试
+</pre>
+
+<pre class="kfont">
+刺激：用户查看股票收藏列表
+响应：系统显示该公户收藏的所有股票列表
+</pre>
+
+<h4 class="kfont">3.2.4.3 相关功能需求</h4>
+<table style="font-family:楷体;" border="2" width="600px" cellspacing="0">
+
+<tr>
+<td>Stock.Info</td>
+<td>系统应允许客户浏览某支股票信息</td>
+</tr>
+<tr>
+<td>Stock.Info.Collect</td>
+<td>用户浏览某只股票信息时，收藏该股票，系统作出响应，参见Stock.Collect</td>
+</tr>
+<tr>
+<td>Stock.Info.Remove</td>
+<td>用户浏览某只股票信息时（或浏览收藏的股票列表时），取消收藏该股票，系统作出响应，参见Stock.Remove</td>
+</tr>
+<td>Stock.Collect.Succeed</td>
+<td>用户收藏股票成功，系统提示收藏成功并将该只股票添加到股票收藏列表中</td>
+</tr>
+<td>Stock.Collect.Fail</td>
+<td>用户收藏股票失败，系统提示收藏失败并要求用户再次尝试</td>
+</tr>
+<td>Stock.Collect.List</td>
+<td>用户查看收藏的股票列表，系统显示该用户收藏的股票列表</td>
+</tr>
+<td>Stock.Remove.Succeed</td>
+<td>用户取消收藏股票成功，系统提示取消收藏成功并将该只股票移除到股票收藏列表中</td>
+</tr>
+<td>Stock.Remove.Fail</td>
+<td>用户取消收藏股票失败，系统提示取消收藏失败并要求用户再次尝试</td>
+</tr>
+
+</table>
+		</div>
+</body>
+</html>
