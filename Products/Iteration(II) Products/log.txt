@@ -1,0 +1,46 @@
+java.io.IOException: Cannot run program "attrib": error=2, No such file or directory
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1048)
+	at java.lang.Runtime.exec(Runtime.java:620)
+	at java.lang.Runtime.exec(Runtime.java:450)
+	at java.lang.Runtime.exec(Runtime.java:347)
+	at data.datahelperimpl.InitEnvironment.initEnvironment(InitEnvironment.java:87)
+	at data.datahelperimpl.InitEnvironment.<init>(InitEnvironment.java:18)
+	at data.datahelperimpl.InitEnvironment.getInstance(InitEnvironment.java:21)
+	at data.datahelperimpl.StockDataHelperImpl_2.initContainer(StockDataHelperImpl_2.java:91)
+	at data.datahelperimpl.StockDataHelperImpl_2.<init>(StockDataHelperImpl_2.java:75)
+	at data.serviceimpl.StockDataController_2.<init>(StockDataController_2.java:25)
+	at data.serviceimpl.StockDataController_2.getInstance(StockDataController_2.java:30)
+	at data.serviceimpl.DataInterfaceImpl.<init>(DataInterfaceImpl.java:31)
+	at rmi.RemoteHelper.initService(RemoteHelper.java:23)
+	at rmi.RemoteHelper.<init>(RemoteHelper.java:18)
+	at runner.ServerRunner.<init>(ServerRunner.java:18)
+	at runner.ServerRunner.main(ServerRunner.java:21)
+Caused by: java.io.IOException: error=2, No such file or directory
+	at java.lang.UNIXProcess.forkAndExec(Native Method)
+	at java.lang.UNIXProcess.<init>(UNIXProcess.java:247)
+	at java.lang.ProcessImpl.start(ProcessImpl.java:134)
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1029)
+	... 15 more
+get Industry list
+连接正常
+get stock list
+连接正常
+Exception in thread "main" java.lang.NullPointerException
+	at data.common.FileMethod.dealdir(FileMethod.java:24)
+	at data.fetchdataimpl.StockSetFetchByWeb.dealStringList(StockSetFetchByWeb.java:211)
+	at data.fetchdataimpl.StockSetFetchByWeb.getAllStockName(StockSetFetchByWeb.java:77)
+	at data.fetchdataimpl.StockDataFetchImpl.fetchAllStockSet(StockDataFetchImpl.java:37)
+	at data.parse.Translate.<init>(Translate.java:34)
+	at data.parse.Translate.getInstance(Translate.java:53)
+	at data.fetchdataimpl.StockSetFetchByWeb.dealIndustryList(StockSetFetchByWeb.java:416)
+	at data.fetchdataimpl.StockSetFetchByWeb.getIndustryList(StockSetFetchByWeb.java:172)
+	at data.fetchdataimpl.StockDataFetchImpl.fetchIndustryList(StockDataFetchImpl.java:44)
+	at data.datahelperimpl.StockDataHelperImpl_2.initFetchChannel(StockDataHelperImpl_2.java:124)
+	at data.datahelperimpl.StockDataHelperImpl_2.<init>(StockDataHelperImpl_2.java:76)
+	at data.serviceimpl.StockDataController_2.<init>(StockDataController_2.java:25)
+	at data.serviceimpl.StockDataController_2.getInstance(StockDataController_2.java:30)
+	at data.serviceimpl.DataInterfaceImpl.<init>(DataInterfaceImpl.java:31)
+	at rmi.RemoteHelper.initService(RemoteHelper.java:23)
+	at rmi.RemoteHelper.<init>(RemoteHelper.java:18)
+	at runner.ServerRunner.<init>(ServerRunner.java:18)
+	at runner.ServerRunner.main(ServerRunner.java:21)
