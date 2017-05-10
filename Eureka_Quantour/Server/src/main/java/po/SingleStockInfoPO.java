@@ -169,7 +169,7 @@ public class SingleStockInfoPO
 //		setSubavg_30(strTodouble(input[19]));
 //		setSubavg_60(strTodouble(input[21]));
 //		
-		setAftavg_5(strTodouble2(input[14]));
+//		setAftavg_5(strTodouble2(input[13]));
 //		setAftavg_10(strTodouble(input[16]));
 //		setAftavg_20(strTodouble(input[18]));
 //		setAftavg_30(strTodouble(input[20]));
