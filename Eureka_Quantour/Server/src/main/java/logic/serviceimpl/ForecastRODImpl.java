@@ -45,6 +45,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 			
 			iROD = ForecastRODImpl.doubletoindex( ROD );
 			
+			
 		}catch ( NullStockIDException e ){
 			e.printStackTrace();
 		}catch ( NullDateException e){
