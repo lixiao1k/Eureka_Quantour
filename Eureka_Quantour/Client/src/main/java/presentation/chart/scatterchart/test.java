@@ -6,13 +6,20 @@ import java.util.List;
 import en_um.ChartKind;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import presentation.chart.function.SaveAs;
+import presentation.chart.function.SaveAsService;
+
+
 
 public class test extends Application{
 	
 	private static PointChart pointChart;
 	private static YieldPointChart yieldPointChart;
+	
+	private SaveAsService sas = new SaveAs();
     
 	private List<int[]> yield = new ArrayList<>();
 	private List<int[]> num = new ArrayList<>();
@@ -110,8 +117,8 @@ public class test extends Application{
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		 // TODO Auto-generated method stub
-//		 new test().testPointChart();
-		 new test().testYieldPointChart1();
+		 new test().testPointChart();
+//		 new test().testYieldPointChart1();
 //		 new test().testYieldPointChart2();
 		try{
 			Stage dialogStage = new Stage();
@@ -119,11 +126,14 @@ public class test extends Application{
 			dialogStage.initModality(Modality.WINDOW_MODAL);
 			dialogStage.initOwner(primaryStage);
 			Scene scene ;  
-//			scene = new Scene(pointChart.getchart(334, 200, true));
-//			scene = new Scene(pointChart.getchart(334, 200, false));
-//			scene = new Scene(yieldPointChart.getchart(334, 200, false));
-			scene = new Scene(yieldPointChart.getchart(334, 200, true));
+			Pane pane = new Pane();
+			pane = pointChart.getchart(334, 200, true);
+//			pane = pointChart.getchart(334, 200, false);
+//			pane = yieldPointChart.getchart(334, 200, false);
+//			pane = yieldPointChart.getchart(334, 200, true);
 			
+//			sas.saveAsPng(pane, "pointchart");
+			scene = new Scene( pane );
 			dialogStage.setScene(scene);
 
 			dialogStage.show();
