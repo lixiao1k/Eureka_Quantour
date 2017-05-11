@@ -33,13 +33,13 @@ public class Main extends Application{
 			System.out.println("连接服务器成功！");
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e.toString();
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e.toString();
 		} catch (NotBoundException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e.toString();
 		}
 		launch(args);
 	}

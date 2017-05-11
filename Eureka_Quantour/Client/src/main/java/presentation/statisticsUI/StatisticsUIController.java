@@ -86,7 +86,9 @@ public class StatisticsUIController implements Initializable {
 	
 	
 	private DataContorller dataController;
-	
+	/*
+	 * 监听入口
+	 */
 	@FXML
 	protected void setMarket(ActionEvent e){
 		nameLabel.setText(marketComboBox.getValue());

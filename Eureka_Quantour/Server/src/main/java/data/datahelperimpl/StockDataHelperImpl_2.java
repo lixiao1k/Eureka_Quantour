@@ -48,7 +48,7 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 	
 	private List<Integer> pointerToposition;
 	private HashMap<Integer,Integer> dateIndex;
-	private List<Integer> datesort;
+	public List<Integer> datesort;
 	private int datesize;
 	
 	private DateTrie datetree;//以日期为主键的树
