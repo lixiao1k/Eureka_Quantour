@@ -61,11 +61,12 @@ public class ForecastRODImpl implements ForecastRODInterface{
 			date = date.plusDays(1);
 		}
 		
+		date = date.minusDays(1);
+		
 		while( date.compareTo(enddate)<=0 ){
 			try{
 				date = date.plusDays(1);
 				
-				idate = ForecastRODImpl.getDayOfWeek(date)-1;
 				idate = ForecastRODImpl.getDayOfWeek(date)-1;
 				while( idate==-1){
 					date = date.plusDays(1);
@@ -85,7 +86,6 @@ public class ForecastRODImpl implements ForecastRODInterface{
 				srod.wROD[idate][iROD]++;
 				srod.RODw[iROD][idate]++;
 
-				date = date.plusDays(1);
 			}catch ( NullStockIDException e ){
 				e.printStackTrace();
 			}catch ( NullDateException e){

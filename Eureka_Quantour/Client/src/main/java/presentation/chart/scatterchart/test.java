@@ -66,36 +66,12 @@ public class test extends Application{
 		LocalDate begindate = LocalDate.of(2013, 3, 6);
 		LocalDate enddate = LocalDate.of(2016, 3, 6);
 		
-		String stockcode = "000938";
+		String stockcode = "600149";
 		try{
 			srod = remote.getForecastROD().getStockROD(stockcode, begindate, enddate);
 		}catch(RemoteException e){
 			e.printStackTrace();
 		}
-		
-//		for( int i=0; i<5; i++){
-//			List<int[]> num = new ArrayList<>();
-//			num.add( srod.wROD[i] );
-//			List<String> name = new ArrayList<>();
-//			String namet = "星期"+i;
-//			name.add(namet);
-//			System.out.print("{");
-//			for( int j=0; j<21; j++){
-//				if( j<20 ){
-//					if( srod.wROD[i][j]<10 )
-//						System.out.print( " "+srod.wROD[i][j] +", ");
-//					else
-//						System.out.print( srod.wROD[i][j] +", ");
-//				}
-//				else{
-//					if( srod.wROD[i][j]<10 )
-//						System.out.print( " "+srod.wROD[i][j] );
-//					else
-//						System.out.print( srod.wROD[i][j] );
-//				}
-//			}
-//			System.out.println("}");
-//		}
 		
 		try{
             FileOutputStream out=new FileOutputStream( stockcode+".txt" );
@@ -115,19 +91,36 @@ public class test extends Application{
     						p.print( srod.wROD[i][j] );
     				}
             	}
-            	p.print("\n");
+            	p.println();
             }
+            p.println();
             
             for( int i=0; i<5; i++){
-            	p.println("星期 "+(i+1)+" 有"+srod.wROD[i][0]+" 天跌 >10%"
-            			+"   "+
-            			"有"+srod.wROD[i][22]+" 天涨 >10%");    	
+            	if( srod.wROD[i][0]>=10 )
+            		p.print( "星期 "+(i+1)+" 有 "+" "+srod.wROD[i][0]+" 天跌 >10%" );
+            	else
+            		p.print( "星期 "+(i+1)+" 有 "+"  "+srod.wROD[i][0]+" 天跌 >10%" );
+            	p.print( "   " );
+            	if( srod.wROD[i][22]>=10 )
+            		p.println( " 有 "+srod.wROD[i][22]+" 天涨 >10%" );    
+            	else
+            		p.println( " 有 "+" "+srod.wROD[i][22]+" 天涨 >10%" );    
             }
+            
+            p.println();
+            
             for( int i=0; i<5; i++){
-            	p.print("星期 "+(i+1)+" 有"+srod.nodata[i][0]+" 天"
-            			+"   "+
-            			"有"+srod.nodata[i][1]+" 天没数据");
-            	p.println();
+            	if( srod.nodata[i][0]>=100 )
+            		p.print( "星期 "+(i+1)+" 有 "+srod.nodata[i][0]+" 天" );
+            	else if( srod.nodata[i][0]>=10 )
+            		p.print( "星期 "+(i+1)+" 有 "+" "+srod.nodata[i][0]+" 天" );
+            	else
+            		p.print( "星期 "+(i+1)+" 有 "+"  "+srod.nodata[i][0]+" 天" );
+            	p.print( "   " );
+            	if( srod.nodata[i][1]>=10 )
+            		p.println( " 有 "+srod.nodata[i][1]+" 天没数据" );
+            	else
+            		p.println( " 有 "+" "+srod.nodata[i][1]+" 天没数据" );
             }
                 
         }catch(FileNotFoundException e){
