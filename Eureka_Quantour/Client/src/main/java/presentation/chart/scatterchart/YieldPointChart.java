@@ -18,9 +18,7 @@ public class YieldPointChart implements chartService{
 	private PointChart pointChart;
 	
 	public YieldPointChart(List<Integer> nums, ChartKind kind){
-		int[] yieldt = {-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}; 
-		List<int[]> yield = new ArrayList<>();
-		yield.add(yieldt);
+		int[] yield = {-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}; 
 		
 		List<int[]> num = new ArrayList<>();
 		int[] numt = new int[nums.size()];
@@ -32,7 +30,7 @@ public class YieldPointChart implements chartService{
 		List<String> dataName = new ArrayList<>();
 		dataName.add("Num");
 
-		pointChart = new PointChart( yield, num, dataName, kind);
+		pointChart = new PointChart( yield, num, dataName, kind, true);
 	}
 
 	@Override

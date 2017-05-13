@@ -44,33 +44,47 @@ public class PointChart implements chartService{
 	private Label info = new Label();
 	
 	private NumberAxis yAxis;
-//    private CategoryAxis xAxis;
     private NumberAxis xAxis;
 
-//    private ScatterChart<String, Number> scatterChart;
     private ScatterChart<Number, Number> scatterChart;
     private Map<String, String> dataMap = new HashMap<String,String>();
-    private String[] yieldRange;
-    
-    protected PointChart(List<int[]> yield, List<int[]> num, List<String> dataName, ChartKind kind){
-    	yieldRange = new String[21];
-    	double k = -0.1, gap = 0.01;
-    	for( int i=0; i<=20; i++, k+=gap ){
-    		if( i==10 )
-    			yieldRange[i] = "0%";
-    		else
-    			yieldRange[i] = nf.format(k);
+    private String[] xRange;
+    private boolean xWithPercent = false;
+
+    /**
+     * 
+     * @param xData : the value of xAxis, if change them to percent, its value is int and div 100 when changing
+     * @param yData
+     * @param dataName
+     * @param kind
+     * @param xWithPer : judge the xAxis is percent or not
+     */
+    protected PointChart( int[] xData, List<int[]> yData, List<String> dataName, ChartKind kind, boolean xWithPer ){
+    	xWithPercent = xWithPer;
+
+    	xRange = new String[xData.length];
+
+    	// if xWithPer is true, xAxis is yield, or is others
+    	if( xWithPer ){
+    		for( int i=0; i<xData.length; i++ ){
+    			if( xData[i]==0 )
+    				xRange[i] = "0%";
+    			else
+    				xRange[i] = nf.format( xData[i]/100.0 );
+    		}
     	}
-//    	ObservableList<String> yields = FXCollections.observableList(yieldRange);
-    	
-//    	xAxis = new CategoryAxis(yields);
+    	else{
+    		for( int i=0; i<xData.length; i++ )
+    			xRange[i] = String.valueOf( xData[i] );
+    	}
+
     	xAxis = new NumberAxis();
     	xAxis.setTickLabelsVisible(false);
     	xAxis.autoRangingProperty().set(true);
     	xAxis.setAnimated(true);
         xAxis.setOpacity(0.7);
-        xAxis.setLowerBound(-0.11);
-        xAxis.setUpperBound(0.11);
+        xAxis.setLowerBound( xData[0]-1 );
+        xAxis.setUpperBound( xData[xData.length-1]+1 );
         xAxis.setAutoRanging(false);
         
         yAxis = new NumberAxis();
@@ -83,33 +97,38 @@ public class PointChart implements chartService{
         scatterChart.setLegendVisible(false);
         
         List<XYChart.Series<Number, Number>> series = new ArrayList<>();
-        String[] dataStrings = new String[21];
-        for( int i=0; i<yield.size(); i++ ){
+        String[] dataStrings = new String[xData.length];
+        for( int i=0; i<yData.size(); i++ ){
+        	int[] numt = yData.get(i);
+
         	XYChart.Series<Number, Number> serie = new XYChart.Series<>();
-        	int[] yieldt = yield.get(i);
-        	int[] numt = num.get(i);
         	String name = dataName.get(i);
-        	
         	serie.setName(name);
-        	for( int j=0; j<yieldt.length; j++ ){
+
+        	for( int j=0; j<xData.length; j++ ){
         		if( j<numt.length && numt[j]!=Integer.MAX_VALUE ){
         			if( kind==ChartKind.POINTFULL )
-        				for( int h=1; h<=numt[j]; h++ )
-        					serie.getData().add( new XYChart.Data<>( yieldt[j]/100.0, h) );
-        			else if( kind==ChartKind.POINTONE )
-        				serie.getData().add( new XYChart.Data<>( yieldt[j]/100.0, numt[j]) );
+        				for( int h=1; h<=numt[j]; h++ ){
+        					serie.getData().add( new XYChart.Data<>( xData[j], h) );
+        				}
+        			else if( kind==ChartKind.POINTONE ){
+        				serie.getData().add( new XYChart.Data<>( xData[j], numt[j]) );
+        			}
         			
         			if( dataStrings[j]!=null )
 	        			dataStrings[j] += "/"+name+" : "+numt[j];
 	        		else
 	        			dataStrings[j] = name+" : "+numt[j];
-        		}	
+        		}
+        		else{
+        			serie.getData().add( new XYChart.Data<>( xData[j], 0) );
+        		}
         	}
         	series.add(serie);
         }
-        for(int i=0; i<yieldRange.length; i++){
+        for(int i=0; i<xRange.length; i++){
         	if( dataStrings[i]!=null )
-        		dataMap.put(yieldRange[i], dataStrings[i]);
+        		dataMap.put(xRange[i], dataStrings[i]);
         }
         scatterChart.getData().addAll(series);
     }
@@ -128,7 +147,7 @@ public class PointChart implements chartService{
     		height -= dateheight;
     		height -= chartsmall;
     		datepane.getChildren().addAll( 
-    				commonSet.dateForStackPane("-10%", "0%", "10%").getChildren() );
+    				commonSet.dateForStackPane( xRange[0], xRange[xRange.length/2], xRange[xRange.length-1] ).getChildren() );
     		datepane.setPrefSize(width-dategap, dateheight);
     		datepane.getStylesheets().add(
         			getClass().getResource("/styles/DateLabel.css").toExternalForm() );
@@ -142,7 +161,7 @@ public class PointChart implements chartService{
     	scatterChart.setMaxSize(width, height);
     	scatterChart.setMinSize(width, height);
     	
-    	info = catchMouseMove.catchMouseReturnInfoForStackPaneNN(scatterChart, dataMap, yieldRange, "Yield", 10, ChartKind.POINTFULL);
+    	info = catchMouseMove.catchMouseReturnInfoForStackPaneNN(scatterChart, dataMap, xRange, "Yield", 10, ChartKind.POINTFULL);
     	
     	chartpane.getChildren().add(scatterChart);
     	chartpane.getChildren().add(info);
