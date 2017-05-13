@@ -3,8 +3,6 @@ package logic.service;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.Comparator;
 import java.util.List;
 
 import exception.*;
@@ -75,5 +73,20 @@ public interface StockLogicInterface extends Remote {
 
 	String nameToCode(String name) throws RemoteException;
 
-	List<List<Double>> getDantengchart(String name,LocalDate begin,LocalDate end,String hengzhou,String usernam, String stocksetname,int geiding) throws RemoteException;
+	void saveStragety(StrategyVO strategyVO, String username) throws RemoteException;
+
+	void deleteStrategy ( String createName, String strategyName) throws RemoteException;
+
+	void comment(String Username, String strategyName, String commenterName, LocalDate date,String comment) throws RemoteException;
+
+	StrategyShowVO getStrategy ( String createrName, String StrategyName ) throws RemoteException;
+
+	List<StrategyShowVO> getStrategyList ( String createrName) throws RemoteException;
+
+	List<StrategyShowVO> getStrategyList ( )throws RemoteException;
+
+
+
+
+
 }

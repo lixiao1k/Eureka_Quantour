@@ -249,7 +249,7 @@ public class Return {
     private  class junzhicelue implements Comparator<SingleStockInfoPO> {
 
         private int days;
-        private junzhicelue(List<Object> objects){
+        private junzhicelue(List<Integer> objects){
             this.days=(Integer) objects.get(0);
         }
 
@@ -305,8 +305,8 @@ public class Return {
     private class dongliangcelue implements Comparator<SingleStockInfoPO> {
 
         private int days;
-        private dongliangcelue(List<Object> objects){
-            this.days=(Integer) objects.get(0);
+        private dongliangcelue(List<Integer> objects){
+            this.days=objects.get(0);
         }
 
 

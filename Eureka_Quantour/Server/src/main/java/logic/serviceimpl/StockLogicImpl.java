@@ -1,7 +1,6 @@
 package logic.serviceimpl;
 
 import java.rmi.RemoteException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -356,31 +355,40 @@ public class StockLogicImpl implements StockLogicInterface{
 	}
 
 	@Override
-	public List<List<Double>> getDantengchart(String name, LocalDate begin, LocalDate end, String hengzhou, String usernam, String stocksetname,int geiding) {
-		int i=0;
-		List<Double> zong1=new ArrayList<>();
-		List<Double> zong2=new ArrayList<>();
-		LocalDate ite=LocalDate.of(begin.getYear(),begin.getMonth(),begin.getDayOfMonth());
-		for (;
-				ite.compareTo(end)<0;
-				ite=ite.plusDays(1)){
-			i++;
-		}
+	public void saveStragety(StrategyVO strategyVO, String username) throws RemoteException {
 
-		int j=0;
-		j=utility.getdanteng(name)+i+utility.getdanteng(hengzhou)+utility.getdanteng(usernam)+utility.getdanteng(stocksetname)+geiding;
-		for (int k=5;k<10;k++){
-			zong1.add(1.0*(j%k)/k);
-		}
-		for (int k=10;k<15;k++){
-			zong2.add(1.0*(j%k)/k);
-		}
+	}
 
-		List<List<Double>> res=new ArrayList<>();
-			res.add(new ArrayList<>());
-			res.add(zong1);
-			res.add(zong2);
-		return res;
+	@Override
+	public void deleteStrategy(String createName, String strategyName) throws RemoteException {
+
+	}
+
+
+
+
+
+
+
+
+	@Override
+	public void comment(String Username, String strategyName, String commenterName, LocalDate date, String comment) throws RemoteException {
+
+	}
+
+	@Override
+	public StrategyShowVO getStrategy(String createrName, String StrategyName) throws RemoteException {
+		return null;
+	}
+
+	@Override
+	public List<StrategyShowVO> getStrategyList(String createrName) {
+		return null;
+	}
+
+	@Override
+	public List<StrategyShowVO> getStrategyList() throws RemoteException {
+		return null;
 	}
 
 	@Override
