@@ -6,6 +6,7 @@ package rmi;
 import java.rmi.Remote;
 
 import logic.service.ClientLogicInterface;
+import logic.service.ForecastRODInterface;
 import logic.service.StockLogicInterface;
 
 public class RemoteHelper {
@@ -25,5 +26,8 @@ public class RemoteHelper {
     }
     public StockLogicInterface getStockLogic(){
     	return (StockLogicInterface)remote;
+    }
+    public ForecastRODInterface getForecastROD(){
+    	return (ForecastRODInterface)remote;
     }
 }

@@ -1,31 +1,16 @@
-package main;
+package presentation.chart.scatterchart;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
-import dataController.DataContorller;
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 import rmi.RemoteHelper;
 
-public class Main extends Application{
+public class Maintest {
 	private static RemoteHelper rmic;
-
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		// TODO Auto-generated method stub
-		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("presentation/loginUI/Login.fxml"));
-		Scene scene = new Scene(root);
-		primaryStage.setScene(scene);
-		primaryStage.show();
-	}
+	
 	public static void main(String[] args) {
-		DataContorller dataController = DataContorller.getInstance();
 
 		try {
 			rmic = RemoteHelper.getInstance();
@@ -42,7 +27,7 @@ public class Main extends Application{
 			// TODO Auto-generated catch block
 			e.toString();
 		}
-		launch(args);
+		
+		new test().getROD();
 	}
-
 }

@@ -1,7 +1,7 @@
 package logic.serviceimpl;
 
+import java.rmi.RemoteException;
 import java.text.DecimalFormat;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 
 import data.service.IDataInterface;
@@ -19,7 +19,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 	private IDataInterface idata = new DataInterfaceImpl();
 	
 	@Override
-	public StockRODVO getStockROD(String stockcode, LocalDate begindate, LocalDate enddate) {
+	public StockRODVO getStockROD(String stockcode, LocalDate begindate, LocalDate enddate) throws RemoteException{
 		// TODO Auto-generated method stub
 		StockRODVO srod = new StockRODVO();
 		
@@ -35,6 +35,10 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		
 		try{
 			idate = ForecastRODImpl.getDayOfWeek(date)-1;
+			while( idate==-1){
+				date = date.plusDays(1);
+				idate = ForecastRODImpl.getDayOfWeek(date)-1;
+			}
 			
 			ssi1 = idata.getSingleStockInfo(stockcode, date);
 			date = date.plusDays(1);
@@ -42,22 +46,42 @@ public class ForecastRODImpl implements ForecastRODInterface{
 			close1 = ssi1.getClose();
 			close2 = ssi2.getClose();
 			ROD = (close2-close1)/close1;
-			
+
 			iROD = ForecastRODImpl.doubletoindex( ROD );
 			
-			
+			srod.wROD[idate][iROD]++;
+			srod.RODw[iROD][idate]++;
 		}catch ( NullStockIDException e ){
 			e.printStackTrace();
+			date = date.plusDays(1);
 		}catch ( NullDateException e){
 			e.printStackTrace();
+			date = date.plusDays(1);
 		}
-		
-		date = date.plusDays(1);
 		
 		while( date.compareTo(enddate)<=0 ){
 			try{
+				date = date.plusDays(1);
+				
+				idate = ForecastRODImpl.getDayOfWeek(date)-1;
+				idate = ForecastRODImpl.getDayOfWeek(date)-1;
+				while( idate==-1){
+					date = date.plusDays(1);
+					idate = ForecastRODImpl.getDayOfWeek(date)-1;
+				}
+				
 				ssi1 = ssi2;
+				close1 = close2;
 				ssi2 = idata.getSingleStockInfo(stockcode, date);
+				close2 = ssi2.getClose();
+
+				ROD = (close2-close1)/close1;
+
+				iROD = ForecastRODImpl.doubletoindex( ROD );
+			
+				srod.wROD[idate][iROD]++;
+				srod.RODw[iROD][idate]++;
+
 				date = date.plusDays(1);
 			}catch ( NullStockIDException e ){
 				e.printStackTrace();
@@ -66,7 +90,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 			}
 			
 		}
-		return null;
+		return srod;
 	}
 	
 	private static int getDayOfWeek( LocalDate date){
