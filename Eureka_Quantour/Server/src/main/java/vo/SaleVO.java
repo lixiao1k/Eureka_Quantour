@@ -12,6 +12,8 @@ public class SaleVO implements Serializable {
 
     private String tiaocangjiage="收盘价";
 
+    private int num;
+
     public int getTiaocangqi() {
         return tiaocangqi;
     }
@@ -31,6 +33,22 @@ public class SaleVO implements Serializable {
     public SaleVO(int tiaocangqi, String tiaocangjiage) {
         this.tiaocangqi = tiaocangqi;
         this.tiaocangjiage = tiaocangjiage;
+    }
+
+
+
+    public int getNum() {
+        return num;
+    }
+
+    public void setNum(int num) {
+        this.num = num;
+    }
+
+    public SaleVO(int tiaocangqi, String tiaocangjiage, int num) {
+        this.tiaocangqi = tiaocangqi;
+        this.tiaocangjiage = tiaocangjiage;
+        this.num = num;
     }
 
     public SaleVO() {

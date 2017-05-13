@@ -24,7 +24,7 @@ public class Main {
         List<Object> list=new ArrayList<>();
         list.add(new Integer(10));
         stragetyConditionVo.setNums(10);
-        stragetyConditionVo.setExtra(list);
+//        stragetyConditionVo.setExtra(list);
         SaleVO saleVO=new SaleVO();
         saleVO.setTiaocangqi(1);
 

@@ -143,8 +143,33 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 	}
 
 	@Override
-	public List<List<Double>> getDantengchart(String name, LocalDate begin, LocalDate end, String hengzhou, String usernam, String stocksetname,int geiding) throws RemoteException {
-		return sli.getDantengchart(name, begin, end, hengzhou, usernam, stocksetname, geiding);
+	public void saveStragety(StrategyVO strategyVO, String username) throws RemoteException {
+
+	}
+
+	@Override
+	public void deleteStrategy(String createName, String strategyName) throws RemoteException {
+
+	}
+
+	@Override
+	public void comment(String Username, String strategyName, String commenterName, LocalDate date, String comment) throws RemoteException {
+
+	}
+
+	@Override
+	public StrategyShowVO getStrategy(String createrName, String StrategyName) throws RemoteException {
+		return null;
+	}
+
+	@Override
+	public List<StrategyShowVO> getStrategyList(String createrName) throws RemoteException {
+		return null;
+	}
+
+	@Override
+	public List<StrategyShowVO> getStrategyList() throws RemoteException {
+		return null;
 	}
 
 

@@ -10,7 +10,7 @@ public class StrategyConditionVO implements Serializable{
     private static final long serialVersionUID = 3441219408241335848L;
 
     private String name;
-    private List<Object> extra;
+    private List<Integer> parameter;
     private int nums;
 
     public int getNums() {
@@ -25,22 +25,27 @@ public class StrategyConditionVO implements Serializable{
         return name;
     }
 
-    public List<Object> getExtra() {
-        return extra;
+    public List<Integer> getExtra() {
+        return parameter;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setExtra(List<Object> extra) {
-        this.extra = extra;
+    public void setExtra(List<Integer> extra) {
+        this.parameter = extra;
     }
 
-    public StrategyConditionVO(String name, List<Object> extra, int nums) {
+    public StrategyConditionVO(String name, List<Integer> extra, int nums) {
         this.name = name;
-        this.extra = extra;
+        this.parameter = extra;
         this.nums = nums;
+    }
+
+    public StrategyConditionVO(String name, List<Integer> parameter) {
+        this.name = name;
+        this.parameter = parameter;
     }
 
     public StrategyConditionVO( ) {
