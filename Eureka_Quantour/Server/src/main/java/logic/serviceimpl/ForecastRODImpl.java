@@ -39,6 +39,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 				date = date.plusDays(1);
 				idate = ForecastRODImpl.getDayOfWeek(date)-1;
 			}
+			srod.nodata[idate][0]++;
 			
 			ssi1 = idata.getSingleStockInfo(stockcode, date);
 			date = date.plusDays(1);
@@ -55,6 +56,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 			e.printStackTrace();
 			date = date.plusDays(1);
 		}catch ( NullDateException e){
+			srod.nodata[idate][1]++;
 			e.printStackTrace();
 			date = date.plusDays(1);
 		}
@@ -69,6 +71,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 					date = date.plusDays(1);
 					idate = ForecastRODImpl.getDayOfWeek(date)-1;
 				}
+				srod.nodata[idate][0]++;
 				
 				ssi1 = ssi2;
 				close1 = close2;
@@ -86,6 +89,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 			}catch ( NullStockIDException e ){
 				e.printStackTrace();
 			}catch ( NullDateException e){
+				srod.nodata[idate][1]++;
 				e.printStackTrace();
 			}
 			
@@ -113,50 +117,52 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		String str = df.format(ROD);
 		double d = Double.valueOf(str);
 		
-		if( d<-0.09 && d>=-0.1 )
+		if( d<-0.1)
 			return 0;
-		else if( d<-0.08 && d>=-0.09 )
+		else if( d<-0.09 && d>=-0.1 )
 			return 1;
-		else if( d<-0.07 && d>=-0.08 )
+		else if( d<-0.08 && d>=-0.09 )
 			return 2;
-		else if( d<-0.06 && d>=-0.07 )
+		else if( d<-0.07 && d>=-0.08 )
 			return 3;
-		else if( d<-0.05 && d>=-0.06 )
+		else if( d<-0.06 && d>=-0.07 )
 			return 4;
-		else if( d<-0.04 && d>=-0.05 )
+		else if( d<-0.05 && d>=-0.06 )
 			return 5;
-		else if( d<-0.03 && d>=-0.04 )
+		else if( d<-0.04 && d>=-0.05 )
 			return 6;
-		else if( d<-0.02 && d>=-0.03 )
+		else if( d<-0.03 && d>=-0.04 )
 			return 7;
-		else if( d<-0.01 && d>=-0.02 )
+		else if( d<-0.02 && d>=-0.03 )
 			return 8;
-		else if( d<0 && d>=-0.01 )
+		else if( d<-0.01 && d>=-0.02 )
 			return 9;
-		else if( d==0 )
+		else if( d<0 && d>=-0.01 )
 			return 10;
-		else if( d<=0.01 && d>0 )
+		else if( d==0 )
 			return 11;
-		else if( d<=0.02 && d>0.01 )
+		else if( d<=0.01 && d>0 )
 			return 12;
-		else if( d<=0.03 && d>0.02 )
+		else if( d<=0.02 && d>0.01 )
 			return 13;
-		else if( d<=0.04 && d>0.03 )
+		else if( d<=0.03 && d>0.02 )
 			return 14;
-		else if( d<=0.05 && d>0.04 )
+		else if( d<=0.04 && d>0.03 )
 			return 15;
-		else if( d<=0.06 && d>0.05 )
+		else if( d<=0.05 && d>0.04 )
 			return 16;
-		else if( d<=0.07 && d>0.06 )
+		else if( d<=0.06 && d>0.05 )
 			return 17;
-		else if( d<=0.08 && d>0.07 )
+		else if( d<=0.07 && d>0.06 )
 			return 18;
-		else if( d<=0.09 && d>0.08 )
+		else if( d<=0.08 && d>0.07 )
 			return 19;
-		else if( d<=0.1 && d>0.09 )
+		else if( d<=0.09 && d>0.08 )
 			return 20;
+		else if( d<=0.1 && d>0.09 )
+			return 21;
 		else
-			return 0;
+			return 22;
 	}
 	
 	public static void main(String args[]){

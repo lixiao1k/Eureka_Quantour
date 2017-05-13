@@ -49,7 +49,6 @@ public class PointChart implements chartService{
     private ScatterChart<Number, Number> scatterChart;
     private Map<String, String> dataMap = new HashMap<String,String>();
     private String[] xRange;
-    private boolean xWithPercent = false;
 
     /**
      * 
@@ -60,8 +59,6 @@ public class PointChart implements chartService{
      * @param xWithPer : judge the xAxis is percent or not
      */
     protected PointChart( int[] xData, List<int[]> yData, List<String> dataName, ChartKind kind, boolean xWithPer ){
-    	xWithPercent = xWithPer;
-
     	xRange = new String[xData.length];
 
     	// if xWithPer is true, xAxis is yield, or is others

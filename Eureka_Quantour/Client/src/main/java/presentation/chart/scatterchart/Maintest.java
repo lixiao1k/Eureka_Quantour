@@ -18,13 +18,10 @@ public class Maintest {
 //			rmic.setRemote(Naming.lookup("rmi://114.212.43.109:8888/DateRemote"));
 			System.out.println("连接服务器成功！");
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.toString();
 		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
 			e.toString();
 		} catch (NotBoundException e) {
-			// TODO Auto-generated catch block
 			e.toString();
 		}
 		
