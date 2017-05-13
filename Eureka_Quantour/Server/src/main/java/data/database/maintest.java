@@ -1,10 +1,11 @@
-package databasetest;
+package data.database;
 
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Scanner;
 
 import com.mysql.cj.jdbc.PreparedStatement;
 
@@ -27,9 +28,21 @@ public class maintest {
 		long total=0;
 		String str=null;
 		long t1=System.currentTimeMillis();
-		find(20170315);
+	
+			int i=20050201;
+			for(;i<20170420;i++){
+				try {
+				
+				sdhi.getSingleInfo(i, "000001");
+			} catch (StockHaltingException | NullDateException e) {
+			}
+			}
+	
+//		find(20160315,1);
 		long t2=System.currentTimeMillis();
 		System.out.println(t2-t1);
+		Scanner sc=new Scanner(System.in);
+		sc.nextLine();
 //		for(String i:list){
 //			int code=Parse.getInstance().strToint(i);
 //			long t1=System.currentTimeMillis();
@@ -78,13 +91,16 @@ public class maintest {
 	    }
 	}
 	public boolean find(int cal,int code){
-		String sql = "select info from stock where date='"+cal+"' and code='"+code+"'";
+		String sql = "select info from stock where date>'"+cal+"' and date < 20170419 and code='"+code+"'";
 		//System.out.println(sql);
 	    PreparedStatement pstmt;
 	    try {
 	        pstmt = (PreparedStatement)conn.prepareStatement(sql);
 	        ResultSet rs = pstmt.executeQuery();
 	        if(rs.next()){
+	        	System.out.println(rs.getString(1));
+	        	while(rs.next())
+	        		System.out.println(rs.getString(1));
 	        	return true;
 	        }
 	        else{

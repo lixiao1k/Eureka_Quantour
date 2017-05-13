@@ -150,8 +150,8 @@ public class StockSetDataHelperImpl implements IStockSetDataHelper {
 	 * 获取行业板块中的各种分类
 	 * @return 行业板块中的各种分类
 	 */
-	public List<String> getIndustryList(){
-		String path="config/stock/stockset/Industry";
+	public List<String> getBKList(String bk){
+		String path="config/stock/stockset/"+bk;
 		File set=new File(path);
 		List<String> list=new ArrayList<String>();
 		try {
@@ -168,7 +168,6 @@ public class StockSetDataHelperImpl implements IStockSetDataHelper {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
-		}
-		
+		}	
 	}
 }

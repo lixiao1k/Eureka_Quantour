@@ -162,6 +162,20 @@ public class DataInterfaceImpl implements IDataInterface
 	public List<String> getIndustryList(){
 		return stockset.getIndustryList();
 	}
+	/**
+	 * 获取概念板块中的各种分类
+	 * @return 行业板块中的各种分类
+	 */
+	public List<String> getConceptList(){
+		return stockset.getConceptList();
+	}
+	/**
+	 * 获取地区板块中的各种分类
+	 * @return 行业板块中的各种分类
+	 */
+	public List<String> getAreaList(){
+		return stockset.getAreaList();
+	}
 //----------------------------------查询单个股票-------------------------------------
 	/**
 	 * 获取股票某一天的数据

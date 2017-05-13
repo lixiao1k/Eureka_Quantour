@@ -1,5 +1,6 @@
 package data.fetchdataimpl;
 
+import data.database.ConnectionPoolManager;
 import data.fetchdataservice.IStockDataFetch;
 import exception.InternetdisconnectException;
 
@@ -9,12 +10,7 @@ public class StockDataFetchImpl implements IStockDataFetch{
 	private StockInfoCalculate infocalculate;
 	private static StockDataFetchImpl impl;
 //	public static void main(String[] args){
-//		try {
-//			new StockDataFetchImpl().fetchAllStockInfo();;
-//		} catch (InternetdisconnectException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		};
+//		new StockSetFetchByWeb().pushListintoDBO();
 //	}
 	private StockDataFetchImpl(){
 		setByweb=new StockSetFetchByWeb();
@@ -38,10 +34,21 @@ public class StockDataFetchImpl implements IStockDataFetch{
 		setByweb.getHS300List();
 		setByweb.getZXBList();
 		setByweb.getIndustryList();
+		setByweb.getConceptList();
+		setByweb.getAreaList();
 	}
 	@Override
 	public void fetchIndustryList() throws InternetdisconnectException {
 		setByweb.getIndustryList();
+	}
+	@Override
+	public void fetchConceptList() throws InternetdisconnectException {
+		setByweb.getConceptList();
+	}
+	@Override
+	public void fetchAreaList() throws InternetdisconnectException {
+		setByweb.getAreaList();
+		setByweb.pushListintoDBO();
 	}
 	@Override
 	public void fetchAllStockInfo() throws InternetdisconnectException {

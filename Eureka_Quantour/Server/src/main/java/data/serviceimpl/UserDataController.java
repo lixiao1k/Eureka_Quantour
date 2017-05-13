@@ -3,6 +3,7 @@ package data.serviceimpl;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import data.datahelperimpl.UserDataHelperImpl;
+import data.datahelperimpl_ByDataBase.UserDataHelperImpl_DBO;
 import data.datahelperservice.IUserDataHelper;
 import exception.LogErrorException;
 import exception.UserNameRepeatException;
@@ -14,10 +15,12 @@ import exception.UserNameRepeatException;
  */
 public class UserDataController 
 {
-	private IUserDataHelper userdatahelper;
+	private IUserDataHelper userdatahelper_DBO;
+	private IUserDataHelper userdatahelper_FILE;
 	private static UserDataController userdata;
 	private UserDataController(){
-		userdatahelper=UserDataHelperImpl.getInstance();
+		userdatahelper_DBO=UserDataHelperImpl_DBO.getInstance();
+		userdatahelper_FILE=UserDataHelperImpl.getInstance();
 	}
 	public static UserDataController getInstance(){
 		if(userdata==null) userdata=new UserDataController();
@@ -31,9 +34,10 @@ public class UserDataController
 	 */
 	public void signUpCheck(String username, String password) throws UserNameRepeatException{
 		password=EncoderByMd5(password);
-		userdatahelper.containName(username);
+		userdatahelper_DBO.containName(username);
 		System.out.println("---------------------注册成功-----------------------\n  username:" +username+"    password:"+password);
-		userdatahelper.insertUser(username, password);
+		userdatahelper_DBO.insertUser(username, password);
+		userdatahelper_FILE.insertUser(username, password);
 	}
 	/**
 	 * 判断用户是否登录成功，如果成功，登录用户的账号；如果失败，返回错误信息。
@@ -43,7 +47,7 @@ public class UserDataController
 	 */
 	public void signInCheck(String username,String password) throws LogErrorException {
 		password=EncoderByMd5(password);
-		userdatahelper.login(username, password);
+		userdatahelper_DBO.login(username, password);
 		System.out.println("---------------------登录成功-----------------------\n  username:" +username+"    password:"+password);
 	}
 	/**
@@ -52,7 +56,7 @@ public class UserDataController
 	 * @return 一个boolean值，登录成功返回true，否则返回false
 	 */
 	public void logout(String username){
-		userdatahelper.logout(username);
+		userdatahelper_DBO.logout(username);
 	}
 	
 	

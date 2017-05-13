@@ -76,7 +76,7 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 		initFetchChannel();
 		
 		long t1=System.currentTimeMillis();
-		loadData2();
+//		loadData2();
 		long t2=System.currentTimeMillis();
 		System.out.println("映射到内存的时间"+(t2-t1));
 //		check2();
@@ -118,15 +118,33 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 		fetch=StockDataFetchImpl.getInstance();
 		parse=Parse.getInstance();
 		infopath=new File(ie.getPath("stockinfo"));
-		File file=new File("config/stock/stockset/Industry");
-		if(!file.exists()){
-			try {
-				fetch.fetchIndustryList();
-			} catch (InternetdisconnectException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+//		File file=new File("config/stock/stockset/Industry");
+//		if(!file.exists()){
+//			try {
+//				fetch.fetchIndustryList();
+//			} catch (InternetdisconnectException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+//		File file1=new File("config/stock/stockset/Concept");
+//		if(!file1.exists()){
+//			try {
+//				fetch.fetchConceptList();
+//			} catch (InternetdisconnectException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+//		File file2=new File("config/stock/stockset/Area");
+//		if(!file2.exists()){
+//			try {
+//				fetch.fetchAreaList();
+//			} catch (InternetdisconnectException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
 //		DailyFetchThread thread=new DailyFetchThread();
 		if(!infopath.exists()&&!infopath.isDirectory()){
 			try {

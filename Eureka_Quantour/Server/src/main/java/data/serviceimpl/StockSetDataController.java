@@ -3,6 +3,7 @@ package data.serviceimpl;
 import java.util.List;
 
 import data.datahelperimpl.StockSetDataHelperImpl;
+import data.datahelperimpl_ByDataBase.StockSetDataHelperImpl_DBO;
 import data.datahelperservice.IStockSetDataHelper;
 import exception.NullSetException;
 import exception.StockNameRepeatException;
@@ -10,9 +11,11 @@ import exception.StockSetNameRepeatException;
 
 public class StockSetDataController {
 	private static StockSetDataController stocksetdata;
-	private IStockSetDataHelper stocksetdatahelper;
+	private IStockSetDataHelper stocksetdatahelper_FILE;
+	private IStockSetDataHelper stocksetdatahelper_DBO;
 	private StockSetDataController(){
-		stocksetdatahelper=StockSetDataHelperImpl.getInstance();
+		stocksetdatahelper_FILE=StockSetDataHelperImpl_DBO.getInstance();
+		stocksetdatahelper_DBO=StockSetDataHelperImpl_DBO.getInstance();
 	}
 	public static StockSetDataController getInstance(){
 		if(stocksetdata==null) stocksetdata=new StockSetDataController();
@@ -24,7 +27,7 @@ public class StockSetDataController {
 	 * @return 所有股票池的自定义名字
 	 */
 	public List<String> getStockSet(String username){
-		return stocksetdatahelper.getStockSet(username);
+		return stocksetdatahelper_DBO.getStockSet(username);
 	}
 	/**
 	 * 添加一个新的股票池
@@ -33,7 +36,8 @@ public class StockSetDataController {
 	 * @throws StockSetNameRepeatException 股票池名字重复时抛出该异常
 	 */
 	public void addStockSet(String stockSetName, String username) throws StockSetNameRepeatException{
-		stocksetdatahelper.addStockSet(stockSetName, username);
+		stocksetdatahelper_DBO.addStockSet(stockSetName, username);
+		stocksetdatahelper_FILE.addStockSet(stockSetName, username);
 	}
 	/**
 	 * 删除一个股票池
@@ -41,7 +45,8 @@ public class StockSetDataController {
 	 * @param username	用户名
 	 */
 	public void deleteStockSet(String stockSetName, String username){
-		stocksetdatahelper.deleteStockSet(stockSetName, username);
+		stocksetdatahelper_DBO.deleteStockSet(stockSetName, username);
+		stocksetdatahelper_FILE.deleteStockSet(stockSetName, username);
 	}
 	/**
 	 * 添加一个新的股票到股票池中
@@ -52,7 +57,8 @@ public class StockSetDataController {
 	 */
 	public void addStockToStockSet(String stockName, String stockSetName, String username) throws
 	StockNameRepeatException{
-		stocksetdatahelper.addStockToStockSet(stockName, stockSetName, username);
+		stocksetdatahelper_DBO.addStockToStockSet(stockName, stockSetName, username);
+		stocksetdatahelper_FILE.addStockToStockSet(stockName, stockSetName, username);
 	}
 	/**
 	 * 从股票池中删除一个股票
@@ -62,7 +68,8 @@ public class StockSetDataController {
 	 */
 	public void deleteStockFromStockSet(String stockName, String stockSetName, String username){
 		System.out.println(stockName);
-		stocksetdatahelper.deleteStockFromStockSet(stockName, stockSetName, username);
+		stocksetdatahelper_DBO.deleteStockFromStockSet(stockName, stockSetName, username);
+		stocksetdatahelper_FILE.deleteStockFromStockSet(stockName, stockSetName, username);
 	}
 	/**
 	 * 获取某个用户自定义股票池的股票编号
@@ -72,7 +79,7 @@ public class StockSetDataController {
 	 */
 	public List<String>  getStockSetInfo(String stockSetName,String userName){
 		try {
-			return stocksetdatahelper.getStockSetInfo(stockSetName, userName);
+			return stocksetdatahelper_DBO.getStockSetInfo(stockSetName, userName);
 		} catch (NullSetException e) {
 			e.printStackTrace();
 		}
@@ -85,7 +92,7 @@ public class StockSetDataController {
 	 */
 	public List<String>  getStockSetInfo(String stockSetName){
 		try {
-			return stocksetdatahelper.getStockSetInfo(stockSetName);
+			return stocksetdatahelper_DBO.getStockSetInfo(stockSetName);
 		} catch (NullSetException e) {
 			e.printStackTrace();
 		}
@@ -96,6 +103,20 @@ public class StockSetDataController {
 	 * @return 行业板块中的各种分类
 	 */
 	public List<String> getIndustryList(){
-		return stocksetdatahelper.getIndustryList();
+		return stocksetdatahelper_DBO.getBKList("Industry");
+	}
+	/**
+	 * 获取概念板块中的各种分类
+	 * @return 行业板块中的各种分类
+	 */
+	public List<String> getConceptList(){
+		return stocksetdatahelper_DBO.getBKList("Concept");
+	}
+	/**
+	 * 获取地区板块中的各种分类
+	 * @return 行业板块中的各种分类
+	 */
+	public List<String> getAreaList(){
+		return stocksetdatahelper_DBO.getBKList("Area");
 	}
 }
