@@ -3,6 +3,7 @@ package logic.service;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import exception.*;
@@ -77,13 +78,16 @@ public interface StockLogicInterface extends Remote {
 
 	void deleteStrategy ( String createName, String strategyName) throws RemoteException;
 
-	void comment(String Username, String strategyName, String commenterName, LocalDate date,String comment) throws RemoteException;
+	void comment(String Username, String strategyName, String commenterName, LocalDateTime time, String comment) throws RemoteException;
 
 	StrategyShowVO getStrategy ( String createrName, String StrategyName ) throws RemoteException;
 
 	List<StrategyShowVO> getStrategyList ( String createrName) throws RemoteException;
 
 	List<StrategyShowVO> getStrategyList ( )throws RemoteException;
+
+	void setPublic(String creatroName, String straetgyName,boolean property) throws RemoteException;
+
 
 
 

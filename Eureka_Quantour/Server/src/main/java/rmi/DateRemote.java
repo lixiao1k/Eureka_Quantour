@@ -3,6 +3,7 @@ package rmi;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import exception.*;
@@ -149,7 +150,7 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 	}
 
 	@Override
-	public void comment(String Username, String strategyName, String commenterName, LocalDate date, String comment) throws RemoteException {
+	public void comment(String Username, String strategyName, String commenterName, LocalDateTime time, String comment) throws RemoteException {
 
 	}
 
@@ -166,6 +167,11 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 	@Override
 	public List<StrategyShowVO> getStrategyList() throws RemoteException {
 		return null;
+	}
+
+	@Override
+	public void setPublic(String creatroName, String straetgyName, boolean property) throws RemoteException {
+
 	}
 
 

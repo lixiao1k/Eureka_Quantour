@@ -2,6 +2,7 @@ package logic.serviceimpl;
 
 import java.rmi.RemoteException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import data.service.IDataInterface;
@@ -11,6 +12,7 @@ import logic.service.StockLogicInterface;
 import logic.utility.Return;
 import logic.utility.Utility;
 import po.SingleStockInfoPO;
+import po.StrategyInfoPO;
 import vo.*;
 
 /**
@@ -356,28 +358,46 @@ public class StockLogicImpl implements StockLogicInterface{
 
 	@Override
 	public void saveStragety(StrategyVO strategyVO, String username) throws RemoteException {
+		StrategyConditionVO strategyConditionVO=strategyVO.getStrategyConditionVO();
+		SaleVO saleVO=strategyVO.getSaleVO();
+
+		String strategyname=strategyConditionVO.getName();
+		Boolean publicorprivate=strategyVO.isPublicorprivate();
+
+		String name=strategyVO.getName();
+		List<Integer> parameter=strategyConditionVO.getExtra();
+		int purchasenum=saleVO.getNum();
+
+		int tiaocangqi=saleVO.getTiaocangqi();
+
+		String tiaocangjiage=saleVO.getTiaocangjiage();
+
+		StrategyInfoPO po=new StrategyInfoPO(strategyname,publicorprivate,parameter,purchasenum,tiaocangqi,tiaocangjiage);
+		//存储 po 和username， name
+
+
 
 	}
 
 	@Override
 	public void deleteStrategy(String createName, String strategyName) throws RemoteException {
+		// 删除 策略
 
 	}
 
 
 
-
-
-
-
-
 	@Override
-	public void comment(String Username, String strategyName, String commenterName, LocalDate date, String comment) throws RemoteException {
+	public void comment(String Username, String strategyName, String commenterName, LocalDateTime time, String comment) throws RemoteException {
+
 
 	}
 
 	@Override
 	public StrategyShowVO getStrategy(String createrName, String StrategyName) throws RemoteException {
+
+
+
 		return null;
 	}
 
@@ -389,6 +409,12 @@ public class StockLogicImpl implements StockLogicInterface{
 	@Override
 	public List<StrategyShowVO> getStrategyList() throws RemoteException {
 		return null;
+	}
+
+	@Override
+	public void setPublic(String creatroName, String straetgyName, boolean property) throws RemoteException {
+
+
 	}
 
 	@Override
