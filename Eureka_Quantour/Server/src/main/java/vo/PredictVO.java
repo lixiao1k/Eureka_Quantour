@@ -12,4 +12,5 @@ public class PredictVO implements Serializable{
 
 	private static final long serialVersionUID = -8674287798843908253L;
 
+	
 }

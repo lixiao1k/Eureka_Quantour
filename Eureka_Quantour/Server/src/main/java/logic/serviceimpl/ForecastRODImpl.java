@@ -24,6 +24,10 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		// TODO Auto-generated method stub
 		StockRODVO srod = new StockRODVO();
 		
+		int dayNum = 0;
+		double RODNum = 0;
+		double RODT = 0;
+		
 		double ROD = 0;
 		int idate = 0;
 		int iROD = 0;
@@ -53,6 +57,9 @@ public class ForecastRODImpl implements ForecastRODInterface{
 			
 			srod.wROD[idate][iROD]++;
 			srod.RODw[iROD][idate]++;
+			
+			dayNum++;
+			RODNum += ROD;
 		}catch ( NullStockIDException e ){
 			e.printStackTrace();
 			date = date.plusDays(1);
@@ -86,7 +93,18 @@ public class ForecastRODImpl implements ForecastRODInterface{
 			
 				srod.wROD[idate][iROD]++;
 				srod.RODw[iROD][idate]++;
-
+				
+				if( dayNum>100 ){
+					RODT = RODNum / dayNum;
+					RODT -= ROD;
+					if( preROE(RODT) )
+						srod.rightTimes++;
+					else
+						srod.errorTimes++;
+				}
+				
+				dayNum++;
+				RODNum += ROD;
 			}catch ( NullStockIDException e ){
 				e.printStackTrace();
 			}catch ( NullDateException e){
@@ -170,6 +188,13 @@ public class ForecastRODImpl implements ForecastRODInterface{
 			return 21;
 		else
 			return 22;
+	}
+	
+	private static boolean preROE( double d ){
+		if( Math.abs(d)<0.01 )
+			return true;
+		else
+			return false;
 	}
 	
 	public static void main(String args[]){

@@ -15,6 +15,9 @@ public class StockRODVO implements Serializable{
 	
 	public int[][] nodata = new int[5][2];
 	
+	public int rightTimes = 0;
+	public int errorTimes = 0;
+	
 	public StockRODVO(){
 		for( int i=0; i<wROD.length; i++ )
 			for( int j=0; j<wROD[0].length; j++ )

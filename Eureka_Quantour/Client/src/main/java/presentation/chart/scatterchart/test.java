@@ -122,7 +122,21 @@ public class test extends Application{
             	else
             		p.println( " 有 "+" "+srod.nodata[i][1]+" 天没数据" );
             }
-                
+            
+            p.println();
+            if( srod.rightTimes>=100 )
+            	p.print("成功预测: "+srod.rightTimes+" 次");
+            else if( srod.rightTimes>=10 )
+            	p.print("成功预测: "+" "+srod.rightTimes+" 次");
+            else
+            	p.print("成功预测: "+"  "+srod.rightTimes+" 次");  
+            p.print("   ");
+            if( srod.errorTimes>=100 )
+            	p.print("错误预测: "+srod.errorTimes+" 次");
+            else if( srod.rightTimes>=10 )
+            	p.print("错误预测: "+" "+srod.errorTimes+" 次");
+            else
+            	p.print("错误预测: "+"  "+srod.errorTimes+" 次"); 
         }catch(FileNotFoundException e){
              e.printStackTrace();
         }
