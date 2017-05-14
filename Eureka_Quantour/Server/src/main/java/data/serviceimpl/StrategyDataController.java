@@ -46,7 +46,7 @@ public class StrategyDataController {
 	 * @param comment 评价内容
 	 */
 	public void comment(String Username, String strategyName, String commenterName, LocalDateTime time, String comment){
-		return ;
+		strategydatahelper.comment(Username, strategyName, commenterName, time, comment);
 	}
 
 	/**

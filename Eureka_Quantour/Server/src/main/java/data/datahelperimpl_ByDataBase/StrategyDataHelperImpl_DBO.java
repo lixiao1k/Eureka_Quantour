@@ -3,6 +3,7 @@ package data.datahelperimpl_ByDataBase;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class StrategyDataHelperImpl_DBO implements IStrategyDataHelper{
 	@Override
 	public void saveStrategy(StrategyInfoPO po,String strategyName,String username) throws StrategyRepeatException{
 		Connection conn=ConnectionPoolManager.getInstance().getConnection("quantour");
-		String sql="insert into strategy values(?,?,?,?,?,?,?)";
+		String sql="insert into strategy values(?,?,?,?,?,?,?,?,?)";
 		PreparedStatement pstmt=null;
 		try {
 			pstmt = (PreparedStatement)conn.prepareStatement(sql);
@@ -50,6 +51,7 @@ public class StrategyDataHelperImpl_DBO implements IStrategyDataHelper{
 			pstmt.close();
 			ConnectionPoolManager.getInstance().close("quantour", conn);
 		}catch (SQLException e) {
+			e.printStackTrace();
 			ConnectionPoolManager.getInstance().close("quantour", conn);
 			throw new StrategyRepeatException();
 		}
@@ -143,26 +145,51 @@ public class StrategyDataHelperImpl_DBO implements IStrategyDataHelper{
 	 * @return 策略显示的po
 	 */
 	public StrategyShowPO getStrategy ( String createrName, String StrategyName ){
-		StrategyShowPO result=new StrategyShowPO();
 		String id=getStrategyid(createrName,StrategyName);
 		Connection conn=ConnectionPoolManager.getInstance().getConnection("quantour");
 		String sql="select * from strategyshow where strategyid='"+id+"'";
 		PreparedStatement pstmt=null;
+		StrategyShowPO result=null;
 		try {
 			pstmt = (PreparedStatement)conn.prepareStatement(sql);
 			ResultSet rs=pstmt.executeQuery();
 			if(rs.next()){
-				rs.getString(2);
+				double alpha=rs.getDouble(2);
+				double beta=rs.getDouble(3);
+				double sharp=rs.getDouble(4);
+				double huiche=rs.getDouble(5);
+				double yearreturn=rs.getDouble(6);
+				int length=rs.getInt(7);
+				result=new StrategyShowPO(alpha,beta,sharp,huiche,yearreturn,length);
 			}
 			rs.close();
 			pstmt.close();
 			ConnectionPoolManager.getInstance().close("quantour", conn);
-			return result;
 		}catch (SQLException e) {
-			ConnectionPoolManager.getInstance().close("quantour", conn);
-			
+			e.printStackTrace();
 		}
-		return null;
+		if(result!=null){
+			conn=ConnectionPoolManager.getInstance().getConnection("quantour");
+			sql="select * from strategychart where strategyid='"+id+"'";
+			pstmt=null;
+			try {
+				pstmt = (PreparedStatement)conn.prepareStatement(sql);
+				ResultSet rs=pstmt.executeQuery();
+				while(rs.next()){
+					int index=rs.getInt(2);
+					LocalDate alpha=LocalDate.parse(rs.getString(3),DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+					double br=rs.getDouble(4);
+					double sr=rs.getDouble(5);
+					result.add(br, sr, alpha, index);
+				}
+				rs.close();
+				pstmt.close();
+				ConnectionPoolManager.getInstance().close("quantour", conn);
+			}catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
 	}
 	
 	/**
@@ -172,21 +199,53 @@ public class StrategyDataHelperImpl_DBO implements IStrategyDataHelper{
 	 * @return 策略显示的po
 	 */
 	public void addStrategyShow ( String createrName, String StrategyName ,StrategyShowPO vo){
-		StrategyShowVO result=new StrategyShowVO();
 		String id=getStrategyid(createrName,StrategyName);
 		Connection conn=ConnectionPoolManager.getInstance().getConnection("quantour");
-		String sql="insert into strategyshow values(?,?)";
+		String sql="insert into strategyshow values(?,?,?,?,?,?,?)";
 		PreparedStatement pstmt=null;
 		try {
 			pstmt = (PreparedStatement)conn.prepareStatement(sql);
 			pstmt.setString(1, id);
-			pstmt.setString(2, "");
+			pstmt.setDouble(2, vo.getAlpha());
+			pstmt.setDouble(3, vo.getBeta());
+			pstmt.setDouble(4, vo.getSharp());
+			pstmt.setDouble(5, vo.getStrategyYearReturn());
+			pstmt.setDouble(6, vo.getZuidahuiche());
+			pstmt.setDouble(7, vo.getBasicReturn().size());
 			pstmt.executeUpdate();
 			pstmt.close();
 			ConnectionPoolManager.getInstance().close("quantour", conn);
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
+		conn=ConnectionPoolManager.getInstance().getConnection("quantour");
+		sql="insert into strategychart values(?,?,?,?,?)";
+		try {
+			pstmt = (PreparedStatement)conn.prepareStatement(sql);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		for(int i=0;i<vo.getBasicReturn().size();i++){
+			try {
+				pstmt.setString(1, id);
+				pstmt.setDouble(2, i);
+				pstmt.setString(3, vo.getTimeList().get(i).format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+				pstmt.setDouble(4, vo.getBasicReturn().get(i));
+				pstmt.setDouble(5, vo.getStrategyReturn().get(i));
+				pstmt.addBatch();
+			}catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		try {
+			pstmt.executeBatch();
+			pstmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ConnectionPoolManager.getInstance().close("quantour", conn);
 	}
 	/**
 	 * 更新策略详细图标

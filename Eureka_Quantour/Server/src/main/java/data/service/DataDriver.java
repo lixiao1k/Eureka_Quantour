@@ -3,6 +3,8 @@ package data.service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Scanner;
 
@@ -14,9 +16,11 @@ import exception.NullStockIDException;
 import exception.StockHaltingException;
 import exception.StockNameRepeatException;
 import exception.StockSetNameRepeatException;
+import exception.StrategyRepeatException;
 import exception.UserNameRepeatException;
 import po.SingleStockInfoPO;
 import po.StockSetInfoPO;
+import po.StrategyInfoPO;
 
 public class DataDriver {
 	public static void main(String[] args){
@@ -153,6 +157,17 @@ public class DataDriver {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+			}
+			else if(mode.equals("save strategy")){
+				try {
+					data.saveStrategy(new StrategyInfoPO("动量", false, new ArrayList<Integer>(), 0, 0, mode), "my first", "Lyx");
+				} catch (StrategyRepeatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			else if(mode.equals("comment")){
+				data.comment("Lyx", "my first", "Lyx", LocalDateTime.now(), "haa");
 			}
 //			else if(mode.equals("judge market day")){
 //				String cal=sc.nextLine();

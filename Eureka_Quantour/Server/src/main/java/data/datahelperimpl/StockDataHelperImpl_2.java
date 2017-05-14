@@ -271,19 +271,19 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 				datesort.add(cal);
 				datesize++;
 			}
-			File path=new File("config/stock/info");
-			String[] t=path.list();
-			for(String code:t){
-				try{
-					Integer.valueOf(code);
-				}catch(NumberFormatException e){
-					continue;
-				}
-				indexBuffer.getMbb(Integer.valueOf(code), stockInfo+"/"+code+"/mainIndex");
-			}
-			for(int cal:datesort){
-				dataBuffer.getMbb(cal, "config/resources/date/calendarDate/"+cal);
-			}
+//			File path=new File("config/stock/info");
+//			String[] t=path.list();
+//			for(String code:t){
+//				try{
+//					Integer.valueOf(code);
+//				}catch(NumberFormatException e){
+//					continue;
+//				}
+//				indexBuffer.getMbb(Integer.valueOf(code), stockInfo+"/"+code+"/mainIndex");
+//			}
+//			for(int cal:datesort){
+//				dataBuffer.getMbb(cal, "config/resources/date/calendarDate/"+cal);
+//			}
 			br.close();
 		} catch (IOException e) {
 			e.printStackTrace();
