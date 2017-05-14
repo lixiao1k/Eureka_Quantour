@@ -5,8 +5,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Properties;
 
+import com.mysql.cj.jdbc.PreparedStatement;
+
+import data.database.DataBaseOperation;
 import data.datahelperservice.IUserDataHelper;
 import exception.LogErrorException;
 import exception.UserNameRepeatException;
@@ -26,6 +33,7 @@ public class UserDataHelperImpl implements IUserDataHelper {
 	private BufferedInputStream userstatus_in;
 	private String path;
 	private InitEnvironment ie;
+	private Connection conn;
 	private UserDataHelperImpl(){
 		ie=InitEnvironment.getInstance();
 		path=ie.getPath("config")+"/";

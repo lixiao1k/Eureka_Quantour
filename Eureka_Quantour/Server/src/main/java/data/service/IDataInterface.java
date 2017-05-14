@@ -112,7 +112,16 @@ public interface IDataInterface
 	
 	public List<SingleStockInfoPO> getMarketByDate(Calendar date) ;
 	
-	
+	/**
+	 * 获取概念板块中的各种分类
+	 * @return 行业板块中的各种分类
+	 */
+	public List<String> getConceptList();
+	/**
+	 * 获取地区板块中的各种分类
+	 * @return 行业板块中的各种分类
+	 */
+	public List<String> getAreaList();
 	
 	
 //新增接口————————————————————————————————————————————————————————————————————————————————

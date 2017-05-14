@@ -13,6 +13,8 @@ public interface IStockDataFetch {
 	 */
 	public void fetchAllStockSet() throws InternetdisconnectException;
 	public void fetchIndustryList() throws InternetdisconnectException;
+	public void fetchConceptList() throws InternetdisconnectException;
+	public void fetchAreaList() throws InternetdisconnectException;
 	public void fetchInit() throws InternetdisconnectException;
 	/**
 	 * 获取手工添加的股票池

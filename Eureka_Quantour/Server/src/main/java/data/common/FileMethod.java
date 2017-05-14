@@ -1,6 +1,7 @@
 package data.common;
 
 import java.io.File;
+import java.util.UUID;
 
 /**
  * 涉及到文件操作的公用方法
@@ -35,4 +36,10 @@ public class FileMethod {
 			file.mkdirs();
 		}
 	}
+	public String getUUID(){
+        UUID uuid=UUID.randomUUID();
+        String str = uuid.toString(); 
+        String uuidStr=str.replace("-", "");
+        return uuidStr;
+    }
 }

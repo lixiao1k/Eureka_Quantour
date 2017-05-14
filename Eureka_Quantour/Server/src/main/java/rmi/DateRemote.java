@@ -8,8 +8,10 @@ import java.util.List;
 
 import exception.*;
 import logic.service.ClientLogicInterface;
+import logic.service.ForecastRODInterface;
 import logic.service.StockLogicInterface;
 import logic.serviceimpl.ClientLogicImpl;
+import logic.serviceimpl.ForecastRODImpl;
 import logic.serviceimpl.StockLogicImpl;
 import vo.*;
 
@@ -19,15 +21,17 @@ import vo.*;
  * @author: hzp
  * @time: 2017年3月13日
  */
-public class DateRemote extends UnicastRemoteObject implements ClientLogicInterface, StockLogicInterface{
+public class DateRemote extends UnicastRemoteObject implements ClientLogicInterface, StockLogicInterface, ForecastRODInterface{
 
 	private static final long serialVersionUID = 6589478936265429621L;
 
 	private ClientLogicInterface cli;
 	private StockLogicInterface sli;
+	private ForecastRODInterface frodi;
 	protected DateRemote() throws RemoteException {
 		cli = new ClientLogicImpl();
 		sli = new StockLogicImpl();
+		frodi = new ForecastRODImpl();
 	}
 
 	@Override
@@ -193,5 +197,11 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 	@Override
 	public List<String> getIndustryList() throws RemoteException {
 		return sli.getIndustryList();
+	}
+
+	@Override
+	public StockRODVO getStockROD(String stockcode, LocalDate begindate, LocalDate enddate) throws RemoteException{
+		// TODO Auto-generated method stub
+		return frodi.getStockROD(stockcode, begindate, enddate);
 	}
 }
