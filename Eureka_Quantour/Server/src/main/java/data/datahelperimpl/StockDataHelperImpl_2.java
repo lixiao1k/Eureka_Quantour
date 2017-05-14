@@ -76,7 +76,7 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 		initFetchChannel();
 		
 		long t1=System.currentTimeMillis();
-//		loadData2();
+		loadData2();
 		long t2=System.currentTimeMillis();
 		System.out.println("映射到内存的时间"+(t2-t1));
 //		check2();

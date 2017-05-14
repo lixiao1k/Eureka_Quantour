@@ -14,7 +14,7 @@ public interface IStrategyDataHelper {
 	 * @param po 一个策略的po
 	 * @throws StrategyRepeatException 
 	 */
-	public void saveStrategy(StrategyInfoPO po,String username) throws StrategyRepeatException;
+	public void saveStrategy(StrategyInfoPO po,String strategyName,String username) throws StrategyRepeatException;
 	/**
 	 * 删除策略
 	 * @param createName 创建者名字

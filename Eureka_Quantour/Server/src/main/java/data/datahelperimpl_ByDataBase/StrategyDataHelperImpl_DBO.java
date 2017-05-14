@@ -27,24 +27,25 @@ public class StrategyDataHelperImpl_DBO implements IStrategyDataHelper{
 		return datahelper;
 	}
 	@Override
-	public void saveStrategy(StrategyInfoPO po,String username) throws StrategyRepeatException{
+	public void saveStrategy(StrategyInfoPO po,String strategyName,String username) throws StrategyRepeatException{
 		Connection conn=ConnectionPoolManager.getInstance().getConnection("quantour");
 		String sql="insert into strategy values(?,?,?,?,?,?,?)";
 		PreparedStatement pstmt=null;
 		try {
 			pstmt = (PreparedStatement)conn.prepareStatement(sql);
 			pstmt.setString(1, username);
-			pstmt.setString(2, po.getStrategyname());
-			pstmt.setBoolean(3, po.isPublicorprivate());
+			pstmt.setString(2, strategyName);
+			pstmt.setString(3, po.getStrategyname());
+			pstmt.setBoolean(4, po.isPublicorprivate());
 			String sum="";
 			for(int i=0;i<po.getParameter().size();i++){
 				sum=sum+po.getParameter().get(i);
 			}
-			pstmt.setString(4, sum);
-			pstmt.setInt(5, po.getPurchasenum());
-			pstmt.setInt(6, po.getTiaocangqi());
-			pstmt.setString(7, po.getTiaocangjiage());
-			pstmt.setString(8, FileMethod.getInstance().getUUID());
+			pstmt.setString(5, sum);
+			pstmt.setInt(6, po.getPurchasenum());
+			pstmt.setInt(7, po.getTiaocangqi());
+			pstmt.setString(8, po.getTiaocangjiage());
+			pstmt.setString(9, FileMethod.getInstance().getUUID());
 			pstmt.executeUpdate();
 			pstmt.close();
 			ConnectionPoolManager.getInstance().close("quantour", conn);

@@ -74,8 +74,8 @@ public class DataInterfaceImpl implements IDataInterface
 	 * @param po 一个策略的po
 	 * @throws StrategyRepeatException 
 	 */
-	public void saveStrategy(StrategyInfoPO po,String username) throws StrategyRepeatException{
-		strategy.saveStrategy(po,username);
+	public void saveStrategy(StrategyInfoPO po,String strategyName,String username) throws StrategyRepeatException{
+		strategy.saveStrategy(po,strategyName,username);
 	}
 	/**
 	 * 删除策略

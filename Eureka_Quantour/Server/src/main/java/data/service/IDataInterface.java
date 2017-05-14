@@ -135,7 +135,7 @@ public interface IDataInterface
 	 * @param po 一个策略的po
 	 * @throws StrategyRepeatException 
 	 */
-	public void saveStrategy(StrategyInfoPO po,String userName) throws StrategyRepeatException;
+	public void saveStrategy(StrategyInfoPO po,String strategyName,String userName) throws StrategyRepeatException;
 
 	/**
 	 * 删除策略
