@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -18,6 +19,9 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -267,6 +271,108 @@ public class StockInfoFetchByWeb {
 			bw_position.close();
 		}catch(IOException e){
 			e.printStackTrace();
+		}
+	}
+	public void fetchStockInfo_Minutes(){
+		File root=new File(stockroot);
+		int count=0;
+		String[] list=root.list();
+		int i=list.length;
+		LocalDateTime lt=LocalDateTime.now();
+		File index=new File("config/resources/date/totalCalendar");
+		List<String> date=new ArrayList<String>();
+		try {
+			BufferedReader br=new BufferedReader(new FileReader(index));
+			while(br.ready()){
+				String r=br.readLine().substring(0, 8);
+				date.add(r);
+			}
+			br.close();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		try{
+			boolean flag=false;
+			for(String code:list){
+				count++;
+				if(code.equals("000883")){
+					flag=true;
+				}
+				if(flag){
+					System.out.println("正在处理第"+count+"个，总共"+i+"个"+"剩余"+(i-count)+"个。");
+					dealSingleInfo_Minutes(code,lt,date);
+				}
+			}
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+	}
+	private void dealSingleInfo_Minutes(String code,LocalDateTime lt,List<String> datesort) throws IOException{
+		String path=stockroot+"/"+code+"/";
+		Properties pro=new Properties();
+		BufferedInputStream is = new BufferedInputStream(
+				new FileInputStream(path+"config.properties"));
+		pro.load(is);
+		is.close();
+		String lastupdate=pro.getProperty("lastUpdate_Minutes", "2005-02-01 00:00:00");
+		LocalDateTime old=LocalDateTime.parse(lastupdate, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+		File index=new File(path+"psIndex");
+		List<String> date=new ArrayList<String>();
+		BufferedReader br=new BufferedReader(new FileReader(index));
+		while(br.ready()){
+			int r=Integer.valueOf(br.readLine());
+			date.add(datesort.get(r));
+		}
+		FileMethod.getInstance().makepath(path+"Minutes");
+		br.close();
+		if(lt.compareTo(old)>0){
+			lastupdate=lt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+			pro.setProperty("lastUpdate_Minutes", lastupdate);
+			OutputStream out=new FileOutputStream(path+"config.properties");
+			pro.store(out, "update lastUpdate_Minutes");
+			out.close();
+			for(int i=date.size()>=30?date.size()-5:0;i<date.size();i++){
+				String symbol="sh";
+				if(code.charAt(0)=='0'||code.charAt(0)=='2'||code.charAt(0)=='3'){
+					symbol="sz";
+				}
+				String url="http://market.finance.sina.com.cn/downxls.php?date="
+						+ decodeDate(date.get(i))
+						+ "&symbol="
+						+ symbol
+						+ code;
+				System.out.println(decodeDate(date.get(i))+"---------"+code);
+				webmethod.saveToFile_ByInputStream(url, path+"Minutes/"+String.format("%04d", i));
+				File t=new File(path+"Minutes/"+String.format("%04d", i));
+				BufferedReader br1=new BufferedReader(new FileReader(t));
+				String sum="";
+				int ii=0;
+				while(br1.ready()){
+					String str=br1.readLine();
+					sum=sum+str;
+					ii++;
+					if(ii>10){
+						break;
+					}
+					if(str.indexOf("close")>=0){
+						File log=new File("config/minutes_log");
+						if(!log.exists()){
+							log.createNewFile();
+						}
+						BufferedWriter bw=new BufferedWriter(new FileWriter(log,true));
+						bw.write("编号:"+code+",日期:"+decodeDate(date.get(i))+"\n");
+						bw.close();
+						break;
+					}
+				}
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				br1.close();
+			}
 		}
 	}
 	/**

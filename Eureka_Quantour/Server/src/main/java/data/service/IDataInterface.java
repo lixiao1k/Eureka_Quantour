@@ -1,6 +1,8 @@
 package data.service;
 
+import java.rmi.RemoteException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.List;
 
@@ -11,9 +13,14 @@ import exception.NullStockIDException;
 import exception.StockHaltingException;
 import exception.StockNameRepeatException;
 import exception.StockSetNameRepeatException;
+import exception.StrategyRepeatException;
 import exception.UserNameRepeatException;
 import po.SingleStockInfoPO;
 import po.StockSetInfoPO;
+import po.StrategyInfoPO;
+import po.StrategyShowPO;
+import vo.StrategyShowVO;
+import vo.StrategyVO;
 
 /**
  * 数据层提供的接口
@@ -22,6 +29,7 @@ import po.StockSetInfoPO;
  */
 public interface IDataInterface 
 {
+	
 	/**
 	 * 判断用户是否注册成功，如果成功，登记用户的账号；如果失败，返回错误信息。
 	 * @param username String,用户的登录名
@@ -122,7 +130,75 @@ public interface IDataInterface
 	 * @return 行业板块中的各种分类
 	 */
 	public List<String> getAreaList();
+	/**
+	 * 存储策略
+	 * @param po 一个策略的po
+	 * @throws StrategyRepeatException 
+	 */
+	public void saveStrategy(StrategyInfoPO po,String userName) throws StrategyRepeatException;
+
+	/**
+	 * 删除策略
+	 * @param createName 创建者名字
+	 * @param strategyName 策略名字
+	 */
+	public void deleteStrategy ( String createName, String strategyName);
+
+	/**
+	 * 评价策略
+	 * @param Username 创建者名字
+	 * @param strategyName 策略名字
+	 * @param commenterName 评价者名字
+	 * @param time 评价时间
+	 * @param comment 评价内容
+	 */
+	public void comment(String Username, String strategyName, String commenterName, LocalDateTime time, String comment);
+
+	/**
+	 * 获取策略详细图标
+	 * @param createrName 创建者名字
+	 * @param StrategyName 策略名字
+	 * @return 策略显示的po
+	 */
+	public StrategyShowPO getStrategy ( String createrName, String StrategyName );
 	
+	/**
+	 * 获取策略详细图标
+	 * @param createrName 创建者名字
+	 * @param StrategyName 策略名字
+	 * @return 策略显示的po
+	 */
+	public void addStrategyShow ( String createrName, String StrategyName ,StrategyShowPO vo);
+	/**
+	 * 更新策略详细图标
+	 * @param createrName 创建者名字
+	 * @param StrategyName 策略名字
+	 * @return 策略显示的po
+	 */
+	public void updateStrategyShow ( String createrName, String StrategyName ,StrategyShowPO vo);
+
+
+	/**
+	 * 获取某个用户的所有策略
+	 * @param createrName 用户名
+	 * @return 策略列表
+	 */
+	public List<StrategyShowPO> getStrategyList ( String createrName);
+
+	/**
+	 * 获取所有公开的策略
+	 * @return 策略列表
+	 */
+	public List<StrategyShowPO> getStrategyList ( );
+
+	/**
+	 * 修改策略是否公开
+	 * @param creatroName 创建者名字
+	 * @param straetgyName 策略名字
+	 * @param property 是否公开
+	 */
+	public void setPublic(String creatroName, String straetgyName,boolean property);
+
 	
 //新增接口————————————————————————————————————————————————————————————————————————————————
 	//针对单支股票

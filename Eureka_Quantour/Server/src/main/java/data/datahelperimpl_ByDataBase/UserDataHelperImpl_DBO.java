@@ -78,11 +78,7 @@ public class UserDataHelperImpl_DBO implements IUserDataHelper{
 			pstmt.close();
 			ConnectionPoolManager.getInstance().close("quantour", conn);
 		}catch (SQLException e) {
-			try {
-				conn.close();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
+			ConnectionPoolManager.getInstance().close("quantour", conn);
 			insertUser(username,password);
 		}
 	}

@@ -1,6 +1,7 @@
 package data.serviceimpl;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.List;
 
@@ -14,8 +15,12 @@ import exception.NullStockIDException;
 import exception.StockHaltingException;
 import exception.StockNameRepeatException;
 import exception.StockSetNameRepeatException;
+import exception.StrategyRepeatException;
 import exception.UserNameRepeatException;
 import po.SingleStockInfoPO;
+import po.StrategyInfoPO;
+import po.StrategyShowPO;
+import vo.StrategyShowVO;
 /**
  * 数据层接口的实现
  * @author 刘宇翔
@@ -27,10 +32,12 @@ public class DataInterfaceImpl implements IDataInterface
 	private StockDataController stock;
 	private StockDataController_2 stock2;
 	private StockSetDataController stockset;
+	private StrategyDataController strategy;
 	public DataInterfaceImpl(){
 		stock2=StockDataController_2.getInstance();
 		user=UserDataController.getInstance();
 		stockset=StockSetDataController.getInstance();
+		strategy=StrategyDataController.getInstance();
 	}
 //------------------------------------用户------------------------------------
 	/**
@@ -61,6 +68,90 @@ public class DataInterfaceImpl implements IDataInterface
 	@Override
 	public void signInCheck(String username, String password) throws LogErrorException {
 		user.signInCheck(username, password);
+	}
+	/**
+	 * 存储策略
+	 * @param po 一个策略的po
+	 * @throws StrategyRepeatException 
+	 */
+	public void saveStrategy(StrategyInfoPO po,String username) throws StrategyRepeatException{
+		strategy.saveStrategy(po,username);
+	}
+	/**
+	 * 删除策略
+	 * @param createName 创建者名字
+	 * @param strategyName 策略名字
+	 */
+	public void deleteStrategy ( String createName, String strategyName){
+		strategy.deleteStrategy(createName, strategyName);
+	}
+
+	/**
+	 * 评价策略
+	 * @param Username 创建者名字
+	 * @param strategyName 策略名字
+	 * @param commenterName 评价者名字
+	 * @param time 评价时间
+	 * @param comment 评价内容
+	 */
+	public void comment(String Username, String strategyName, String commenterName, LocalDateTime time, String comment){
+		strategy.comment(Username, strategyName, commenterName, time, comment);
+	}
+
+	/**
+	 * 获取策略详细图标
+	 * @param createrName 创建者名字
+	 * @param StrategyName 策略名字
+	 * @return 策略显示的po
+	 */
+	public StrategyShowPO getStrategy ( String createrName, String StrategyName ){
+		return strategy.getStrategy(createrName, StrategyName);
+	}
+	
+	/**
+	 * 添加策略详细图标
+	 * @param createrName 创建者名字
+	 * @param StrategyName 策略名字
+	 * @return 策略显示的po
+	 */
+	public void addStrategyShow ( String createrName, String StrategyName ,StrategyShowPO vo){
+		strategy.addStrategyShow(createrName, StrategyName, vo);
+	}
+	/**
+	 * 更新策略详细图标
+	 * @param createrName 创建者名字
+	 * @param StrategyName 策略名字
+	 * @return 策略显示的po
+	 */
+	public void updateStrategyShow ( String createrName, String StrategyName ,StrategyShowPO vo){
+		strategy.updateStrategyShow(createrName, StrategyName, vo);
+	}
+
+	/**
+	 * 获取某个用户的所有策略
+	 * @param createrName 用户名
+	 * @return 策略列表
+	 */
+	public List<StrategyShowPO> getStrategyList ( String createrName){
+		return strategy.getStrategyList(createrName);
+	}
+
+	/**
+	 * 获取所有公开的策略
+	 * @return 策略列表
+	 */
+	public List<StrategyShowPO> getStrategyList ( ){
+		return strategy.getStrategyList();
+	}
+
+	/**
+	 * 修改策略是否公开
+	 * @param creatroName 创建者名字
+	 * @param straetgyName 策略名字
+	 * @param property 是否公开
+	 */
+	public void setPublic(String creatroName, String straetgyName,boolean property){
+		strategy.setPublic(creatroName, straetgyName, property);
 	}
 //-------------------------------------股票池--------------------------------------
 	/**

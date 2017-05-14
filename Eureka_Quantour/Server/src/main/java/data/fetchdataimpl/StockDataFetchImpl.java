@@ -1,6 +1,5 @@
 package data.fetchdataimpl;
 
-import data.database.ConnectionPoolManager;
 import data.fetchdataservice.IStockDataFetch;
 import exception.InternetdisconnectException;
 
@@ -9,9 +8,9 @@ public class StockDataFetchImpl implements IStockDataFetch{
 	private StockInfoFetchByWeb infoByweb;
 	private StockInfoCalculate infocalculate;
 	private static StockDataFetchImpl impl;
-//	public static void main(String[] args){
-//		new StockSetFetchByWeb().pushListintoDBO();
-//	}
+	public static void main(String[] args){
+		new StockInfoFetchByWeb().fetchStockInfo_Minutes();
+	}
 	private StockDataFetchImpl(){
 		setByweb=new StockSetFetchByWeb();
 		infoByweb=new StockInfoFetchByWeb();
