@@ -35,6 +35,7 @@ import data.common.DateTrie;
 import data.common.FileMethod;
 import data.common.WebMethod;
 import data.datahelperimpl.InitEnvironment;
+import data.fetchpool.FetchPoolManagement;
 import data.parse.Parse;
 import exception.InternetdisconnectException;
 import exception.NoneMatchedMarketException;
@@ -295,17 +296,63 @@ public class StockInfoFetchByWeb {
 			boolean flag=false;
 			for(String code:list){
 				count++;
-				if(code.equals("000883")){
+				if(code.equals("000001")){
 					flag=true;
 				}
 				if(flag){
 					System.out.println("正在处理第"+count+"个，总共"+i+"个"+"剩余"+(i-count)+"个。");
-					dealSingleInfo_Minutes(code,lt,date);
+					//dealSingleInfo_Minutes(code,lt,date);
+					check_Minutes(code,date);
 				}
 			}
 		}catch(IOException e){
 			e.printStackTrace();
 		}
+	}
+	private void check_Minutes(String code,List<String> date)throws IOException{
+		String path=stockroot+"/"+code+"/Minutes";
+		File file=new File(path);
+		File[] list=file.listFiles();
+		BufferedWriter bw=new BufferedWriter(new FileWriter("config/log_min",true));
+		for(File temp:list){
+			BufferedReader br=new BufferedReader(new FileReader(temp));
+			boolean aft=false;
+			boolean good=false;
+			boolean none=false;
+			while(br.ready()){
+				String[] sum=br.readLine().split("\t");
+				if(sum[0].indexOf("15:")>=0||sum[0].indexOf("14:")>=0){
+					aft=true;
+				}
+				if(sum[0].indexOf("09:")>=0||sum[0].indexOf("10:")>=0){
+					good=true;
+				}
+				if(sum[0].indexOf("close")>=0){
+					none=true;
+				}
+			}
+			if(aft&&good||none){
+				
+			}
+			else{
+				System.out.println(code+":"+temp.getName());
+				bw.write(code+":"+temp.getName()+"\n");
+				String symbol="sh";
+				if(code.charAt(0)=='0'||code.charAt(0)=='2'||code.charAt(0)=='3'){
+					symbol="sz";
+				}
+				String url="http://market.finance.sina.com.cn/downxls.php?date="
+						+ decodeDate(date.get(Integer.valueOf(temp.getName())))
+						+ "&symbol="
+						+ symbol
+						+ code;
+				System.out.println(decodeDate(date.get(Integer.valueOf(temp.getName())))+"---------"+code);
+				int in=FetchPoolManagement.getInstance().getConnection("web", url, path+"/"+temp.getName(), "InputStream");
+				FetchPoolManagement.getInstance().startConn("web", in);
+			}
+			br.close();
+		}
+		bw.close();
 	}
 	private void dealSingleInfo_Minutes(String code,LocalDateTime lt,List<String> datesort) throws IOException{
 		String path=stockroot+"/"+code+"/";
@@ -318,11 +365,14 @@ public class StockInfoFetchByWeb {
 		LocalDateTime old=LocalDateTime.parse(lastupdate, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 		File index=new File(path+"psIndex");
 		List<String> date=new ArrayList<String>();
+		List<Integer> sort=new ArrayList<Integer>();
 		BufferedReader br=new BufferedReader(new FileReader(index));
 		while(br.ready()){
 			int r=Integer.valueOf(br.readLine());
+			sort.add(r);
 			date.add(datesort.get(r));
 		}
+		FileMethod.getInstance().dealdir(new File(path+"Minutes"));
 		FileMethod.getInstance().makepath(path+"Minutes");
 		br.close();
 		if(lt.compareTo(old)>0){
@@ -342,36 +392,8 @@ public class StockInfoFetchByWeb {
 						+ symbol
 						+ code;
 				System.out.println(decodeDate(date.get(i))+"---------"+code);
-				webmethod.saveToFile_ByInputStream(url, path+"Minutes/"+String.format("%04d", i));
-				File t=new File(path+"Minutes/"+String.format("%04d", i));
-				BufferedReader br1=new BufferedReader(new FileReader(t));
-				String sum="";
-				int ii=0;
-				while(br1.ready()){
-					String str=br1.readLine();
-					sum=sum+str;
-					ii++;
-					if(ii>10){
-						break;
-					}
-					if(str.indexOf("close")>=0){
-						File log=new File("config/minutes_log");
-						if(!log.exists()){
-							log.createNewFile();
-						}
-						BufferedWriter bw=new BufferedWriter(new FileWriter(log,true));
-						bw.write("编号:"+code+",日期:"+decodeDate(date.get(i))+"\n");
-						bw.close();
-						break;
-					}
-				}
-				try {
-					Thread.sleep(100);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				br1.close();
+				int in=FetchPoolManagement.getInstance().getConnection("web", url, path+"Minutes/"+String.format("%04d", sort.get(i)), "InputStream");
+				FetchPoolManagement.getInstance().startConn("web", in);
 			}
 		}
 	}

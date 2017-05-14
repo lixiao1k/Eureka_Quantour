@@ -102,6 +102,16 @@ public class WebMethod {
 		 if(!file.exists()){
 			file.createNewFile();
 		 }
+		 BufferedReader br=new BufferedReader(new InputStreamReader(bis));
+		 while (!br.ready())    
+         {    
+              try {
+				Thread.sleep(1000*30);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} // wait for stream to be ready.    
+         }    
 		 fos = new FileOutputStream(fileName);
 		 while ((size = bis.read(buf)) != -1){
 			 fos.write(buf, 0, size);
