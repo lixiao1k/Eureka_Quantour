@@ -11,6 +11,9 @@ public class StrategyConditionVO implements Serializable{
 
     private String name;
     private List<Integer> parameter;
+
+
+    //弃用
     private int nums;
 
     public int getNums() {

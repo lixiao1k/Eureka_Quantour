@@ -35,7 +35,7 @@ public class StrategyDataHelperImpl_DBO implements IStrategyDataHelper{
 			pstmt = (PreparedStatement)conn.prepareStatement(sql);
 			pstmt.setString(1, username);
 			pstmt.setString(2, strategyName);
-			pstmt.setString(3, po.getStrategyname());
+			pstmt.setString(3, po.getStrategTypeNname());
 			pstmt.setBoolean(4, po.isPublicorprivate());
 			String sum="";
 			for(int i=0;i<po.getParameter().size();i++){

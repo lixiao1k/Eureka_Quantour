@@ -92,8 +92,6 @@ public class StockLogicImpl implements StockLogicInterface{
 		return vo;
 	}
 
-
-
 	@Override
 	public ComparedInfoVO getComparedInfo(String stockCodeA, LocalDate begin, LocalDate end)
 			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException {
@@ -256,7 +254,6 @@ public class StockLogicImpl implements StockLogicInterface{
 	@Override
 	public void setStrategy(StrategyConditionVO strategyConditionVO, SaleVO s, LocalDate begin, LocalDate now, String stockSetName,String username) {
 		//TODO
-
 		if (stockSetName.equals("SHA") ||stockSetName.equals("SZA") ||stockSetName.equals("SHB")|| stockSetName.equals("SZB")||stockSetName.equals("CYB")||stockSetName.equals("HS300")
 				||stockSetName.equals("ZXB") )
 			username=null;
@@ -290,13 +287,10 @@ public class StockLogicImpl implements StockLogicInterface{
 
 			for (int i=0;i<jizhunlist.size();i++){
 				double hengzhou=Math.rint(jizhunlist.get(i)*20)*5;
-//				System.out.println(hengzhou);
 				if (zuhe.get(hengzhou)==null) {
 					zuhe.put(hengzhou, Arrays.asList(0, 0));
 				}
-
-
-				boolean judge=false;
+				boolean judge;
 				if(i==0){
 					judge=celuelist.get(i)>=jizhunlist.get(i);
 				}
@@ -304,7 +298,6 @@ public class StockLogicImpl implements StockLogicInterface{
 					judge=celuelist.get(i)/celuelist.get(i-1)>=jizhunlist.get(i)/jizhunlist.get(i-1);
 				}
 				if(judge){
-//					System.out.println("haha");
 					int shuzi=zuhe.get(hengzhou).get(0);
 					shuzi++;
 					zuhe.get(hengzhou).set(0,shuzi);
@@ -317,7 +310,6 @@ public class StockLogicImpl implements StockLogicInterface{
 				}
 
 			}
-//			System.out.println("--------"+zuhe);
 			return new YieldDistributionHistogramDataVO(zuhe);
 
 
@@ -361,50 +353,33 @@ public class StockLogicImpl implements StockLogicInterface{
 	public void saveStragety(StrategyVO strategyVO, String username) throws RemoteException, StrategyRepeatException {
 		StrategyConditionVO strategyConditionVO=strategyVO.getStrategyConditionVO();
 		SaleVO saleVO=strategyVO.getSaleVO();
-
-		String strategyname=strategyConditionVO.getName();
+		String strategytypename=strategyConditionVO.getName();
 		Boolean publicorprivate=strategyVO.isPublicorprivate();
-
 		String name=strategyVO.getName();
 		List<Integer> parameter=strategyConditionVO.getExtra();
 		int purchasenum=saleVO.getNum();
-
 		int tiaocangqi=saleVO.getTiaocangqi();
-
 		String tiaocangjiage=saleVO.getTiaocangjiage();
-
-		StrategyInfoPO po=new StrategyInfoPO(strategyname,publicorprivate,parameter,purchasenum,tiaocangqi,tiaocangjiage);
-		idi.saveStrategy(po,username);
-		//存储 po 和username， name
+		StrategyInfoPO po=new StrategyInfoPO(strategytypename,publicorprivate,parameter,purchasenum,tiaocangqi,tiaocangjiage);
+		idi.saveStrategy(po,name,username);
 
 
-
-
-		new SaveThread().start();
-
-
+		new SaveThread(strategyConditionVO,saleVO,username,name).start();
 
 	}
 
 	@Override
 	public void deleteStrategy(String createName, String strategyName) throws RemoteException {
-		// 删除 策略
-
+		idi.deleteStrategy(createName, strategyName);
 	}
-
-
 
 	@Override
 	public void comment(String Username, String strategyName, String commenterName, LocalDateTime time, String comment) throws RemoteException {
-
-
+		idi.comment(Username, strategyName, commenterName, time, comment);
 	}
 
 	@Override
 	public StrategyShowVO getStrategy(String createrName, String StrategyName) throws RemoteException {
-
-
-
 		return null;
 	}
 
@@ -420,8 +395,7 @@ public class StockLogicImpl implements StockLogicInterface{
 
 	@Override
 	public void setPublic(String creatroName, String straetgyName, boolean property) throws RemoteException {
-
-
+		idi.setPublic(creatroName, straetgyName, property);
 	}
 
 	@Override

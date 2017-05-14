@@ -17,7 +17,6 @@ public class Return {
     private Utility utility=Utility.getInstance();
     private IDataInterface idi = new DataInterfaceImpl();
 
-
     private List<String> stockcode;
     private LocalDate begin;
     private LocalDate end;
@@ -41,10 +40,9 @@ public class Return {
         this.strategyConditionVO = strategyConditionVO;
         this.days=salevo.getTiaocangqi();
         this.timelist=new ArrayList<>();
-//        System.out.println("aes"+stockcode);
         String type=strategyConditionVO.getName();
-        if (type.equals("动量策略")) comparator=new dongliangcelue(strategyConditionVO.getExtra());
-        if (type.equals("均值策略")) comparator=new junzhicelue(strategyConditionVO.getExtra());
+        if (strategyConditionVO.getName().equals("动量策略")) comparator= new dongliangcelue(strategyConditionVO.getExtra());
+        if (strategyConditionVO.getName().equals("均值策略")) comparator= new junzhicelue(strategyConditionVO.getExtra());
 
     }
 
@@ -56,18 +54,16 @@ public class Return {
 
 
     }
-    public Double getBeta(){
 
+    public Double getBeta(){
         return utility.getCorvariance(jizhunfudu,celuefudu)/utility.getCorvariance(jizhunfudu,jizhunfudu);
     }
 
     public Double gerYearReturn(){
-
-
         return getYear(celueshouyilv);
     }
-    public Double gerBasicYearReturn(){
 
+    public Double gerBasicYearReturn(){
         return getYear(jizhunshouyilv);
     }
 
@@ -78,12 +74,10 @@ public class Return {
         for (;itr.compareTo(end)<=0;itr=itr.plusDays(1)){
             i++;
         }
-
         double a=1+shuzi;
         double b=365.0/i;
         return Math.pow(a,b)-1;
     }
-
 
     public Double getSharpe(){
         double ri=gerYearReturn();
@@ -100,7 +94,6 @@ public class Return {
         return max;
     }
 
-
     public List<LocalDate> getTimelist() {
         return timelist;
     }
@@ -109,8 +102,6 @@ public class Return {
             throws PriceTypeException, NullStockIDException {
     	if(jizhunshouyilv==null){
     		 List<Double> list=new ArrayList<>();
-
-
     	        LocalDate iter=LocalDate.of(begin.getYear(),begin.getMonth(),begin.getDayOfMonth());
 
     	        double init=100.0;
@@ -156,10 +147,7 @@ public class Return {
     	}
     }
 
-
-
-
-    public List<Double> getStragetyReturn ( ) throws  NullStockIDException, PriceTypeException {
+    public List<Double> getStragetyReturn ( ) throws NullStockIDException, PriceTypeException {
         if(celueshouyilv==null){
         	double init=100.0;
             List<Double> list=new ArrayList<>();
@@ -235,16 +223,12 @@ public class Return {
         }
     }
 
-
-
-
     private double getjiage(SingleStockInfoPO po) throws PriceTypeException {
         String type=salevo.getTiaocangjiage();
         if (type.equals("收盘价")) return po.getAftClose();
         if (type.equals("开盘价")) return po.getOpen();
         throw new PriceTypeException();
     }
-
 
     private  class junzhicelue implements Comparator<SingleStockInfoPO> {
 
