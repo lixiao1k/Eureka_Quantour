@@ -80,7 +80,7 @@ public interface StockLogicInterface extends Remote {
 	void deleteStrategy ( String createName, String strategyName) throws RemoteException;
 
 	//评论策略
-	void comment(String Username, String strategyName, String commenterName, LocalDateTime time, String comment) throws RemoteException;
+	void comment(String Username, String strategyName, String commenterName, LocalDate time, String comment) throws RemoteException;
 
 	//StrategyShowVO getStrategy ( String createrName, String StrategyName ) throws RemoteException;
 

@@ -20,9 +20,25 @@ public class ForecastRODImpl implements ForecastRODInterface{
 	private IDataInterface idata = new DataInterfaceImpl();
 	
 	@Override
-	public StockRODVO getStockROD(String stockcode, LocalDate begindate, LocalDate enddate) throws RemoteException{
+	public StockRODVO getStockROD( String stockcode, LocalDate begindate, LocalDate enddate, double step, int numOfDay ) throws RemoteException{
 		// TODO Auto-generated method stub
 		StockRODVO srod = new StockRODVO();
+		
+		int dayNum = 0;
+		double RODP = 0;
+		double RODN = 0;
+		double RODT = 0;
+		double weightP = 0;
+		double weightN = 0;
+		if( numOfDay==0 ){
+			weightP = 0.5;
+			weightN = 0.5;
+		}
+		double PNum = 0;
+		double NNum = 0;
+		
+		int pError = 0;
+		int nError = 0;
 		
 		double ROD = 0;
 		int idate = 0;
@@ -53,6 +69,22 @@ public class ForecastRODImpl implements ForecastRODInterface{
 			
 			srod.wROD[idate][iROD]++;
 			srod.RODw[iROD][idate]++;
+			
+			dayNum++;
+			if( ROD>0 ){
+				if( ROD<0.1 )
+					RODP += ROD;
+				else
+					RODP += 0.1;
+				PNum ++;
+			}
+			else{
+				if( ROD>-0.1 )
+					RODN += ROD;
+				else
+					RODN += -0.1;
+				NNum ++;
+			}
 		}catch ( NullStockIDException e ){
 			e.printStackTrace();
 			date = date.plusDays(1);
@@ -86,7 +118,81 @@ public class ForecastRODImpl implements ForecastRODInterface{
 			
 				srod.wROD[idate][iROD]++;
 				srod.RODw[iROD][idate]++;
+				
+				if( dayNum<numOfDay ){
+					if( ROD>0 )
+						PNum ++;
+					else
+						NNum ++;
+					if( dayNum==(numOfDay-1) ){
+						weightP = PNum / (PNum+NNum);
+						weightN = NNum / (PNum+NNum);
+					}
+				}
+				else{
+					RODT = weightP*RODP + weightN*RODN;
+					RODT /= dayNum;
+					if( RODT>=0 && ROD>=0 )
+						srod.Pos[0]++;
+					else if( RODT>=0 && ROD<0 ){
+						srod.Pos[1]++;
+						
+						pError++;
+						nError = 0;
+						
+						if( pError==2 ){
+							weightP -= step;
+							weightN += step;
+						}
+						else if( pError>2 && pError<=4 ){
+							weightP -= 2*step;
+							weightN += 2*step;
+						}
+						else if( pError>4 ){
+							weightP -= 3*step;
+							weightN += 3*step;
+						}
+					}
 
+					if( RODT<=0 && ROD<=0 )
+						srod.Neg[0]++;
+					else if( RODT<=0 && ROD>0 ){
+						srod.Neg[1]++;
+
+						pError = 0;
+						nError++;
+						
+						if( nError==2 ){
+							weightP += step;
+							weightN -= step;
+						}
+						else if( nError>2 && nError<=4 ){
+							weightP += 2*step;
+							weightN -= 2*step;
+						}
+						else if( nError>4 ){
+							weightP += 3*step;
+							weightN -= 3*step;
+						}
+					}
+
+					RODT -= ROD;
+					srod.ROETimes[preROE(RODT)]++;
+				}
+				
+				dayNum++;
+				if( ROD>0 ){
+					if( ROD<0.1 )
+						RODP += ROD;
+					else
+						RODP += 0.1;
+				}
+				else{
+					if( ROD>-0.1 )
+						RODN += ROD;
+					else
+						RODN += -0.1;
+				}
 			}catch ( NullStockIDException e ){
 				e.printStackTrace();
 			}catch ( NullDateException e){
@@ -172,13 +278,30 @@ public class ForecastRODImpl implements ForecastRODInterface{
 			return 22;
 	}
 	
-	public static void main(String args[]){
-		LocalDate date = LocalDate.of(2017, 5, 1);
-		for( int i=0; i<5; i++){
-			System.out.print(date.getDayOfWeek()+"  ");
-			System.out.println( ForecastRODImpl.getDayOfWeek(date) );
-			date = date.plusDays(1);
-		}
+	private static int preROE( double d ){
+		double dt = Math.abs(d);
+		if( dt<=0.001 )
+			return 0;
+		else if( dt>0.001 && dt<=0.002)
+			return 1;
+		else if( dt>0.002 && dt<=0.003)
+			return 2;
+		else if( dt>0.003 && dt<=0.004)
+			return 3;
+		else if( dt>0.004 && dt<=0.005)
+			return 4;
+		else if( dt>0.005 && dt<=0.006)
+			return 5;
+		else if( dt>0.006 && dt<=0.007)
+			return 6;
+		else if( dt>0.007 && dt<=0.008)
+			return 7;
+		else if( dt>0.008 && dt<=0.009)
+			return 8;
+		else if( dt>0.009 && dt<=0.01)
+			return 9;
+		else
+			return 10;
 	}
 
 }
