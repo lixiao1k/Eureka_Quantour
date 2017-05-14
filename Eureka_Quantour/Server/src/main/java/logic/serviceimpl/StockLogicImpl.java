@@ -10,6 +10,7 @@ import data.serviceimpl.DataInterfaceImpl;
 import exception.*;
 import logic.service.StockLogicInterface;
 import logic.utility.Return;
+import logic.utility.SaveThread;
 import logic.utility.Utility;
 import po.SingleStockInfoPO;
 import po.StrategyInfoPO;
@@ -357,7 +358,7 @@ public class StockLogicImpl implements StockLogicInterface{
 	}
 
 	@Override
-	public void saveStragety(StrategyVO strategyVO, String username) throws RemoteException {
+	public void saveStragety(StrategyVO strategyVO, String username) throws RemoteException, StrategyRepeatException {
 		StrategyConditionVO strategyConditionVO=strategyVO.getStrategyConditionVO();
 		SaleVO saleVO=strategyVO.getSaleVO();
 
@@ -373,7 +374,13 @@ public class StockLogicImpl implements StockLogicInterface{
 		String tiaocangjiage=saleVO.getTiaocangjiage();
 
 		StrategyInfoPO po=new StrategyInfoPO(strategyname,publicorprivate,parameter,purchasenum,tiaocangqi,tiaocangjiage);
+		idi.saveStrategy(po,username);
 		//存储 po 和username， name
+
+
+
+
+		new SaveThread().start();
 
 
 

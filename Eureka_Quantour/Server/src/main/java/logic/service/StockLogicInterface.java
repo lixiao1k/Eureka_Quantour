@@ -74,7 +74,7 @@ public interface StockLogicInterface extends Remote {
 
 	String nameToCode(String name) throws RemoteException;
 
-	void saveStragety(StrategyVO strategyVO, String username) throws RemoteException;
+	void saveStragety(StrategyVO strategyVO, String username) throws RemoteException, StrategyRepeatException;
 
 	void deleteStrategy ( String createName, String strategyName) throws RemoteException;
 
