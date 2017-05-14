@@ -10,6 +10,7 @@ import exception.NullDateException;
 import exception.NullStockIDException;
 import logic.service.ForecastRODInterface;
 import po.SingleStockInfoPO;
+import vo.PredictVO;
 import vo.StockRODVO;
 
 public class ForecastRODImpl implements ForecastRODInterface{
@@ -97,6 +98,12 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		return srod;
 	}
 	
+	@Override
+	public PredictVO predict(String stockcode, LocalDate date) throws RemoteException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	private static int getDayOfWeek( LocalDate date){
 		String dow = date.getDayOfWeek().toString();
 		if( dow.equals("MONDAY"))
@@ -173,6 +180,5 @@ public class ForecastRODImpl implements ForecastRODInterface{
 			date = date.plusDays(1);
 		}
 	}
-	
 
 }

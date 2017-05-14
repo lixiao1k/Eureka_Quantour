@@ -204,4 +204,10 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 		// TODO Auto-generated method stub
 		return frodi.getStockROD(stockcode, begindate, enddate);
 	}
+
+	@Override
+	public PredictVO predict(String stockcode, LocalDate date) throws RemoteException {
+		// TODO Auto-generated method stub
+		return frodi.predict(stockcode, date);
+	}
 }
