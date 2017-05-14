@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.rmi.RemoteException;
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,11 +23,14 @@ import vo.StockRODVO;
 
 
 
-public class test extends Application{
+public class test 
+//	extends Application
+	{
 	
 	private static PointChart pointChart;
 	
 	private RemoteHelper remote = RemoteHelper.getInstance();
+	private NumberFormat nf = NumberFormat.getPercentInstance();
 	
 	private SaveAsService sas = new SaveAs();
     
@@ -66,9 +70,9 @@ public class test extends Application{
 		LocalDate begindate = LocalDate.of(2013, 3, 6);
 		LocalDate enddate = LocalDate.of(2016, 3, 6);
 		
-		String stockcode = "600149";
+		String stockcode = "000938";
 		try{
-			srod = remote.getForecastROD().getStockROD(stockcode, begindate, enddate);
+			srod = remote.getForecastROD().getStockROD( stockcode, begindate, enddate, 0.01 );
 		}catch(RemoteException e){
 			e.printStackTrace();
 		}
@@ -76,6 +80,10 @@ public class test extends Application{
 		try{
             FileOutputStream out=new FileOutputStream( stockcode+".txt" );
             PrintStream p=new PrintStream(out);
+            
+            p.println();
+            p.println( stockcode );
+            p.println();
             for( int i=0; i<5; i++ ){
             	for( int j=1; j<22; j++){
             		if( j<20 ){
@@ -93,8 +101,8 @@ public class test extends Application{
             	}
             	p.println();
             }
-            p.println();
             
+            p.println();
             for( int i=0; i<5; i++){
             	if( srod.wROD[i][0]>=10 )
             		p.print( "星期 "+(i+1)+" 有 "+" "+srod.wROD[i][0]+" 天跌 >10%" );
@@ -107,8 +115,7 @@ public class test extends Application{
             		p.println( " 有 "+" "+srod.wROD[i][22]+" 天涨 >10%" );    
             }
             
-            p.println();
-            
+            p.println();  
             for( int i=0; i<5; i++){
             	if( srod.nodata[i][0]>=100 )
             		p.print( "星期 "+(i+1)+" 有 "+srod.nodata[i][0]+" 天" );
@@ -124,54 +131,82 @@ public class test extends Application{
             }
             
             p.println();
-            if( srod.rightTimes>=100 )
-            	p.print("成功预测: "+srod.rightTimes+" 次");
-            else if( srod.rightTimes>=10 )
-            	p.print("成功预测: "+" "+srod.rightTimes+" 次");
+            int num = 0;
+            for( int i=0; i<srod.ROETimes.length-1; i++){
+            	p.println( "误差 0.00"+i+"~0.00"+(i+1)+": " +srod.ROETimes[i] );
+            	num += srod.ROETimes[i];
+            }
+            
+            p.println();
+            int it = srod.ROETimes[srod.ROETimes.length-1];
+            double num2 = num + it;
+            if( num>=100 )
+            	p.println( "误差 <=0.01: " + num + "  " + nf.format( num/num2 ) );
             else
-            	p.print("成功预测: "+"  "+srod.rightTimes+" 次");  
+            	p.println( "误差 <=0.01: " + num + "   " + nf.format( num/num2 ) );
+            if( it>=100 )
+            	p.println( "误差  >0.01: " + it + "  " + nf.format( it/num2 ) );
+            else
+            	p.println( "误差  >0.01: " + it + "   " + nf.format( it/num2 ) );
+            
+            p.println();
+            if( srod.Pos[0]>=100 )
+            	p.print( "预测涨， 成功"+srod.Pos[0]);
+            else
+            	p.print( "预测涨， 成功"+" "+srod.Pos[0]);
             p.print("   ");
-            if( srod.errorTimes>=100 )
-            	p.print("错误预测: "+srod.errorTimes+" 次");
-            else if( srod.rightTimes>=10 )
-            	p.print("错误预测: "+" "+srod.errorTimes+" 次");
+            if( srod.Pos[1]>=100 )
+            	p.print( "失败"+srod.Pos[1]);
             else
-            	p.print("错误预测: "+"  "+srod.errorTimes+" 次"); 
+            	p.print( "失败"+" "+srod.Pos[1]);
+            
+            p.println();
+            if( srod.Neg[0]>=100 )
+            	p.print( "预测跌， 成功"+srod.Neg[0]);
+            else
+            	p.print( "预测跌， 成功"+" "+srod.Neg[0]);
+            p.print("   ");
+            if( srod.Neg[1]>=100 )
+            	p.print( "失败"+srod.Neg[1]);
+            else
+            	p.print( "失败"+" "+srod.Neg[1]);
+            
+            p.close();
         }catch(FileNotFoundException e){
              e.printStackTrace();
         }
 		
 	}
 	
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		// TODO Auto-generated method stub
-
-		new test().testYieldPointChart3();
-
-		Pane pane = new Pane();
-		Scene scene;
-		Stage dialogStage = new Stage();
-		try{
-			dialogStage.setTitle("Birthday Statistics");
-			dialogStage.initModality(Modality.WINDOW_MODAL);
-			dialogStage.initOwner(primaryStage);
-			  
-			pane = pointChart.getchart(334, 200, true);
-//			pane = pointChart.getchart(334, 200, false);
-			
-			scene = new Scene( pane );
-//			sas.saveAsPng(scene, "星期五");
-			
-			dialogStage.setScene(scene);
-			dialogStage.show();
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-	}
+//	@Override
+//	public void start(Stage primaryStage) throws Exception {
+//		// TODO Auto-generated method stub
+//
+//		new test().testYieldPointChart3();
+//
+//		Pane pane = new Pane();
+//		Scene scene;
+//		Stage dialogStage = new Stage();
+//		try{
+//			dialogStage.setTitle("Birthday Statistics");
+//			dialogStage.initModality(Modality.WINDOW_MODAL);
+//			dialogStage.initOwner(primaryStage);
+//			  
+//			pane = pointChart.getchart(334, 200, true);
+////			pane = pointChart.getchart(334, 200, false);
+//			
+//			scene = new Scene( pane );
+////			sas.saveAsPng(scene, "星期五");
+//			
+//			dialogStage.setScene(scene);
+//			dialogStage.show();
+//		}catch(Exception e){
+//			e.printStackTrace();
+//		}
+//	}
 		
-	public static void main(String args[]){
-		launch(args);
-	}
+//	public static void main(String args[]){
+//		launch(args);
+//	}
 
 }

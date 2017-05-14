@@ -200,9 +200,9 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 	}
 
 	@Override
-	public StockRODVO getStockROD(String stockcode, LocalDate begindate, LocalDate enddate) throws RemoteException{
+	public StockRODVO getStockROD( String stockcode, LocalDate begindate, LocalDate enddate, double step ) throws RemoteException{
 		// TODO Auto-generated method stub
-		return frodi.getStockROD(stockcode, begindate, enddate);
+		return frodi.getStockROD( stockcode, begindate, enddate, step );
 	}
 
 	@Override
