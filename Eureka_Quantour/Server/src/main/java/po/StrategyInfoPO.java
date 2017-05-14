@@ -6,7 +6,7 @@ import java.util.List;
  * Created by huihantao on 2017/5/13.
  */
 public class StrategyInfoPO  {
-    private String strategyname;
+    private String strategTypeNname;
     private boolean publicorprivate;
 
     private List<Integer> parameter;
@@ -16,8 +16,8 @@ public class StrategyInfoPO  {
 
     private String tiaocangjiage;
 
-    public StrategyInfoPO(String strategyname, boolean publicorprivate, List<Integer> parameter, int nums, int tiaocangqi, String tiaocangjiage) {
-        this.strategyname = strategyname;
+    public StrategyInfoPO(String strategTypeNname, boolean publicorprivate, List<Integer> parameter, int nums, int tiaocangqi, String tiaocangjiage) {
+        this.strategTypeNname = strategTypeNname;
         this.publicorprivate = publicorprivate;
         this.parameter = parameter;
         this.purchasenum = nums;
@@ -25,12 +25,12 @@ public class StrategyInfoPO  {
         this.tiaocangjiage = tiaocangjiage;
     }
 
-    public String getStrategyname() {
-        return strategyname;
+    public String getStrategTypeNname() {
+        return strategTypeNname;
     }
 
-    public void setStrategyname(String strategyname) {
-        this.strategyname = strategyname;
+    public void setStrategTypeNname(String strategTypeNname) {
+        this.strategTypeNname = strategTypeNname;
     }
 
     public boolean isPublicorprivate() {
