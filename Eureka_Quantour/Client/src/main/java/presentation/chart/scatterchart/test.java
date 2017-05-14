@@ -70,9 +70,25 @@ public class test
 		LocalDate begindate = LocalDate.of(2013, 3, 6);
 		LocalDate enddate = LocalDate.of(2016, 3, 6);
 		
-		String stockcode = "000938";
+		String stockcode = "600149";
+		
+//		double step = 0.00;
+//		double cha = 0.001;
+//		double stepT = step;
 		try{
-			srod = remote.getForecastROD().getStockROD( stockcode, begindate, enddate, 0.01 );
+//			double success = 0;
+//			double maxsuccess = 0;
+//			for( int i=0; i<500; i++ ){
+//				srod = remote.getForecastROD().getStockROD( stockcode, begindate, enddate, step );
+//				success = (srod.Pos[0]+srod.Neg[0])/( (srod.Pos[0]+srod.Neg[0])+(srod.Pos[1]+srod.Neg[1]) );
+//				if( success>maxsuccess ){
+//					stepT = step;
+//					maxsuccess = success;
+//				}
+//				step += cha;
+//			}
+//			srod = remote.getForecastROD().getStockROD( stockcode, begindate, enddate, stepT );
+			srod = remote.getForecastROD().getStockROD( stockcode, begindate, enddate, 0, 0);
 		}catch(RemoteException e){
 			e.printStackTrace();
 		}
@@ -105,35 +121,37 @@ public class test
             p.println();
             for( int i=0; i<5; i++){
             	if( srod.wROD[i][0]>=10 )
-            		p.print( "星期 "+(i+1)+" 有 "+" "+srod.wROD[i][0]+" 天跌 >10%" );
+            		p.print( "星期 "+(i+1)+" 有 "+srod.wROD[i][0]+" 天跌 >10%;" );
             	else
-            		p.print( "星期 "+(i+1)+" 有 "+"  "+srod.wROD[i][0]+" 天跌 >10%" );
-            	p.print( "   " );
+            		p.print( "星期 "+(i+1)+" 有 "+" "+srod.wROD[i][0]+" 天跌 >10%;" );
+            	p.print( " " );
             	if( srod.wROD[i][22]>=10 )
-            		p.println( " 有 "+srod.wROD[i][22]+" 天涨 >10%" );    
+            		p.print( "有 "+srod.wROD[i][22]+" 天涨 >10%;" );    
             	else
-            		p.println( " 有 "+" "+srod.wROD[i][22]+" 天涨 >10%" );    
-            }
-            
-            p.println();  
-            for( int i=0; i<5; i++){
+            		p.print( "有 "+" "+srod.wROD[i][22]+" 天涨 >10%;" );  
+            	
+            	p.print(" ");
+            	
             	if( srod.nodata[i][0]>=100 )
-            		p.print( "星期 "+(i+1)+" 有 "+srod.nodata[i][0]+" 天" );
+            		p.print( "有 "+srod.nodata[i][0]+" 天" );
             	else if( srod.nodata[i][0]>=10 )
-            		p.print( "星期 "+(i+1)+" 有 "+" "+srod.nodata[i][0]+" 天" );
+            		p.print( "有 "+" "+srod.nodata[i][0]+" 天" );
             	else
-            		p.print( "星期 "+(i+1)+" 有 "+"  "+srod.nodata[i][0]+" 天" );
-            	p.print( "   " );
+            		p.print( "有 "+"  "+srod.nodata[i][0]+" 天" );
+            	p.print( "  " );
             	if( srod.nodata[i][1]>=10 )
-            		p.println( " 有 "+srod.nodata[i][1]+" 天没数据" );
+            		p.println( srod.nodata[i][1]+" 天没数据" );
             	else
-            		p.println( " 有 "+" "+srod.nodata[i][1]+" 天没数据" );
+            		p.println( " "+srod.nodata[i][1]+" 天没数据" );
             }
             
             p.println();
             int num = 0;
             for( int i=0; i<srod.ROETimes.length-1; i++){
-            	p.println( "误差 0.00"+i+"~0.00"+(i+1)+": " +srod.ROETimes[i] );
+            	if( i<9 )
+            		p.println( "误差 0.00"+i+"~0.00"+(i+1)+":   " +srod.ROETimes[i] );
+            	else if( i<99 )
+            		p.println( "误差 0.00"+i+"~0.00"+(i+1)+":  " +srod.ROETimes[i] );
             	num += srod.ROETimes[i];
             }
             
@@ -151,26 +169,37 @@ public class test
             
             p.println();
             if( srod.Pos[0]>=100 )
-            	p.print( "预测涨， 成功"+srod.Pos[0]);
+            	p.print( "预测涨，成功 "+srod.Pos[0]);
             else
-            	p.print( "预测涨， 成功"+" "+srod.Pos[0]);
+            	p.print( "预测涨，成功 "+" "+srod.Pos[0]);
             p.print("   ");
             if( srod.Pos[1]>=100 )
-            	p.print( "失败"+srod.Pos[1]);
+            	p.println( "失败 "+srod.Pos[1]);
             else
-            	p.print( "失败"+" "+srod.Pos[1]);
-            
-            p.println();
+            	p.println( "失败 "+" "+srod.Pos[1]);
+
             if( srod.Neg[0]>=100 )
-            	p.print( "预测跌， 成功"+srod.Neg[0]);
+            	p.print( "预测跌，成功 "+srod.Neg[0]);
             else
-            	p.print( "预测跌， 成功"+" "+srod.Neg[0]);
+            	p.print( "预测跌，成功 "+" "+srod.Neg[0]);
             p.print("   ");
             if( srod.Neg[1]>=100 )
-            	p.print( "失败"+srod.Neg[1]);
+            	p.println( "失败 "+srod.Neg[1]);
             else
-            	p.print( "失败"+" "+srod.Neg[1]);
+            	p.println( "失败 "+" "+srod.Neg[1]);
             
+            if( (srod.Pos[0]+srod.Neg[0])>=100 )
+            	p.print( "总预测，成功 "+ (srod.Pos[0]+srod.Neg[0]) );
+            else
+            	p.print( "总预测，成功 "+" "+ (srod.Pos[0]+srod.Neg[0]) );
+            p.print("   ");
+            if( (srod.Pos[1]+srod.Neg[1])>=100 )
+            	p.println( "失败 "+ (srod.Pos[1]+srod.Neg[1]) );
+            else
+            	p.println( "失败 "+" "+ (srod.Pos[1]+srod.Neg[1]) );
+            
+            p.println("预测成功率 : "+nf.format( 
+            		(srod.Pos[0]+srod.Neg[0]) / ((srod.Pos[0]+srod.Neg[0])+(srod.Pos[1]+srod.Neg[1])+0.0) )  );
             p.close();
         }catch(FileNotFoundException e){
              e.printStackTrace();
