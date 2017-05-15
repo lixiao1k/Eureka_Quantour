@@ -66,7 +66,7 @@ public interface IStrategyDataHelper {
 	 * @param StrategyName 策略名字
 	 * @return 策略显示的po
 	 */
-	public void updateStrategyShow ( String createrName, String StrategyName ,StrategyShowPO vo);
+	public void clearStrategyShow ( String createrName, String StrategyName ,StrategyShowPO vo);
 
 	/**
 	 * 修改策略是否公开
