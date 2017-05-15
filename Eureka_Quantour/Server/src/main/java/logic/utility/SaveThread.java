@@ -4,6 +4,7 @@ import data.service.IDataInterface;
 import data.serviceimpl.DataInterfaceImpl;
 import exception.NullStockIDException;
 import exception.PriceTypeException;
+import po.StrategyShowPO;
 import vo.SaleVO;
 import vo.StrategyConditionVO;
 
@@ -35,23 +36,25 @@ public class SaveThread extends Thread{
             e.printStackTrace();
         }
 
-        stragety.getTimelist();
-        stragety.getAlpha();
-        stragety.getBeta();
-        stragety.getSharpe();
-        stragety.gerYearReturn();
+        List<Double> basicreturn=null;
+        List<Double> strategylist=null;
         try {
-            stragety.getBasicReturn();
-            stragety.getStragetyReturn();
+            basicreturn =stragety.getBasicReturn();
+            strategylist= stragety.getStragetyReturn();
         } catch (NullStockIDException e) {
             e.printStackTrace();
         } catch (PriceTypeException e) {
             e.printStackTrace();
         }
+        List<LocalDate> timelist=stragety.getTimelist();
+        double alpha=stragety.getAlpha();
+        double beta=stragety.getBeta();
+        double sharp=stragety.getSharpe();
+        double yearreturn=stragety.gerYearReturn();
+        double zuidahuiche=stragety.getzuidaguiceh();
 
-        //idi.save(username,name,timelist, basicreturn ,stragetyreturn yearreturn,zuidahuiche);
-
-
+        StrategyShowPO po=new StrategyShowPO(timelist,basicreturn,strategylist,alpha,beta,sharp,zuidahuiche,yearreturn);
+        idi.addStrategyShow(username,name,po);
     }
 
 }

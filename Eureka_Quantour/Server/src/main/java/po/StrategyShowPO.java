@@ -8,11 +8,11 @@ public class StrategyShowPO {
     private List<LocalDate> TimeList;
     private List<Double> BasicReturn;
     private List<Double> StrategyReturn;
-    private Double Alpha;
-    private Double Beta;
-    private Double Sharp;
-    private Double zuidahuiche;
-    private Double StrategyYearReturn;
+    private double Alpha;
+    private double Beta;
+    private double Sharp;
+    private double zuidahuiche;
+    private double StrategyYearReturn;
     public StrategyShowPO(double a,double b,double s,double huiche,double yr,int length){
     	setAlpha(a);
     	setBeta(b);
@@ -77,7 +77,7 @@ public class StrategyShowPO {
 	/**
 	 * @return the alpha
 	 */
-	public Double getAlpha() {
+	public double getAlpha() {
 		return Alpha;
 	}
 	/**
@@ -89,7 +89,7 @@ public class StrategyShowPO {
 	/**
 	 * @return the beta
 	 */
-	public Double getBeta() {
+	public double getBeta() {
 		return Beta;
 	}
 	/**
@@ -101,7 +101,7 @@ public class StrategyShowPO {
 	/**
 	 * @return the sharp
 	 */
-	public Double getSharp() {
+	public double getSharp() {
 		return Sharp;
 	}
 	/**
@@ -113,7 +113,7 @@ public class StrategyShowPO {
 	/**
 	 * @return the zuidahuiche
 	 */
-	public Double getZuidahuiche() {
+	public double getZuidahuiche() {
 		return zuidahuiche;
 	}
 	/**
@@ -125,7 +125,7 @@ public class StrategyShowPO {
 	/**
 	 * @return the strategyYearReturn
 	 */
-	public Double getStrategyYearReturn() {
+	public double getStrategyYearReturn() {
 		return StrategyYearReturn;
 	}
 	/**
@@ -134,4 +134,5 @@ public class StrategyShowPO {
 	public void setStrategyYearReturn(Double strategyYearReturn) {
 		StrategyYearReturn = strategyYearReturn;
 	}
+
 }

@@ -380,6 +380,8 @@ public class StockLogicImpl implements StockLogicInterface{
 
 	@Override
 	public StrategyShowVO getStrategy(String createrName, String StrategyName) throws RemoteException {
+
+
 		return null;
 	}
 
