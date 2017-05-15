@@ -14,6 +14,7 @@ import logic.utility.SaveThread;
 import logic.utility.Utility;
 import po.SingleStockInfoPO;
 import po.StrategyInfoPO;
+import po.StrategyShowPO;
 import vo.*;
 
 /**
@@ -362,10 +363,7 @@ public class StockLogicImpl implements StockLogicInterface{
 		String tiaocangjiage=saleVO.getTiaocangjiage();
 		StrategyInfoPO po=new StrategyInfoPO(strategytypename,publicorprivate,parameter,purchasenum,tiaocangqi,tiaocangjiage);
 		idi.saveStrategy(po,name,username);
-
-
 		new SaveThread(strategyConditionVO,saleVO,username,name).start();
-
 	}
 
 	@Override
@@ -386,12 +384,19 @@ public class StockLogicImpl implements StockLogicInterface{
 	}
 
 	@Override
-	public List<StrategyShowVO> getStrategyList(String createrName) {
+	public List<StrategyListVO> getStrategyList(String createrName) {
+		List<StrategyShowPO> list=idi.getStrategyList(createrName);
+		List<StrategyListVO> reslist=new ArrayList<>();
+		for(StrategyShowPO po:list){
+//			reslist.add(new StrategyListVO());
+		}
+
 		return null;
 	}
 
 	@Override
-	public List<StrategyShowVO> getStrategyList() throws RemoteException {
+	public List<StrategyListVO> getStrategyList() throws RemoteException {
+		idi.getAreaList();
 		return null;
 	}
 

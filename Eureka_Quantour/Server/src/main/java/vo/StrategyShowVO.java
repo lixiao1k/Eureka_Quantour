@@ -1,12 +1,18 @@
 package vo;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
 /**
  * Created by huihantao on 2017/5/13.
  */
-public class StrategyShowVO implements Comparable<StrategyShowVO>{
+public class StrategyShowVO implements Serializable{
+
+    //点开策略后显示的超级详细的信息
+    //含评价，图表，计算结果参数，输入参数
+
+    //计算结果
     private List<LocalDate> TimeList;
     private List<Double> BasicReturn;
     private List<Double> StrategyReturn;
@@ -15,20 +21,17 @@ public class StrategyShowVO implements Comparable<StrategyShowVO>{
     private double Sharp;
     private double zuidahuiche;
     private double StrategyYearReturn;
+    //评价
+    private List<CommentVO> comments;
+    //输入参数
+
+    private StrategyConditionVO strategyConditionVO;
+    private SaleVO saleVO;
+
+
 
 
     public StrategyShowVO() {
-    }
-
-    public StrategyShowVO(List<LocalDate> timeList, List<Double> basicReturn, List<Double> strategyReturn, double alpha, double beta, double sharp, double zuidahuiche, double strategyYearReturn) {
-        TimeList = timeList;
-        BasicReturn = basicReturn;
-        StrategyReturn = strategyReturn;
-        Alpha = alpha;
-        Beta = beta;
-        Sharp = sharp;
-        this.zuidahuiche = zuidahuiche;
-        StrategyYearReturn = strategyYearReturn;
     }
 
     public List<LocalDate> getTimeList() {
@@ -95,10 +98,5 @@ public class StrategyShowVO implements Comparable<StrategyShowVO>{
         StrategyYearReturn = strategyYearReturn;
     }
 
-    @Override
-    public int compareTo(StrategyShowVO o) {
-        int a= (int) (100*StrategyYearReturn);
-        int b= (int) (100*o.StrategyYearReturn);
-        return a-b;
-    }
+
 }

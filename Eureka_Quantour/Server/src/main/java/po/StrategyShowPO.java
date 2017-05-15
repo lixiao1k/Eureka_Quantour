@@ -36,6 +36,13 @@ public class StrategyShowPO {
     	setTimeList(list3);
     	setBasicReturn(list2);
     	setStrategyReturn(list1);
+
+    }
+
+	public StrategyShowPO(List<LocalDate> timeList, List<Double> basicReturn, List<Double> strategyReturn, double alpha, double beta, double sharp, double zuidahuiche, double strategyYearReturn) {
+		TimeList = timeList;
+		BasicReturn = basicReturn;
+		StrategyReturn = strategyReturn;
 		Alpha = alpha;
 		Beta = beta;
 		Sharp = sharp;
@@ -43,6 +50,7 @@ public class StrategyShowPO {
 		StrategyYearReturn = strategyYearReturn;
 	}
 	public void add(double br,double sr,LocalDate time,int index){
+
     	TimeList.set(index, time);
         BasicReturn.set(index, br);
         StrategyReturn.set(index, sr);

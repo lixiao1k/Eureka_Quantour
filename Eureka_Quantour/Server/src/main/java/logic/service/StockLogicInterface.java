@@ -82,9 +82,9 @@ public interface StockLogicInterface extends Remote {
 
 	StrategyShowVO getStrategy ( String createrName, String StrategyName ) throws RemoteException;
 
-	List<StrategyShowVO> getStrategyList ( String createrName) throws RemoteException;
+	List<StrategyListVO> getStrategyList ( String createrName) throws RemoteException;
 
-	List<StrategyShowVO> getStrategyList ( )throws RemoteException;
+	List<StrategyListVO> getStrategyList ( )throws RemoteException;
 
 	void setPublic(String creatroName, String straetgyName,boolean property) throws RemoteException;
 

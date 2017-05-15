@@ -164,12 +164,12 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 	}
 
 	@Override
-	public List<StrategyShowVO> getStrategyList(String createrName) throws RemoteException {
+	public List<StrategyListVO> getStrategyList(String createrName) throws RemoteException {
 		return null;
 	}
 
 	@Override
-	public List<StrategyShowVO> getStrategyList() throws RemoteException {
+	public List<StrategyListVO> getStrategyList() throws RemoteException {
 		return null;
 	}
 
