@@ -116,54 +116,35 @@ public class StrategyUIController implements Initializable{
 	/*
 	 * 预测策略的监听
 	 */
-	@FXML
-	protected void goBrowsePredict(ActionEvent e){
-		String marketName = "";
-		String chiyouqi = "";
-		String xinchengqi = "";
-		if(stockSetComboBox.getValue()!=null){
-			marketName = stockSetComboBox.getValue();
-		}else{
-			Notifications.create().title("异常").text("请选择市场").showWarning();
-		}
-		chiyouqi = holdPeriodTextField.getText();
-		xinchengqi = createPeriodTextField.getText();
-		RemoteHelper remote = RemoteHelper.getInstance();
-		StockLogicInterface stockLogicInterface = remote.getStockLogic();
-		List<List<Double>> datelist1=new ArrayList<>();
-		List<List<Double>> datelist2=new ArrayList<>();
-		try {
-			if(momentumRadioButton.isSelected()) {
-				anchorPane4.getChildren().clear();
-				anchorPane5.getChildren().clear();
-				datelist1 = stockLogicInterface.getDantengchart("动量策略", (LocalDate) dataController.get("BeginTime"), (LocalDate) dataController.get("SystemTime"), "持有期", (String) dataController.get("UserName"), stockSetComboBox.getValue(), Integer.parseInt(xinchengqi));
-				chartService service1=new DanTengChart(datelist1.get(1));
-				chartService service2=new DanTengChart(datelist1.get(2));
+//	@FXML
+//	protected void goBrowsePredict(ActionEvent e){
+//		String marketName = "";
+//		String chiyouqi = "";
+//		String xinchengqi = "";
+//		if(stockSetComboBox.getValue()!=null){
+//			marketName = stockSetComboBox.getValue();
+//		}else{
+//			Notifications.create().title("异常").text("请选择市场").showWarning();
+//		}
+//		chiyouqi = holdPeriodTextField.getText();
+//		xinchengqi = createPeriodTextField.getText();
+//		RemoteHelper remote = RemoteHelper.getInstance();
+//		StockLogicInterface stockLogicInterface = remote.getStockLogic();
+//		List<List<Double>> datelist1=new ArrayList<>();
+//		List<List<Double>> datelist2=new ArrayList<>();
+//		try {
+//			if(momentumRadioButton.isSelected()) {
 //
-				service1.setName( "超额收益率");
-				service2.setName( "策略胜率");
-				anchorPane4.getChildren().add(service1.getchart(400,200,false));
-				anchorPane5.getChildren().add(service2.getchart(400,200,false));
-				//
-
-			}else{
-				anchorPane4.getChildren().clear();
-				datelist1 = stockLogicInterface.getDantengchart("均值策略", (LocalDate) dataController.get("BeginTime"), (LocalDate) dataController.get("SystemTime"), "持有期", (String) dataController.get("UserName"), stockSetComboBox.getValue(), Integer.parseInt(xinchengqi));
-				chartService service1=new DanTengChart(datelist1.get(1));
-				chartService service2=new DanTengChart(datelist1.get(2));
-//				//同上
-				service1.setName( "超额收益率");
-				service2.setName( "策略胜率");
-				anchorPane4.getChildren().add(service1.getchart(400,200,false));
-				anchorPane5.getChildren().add(service2.getchart(400,200,false));
-			}
-//			主pane上把pane加上
-		} catch (RemoteException e1) {
-			e1.printStackTrace();
-		}
-
-	}
-	
+//			}else{
+//
+//			}
+////			主pane上把pane加上
+//		} catch (RemoteException e1) {
+//			e1.printStackTrace();
+//		}
+//
+//	}
+//	
 	@FXML
 	protected void makeStrategy(ActionEvent e){
 		anchorPane4.getChildren().clear();
