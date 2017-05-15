@@ -3,20 +3,29 @@ package database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
+
 
 
 public class DBUtil {
-	public static final String URL = "jdbc:mysql://localhost:3306/quantour?useUnicode=true&characterEncoding=utf8&useSSL=true";
+	public static final String URL = "jdbc:mysql://localhost:3306/quantour?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=UTC";
 	public static final String USER = "root";
-	public static final String PASSWORD = "lixiaodong1996";
+	public static final String PASSWORD = "root";
+	static Connection conn;
+	static Statement st;
 	
 	public static void main(String[] args) throws Exception {
-		Class.forName("com.mysql.jdbc.Driver");
+		Class.forName("com.mysql.cj.jdbc.Driver");
 		try{
-		Connection conn = DriverManager.getConnection(URL,USER,PASSWORD);
+		    conn = DriverManager.getConnection(URL,USER,PASSWORD);
 		}
 		catch (SQLException e){
 			e.printStackTrace();
 		}
+		st=(Statement)conn.createStatement();
+		String sql = "INSERT INTO `quantour`.`test` (`idtest`) VALUES ('14');";
+		st.execute(sql);
+		st.close();
+		conn.close();
 	}
 }
