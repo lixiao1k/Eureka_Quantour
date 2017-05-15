@@ -1,0 +1,3 @@
+jdbc:mysql://localhost:3306/quantour?useSSL=true&serverTimezone=UTC&autoReconnect=true&failOverReadOnly=false&maxReconnects=10
+root
+yxliu97

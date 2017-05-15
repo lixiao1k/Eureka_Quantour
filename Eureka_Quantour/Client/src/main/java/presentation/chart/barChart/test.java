@@ -1,12 +1,20 @@
 package presentation.chart.barChart;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
+
 import javafx.application.Application;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
+import javafx.scene.image.WritableImage;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import vo.YieldDistributionHistogramDataVO;
@@ -45,10 +53,21 @@ public class test extends Application{
 		        
 			Scene scene = new Scene(yieldDistuributeChart.getchart(334, 200, true));
 //			Scene scene = new Scene(yieldDistuributeChart.getchart(334, 200, false));
+			saveAsPng(scene, "image\\scene.png");
 			dialogStage.setScene(scene);
 
 			dialogStage.show();
 		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	public void saveAsPng(Scene scene,String path){
+		WritableImage image = scene.snapshot(null);
+		File file = new File(path);
+		try {
+			ImageIO.write(SwingFXUtils.fromFXImage(image, null),"png", file);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

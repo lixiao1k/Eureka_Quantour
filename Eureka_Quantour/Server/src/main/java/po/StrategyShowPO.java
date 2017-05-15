@@ -5,21 +5,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StrategyShowPO {
+	private String createrName;
+	private String strategyName;
     private List<LocalDate> TimeList;
     private List<Double> BasicReturn;
     private List<Double> StrategyReturn;
+
     private double Alpha;
     private double Beta;
     private double Sharp;
     private double zuidahuiche;
     private double StrategyYearReturn;
-    public StrategyShowPO(double a,double b,double s,double huiche,double yr,int length){
-    	setAlpha(a);
-    	setBeta(b);
-    	setSharp(s);
-    	setZuidahuiche(huiche);
-    	setStrategyYearReturn(yr);
-    	List<Double> list1=new ArrayList<Double>();
+
+    
+    public StrategyShowPO(String createrName, String strategyName, 
+    		Double alpha, Double beta, Double sharp, Double zuidahuiche,
+			Double strategyYearReturn,int length) {
+		super();
+		this.createrName = createrName;
+		this.strategyName = strategyName;
+		List<Double> list1=new ArrayList<Double>();
     	List<Double> list2=new ArrayList<Double>();
     	List<LocalDate> list3=new ArrayList<LocalDate>();
     	LocalDate temp=LocalDate.now();
@@ -31,9 +36,13 @@ public class StrategyShowPO {
     	setTimeList(list3);
     	setBasicReturn(list2);
     	setStrategyReturn(list1);
-    }
-    
-    public void add(double br,double sr,LocalDate time,int index){
+		Alpha = alpha;
+		Beta = beta;
+		Sharp = sharp;
+		this.zuidahuiche = zuidahuiche;
+		StrategyYearReturn = strategyYearReturn;
+	}
+	public void add(double br,double sr,LocalDate time,int index){
     	TimeList.set(index, time);
         BasicReturn.set(index, br);
         StrategyReturn.set(index, sr);
@@ -134,5 +143,31 @@ public class StrategyShowPO {
 	public void setStrategyYearReturn(Double strategyYearReturn) {
 		StrategyYearReturn = strategyYearReturn;
 	}
+	/**
+	 * @return the createrName
+	 */
+	public String getCreaterName() {
+		return createrName;
+	}
 
+	/**
+	 * @param createrName the createrName to set
+	 */
+	public void setCreaterName(String createrName) {
+		this.createrName = createrName;
+	}
+
+	/**
+	 * @return the strategyName
+	 */
+	public String getStrategyName() {
+		return strategyName;
+	}
+
+	/**
+	 * @param strategyName the strategyName to set
+	 */
+	public void setStrategyName(String strategyName) {
+		this.strategyName = strategyName;
+	}
 }
