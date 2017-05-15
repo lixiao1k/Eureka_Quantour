@@ -12,7 +12,7 @@ public class DBInitInfo {
     static{  
         beans = new ArrayList<DataBasePool>();  
         DataBasePool beanOracle = new DataBasePool();  
-        File file=new File("abcde.txt");
+        File file=new File("config/abcde.txt");
         try {
 			BufferedReader br=new BufferedReader(new FileReader(file));
 			beanOracle.setDriverName("com.mysql.jdbc.Driver");  
