@@ -29,7 +29,21 @@ import vo.StrategyVO;
  */
 public interface IDataInterface 
 {
-	
+	/**
+	 * 应用策略，获得该策略的各个参数
+	 * @param createrName
+	 * @param strategyName
+	 * @return
+	 */
+	public StrategyInfoPO applyStrategy(String createrName,String strategyName);
+	/**
+	 * 获得指数的一段时间的信息（里面只有名字，编号，开盘，收盘，涨跌幅，最高，最低，交易量）
+	 * @param name
+	 * @param start
+	 * @param end
+	 * @return
+	 */
+	public List<SingleStockInfoPO> getPeriodExponent(String name,LocalDate start,LocalDate end);
 	/**
 	 * 判断用户是否注册成功，如果成功，登记用户的账号；如果失败，返回错误信息。
 	 * @param username String,用户的登录名
@@ -170,12 +184,9 @@ public interface IDataInterface
 	 */
 	public void addStrategyShow ( String createrName, String StrategyName ,StrategyShowPO vo);
 	/**
-	 * 更新策略详细图标
-	 * @param createrName 创建者名字
-	 * @param StrategyName 策略名字
-	 * @return 策略显示的po
+	 * 清空策略详细图标
 	 */
-	public void updateStrategyShow ( String createrName, String StrategyName ,StrategyShowPO vo);
+	public void clearStrategyShow ();
 
 
 	/**

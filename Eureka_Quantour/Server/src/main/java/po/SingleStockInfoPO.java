@@ -72,7 +72,7 @@ public class SingleStockInfoPO
 	public SingleStockInfoPO(
 			String _name,String _code,
 			LocalDate _date,
-			double _open,double _high,double _low,int _volume,
+			double _open,double _high,double _low,long _volume,
 			double _close,double _subclose,double _aftclose,
 			double _lclose,double _lsubclose,double _laftclose,
 			double _rate,double _subrate,double _aftrate,

@@ -16,9 +16,13 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -30,10 +34,13 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.mysql.cj.jdbc.PreparedStatement;
+
 import data.common.DateLeaf;
 import data.common.DateTrie;
 import data.common.FileMethod;
 import data.common.WebMethod;
+import data.database.ConnectionPoolManager;
 import data.datahelperimpl.InitEnvironment;
 import data.fetchpool.FetchPoolManagement;
 import data.parse.Parse;
@@ -274,6 +281,110 @@ public class StockInfoFetchByWeb {
 			e.printStackTrace();
 		}
 	}
+	public void fetchExponent(){
+		FileMethod.getInstance().makepath("config/exponent");
+		Properties pro=new Properties();
+		try {
+			InputStream is=new FileInputStream("config/stock/dataconfig.properties");
+			pro.load(is);
+			is.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String endday=pro.getProperty("lastday");
+		String startday=pro.getProperty("updateExponentday","2005-02-01");
+		File file=new File("config/resources/date/totalCalendar");
+		List<Integer> date=new ArrayList<Integer>();
+		try {
+			BufferedReader br=new BufferedReader(new FileReader(file));
+			while(br.ready()){
+				String t=br.readLine().substring(0, 8);
+				date.add(Integer.valueOf(t));
+			}
+			br.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Connection conn=ConnectionPoolManager.getInstance().getConnection("quantour");
+		String sql="select code from stockinfo where code like 'zs%'";
+		PreparedStatement pstmt=null;
+		List<String> fetchList=new ArrayList<String>();
+		try {
+			pstmt = (PreparedStatement)conn.prepareStatement(sql);
+			ResultSet rs=pstmt.executeQuery();
+			while(rs.next()){
+				String temp=rs.getString(1).substring(2);
+				if(temp.charAt(0)=='3'){
+					temp='1'+temp;
+				}
+				else{
+					temp='0'+temp;
+				}
+				fetchList.add(temp);
+			}
+			rs.close();
+			pstmt.close();
+			ConnectionPoolManager.getInstance().close("quantour", conn);
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		int start=Parse.getInstance().getIntDate(startday);
+		int end=Parse.getInstance().getIntDate(endday);
+		for(int j=0;j<fetchList.size();j++){
+			String url="";
+			url="http://quotes.money.163.com/service/chddata.html?"
+					+ "code="+fetchList.get(j)
+					+ "&start="+start
+					+ "&end="+end
+					+ "&fields=TOPEN;HIGH;LOW;TCLOSE;LCLOSE;PCHG;VOTURNOVER";
+			filemethod.makepath("config/exponent/zs"+fetchList.get(j).substring(1));
+			try {
+				String resultdate=saveToFile(url, "config/exponent/zs"+fetchList.get(j).substring(1)+"/data");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			File temp=new File("config/exponent/zs"+fetchList.get(j).substring(1)+"/data");
+			try {
+				BufferedReader br=new BufferedReader(new FileReader(temp));
+				conn=ConnectionPoolManager.getInstance().getConnection("quantour");
+				sql="insert into exponent values(?,?,?,?,?,?,?,?,?)";
+				pstmt=null;
+				pstmt = (PreparedStatement)conn.prepareStatement(sql);
+				while(br.ready()){
+					String[] result=br.readLine().split(",");
+					try {
+						pstmt.setString(1,"zs"+fetchList.get(j).substring(1));
+						pstmt.setString(2,result[0]);
+						pstmt.setString(3, result[1]);
+						pstmt.setString(4, result[4]);
+						pstmt.setString(5, result[2]);
+						pstmt.setString(6, result[3]);
+						pstmt.setString(7, result[5]);
+						pstmt.setString(8, result[6]);
+						pstmt.setString(9, result[7]);
+						pstmt.executeUpdate();
+					}catch (SQLException e) {
+						System.out.println(result[7]);
+						e.printStackTrace();
+						System.exit(0);
+					}
+				}
+				br.close();
+				pstmt.close();
+				ConnectionPoolManager.getInstance().close("quantour", conn);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		System.out.println("complete");
+	}
 	public void fetchStockInfo_Minutes(){
 		File root=new File(stockroot);
 		int count=0;
@@ -301,7 +412,8 @@ public class StockInfoFetchByWeb {
 				}
 				if(flag){
 					System.out.println("正在处理第"+count+"个，总共"+i+"个"+"剩余"+(i-count)+"个。");
-					//dealSingleInfo_Minutes(code,lt,date);
+					dealSingleInfo_Minutes(code,lt,date);
+					check_Minutes(code,date);
 					check_Minutes(code,date);
 				}
 			}

@@ -34,7 +34,7 @@ public class StrategyDataController {
 	 * @param strategyName 策略名字
 	 */
 	public void deleteStrategy ( String createName, String strategyName){
-		return ;
+		strategydatahelper.deleteStrategy(createName, strategyName);
 	}
 
 	/**
@@ -56,7 +56,10 @@ public class StrategyDataController {
 	 * @return 策略显示的po
 	 */
 	public StrategyShowPO getStrategy ( String createrName, String StrategyName ){
-		return null;
+		return strategydatahelper.getStrategy(createrName, StrategyName);
+	}
+	public StrategyInfoPO applyStrategy(String createrName,String strategyName){
+		return strategydatahelper.applyStrategy(createrName, strategyName);
 	}
 	
 	/**
@@ -66,16 +69,16 @@ public class StrategyDataController {
 	 * @return 策略显示的po
 	 */
 	public void addStrategyShow ( String createrName, String StrategyName ,StrategyShowPO vo){
-		return ;
+		strategydatahelper.addStrategyShow(createrName, StrategyName, vo);
 	}
 	/**
-	 * 更新策略详细图标
+	 * 清空策略显示图表
 	 * @param createrName 创建者名字
 	 * @param StrategyName 策略名字
 	 * @return 策略显示的po
 	 */
-	public void updateStrategyShow ( String createrName, String StrategyName ,StrategyShowPO vo){
-		return ;
+	public void clearStrategyShow (){
+		strategydatahelper.clearStrategyShow();
 	}
 
 	/**
@@ -84,7 +87,7 @@ public class StrategyDataController {
 	 * @return 策略列表
 	 */
 	public List<StrategyShowPO> getStrategyList ( String createrName){
-		return null;
+		return strategydatahelper.getStrategyList(createrName);
 	}
 
 	/**
@@ -92,7 +95,7 @@ public class StrategyDataController {
 	 * @return 策略列表
 	 */
 	public List<StrategyShowPO> getStrategyList ( ){
-		return null;
+		return strategydatahelper.getStrategyList();
 	}
 
 	/**
@@ -102,6 +105,6 @@ public class StrategyDataController {
 	 * @param property 是否公开
 	 */
 	public void setPublic(String creatroName, String straetgyName,boolean property){
-		
+		strategydatahelper.setPublic(creatroName, straetgyName, property);
 	}
 }
