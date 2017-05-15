@@ -33,27 +33,14 @@ public class test
 	private NumberFormat nf = NumberFormat.getPercentInstance();
 	
 	private SaveAsService sas = new SaveAs();
-    
-	private List<String> dataName = new ArrayList<>();
 	
 	public void testYieldPointChart3(){
 		int[] numI1 = {5, 1, 3, 2, 0, 5, 7, 7, 4, 6, 4, 9, 12, 5, 8, 5, 4, 1, 2, 1, 4};
-		int[] numI2 = {0, 0, 0, 0, 0, 0, 0, 1, 1, 2, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0};
-		int[] numI3 = {12, 1, 1, 2, 1, 6, 6, 8, 7, 4, 0, 7, 12, 5, 8, 5, 2, 2, 3, 1, 1};
-		int[] numI4 = {1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1};
-		int[] numI5 = {14, 4, 1, 1, 3, 4, 6, 7, 8, 7, 1, 8, 4, 6, 4, 2, 4, 0, 1, 1, 0};
 		List<int[]> numI = new ArrayList<>();
-//		numI.add(numI1);
-//		numI.add(numI2);
-//		numI.add(numI3);
-//		numI.add(numI4);
-		numI.add(numI5);
+		numI.add(numI1);
 		
+		List<String> dataName = new ArrayList<>();
 		dataName.add("Mon");
-		dataName.add("Tue");
-		dataName.add("Wen");
-		dataName.add("Th");
-		dataName.add("Fri");
 	
 		int[] yield = {-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 		
@@ -72,27 +59,11 @@ public class test
 		
 		String stockcode = "600149";
 		
-//		double step = 0.00;
-//		double cha = 0.001;
-//		double stepT = step;
 		try{
-//			double success = 0;
-//			double maxsuccess = 0;
-//			for( int i=0; i<500; i++ ){
-//				srod = remote.getForecastROD().getStockROD( stockcode, begindate, enddate, step );
-//				success = (srod.Pos[0]+srod.Neg[0])/( (srod.Pos[0]+srod.Neg[0])+(srod.Pos[1]+srod.Neg[1]) );
-//				if( success>maxsuccess ){
-//					stepT = step;
-//					maxsuccess = success;
-//				}
-//				step += cha;
-//			}
-//			srod = remote.getForecastROD().getStockROD( stockcode, begindate, enddate, stepT );
-			srod = remote.getForecastROD().getStockROD( stockcode, begindate, enddate, 0, 0);
+			srod = remote.getForecastROD().getStockROD( stockcode, begindate, enddate, 0.15, 0);
 		}catch(RemoteException e){
 			e.printStackTrace();
 		}
-		
 		try{
             FileOutputStream out=new FileOutputStream( stockcode+".txt" );
             PrintStream p=new PrintStream(out);
