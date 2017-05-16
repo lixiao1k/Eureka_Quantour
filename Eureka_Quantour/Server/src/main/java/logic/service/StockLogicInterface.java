@@ -88,6 +88,10 @@ public interface StockLogicInterface extends Remote {
 
 	void setPublic(String creatroName, String straetgyName,boolean property) throws RemoteException;
 
+	List<String> getAreaList() throws RemoteException;
+
+	List<String> getConceptList() throws RemoteException;
+
 
 
 

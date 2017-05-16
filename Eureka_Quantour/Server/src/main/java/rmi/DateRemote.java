@@ -178,6 +178,16 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 
 	}
 
+	@Override
+	public List<String> getAreaList() throws RemoteException {
+		return null;
+	}
+
+	@Override
+	public List<String> getConceptList() throws RemoteException {
+		return null;
+	}
+
 
 	@Override
 	public void signUp(String username, char[] password) throws RemoteException, UserNameRepeatException {

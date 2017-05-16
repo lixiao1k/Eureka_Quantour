@@ -91,9 +91,9 @@ public interface StockLogicInterface extends Remote {
 	// 修改策略公开或私有属性
 	void setPublic(String creatroName, String straetgyName,boolean property) throws RemoteException;
 
-	List<String> getAreaList();
+	List<String> getAreaList() throws RemoteException;
 
-	List<String> getConceptList();
+	List<String> getConceptList() throws RemoteException;
 
 
 
