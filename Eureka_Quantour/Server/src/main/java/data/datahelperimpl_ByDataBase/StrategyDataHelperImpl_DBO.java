@@ -42,9 +42,12 @@ public class StrategyDataHelperImpl_DBO implements IStrategyDataHelper{
 			pstmt.setString(2, strategyName);
 			pstmt.setString(3, po.getStrategTypeNname());
 			pstmt.setBoolean(4, po.isPublicorprivate());
-			String sum=""+po.getParameter().get(0);
-			for(int i=1;i<po.getParameter().size();i++){
-				sum=sum+","+po.getParameter().get(i);
+			String sum="";
+			if(po.getParameter()==null||po.getParameter().size()==0){
+				sum="blank";
+			}
+			else{
+				sum=sum+po.getParameter().get(0);
 			}
 			pstmt.setString(5, sum);
 			pstmt.setInt(6, po.getPurchasenum());
@@ -72,10 +75,11 @@ public class StrategyDataHelperImpl_DBO implements IStrategyDataHelper{
 				String type=rs.getString(3);
 				boolean pub=rs.getBoolean(4);
 				String sharp=rs.getString(5);
-				String[] li=sharp.split(",");
 				List<Integer> temp=new ArrayList<Integer>();
-				for(int i=0;i<li.length;i++){
-					temp.add(Integer.valueOf(li[i]));
+				if(sharp.equals("blank")){
+				}
+				else{
+					temp.add(Integer.valueOf(sharp));
 				}
 				int purchase=rs.getInt(6);
 				int tiaocang=rs.getInt(7);

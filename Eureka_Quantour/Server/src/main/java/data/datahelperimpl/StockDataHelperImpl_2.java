@@ -911,7 +911,7 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 	}
 	public List<String> fuzzySearch(String code){
 		Connection conn=ConnectionPoolManager.getInstance().getConnection("quantour");
-		String sql="select * from stockinfo where code like '%"+code+"%' or name like'%"+code+"%'";
+		String sql="select * from stockinfo where code like '%"+code+"%' or name like'%"+code+"%' order by browsetimes desc";
 		PreparedStatement pstmt=null;
 		List<String> result=new ArrayList<String>();
 		try {
@@ -933,6 +933,34 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 			e.printStackTrace();
 			ConnectionPoolManager.getInstance().close("quantour", conn);
 			return null;
+		}
+	}
+	public void addBrowseTimes(String stockCode){
+		Connection conn=ConnectionPoolManager.getInstance().getConnection("quantour");
+		String sql="select * from stockinfo where code ='"+stockCode+"'";
+		PreparedStatement pstmt=null;
+		long times=-1;
+		try {
+			pstmt = (PreparedStatement)conn.prepareStatement(sql);
+			ResultSet rs=pstmt.executeQuery();
+			if(rs.next()){
+				long t=rs.getLong(3);
+				times=t;
+			}	
+			rs.close();
+			pstmt.close();
+			ConnectionPoolManager.getInstance().close("quantour", conn);
+			if(times!=-1){
+				times++;
+				sql="update stockinfo set browsetimes ='"+times+"' where code='"+stockCode+"'";
+				pstmt = (PreparedStatement)conn.prepareStatement(sql);
+				pstmt.executeUpdate();
+				pstmt.close();
+				ConnectionPoolManager.getInstance().close("quantour", conn);
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+			ConnectionPoolManager.getInstance().close("quantour", conn);
 		}
 	}
 }
