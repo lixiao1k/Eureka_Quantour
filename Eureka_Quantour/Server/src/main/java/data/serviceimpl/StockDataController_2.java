@@ -97,6 +97,9 @@ public class StockDataController_2 {
 		int day=Parse.getInstance().getIntDate(date);
 		return datahelper.getTimeSharingData(code, day);
 	}
+	public List<String> fuzzySearch(String code){
+		return datahelper.fuzzySearch(code);
+	}
 	/**
 	 * 获取某只股票最早的一天
 	 * @param code 股票编号

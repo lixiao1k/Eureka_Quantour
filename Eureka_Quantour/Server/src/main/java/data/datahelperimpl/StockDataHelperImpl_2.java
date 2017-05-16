@@ -10,6 +10,9 @@ import java.nio.BufferUnderflowException;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -25,9 +28,12 @@ import java.util.Scanner;
 
 import javax.swing.text.DateFormatter;
 
+import com.mysql.cj.jdbc.PreparedStatement;
+
 import data.common.DateBufferTrie;
 import data.common.DateTrie;
 import data.common.IndexTree;
+import data.database.ConnectionPoolManager;
 import data.datahelperservice.IStockDataHelper_2;
 import data.fetchdataimpl.StockDataFetchImpl;
 import data.fetchdataservice.IStockDataFetch;
@@ -37,6 +43,7 @@ import exception.InternetdisconnectException;
 import exception.NullDateException;
 import exception.StockHaltingException;
 import exception.TimeShraingLackException;
+import po.CommentPO;
 /**
  * 股票模块数据的数据处理接口
  * @author 刘宇翔
@@ -899,6 +906,32 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 			}
 		}catch(IOException e){
 			e.printStackTrace();
+			return null;
+		}
+	}
+	public List<String> fuzzySearch(String code){
+		Connection conn=ConnectionPoolManager.getInstance().getConnection("quantour");
+		String sql="select * from stockinfo where code like '%"+code+"%' or name like'%"+code+"%'";
+		PreparedStatement pstmt=null;
+		List<String> result=new ArrayList<String>();
+		try {
+			pstmt = (PreparedStatement)conn.prepareStatement(sql);
+			ResultSet rs=pstmt.executeQuery();
+			while(rs.next()){
+				String c=rs.getString(1);
+				String n=rs.getString(2);
+				if(c.charAt(0)!='z'){
+					c=c+"\t"+n;
+					result.add(c);
+				}
+			}
+			rs.close();
+			pstmt.close();
+			ConnectionPoolManager.getInstance().close("quantour", conn);
+			return result;
+		}catch (SQLException e) {
+			e.printStackTrace();
+			ConnectionPoolManager.getInstance().close("quantour", conn);
 			return null;
 		}
 	}

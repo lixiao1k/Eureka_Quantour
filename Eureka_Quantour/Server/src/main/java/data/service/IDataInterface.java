@@ -16,6 +16,7 @@ import exception.StockSetNameRepeatException;
 import exception.StrategyRepeatException;
 import exception.TimeShraingLackException;
 import exception.UserNameRepeatException;
+import po.CommentPO;
 import po.SingleStockInfoPO;
 import po.StockSetInfoPO;
 import po.StrategyInfoPO;
@@ -34,7 +35,7 @@ public interface IDataInterface
 	 * 获取股票分时线
 	 * @param code
 	 * @param date
-	 * @return
+	 * @return 从9点到11点半，再从13点到15点的以1秒为单位的double数组
 	 * @throws TimeShraingLackException
 	 * @throws NullStockIDException
 	 */
@@ -219,7 +220,19 @@ public interface IDataInterface
 	 * @param property 是否公开
 	 */
 	public void setPublic(String creatroName, String straetgyName,boolean property);
-
+	/**
+	 * 获取评价
+	 * @param createrName
+	 * @param strategyName
+	 * @return
+	 */
+	public List<CommentPO> getStrategyComments(String createrName,String strategyName);
+	/**
+	 * 模糊搜索
+	 * @param code 输入的内容
+	 * @return 输出的list，格式如000001	平安银行
+	 */
+	public List<String> fuzzySearch(String code);
 	
 //新增接口————————————————————————————————————————————————————————————————————————————————
 	//针对单支股票

@@ -103,4 +103,5 @@ public interface IStockDataHelper_2 {
 	 */
 	public LocalDate addDays(int date,int last) throws DateOverException, NullDateException;
 	public List<Double> getTimeSharingData(String code,int date)throws TimeShraingLackException;
+	public List<String> fuzzySearch(String code);
 }

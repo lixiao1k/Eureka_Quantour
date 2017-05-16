@@ -137,6 +137,9 @@ public class DataInterfaceImpl implements IDataInterface
 	public List<CommentPO> getStrategyComments(String createrName,String strategyName){
 		return strategy.getStrategyComments(createrName, strategyName);
 	}
+	public List<String> fuzzySearch(String code){
+		return stock2.fuzzySearch(code);
+	}
 
 	/**
 	 * 获取某个用户的所有策略
