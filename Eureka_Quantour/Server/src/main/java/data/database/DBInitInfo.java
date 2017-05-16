@@ -15,7 +15,7 @@ public class DBInitInfo {
         File file=new File("config/abcde.txt");
         try {
 			BufferedReader br=new BufferedReader(new FileReader(file));
-			beanOracle.setDriverName("com.mysql.jdbc.Driver");  
+			beanOracle.setDriverName("com.mysql.cj.jdbc.Driver");  
 			beanOracle.setUrl(br.readLine());  
         	beanOracle.setUserName(br.readLine());  
         	beanOracle.setPassword(br.readLine()); 
@@ -23,9 +23,9 @@ public class DBInitInfo {
     	} catch (IOException e) {
     		e.printStackTrace();
     	}
-        beanOracle.setMinConnections(5);  
-        beanOracle.setMaxConnections(100);  
-        beanOracle.setPoolName("quantour");  
+        beanOracle.setMinConnections(5);
+        beanOracle.setMaxConnections(100);
+        beanOracle.setPoolName("quantour");
         beans.add(beanOracle);  
     }  
 }
