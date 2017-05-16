@@ -180,12 +180,12 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 
 	@Override
 	public List<String> getAreaList() throws RemoteException {
-		return null;
+		return sli.getAreaList();
 	}
 
 	@Override
 	public List<String> getConceptList() throws RemoteException {
-		return null;
+		return sli.getConceptList();
 	}
 
 
