@@ -156,6 +156,7 @@ public class MarketUIController implements Initializable {
 				try {
 					setStocks = stockLogicInterface.getStockSetSortedInfo("SHA",systime, null);
 					initialAllStocksPane(setStocks);
+					setStockDetailInfo(setStocks.get(0));
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
 					Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
@@ -181,6 +182,7 @@ public class MarketUIController implements Initializable {
 					setStocks = stockLogicInterface.getStockSetSortedInfo("SHB",systime, null);
 //					System.out.println(setStocks.size());
 					initialAllStocksPane(setStocks);
+					setStockDetailInfo(setStocks.get(0));
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
 					Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
@@ -215,6 +217,7 @@ public class MarketUIController implements Initializable {
 				try {
 					setStocks = stockLogicInterface.getStockSetSortedInfo("SZA",systime, null);
 					initialAllStocksPane(setStocks);
+					setStockDetailInfo(setStocks.get(0));
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
 					Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
@@ -238,6 +241,7 @@ public class MarketUIController implements Initializable {
 				try {
 					setStocks = stockLogicInterface.getStockSetSortedInfo("SZB",systime, null);
 					initialAllStocksPane(setStocks);
+					setStockDetailInfo(setStocks.get(0));
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
 					Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
@@ -261,6 +265,7 @@ public class MarketUIController implements Initializable {
 				try {
 					setStocks = stockLogicInterface.getStockSetSortedInfo("CYB",systime , null);
 					initialAllStocksPane(setStocks);
+					setStockDetailInfo(setStocks.get(0));
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
 					Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
@@ -284,6 +289,7 @@ public class MarketUIController implements Initializable {
 				try {
 					setStocks = stockLogicInterface.getStockSetSortedInfo("ZXB",systime , null);
 					initialAllStocksPane(setStocks);
+					setStockDetailInfo(setStocks.get(0));
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
 					Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
@@ -309,6 +315,7 @@ public class MarketUIController implements Initializable {
 		try {
 			setStocks = stockLogicInterface.getStockSetSortedInfo("HS300", systime, null);
 			initialAllStocksPane(setStocks);
+			setStockDetailInfo(setStocks.get(0));
 		} catch (RemoteException e1) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
@@ -359,7 +366,22 @@ public class MarketUIController implements Initializable {
 	
 	@FXML
 	protected void goBrowseConcept(ActionEvent e){
-		
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(getClass().getResource("MarketConcept.fxml"));
+		Parent career = null;
+		try {
+			career = (GridPane)loader.load();
+			MarketConceptController controller = loader.getController();
+			controller.setController(this);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		Scene scene = new Scene(career);
+		Stage stage = new Stage();
+		stage.setScene(scene);
+//		stage.initStyle(StageStyle.TRANSPARENT);
+		stage.show();
 	}
 	/*
 	 * 设置industryLabel内容，为MarketCareerController调用
@@ -383,16 +405,30 @@ public class MarketUIController implements Initializable {
 		upTenFlowPane.getChildren().clear();
 		downTenFlowPane.getChildren().clear();
 		int length = list.size();
-		for(int i =0;i<10;i++){
-			SingleStockInfoVO vo = list.get(i);
-			HBox hb = getHBox4TenScoll(vo.getCode(), vo.getName(), vo.getClose(), vo.getFudu());
-			upTenFlowPane.getChildren().add(hb);
+		if(length>=10){
+			for(int i =0;i<10;i++){
+				SingleStockInfoVO vo = list.get(i);
+				HBox hb = getHBox4TenScoll(vo.getCode(), vo.getName(), vo.getClose(), vo.getFudu());
+				upTenFlowPane.getChildren().add(hb);
+			}
+			for(int i=0;i<10;i++){
+				SingleStockInfoVO vo = list.get(length-1-i);
+				HBox hb = getHBox4TenScoll(vo.getCode(), vo.getName(), vo.getClose(), vo.getFudu());
+				downTenFlowPane.getChildren().add(hb);
+			}
+		}else{
+			for(int i =0;i<length;i++){
+				SingleStockInfoVO vo = list.get(i);
+				HBox hb = getHBox4TenScoll(vo.getCode(), vo.getName(), vo.getClose(), vo.getFudu());
+				upTenFlowPane.getChildren().add(hb);
+			}
+			for(int i=0;i<length;i++){
+				SingleStockInfoVO vo = list.get(length-1-i);
+				HBox hb = getHBox4TenScoll(vo.getCode(), vo.getName(), vo.getClose(), vo.getFudu());
+				downTenFlowPane.getChildren().add(hb);
+			}
 		}
-		for(int i=0;i<10;i++){
-			SingleStockInfoVO vo = list.get(length-1-i);
-			HBox hb = getHBox4TenScoll(vo.getCode(), vo.getName(), vo.getClose(), vo.getFudu());
-			downTenFlowPane.getChildren().add(hb);
-		}
+
 	}
 	/*
 	 * @description 获取前后十排名中单只股票信息的信息条

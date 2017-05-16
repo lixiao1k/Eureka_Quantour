@@ -12,6 +12,8 @@ import javafx.scene.layout.FlowPane;
 import org.controlsfx.control.Notifications;
 
 import dataController.DataContorller;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -24,6 +26,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -91,12 +94,6 @@ public class StrategyUIController implements Initializable{
 	Label timeLabel;
 	
 	@FXML
-	TextField meandaysTextField;//几日均值
-	
-	@FXML
-	TextField createPeriodTextField;//形成期
-	
-	@FXML
 	Label psLabel1;
 	
 	@FXML
@@ -108,6 +105,11 @@ public class StrategyUIController implements Initializable{
 	@FXML
 	AnchorPane anchorPane5;
 	
+	@FXML
+	Label changableLabel;
+	
+	@FXML
+	TextField changableTextField;
 	
 	private DataContorller dataController;
 	
@@ -159,7 +161,6 @@ public class StrategyUIController implements Initializable{
 		int meandays = 0;
 		boolean flag = true;//判断是否能够继续调用策略
 		if(momentumRadioButton.isSelected()){
-			meandaysTextField.setEditable(false);
 			if(stockSetComboBox.getValue()!=null){
 				stockSet = stockSetComboBox.getValue();
 			}else{
@@ -185,10 +186,14 @@ public class StrategyUIController implements Initializable{
 				Notifications.create().title("输入异常").text("请输入持有期").showWarning();
 			}
 			
-			if(createPeriodTextField.getText().length()!=0){
+			if(changableTextField.getText().length()!=0){
 				int num =0;
+				System.out.println(changableTextField.getText());
+			    num = Integer.parseInt(changableTextField.getText());
+			    System.out.println(num);
 				try{
-				    num = Integer.parseInt(createPeriodTextField.getText());
+				    num = Integer.parseInt(changableTextField.getText());
+				    System.out.println(num);
 				    if(num<=0){
 				    	Notifications.create().title("输入异常").text("形成期请输入正数").showWarning();
 				    	flag = false;
@@ -256,7 +261,6 @@ public class StrategyUIController implements Initializable{
 				}	
 			}
 		}else{
-			meandaysTextField.setEditable(true);
 			if(stockSetComboBox.getValue()!=null){
 				stockSet = stockSetComboBox.getValue();
 			}else{
@@ -304,10 +308,10 @@ public class StrategyUIController implements Initializable{
 				Notifications.create().title("输入异常").text("请输入股票数").showWarning();
 			}
 			
-			if(meandaysTextField.getText().length()!=0){
+			if(changableTextField.getText().length()!=0){
 				int num =0;
 				try{
-				    num = Integer.parseInt(meandaysTextField.getText());
+				    num = Integer.parseInt(changableTextField.getText());
 				    if(num<=0){
 				    	Notifications.create().title("输入异常").text("几日均值请输入正数").showWarning();
 				    	flag = false;
@@ -355,6 +359,10 @@ public class StrategyUIController implements Initializable{
 
 	}
 
+	@FXML
+	protected void saveStrategy(ActionEvent e){
+		
+	}
 	
 	
 	@FXML
@@ -375,6 +383,24 @@ public class StrategyUIController implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
+		changableLabel.setText("形成期");
+		momentumRadioButton.setUserData("动量");
+		meanRadioButton.setUserData("均值");
+		strategy.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+				// TODO Auto-generated method stub
+				if(strategy.getSelectedToggle()!=null){
+				  if(strategy.getSelectedToggle().getUserData().equals("均值")){
+					  changableLabel.setText("几日均值");
+				  }else if(strategy.getSelectedToggle().getUserData().equals("动量")){
+					  changableLabel.setText("持有期");
+				  }
+				}
+				
+			}
+		});
 		psLabel1.getStylesheets().add(getClass().getClassLoader().getResource("styles/PSLabel.css").toExternalForm());
 		psLabel2.getStylesheets().add(getClass().getClassLoader().getResource("styles/PSLabel.css").toExternalForm());
 		dataController = DataContorller.getInstance();
