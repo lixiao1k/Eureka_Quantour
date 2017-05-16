@@ -23,7 +23,7 @@ public class RemoteHelper {
     		IDataInterface data=new DataInterfaceImpl();
     		dateRemote = new DateRemote();
     		LocateRegistry.createRegistry(8888);
-    		Naming.bind("rmi://localhost:8888/DateRemote",dateRemote);
+    		Naming.bind("rmi://172.25.169.243:8888/DateRemote",dateRemote);
     		System.out.println("Success");
     	}catch(RemoteException e){
     		e.printStackTrace();
