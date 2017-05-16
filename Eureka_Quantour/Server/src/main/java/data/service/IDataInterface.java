@@ -32,6 +32,11 @@ import vo.StrategyVO;
 public interface IDataInterface 
 {
 	/**
+	 * 
+	 * @param stockCode
+	 */
+	public void addBrowseTimes(String stockCode)throws  NullStockIDException;
+	/**
 	 * 获取股票分时线
 	 * @param code
 	 * @param date
