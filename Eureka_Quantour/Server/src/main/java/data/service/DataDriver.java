@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Scanner;
 
 import data.serviceimpl.DataInterfaceImpl;
@@ -18,6 +19,7 @@ import exception.StockNameRepeatException;
 import exception.StockSetNameRepeatException;
 import exception.StrategyRepeatException;
 import exception.UserNameRepeatException;
+import po.CommentPO;
 import po.SingleStockInfoPO;
 import po.StockSetInfoPO;
 import po.StrategyInfoPO;
@@ -168,6 +170,22 @@ public class DataDriver {
 			}
 			else if(mode.equals("comment")){
 				data.comment("Lyx", "my first", "Lyx", LocalDateTime.now(), "haa");
+			}
+			else if(mode.equals("get comment")){
+				for(CommentPO str:data.getStrategyComments("Lyx", "my first")){
+					System.out.println(str.getComments()+":"+str.getTime());
+				}
+			}
+			else if(mode.equals("fuzzy search")){
+				String userName=sc.nextLine();
+				List<String> result=data.fuzzySearch(userName);
+				int max=10;
+				if(result.size()<10){
+					max=result.size();
+				}
+				for(int i=0;i<max;i++){
+					System.out.println(result.get(i));
+				}
 			}
 //			else if(mode.equals("judge market day")){
 //				String cal=sc.nextLine();
