@@ -178,6 +178,16 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 
 	}
 
+	@Override
+	public List<String> getAreaList() throws RemoteException {
+		return sli.getAreaList();
+	}
+
+	@Override
+	public List<String> getConceptList() throws RemoteException {
+		return sli.getConceptList();
+	}
+
 
 	@Override
 	public void signUp(String username, char[] password) throws RemoteException, UserNameRepeatException {
@@ -210,5 +220,11 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 	public PredictVO predict(String stockcode, LocalDate date) throws RemoteException {
 		// TODO Auto-generated method stub
 		return frodi.predict(stockcode, date);
+	}
+
+	@Override
+	public List<Double> getTimeSharingData(String code, LocalDate date)
+			throws TimeShraingLackException, NullStockIDException, RemoteException {
+		return sli.getTimeSharingData(code, date);
 	}
 }

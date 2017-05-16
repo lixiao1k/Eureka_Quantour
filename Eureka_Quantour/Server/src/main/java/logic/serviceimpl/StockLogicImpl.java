@@ -422,9 +422,29 @@ public class StockLogicImpl implements StockLogicInterface{
 	}
 
 	@Override
+	public List<String> getAreaList() throws RemoteException {
+		return idi.getAreaList();
+	}
+
+	@Override
+	public List<String> getConceptList() throws RemoteException {
+		return idi.getConceptList();
+	}
+
+	@Override
 	public List<String> getIndustryList() throws RemoteException {
 		return idi.getIndustryList();
 	}
 
-
+	/**
+	 * 获取股票分时线
+	 * @param code
+	 * @param date
+	 * @return 从9点到11点半，再从13点到15点的以1秒为单位的double数组
+	 * @throws TimeShraingLackException
+	 * @throws NullStockIDException
+	 */
+	public List<Double> getTimeSharingData(String code,LocalDate date)throws TimeShraingLackException,NullStockIDException,RemoteException{
+		return idi.getTimeSharingData(code, date);
+	}
 }

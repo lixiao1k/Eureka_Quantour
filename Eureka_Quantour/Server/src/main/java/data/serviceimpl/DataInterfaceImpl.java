@@ -46,9 +46,10 @@ public class DataInterfaceImpl implements IDataInterface
 	/**
 	 * 
 	 * @param stockCode
+	 * @throws NullStockIDException 
 	 */
-	public void addBrowseTimes(String stockCode){
-		
+	public void addBrowseTimes(String stockCode) throws NullStockIDException{
+		stock2.addBrowseTimes(stockCode);
 	}
 	/**
 	 * 判断用户是否注册成功，如果成功，登记用户的账号；如果失败，返回错误信息。

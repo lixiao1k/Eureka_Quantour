@@ -339,6 +339,26 @@ public class MarketUIController implements Initializable {
 	}
 	@FXML
 	protected void goBrowseArea(ActionEvent e){
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(getClass().getResource("MarketArea.fxml"));
+		Parent career = null;
+		try {
+			career = (GridPane)loader.load();
+			MarketAreaController controller = loader.getController();
+			controller.setController(this);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		Scene scene = new Scene(career);
+		Stage stage = new Stage();
+		stage.setScene(scene);
+//		stage.initStyle(StageStyle.TRANSPARENT);
+		stage.show();
+	}
+	
+	@FXML
+	protected void goBrowseConcept(ActionEvent e){
 		
 	}
 	/*
