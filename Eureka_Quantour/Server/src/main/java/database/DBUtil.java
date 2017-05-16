@@ -8,11 +8,10 @@ import java.sql.Statement;
 
 
 public class DBUtil {
-	public static final String URL = "jdbc:mysql://localhost:3306/quantour?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=UTC";
+	public static final String URL = "jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=UTC";
 	public static final String USER = "root";
 	public static final String PASSWORD = "root";
 	static Connection conn;
-	static Statement st;
 	
 	public static void main(String[] args) throws Exception {
 		Class.forName("com.mysql.cj.jdbc.Driver");
@@ -22,10 +21,6 @@ public class DBUtil {
 		catch (SQLException e){
 			e.printStackTrace();
 		}
-		st=(Statement)conn.createStatement();
-		String sql = "INSERT INTO `quantour`.`test` (`idtest`) VALUES ('14');";
-		st.execute(sql);
-		st.close();
 		conn.close();
 	}
 }

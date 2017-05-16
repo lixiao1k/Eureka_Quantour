@@ -81,7 +81,7 @@ public class LoginController implements Initializable{
 			stagenow.close();
 
 		} catch (LogErrorException e1) {
-			// TODO Auto-generated catch block
+//			 TODO Auto-generated catch block
 			Notifications.create().title("登录异常").text(e1.toString()).showError();
 		}
 
