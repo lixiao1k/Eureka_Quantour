@@ -13,7 +13,7 @@ public class StrategyConditionVO implements Serializable{
     // 策略名称（目前只有2个） 
     // 动量策略
     // 均值策略
-    private List<Integer> extra;//动量策略、均值策略
+    private List<Integer> parameter;//动量策略、均值策略
     // 动量策略：
     // 数组只有一个元素，即形成期
     // 均值策略
@@ -26,7 +26,7 @@ public class StrategyConditionVO implements Serializable{
 
     public StrategyConditionVO(String name, List<Integer> extra, int nums) {
         this.name = name;
-        this.extra = extra;
+        this.parameter = extra;
         this.nums = nums;
     }
 
@@ -48,7 +48,7 @@ public class StrategyConditionVO implements Serializable{
     }
 
     public List<Integer> getExtra() {
-        return extra;
+        return parameter;
     }
 
     public void setName(String name) {
@@ -56,7 +56,7 @@ public class StrategyConditionVO implements Serializable{
     }
 
     public void setExtra(List<Integer> extra) {
-        this.extra = extra;
+        this.parameter = extra;
     }
 
 }
