@@ -40,7 +40,7 @@ public class MarketAreaController implements Initializable{
 		List<String> list = null;
 
 		try {
-			list = stockLogicInterface.getIndustryList();
+			list = stockLogicInterface.getAreaList();
 			int length = list.size();
 			list = list.subList(1, length);
 //			System.out.println(list.size());
@@ -48,44 +48,46 @@ public class MarketAreaController implements Initializable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if(list!=null){
-			for(String str:list){
-				Button button = new Button(str);
-				button.setPrefSize(180, 30);
-				button.setOnAction(new EventHandler<ActionEvent>() {
-					
-					@Override
-					public void handle(ActionEvent event) {
-						// TODO Auto-generated method stub
-						controller.setIndustryLabel(str);
-						List<SingleStockInfoVO> stocklist = null;
-						RemoteHelper remote = RemoteHelper.getInstance();
-						StockLogicInterface stockLogicInterface = remote.getStockLogic();
-						try {
-							stocklist = stockLogicInterface.getStockSetSortedInfo(str,(LocalDate)dataContorller.get("SystemTime"),null);
-							controller.initialAllStocksPane(stocklist);
-							if(stocklist!=null){
-								controller.setStockDetailInfo(stocklist.get(0));
-							}
-
-						} catch (RemoteException e) {
-							// TODO Auto-generated catch block
-							Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
-							e.printStackTrace();
-						} catch (NullMarketException e) {
-							// TODO Auto-generated catch block
-							Notifications.create().title("输入异常").text(e.toString()).showWarning();
-							e.printStackTrace();
-						}
-						
-						Stage stage = (Stage)button.getScene().getWindow();
-						stage.close();
-						
-					}
-				});
-				buttonsPane.getChildren().add(button);
-			}
+		for(String str:list){
+			System.out.println(str);
 		}
+//		if(list!=null){
+//			for(String str:list){
+//				Button button = new Button(str);
+//				button.setPrefSize(180, 30);
+//				button.setOnAction(new EventHandler<ActionEvent>() {
+//					@Override
+//					public void handle(ActionEvent event) {
+//						// TODO Auto-generated method stub
+//						controller.setIndustryLabel(str);
+//						List<SingleStockInfoVO> stocklist = null;
+//						RemoteHelper remote = RemoteHelper.getInstance();
+//						StockLogicInterface stockLogicInterface = remote.getStockLogic();
+//						try {
+//							stocklist = stockLogicInterface.getStockSetSortedInfo(str,(LocalDate)dataContorller.get("SystemTime"),null);
+//							controller.initialAllStocksPane(stocklist);
+//							if(stocklist!=null){
+//								controller.setStockDetailInfo(stocklist.get(0));
+//							}
+//
+//						} catch (RemoteException e) {
+//							// TODO Auto-generated catch block
+//							Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
+//							e.printStackTrace();
+//						} catch (NullMarketException e) {
+//							// TODO Auto-generated catch block
+//							Notifications.create().title("输入异常").text(e.toString()).showWarning();
+//							e.printStackTrace();
+//						}
+//						
+//						Stage stage = (Stage)button.getScene().getWindow();
+//						stage.close();
+//						
+//					}
+//				});
+//				buttonsPane.getChildren().add(button);
+//			}
+//		}
 	}
 
 }
