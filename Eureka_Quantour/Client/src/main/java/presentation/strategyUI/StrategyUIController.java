@@ -230,10 +230,11 @@ public class StrategyUIController implements Initializable{
 			}
 			
 			if(flag){
-				List<Integer> list = new ArrayList<Integer>();
+
+				List<Integer> list = new ArrayList<>();
 				list.add(createdays);
-				System.out.println("createdays:"+createdays);
-				System.out.println("nums:"+nums);
+				System.out.println(list);
+
 				strategyConditionVO = new StrategyConditionVO("动量策略",list,nums);
 				saleVO = new SaleVO(holddays,price);
 				System.out.println("holddays:"+holddays);
@@ -327,7 +328,9 @@ public class StrategyUIController implements Initializable{
 				Notifications.create().title("输入异常").text("请输入几日均值数").showWarning();
 			}
 			if(flag){
-				List<Integer> meandaylist =new ArrayList<Integer>();
+
+				List<Integer> meandaylist =new ArrayList<>();
+
 				meandaylist.add(meandays);
 				StrategyConditionVO strategyConditionVO2 = new StrategyConditionVO("均值策略",meandaylist,nums);
 				SaleVO saleVO2 = new SaleVO(holddays,price);

@@ -263,6 +263,7 @@ public class StockLogicImpl implements StockLogicInterface{
 				||stockSetName.equals("ZXB") )
 			username=null;
 		List<String> stocklistname=idi.getStockSetInfo(stockSetName,username);
+		System.out.println(strategyConditionVO.getExtra());
 
 		stragety=new Return(stocklistname,begin,now,s,strategyConditionVO);
 	}

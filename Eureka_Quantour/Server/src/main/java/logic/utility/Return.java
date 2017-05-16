@@ -41,6 +41,7 @@ public class Return {
         this.days=salevo.getTiaocangqi();
         this.timelist=new ArrayList<>();
         String type=strategyConditionVO.getName();
+        System.out.println(strategyConditionVO.getExtra());
         if (strategyConditionVO.getName().equals("动量策略")) comparator= new dongliangcelue(strategyConditionVO.getExtra());
         if (strategyConditionVO.getName().equals("均值策略")) comparator= new junzhicelue(strategyConditionVO.getExtra());
 
