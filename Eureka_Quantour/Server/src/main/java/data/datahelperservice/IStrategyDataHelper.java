@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import exception.StrategyRepeatException;
+import po.CommentPO;
 import po.StrategyInfoPO;
 import po.StrategyShowPO;
 import vo.StrategyShowVO;
@@ -67,6 +68,7 @@ public interface IStrategyDataHelper {
 	 * @return 策略显示的po
 	 */
 	public void clearStrategyShow ();
+	public List<CommentPO> getStrategyComments(String createrName,String strategyName);
 	public StrategyInfoPO applyStrategy(String createrName,String strategyName);
 
 	/**

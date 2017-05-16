@@ -32,8 +32,8 @@ public class WebConnectionPool {
       
     private long connectionTimeOut = 1000*60*20;// 连接超时时间，默认20分钟  
     
-    private long lazyCheck = 1000*60*5;// 延迟多少时间后开始 检查  
-    private long periodCheck = 1000*60;// 检查频率  
+    private long lazyCheck = 1000*60*1;// 延迟多少时间后开始 检查  
+    private long periodCheck = 1000*30;// 检查频率  
     
     public WebConnectionPool() {  
         super();  

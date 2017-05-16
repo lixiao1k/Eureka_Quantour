@@ -2,6 +2,7 @@ package data.serviceimpl;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import data.datahelperimpl.StockDataHelperImpl_2;
@@ -13,6 +14,7 @@ import exception.DateOverException;
 import exception.NullDateException;
 import exception.NullStockIDException;
 import exception.StockHaltingException;
+import exception.TimeShraingLackException;
 import po.SingleStockInfoPO;
 /**
  * 股票模块数据的数据处理接口
@@ -89,6 +91,11 @@ public class StockDataController_2 {
 //	}
 	public List<SingleStockInfoPO> getPeriodExponent(String name,LocalDate start,LocalDate end){
 		return exphelper.getPeriodExponent(name, start, end);
+	}
+	public List<Double> getTimeSharingData(String code,LocalDate date)throws TimeShraingLackException,NullStockIDException{
+		int c=transStockCode(code);
+		int day=Parse.getInstance().getIntDate(date);
+		return datahelper.getTimeSharingData(code, day);
 	}
 	/**
 	 * 获取某只股票最早的一天

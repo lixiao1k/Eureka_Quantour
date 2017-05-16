@@ -11,13 +11,19 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileChannel.MapMode;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
+
+import javax.swing.text.DateFormatter;
 
 import data.common.DateBufferTrie;
 import data.common.DateTrie;
@@ -30,6 +36,7 @@ import exception.DateOverException;
 import exception.InternetdisconnectException;
 import exception.NullDateException;
 import exception.StockHaltingException;
+import exception.TimeShraingLackException;
 /**
  * 股票模块数据的数据处理接口
  * @author 刘宇翔
@@ -834,5 +841,65 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 		mbb.position(position);
 		mbb.get(dst_MainIndex);
 		return new String(dst_MainIndex);
+	}
+	
+	public List<Double> getTimeSharingData(String code,int date)throws TimeShraingLackException{
+		String path="config/stock/info/"+code+"/Minutes/";
+		int index=dateIndex.get(date);
+		path=path+index;
+		File file=new File(path);
+		List<Double> result=new ArrayList<Double>();
+		for(int i=0;i<=16200;i++){
+			result.add(0.0);
+		}
+		try{
+			if(!file.exists()){
+				throw new TimeShraingLackException();
+			}
+			else{
+				BufferedReader br=new BufferedReader(new FileReader(file));
+				br.readLine();
+				int min=16200;
+				try{
+				while(br.ready()){
+					String[] temp=br.readLine().split("\t");
+					LocalTime lt=LocalTime.parse(temp[0], DateTimeFormatter.ofPattern("HH:mm:ss"));
+					if(lt.isAfter(LocalTime.of(12, 0))){
+						int i=(int) (Duration.between( LocalTime.of(13, 0, 0),lt).toMillis()/1000)+9000;
+						if(i<min){
+							min=i;
+						}
+						result.set(i, Double.valueOf(temp[1]));
+					}
+					else{
+						int i=(int) (Duration.between( LocalTime.of(9, 0, 0),lt).toMillis()/1000);
+						if(i>=0){
+							if(i<min){
+								min=i;
+							}
+							result.set(i, Double.valueOf(temp[1]));
+						}
+					}
+				}
+				}catch(Exception e){
+					br.close();
+					throw new TimeShraingLackException();
+				}
+				br.close();
+				double last=result.get(min);
+				for(int i=0;i<=16200;i++){
+					if(result.get(i)==0.0){
+						result.set(i, last);
+					}
+					else{
+						last=result.get(i);
+					}
+				}
+				return result;
+			}
+		}catch(IOException e){
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

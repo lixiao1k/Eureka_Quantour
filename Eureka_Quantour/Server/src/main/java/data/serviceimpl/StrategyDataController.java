@@ -6,6 +6,7 @@ import java.util.List;
 import data.datahelperimpl_ByDataBase.StrategyDataHelperImpl_DBO;
 import data.datahelperservice.IStrategyDataHelper;
 import exception.StrategyRepeatException;
+import po.CommentPO;
 import po.StrategyInfoPO;
 import po.StrategyShowPO;
 import vo.StrategyShowVO;
@@ -70,6 +71,9 @@ public class StrategyDataController {
 	 */
 	public void addStrategyShow ( String createrName, String StrategyName ,StrategyShowPO vo){
 		strategydatahelper.addStrategyShow(createrName, StrategyName, vo);
+	}
+	public List<CommentPO> getStrategyComments(String createrName,String strategyName){
+		return strategydatahelper.getStrategyComments(createrName, strategyName);
 	}
 	/**
 	 * 清空策略显示图表

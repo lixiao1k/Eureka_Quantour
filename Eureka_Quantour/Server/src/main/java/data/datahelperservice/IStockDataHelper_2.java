@@ -2,12 +2,14 @@ package data.datahelperservice;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
 
 import data.common.DateLeaf;
 import data.common.StockLeaf;
 import exception.DateOverException;
 import exception.NullDateException;
 import exception.StockHaltingException;
+import exception.TimeShraingLackException;
 
 /**
  * 股票模块数据的数据处理接口
@@ -100,4 +102,5 @@ public interface IStockDataHelper_2 {
 	 * @throws NullDateException 
 	 */
 	public LocalDate addDays(int date,int last) throws DateOverException, NullDateException;
+	public List<Double> getTimeSharingData(String code,int date)throws TimeShraingLackException;
 }

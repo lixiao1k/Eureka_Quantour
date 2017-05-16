@@ -16,7 +16,9 @@ import exception.StockHaltingException;
 import exception.StockNameRepeatException;
 import exception.StockSetNameRepeatException;
 import exception.StrategyRepeatException;
+import exception.TimeShraingLackException;
 import exception.UserNameRepeatException;
+import po.CommentPO;
 import po.SingleStockInfoPO;
 import po.StrategyInfoPO;
 import po.StrategyShowPO;
@@ -128,6 +130,12 @@ public class DataInterfaceImpl implements IDataInterface
 	 */
 	public void clearStrategyShow (){
 		strategy.clearStrategyShow();
+	}
+	public List<Double> getTimeSharingData(String code,LocalDate date)throws TimeShraingLackException,NullStockIDException{
+		return stock2.getTimeSharingData(code, date);
+	}
+	public List<CommentPO> getStrategyComments(String createrName,String strategyName){
+		return strategy.getStrategyComments(createrName, strategyName);
 	}
 
 	/**

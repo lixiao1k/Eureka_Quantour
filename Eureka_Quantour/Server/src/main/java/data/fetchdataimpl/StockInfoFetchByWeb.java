@@ -405,20 +405,68 @@ public class StockInfoFetchByWeb {
 		}
 		try{
 			boolean flag=false;
+			int min=180;
 			for(String code:list){
 				count++;
 				if(code.equals("000001")){
 					flag=true;
 				}
 				if(flag){
-					System.out.println("正在处理第"+count+"个，总共"+i+"个"+"剩余"+(i-count)+"个。");
-					dealSingleInfo_Minutes(code,lt,date);
-					check_Minutes(code,date);
-					check_Minutes(code,date);
+					//System.out.println("正在处理第"+count+"个，总共"+i+"个"+"剩余"+(i-count)+"个。");
+					//dealSingleInfo_Minutes(code,lt,date);
+					//check_Minutes(code,date);
+					//check_Minutes(code,date);
+					getMinInterval(code,date);
 				}
 			}
 		}catch(IOException e){
 			e.printStackTrace();
+		}
+	}
+	private void getMinInterval(String code,List<String> date)throws IOException{
+		String path=stockroot+"/"+code+"/Minutes";
+		File file=new File(path);
+		File[] list=file.listFiles();
+		int min=180;
+		for(File temp:list){
+			BufferedReader br=new BufferedReader(new FileReader(temp));
+			boolean none=false;
+			while(br.ready()){
+				String[] sum=br.readLine().split("\t");
+				if(sum[0].indexOf("close")>=0){
+					none=true;
+				}
+			}
+			br.close();
+			if(!none){
+				br=new BufferedReader(new FileReader(temp));
+				br.readLine();
+				LocalTime last=LocalTime.now();
+				while(br.ready()){
+					try{
+					String[] r=br.readLine().split("\t");
+					r[5].equals("买盘");
+					String[] m=r[0].split(":");
+					if(Integer.valueOf(m[2])%3!=0){
+					}
+					}catch(Exception e){
+						String symbol="sh";
+						if(code.charAt(0)=='0'||code.charAt(0)=='2'||code.charAt(0)=='3'){
+							symbol="sz";
+						}
+						String url="http://market.finance.sina.com.cn/downxls.php?date="
+								+ decodeDate(date.get(Integer.valueOf(temp.getName())))
+								+ "&symbol="
+								+ symbol
+								+ code;
+						System.out.println(decodeDate(date.get(Integer.valueOf(temp.getName())))+"---------"+code);
+						int in=FetchPoolManagement.getInstance().getConnection("web", url, path+"/"+temp.getName(), "InputStream");
+						FetchPoolManagement.getInstance().startConn("web", in);
+					}
+				}
+				br.close();
+			}
+			
 		}
 	}
 	private void check_Minutes(String code,List<String> date)throws IOException{

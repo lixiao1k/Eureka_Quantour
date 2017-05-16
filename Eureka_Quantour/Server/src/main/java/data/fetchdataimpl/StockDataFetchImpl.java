@@ -9,7 +9,7 @@ public class StockDataFetchImpl implements IStockDataFetch{
 	private StockInfoCalculate infocalculate;
 	private static StockDataFetchImpl impl;
 	public static void main(String[] args){
-		new StockInfoFetchByWeb().fetchExponent();;
+		new StockInfoFetchByWeb().fetchStockInfo_Minutes();;
 	}
 	private StockDataFetchImpl(){
 		setByweb=new StockSetFetchByWeb();
