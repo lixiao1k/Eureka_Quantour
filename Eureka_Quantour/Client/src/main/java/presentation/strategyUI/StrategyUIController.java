@@ -188,12 +188,9 @@ public class StrategyUIController implements Initializable{
 			
 			if(changableTextField.getText().length()!=0){
 				int num =0;
-				System.out.println(changableTextField.getText());
 			    num = Integer.parseInt(changableTextField.getText());
-			    System.out.println(num);
 				try{
 				    num = Integer.parseInt(changableTextField.getText());
-				    System.out.println(num);
 				    if(num<=0){
 				    	Notifications.create().title("输入异常").text("形成期请输入正数").showWarning();
 				    	flag = false;
@@ -233,10 +230,14 @@ public class StrategyUIController implements Initializable{
 			}
 			
 			if(flag){
-				List<Object> list = new ArrayList<Object>();
+				List<Integer> list = new ArrayList<Integer>();
 				list.add(createdays);
+				System.out.println("createdays:"+createdays);
+				System.out.println("nums:"+nums);
 				strategyConditionVO = new StrategyConditionVO("动量策略",list,nums);
 				saleVO = new SaleVO(holddays,price);
+				System.out.println("holddays:"+holddays);
+				System.out.println("price:"+price);
 				RemoteHelper remote = RemoteHelper.getInstance();
 				StockLogicInterface stockLogicInterface = remote.getStockLogic();
 				try {
@@ -326,7 +327,7 @@ public class StrategyUIController implements Initializable{
 				Notifications.create().title("输入异常").text("请输入几日均值数").showWarning();
 			}
 			if(flag){
-				List<Object> meandaylist =new ArrayList<Object>();
+				List<Integer> meandaylist =new ArrayList<Integer>();
 				meandaylist.add(meandays);
 				StrategyConditionVO strategyConditionVO2 = new StrategyConditionVO("均值策略",meandaylist,nums);
 				SaleVO saleVO2 = new SaleVO(holddays,price);
