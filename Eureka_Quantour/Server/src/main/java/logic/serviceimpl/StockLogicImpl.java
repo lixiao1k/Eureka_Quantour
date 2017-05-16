@@ -422,6 +422,16 @@ public class StockLogicImpl implements StockLogicInterface{
 	}
 
 	@Override
+	public List<String> getAreaList() throws RemoteException {
+		return null;
+	}
+
+	@Override
+	public List<String> getConceptList() throws RemoteException {
+		return null;
+	}
+
+	@Override
 	public List<String> getIndustryList() throws RemoteException {
 		return idi.getIndustryList();
 	}
