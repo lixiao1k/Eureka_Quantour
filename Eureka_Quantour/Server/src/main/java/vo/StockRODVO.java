@@ -9,6 +9,10 @@ public class StockRODVO implements Serializable{
 	
 	public int[][] wROD = new int[5][23];
 	public int[][] RODw = new int[23][5];
+	/*
+	* [][0] presents the number of days which xingqi owns
+	* [][1] presents the number of days which xingqi doesn't has data
+	*/
 	public int[][] nodata = new int[5][2];
 	
 	public int[] ROETimes = new int[11];

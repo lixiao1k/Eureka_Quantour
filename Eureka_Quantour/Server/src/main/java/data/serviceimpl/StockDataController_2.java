@@ -2,7 +2,10 @@ package data.serviceimpl;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
+
 import data.datahelperimpl.StockDataHelperImpl_2;
+import data.datahelperservice.IExponentDataHelper;
 import data.datahelperservice.IStockDataHelper_2;
 import data.parse.Parse;
 import data.parse.Translate;
@@ -19,6 +22,7 @@ import po.SingleStockInfoPO;
 public class StockDataController_2 {
 	private static StockDataController_2 stockdatacontroller;
 	private IStockDataHelper_2 datahelper;
+	private IExponentDataHelper exphelper;
 	private Translate translate;
 	private Parse parse;
 	private StockDataController_2(){
@@ -83,6 +87,9 @@ public class StockDataController_2 {
 //		}
 //		return parse.getlocalDate(start.getCal());
 //	}
+	public List<SingleStockInfoPO> getPeriodExponent(String name,LocalDate start,LocalDate end){
+		return exphelper.getPeriodExponent(name, start, end);
+	}
 	/**
 	 * 获取某只股票最早的一天
 	 * @param code 股票编号

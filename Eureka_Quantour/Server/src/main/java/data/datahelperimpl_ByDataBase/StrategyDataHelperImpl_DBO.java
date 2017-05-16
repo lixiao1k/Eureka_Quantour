@@ -42,9 +42,9 @@ public class StrategyDataHelperImpl_DBO implements IStrategyDataHelper{
 			pstmt.setString(2, strategyName);
 			pstmt.setString(3, po.getStrategTypeNname());
 			pstmt.setBoolean(4, po.isPublicorprivate());
-			String sum="";
-			for(int i=0;i<po.getParameter().size();i++){
-				sum=sum+po.getParameter().get(i);
+			String sum=""+po.getParameter().get(0);
+			for(int i=1;i<po.getParameter().size();i++){
+				sum=sum+","+po.getParameter().get(i);
 			}
 			pstmt.setString(5, sum);
 			pstmt.setInt(6, po.getPurchasenum());
@@ -59,6 +59,36 @@ public class StrategyDataHelperImpl_DBO implements IStrategyDataHelper{
 			ConnectionPoolManager.getInstance().close("quantour", conn);
 			throw new StrategyRepeatException();
 		}
+	}
+	public StrategyInfoPO applyStrategy(String createrName,String strategyName){
+		Connection conn=ConnectionPoolManager.getInstance().getConnection("quantour");
+		String sql="select strategyid from strategy where binary username ='"+createrName+"' and strategyname='"+strategyName+"'";
+		PreparedStatement pstmt=null;
+		StrategyInfoPO result=null;
+		try {
+			pstmt = (PreparedStatement)conn.prepareStatement(sql);
+			ResultSet rs=pstmt.executeQuery();
+			if(rs.next()){
+				String type=rs.getString(3);
+				boolean pub=rs.getBoolean(4);
+				String sharp=rs.getString(5);
+				String[] li=sharp.split(",");
+				List<Integer> temp=new ArrayList<Integer>();
+				for(int i=0;i<li.length;i++){
+					temp.add(Integer.valueOf(li[i]));
+				}
+				int purchase=rs.getInt(6);
+				int tiaocang=rs.getInt(7);
+				String jiage=rs.getString(8);
+				result=new StrategyInfoPO(type,pub, temp, purchase, tiaocang, jiage);
+			}
+			rs.close();
+			pstmt.close();
+			ConnectionPoolManager.getInstance().close("quantour", conn);
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 	/**
 	 * 删除策略
@@ -282,12 +312,21 @@ public class StrategyDataHelperImpl_DBO implements IStrategyDataHelper{
 	 * @param StrategyName 策略名字
 	 * @return 策略显示的po
 	 */
-	public void clearStrategyShow ( String createrName, String StrategyName ,StrategyShowPO vo){
-		StrategyShowVO result=new StrategyShowVO();
-		String id=getStrategyid(createrName,StrategyName);
+	public void clearStrategyShow (){
 		Connection conn=ConnectionPoolManager.getInstance().getConnection("quantour");
-		String sql="update strategyshow set info ='' where strategyid ='"+id+"'";
+		String sql=" TRUNCATE TABLE strategyshow";
 		PreparedStatement pstmt=null;
+		try {
+			pstmt = (PreparedStatement)conn.prepareStatement(sql);
+			pstmt.executeUpdate();
+			pstmt.close();
+			ConnectionPoolManager.getInstance().close("quantour", conn);
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		conn=ConnectionPoolManager.getInstance().getConnection("quantour");
+		sql=" TRUNCATE TABLE strategychart";
+		pstmt=null;
 		try {
 			pstmt = (PreparedStatement)conn.prepareStatement(sql);
 			pstmt.executeUpdate();

@@ -4,6 +4,10 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.Properties;
 
 import data.fetchdataimpl.StockDataFetchImpl;
@@ -58,6 +62,14 @@ public class Translate {
 	}
 	public String trans_codeToname(String code){
 		return codeToname_pro.getProperty(Parse.getInstance().supCode(code),null);
+	}
+	public List<String> getAllCode(){
+		List<String> result=new ArrayList<String>();
+		Iterator<Entry<Object, Object>> it=codeToname_pro.entrySet().iterator();
+		while(it.hasNext()){
+			result.add((String) it.next().getKey());
+		}
+		return result;
 	}
 	public boolean containsCode(String code){
 		return codeToname_pro.containsKey(code);

@@ -117,14 +117,17 @@ public class DataInterfaceImpl implements IDataInterface
 	public void addStrategyShow ( String createrName, String StrategyName ,StrategyShowPO vo){
 		strategy.addStrategyShow(createrName, StrategyName, vo);
 	}
+	public List<SingleStockInfoPO> getPeriodExponent(String name,LocalDate start,LocalDate end){
+		return stock2.getPeriodExponent(name, start, end);
+	}
+	public StrategyInfoPO applyStrategy(String createrName,String strategyName){
+		return strategy.applyStrategy(createrName, strategyName);
+	}
 	/**
-	 * 更新策略详细图标
-	 * @param createrName 创建者名字
-	 * @param StrategyName 策略名字
-	 * @return 策略显示的po
+	 * 清空策略详细图标
 	 */
-	public void updateStrategyShow ( String createrName, String StrategyName ,StrategyShowPO vo){
-		strategy.updateStrategyShow(createrName, StrategyName, vo);
+	public void clearStrategyShow (){
+		strategy.clearStrategyShow();
 	}
 
 	/**

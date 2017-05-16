@@ -251,7 +251,63 @@ public class StockSetFetchByWeb{
 			e.printStackTrace();
 		}
 	}
+	public void pushCodeintoDBO(){
+		String sql1="TRUNCATE TABLE stockinfo";
+		Connection conn1=ConnectionPoolManager.getInstance().getConnection("quantour");
+		PreparedStatement pstmt1=null;
+		try {
+			pstmt1 = (PreparedStatement)conn1.prepareStatement(sql1);
+			pstmt1.executeUpdate();
+			pstmt1.close();
+			ConnectionPoolManager.getInstance().close("quantour", conn1);
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		List<String> list=Translate.getInstance().getAllCode();
+		sql1="insert into stockinfo values(?,?)";
+		conn1=ConnectionPoolManager.getInstance().getConnection("quantour");
+		pstmt1=null;
+		try {
+			pstmt1 = (PreparedStatement)conn1.prepareStatement(sql1);
+			for(String code:list){
+				pstmt1.setString(1, code);
+				pstmt1.setString(2,Translate.getInstance().trans_codeToname(code));
+				pstmt1.addBatch();
+			}
+			pstmt1.setString(1, "zs000001");
+			pstmt1.setString(2, "SH");
+			pstmt1.addBatch();
+			pstmt1.setString(1, "zs000002");
+			pstmt1.setString(2, "SHA");
+			pstmt1.addBatch();
+			pstmt1.setString(1, "zs000003");
+			pstmt1.setString(2, "SHB");
+			pstmt1.addBatch();
+			pstmt1.setString(1, "zs399106");
+			pstmt1.setString(2, "SZ");
+			pstmt1.addBatch();
+			pstmt1.setString(1, "zs399102");
+			pstmt1.setString(2, "CYB");
+			pstmt1.addBatch();
+			pstmt1.setString(1, "zs399101");
+			pstmt1.setString(2, "ZXB");
+			pstmt1.addBatch();
+			pstmt1.setString(1, "zs399107");
+			pstmt1.setString(2, "SZA");
+			pstmt1.addBatch();
+			pstmt1.setString(1, "zs399108");
+			pstmt1.setString(2, "SZB");
+			pstmt1.addBatch();
+			pstmt1.executeBatch();
+			pstmt1.close();
+			ConnectionPoolManager.getInstance().close("quantour", conn1);
+			System.out.println("complete");
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 	public void pushListintoDBO(){
+		
 		File root=new File("config/stock/stockset");
 		File[] list=root.listFiles(new FileFilter(){
 			@Override
