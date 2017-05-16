@@ -221,4 +221,10 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 		// TODO Auto-generated method stub
 		return frodi.predict(stockcode, date);
 	}
+
+	@Override
+	public List<Double> getTimeSharingData(String code, LocalDate date)
+			throws TimeShraingLackException, NullStockIDException, RemoteException {
+		return sli.getTimeSharingData(code, date);
+	}
 }

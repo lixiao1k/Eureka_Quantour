@@ -20,10 +20,13 @@ public class test1 extends Application{
 //		new test().testYieldComparedChart();
     	List<LocalDate> list1=new ArrayList<LocalDate>();
     	List<Double> list2=new ArrayList<Double>();
+    	LocalDate ld=LocalDate.now();
     	for(int i=0;i<=16200;i++){
-    		list1.add(LocalDate.now());
+    		ld=ld.plusDays(1);
+    		list1.add(ld);
     		list2.add(5.5);
     	}
+    	long i1=System.currentTimeMillis();
     	SingleLineChart sc=new SingleLineChart(list1,list2,"hello");
 //    	new test().testEMAChart();
 		try{
@@ -33,7 +36,10 @@ public class test1 extends Application{
 	        dialogStage.initOwner(primaryStage);
 	        
 //	        Scene scene = new Scene(yieldComparedChart.getchart(800, 300, true));
+	        
 	        Scene scene = new Scene(sc.getchart(334, 200, true));
+	        long i2=System.currentTimeMillis();
+	        System.out.println(i2-i1);
 //	        Scene scene = new Scene(emaChart.getchart(500, 300, true));
 	        dialogStage.setScene(scene);
 
@@ -44,6 +50,9 @@ public class test1 extends Application{
 	}
 	
 	public static void main(String args[]){
-    	launch(args);
+    	long i1=System.currentTimeMillis();
+		launch(args);
+		long i2=System.currentTimeMillis();
+		System.out.println(i2-i1);
     }
 }

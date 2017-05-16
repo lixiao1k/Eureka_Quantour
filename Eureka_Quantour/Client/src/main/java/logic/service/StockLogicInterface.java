@@ -95,4 +95,5 @@ public interface StockLogicInterface extends Remote {
 
 	List<String> getConceptList() throws RemoteException;
 
+	public List<Double> getTimeSharingData(String code,LocalDate date)throws TimeShraingLackException,NullStockIDException, RemoteException;
 }
