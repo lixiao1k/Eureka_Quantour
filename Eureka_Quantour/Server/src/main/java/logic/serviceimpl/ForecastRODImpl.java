@@ -34,8 +34,8 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		LocalDate zuizao = LocalDate.of(2005,2,1);
 
 		// save qian numOfDay day stock's close
-		if( numOfDay<100 || numOfDay>300 )
-			numOfDay = 100;
+		if( numOfDay<0 )
+			numOfDay = 1;
 		double[] closes = new double[numOfDay];
 		int dataNum = 0;
 		LocalDate date = begindate;

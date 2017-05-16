@@ -95,18 +95,9 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 
 	@Override
 	public void setStrategy(StrategyConditionVO strategyConditionVO, SaleVO s, LocalDate begin, LocalDate now, String stockSetName, String username) throws RemoteException {
+		System.out.println(strategyConditionVO.getName());
 		sli.setStrategy(strategyConditionVO, s, begin, now, stockSetName, username);
 	}
-
-//	@Override
-//	public List<SingleStockInfoVO> getStockSorted(String stockSetName, LocalDate now) {
-//		return sli.getStockSorted(stockSetName, now);
-//	}
-
-//	@Override
-//	public void setStrategy(StrategyConditionVO sc, SaleVO s, LocalDate begin, LocalDate now, String stockSetName) {
-//		sli.setStrategy(sc, s, begin, now, stockSetName);
-//	}
 
 	@Override
 	public YieldChartDataVO getYieldChartData() throws RemoteException {
@@ -226,5 +217,10 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 	public List<Double> getTimeSharingData(String code, LocalDate date)
 			throws TimeShraingLackException, NullStockIDException, RemoteException {
 		return sli.getTimeSharingData(code, date);
+	}
+
+	@Override
+	public List<String> fuzzySearch(String input) throws RemoteException{
+		return sli.fuzzySearch(input);
 	}
 }

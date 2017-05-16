@@ -26,12 +26,33 @@ public class test {
 		LocalDate begindate = LocalDate.of(2013, 3, 6);
 		LocalDate enddate = LocalDate.of(2016, 3, 6);
 		
-		String stockcode = "600149";
+		String stockcode = "300033";
 		
-		int numOfDay = 100;
 		double alpha = 0.01;
+		int numOfDay = 1;
+		double maxs = 0;
+		int maxsDay = 0;
+		double maxz = 0;
+		int maxsZhi = 0;
+		for( int i=0; i<300; i++ ){
+			try{
+				srod = remote.getForecastROD().getStockROD( stockcode, begindate, enddate, numOfDay, alpha);
+			}catch(RemoteException e){
+				e.printStackTrace();
+			}
+			if( (srod.Pos[0]+srod.Neg[0]) / ((srod.Pos[0]+srod.Neg[0])+(srod.Pos[1]+srod.Neg[1])+0.0)>maxs ){
+				maxs = (srod.Pos[0]+srod.Neg[0]) / ((srod.Pos[0]+srod.Neg[0])+(srod.Pos[1]+srod.Neg[1])+0.0);
+				maxsDay = numOfDay;
+			}
+			if( srod.zhixin[0]/(srod.zhixin[0]+srod.zhixin[1]+0.0)>maxz ){
+				maxz = srod.zhixin[0]/(srod.zhixin[0]+srod.zhixin[1]+0.0);
+				maxsZhi = numOfDay;
+			}
+			numOfDay++;
+		}
+
 		try{
-			srod = remote.getForecastROD().getStockROD( stockcode, begindate, enddate, numOfDay, alpha);
+			srod = remote.getForecastROD().getStockROD( stockcode, begindate, enddate, maxsDay, alpha);
 		}catch(RemoteException e){
 			e.printStackTrace();
 		}
@@ -121,10 +142,19 @@ public class test {
             
             p.println("预测成功率 : "+nf.format( 
             		(srod.Pos[0]+srod.Neg[0]) / ((srod.Pos[0]+srod.Neg[0])+(srod.Pos[1]+srod.Neg[1])+0.0) )  );
+            p.println("最优预测成功率预估天数 : "+maxsDay);
+            
+            
+            try{
+    			srod = remote.getForecastROD().getStockROD( stockcode, begindate, enddate, maxsZhi, alpha);
+    		}catch(RemoteException e){
+    			e.printStackTrace();
+    		}
             
             p.println();
             p.println("在置信区间 "+srod.zhixin[0]+"  "+"不在 "+srod.zhixin[1]);
             p.println("在置信区间 "+nf.format( srod.zhixin[0]/(srod.zhixin[0]+srod.zhixin[1]+0.0) ));
+            p.println("最优预测置信区间预估天数 : "+maxsZhi);
             p.close();
         }catch(FileNotFoundException e){
              e.printStackTrace();

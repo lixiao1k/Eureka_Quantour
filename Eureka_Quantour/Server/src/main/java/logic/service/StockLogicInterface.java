@@ -92,7 +92,6 @@ public interface StockLogicInterface extends Remote {
 
 	List<String> getConceptList() throws RemoteException;
 
-
 	/**
 	 * 获取股票分时线
 	 * @param code
@@ -102,7 +101,9 @@ public interface StockLogicInterface extends Remote {
 	 * @throws NullStockIDException
 	 * @throws RemoteException 
 	 */
-	public List<Double> getTimeSharingData(String code,LocalDate date)throws TimeShraingLackException,NullStockIDException, RemoteException;
+	List<Double> getTimeSharingData(String code,LocalDate date)throws TimeShraingLackException,NullStockIDException, RemoteException;
+
+	List<String> fuzzySearch(String input) throws  RemoteException;
 
 
 
