@@ -187,6 +187,15 @@ public class DataDriver {
 					System.out.println(result.get(i));
 				}
 			}
+			else if(mode.equals("addtimes")){
+				String userName=sc.nextLine();
+				try {
+					data.addBrowseTimes(userName);
+				} catch (NullStockIDException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 //			else if(mode.equals("judge market day")){
 //				String cal=sc.nextLine();
 //				Calendar day=Calendar.getInstance();

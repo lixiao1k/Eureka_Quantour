@@ -95,8 +95,4 @@ public interface StockLogicInterface extends Remote {
 
 	List<String> getConceptList() throws RemoteException;
 
-
-
-
-
 }

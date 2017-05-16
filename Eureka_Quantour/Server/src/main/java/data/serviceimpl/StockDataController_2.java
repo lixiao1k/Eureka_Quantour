@@ -97,6 +97,10 @@ public class StockDataController_2 {
 		int day=Parse.getInstance().getIntDate(date);
 		return datahelper.getTimeSharingData(code, day);
 	}
+	public void addBrowseTimes(String stockCode) throws NullStockIDException{
+		int i=transStockCode(stockCode);
+		datahelper.addBrowseTimes(Parse.getInstance().supCode(i));
+	}
 	public List<String> fuzzySearch(String code){
 		return datahelper.fuzzySearch(code);
 	}
