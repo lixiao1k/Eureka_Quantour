@@ -53,7 +53,6 @@
             </AnchorPane>
             <Label fx:id="psLabel1" layoutX="15.0" layoutY="380.0" prefHeight="23.0" prefWidth="276.0" text="动量策略不用填写几日均值栏" />
             <Label fx:id="psLabel2" layoutX="15.0" layoutY="403.0" prefHeight="17.0" prefWidth="276.0" text="均值策略不用填写形成期" />
-            <Button layoutX="89.0" layoutY="444.0" mnemonicParsing="false" onAction="#goBrowsePredict" styleClass="main-button" text="预测策略" />
          </children>
       </AnchorPane>
       <AnchorPane layoutX="305.0" layoutY="43.0" prefHeight="715.0" prefWidth="916.0" styleClass="left2-segment" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="43.0">

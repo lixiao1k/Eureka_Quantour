@@ -82,13 +82,17 @@ public interface StockLogicInterface extends Remote {
 	//评论策略
 	void comment(String Username, String strategyName, String commenterName, LocalDate time, String comment) throws RemoteException;
 
-	//StrategyShowVO getStrategy ( String createrName, String StrategyName ) throws RemoteException;
+	StrategyShowVO getStrategy ( String createrName, String StrategyName ) throws RemoteException;
 
-	//List<StrategyShowVO> getStrategyList ( String createrName) throws RemoteException;
+	List<StrategyListVO> getStrategyList ( String createrName) throws RemoteException;
 
-	//List<StrategyShowVO> getStrategyList ( )throws RemoteException;
+	List<StrategyListVO> getStrategyList ( )throws RemoteException;
 
 	// 修改策略公开或私有属性
 	void setPublic(String creatroName, String straetgyName,boolean property) throws RemoteException;
+
+	List<String> getAreaList() throws RemoteException;
+
+	List<String> getConceptList() throws RemoteException;
 
 }

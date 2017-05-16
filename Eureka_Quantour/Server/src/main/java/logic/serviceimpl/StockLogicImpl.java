@@ -12,6 +12,7 @@ import logic.service.StockLogicInterface;
 import logic.utility.Return;
 import logic.utility.SaveThread;
 import logic.utility.Utility;
+import po.CommentPO;
 import po.SingleStockInfoPO;
 import po.StrategyInfoPO;
 import po.StrategyShowPO;
@@ -249,6 +250,8 @@ public class StockLogicImpl implements StockLogicInterface{
 
 	@Override
 	public SingleStockInfoVO getStockBasicInfo(String code, LocalDate now) throws NullStockIDException, NullDateException {
+
+
 		return new SingleStockInfoVO(idi.getSingleStockInfo(code,now));
 	}
 
@@ -379,6 +382,12 @@ public class StockLogicImpl implements StockLogicInterface{
 	@Override
 	public StrategyShowVO getStrategy(String createrName, String StrategyName) throws RemoteException {
 
+		StrategyInfoPO infoPO=idi.applyStrategy(createrName, StrategyName);
+		StrategyShowPO showPO=idi.getStrategy(createrName, StrategyName);
+		List<CommentPO> commentPOS=idi.getStrategyComments(createrName, StrategyName);
+
+
+
 
 		return null;
 	}
@@ -410,6 +419,16 @@ public class StockLogicImpl implements StockLogicInterface{
 	@Override
 	public void setPublic(String creatroName, String straetgyName, boolean property) throws RemoteException {
 		idi.setPublic(creatroName, straetgyName, property);
+	}
+
+	@Override
+	public List<String> getAreaList() throws RemoteException {
+		return idi.getAreaList();
+	}
+
+	@Override
+	public List<String> getConceptList() throws RemoteException {
+		return idi.getConceptList();
 	}
 
 	@Override
