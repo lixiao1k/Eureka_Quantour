@@ -13,6 +13,12 @@ import vo.PredictVO;
 import vo.SingleStockInfoVO;
 import vo.StockRODVO;
 
+/**
+ * 
+ * @Description: TODO
+ * @author: hzp 
+ * @date: May 13, 2017
+ */
 public class ForecastRODImpl implements ForecastRODInterface{
 
 	private static DecimalFormat df = new DecimalFormat("0.0000");
@@ -20,32 +26,43 @@ public class ForecastRODImpl implements ForecastRODInterface{
 	private IDataInterface idata = new DataInterfaceImpl();
 	
 	@Override
-	public StockRODVO getStockROD( String stockcode, LocalDate begindate, LocalDate enddate, double step, int numOfDay ) throws RemoteException{
+	public StockRODVO getStockROD( String stockcode, LocalDate begindate, LocalDate enddate, int numOfDay, double alpha )
+			throws RemoteException{
 		// TODO Auto-generated method stub
 		StockRODVO srod = new StockRODVO();
+		LocalDate zuizao = LocalDate.of(2005,2,1);
 
+		// save qian numOfDay day stock's close
+		if( numOfDay<100 || numOfDay>300 )
+			numOfDay = 100;
+		double[] closes = new double[numOfDay];
+		int dataNum = 0;
 		LocalDate date = begindate;
+		SingleStockInfoVO ssi = new SingleStockInfoVO();
+		while( dataNum<numOfDay && date.compareTo(zuizao)>0 ){
+			try{
+				ssi = new SingleStockInfoVO( idata.getSingleStockInfo(stockcode, date) );
+				date = date.minusDays(1);
+				closes[dataNum] = ssi.getClose();
+				dataNum++;
+			}catch ( NullStockIDException e ){
+				e.printStackTrace();
+			}catch ( NullDateException e){
+				date = date.plusDays(1);
+			}
+		}
+		if( dataNum<(numOfDay-1) ){
+			for( ; dataNum<numOfDay; dataNum++ ){
+				int index = (int)(Math.random()*dataNum);
+				if( index>dataNum-1 )
+					index = dataNum-1;
+				closes[dataNum] = closes[index];
+			}
+		}
+		
 		
 		//the number of day owning data
 		int dayNum = 0;
-		double RODT = 0;
-		// the sum of rise percent
-		double RODP = 0;
-		// the sum of down percent
-		double RODN = 0;
-
-		// the number of rise appears
-		double PNum = 0;
-		// the number of down appears
-		double NNum = 0;
-		
-		double weightP = 0.5;
-		double weightN = 0.5;
-
-		// the number of predicting rise wrongly
-		int pError = 0;
-		// the number of predicting down wrongly
-		int nError = 0;
 		
 		// the true ROD of one day
 		double ROD = 0;
@@ -60,8 +77,9 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		// save two days' close
 		double close1 = 0;
 		double close2 = 0;
-		SingleStockInfoVO ssi = new SingleStockInfoVO();
+		ssi = new SingleStockInfoVO();
 		ssi.setClose(-1);
+		date = begindate;
 
 		// get the first data
 		while( ssi.getClose()==-1 ){
@@ -76,6 +94,8 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		}
 
 		while( date.compareTo(enddate)<=0 ){
+			double[] AvgAndFangcha = new double[2];
+			boolean ifROE = false;
 			try{
 				close1 = close2;
 
@@ -94,69 +114,18 @@ public class ForecastRODImpl implements ForecastRODInterface{
 
 				iROD = ForecastRODImpl.doubletoindex( ROD );
 				srod.wROD[idate][iROD]++;
-				srod.RODw[iROD][idate]++;
 				
-				if( dayNum>=numOfDay ){
-					RODT = weightP*RODP + weightN*RODN;
-					RODT /= dayNum;
+				AvgAndFangcha = ForecastRODImpl.calAvgAndFangcha( closes );
+				ifROE = ForecastRODImpl.preROE( AvgAndFangcha[0], AvgAndFangcha[1], 1, alpha, ROD);
 
-					if( RODT>0 ){
-						if( ROD<0 ){
-							pError++;
-							nError = 0;
-							srod.Pos[1]++;
-						}
-						else{
-							pError = 0;
-							nError = 0;
-							srod.Pos[0]++;
-						}
-					}
-					else if( RODT<0 ){
-						if( ROD>0 ){
-							pError = 0;
-							nError ++;
-							srod.Neg[1]++;
-						}
-						else{
-							pError = 0;
-							nError = 0;
-							srod.Neg[0]++;
-						}					
-					}
-
-					RODT -= ROD;
-					srod.ROETimes[preROE(RODT)]++;
-				}
-				
-				if( ROD>0 ){
-					PNum ++;
-					if( ROD<0.1 )
-						RODP += ROD;
-					else
-						RODP += 0.1;
-				}
-				else{
-					NNum ++;
-					if( ROD>-0.1 )
-						RODN += ROD;
-					else
-						RODN += -0.1;
-				}
+				// update the numOfDay-day data in array
+				closes[dayNum] = close1;
 				dayNum++;
+				if( dayNum==numOfDay )
+					dayNum = 0;
+
+
 				
-				if( pError>0 ){
-					weightP = 1 - ForecastRODImpl.FuncG( pError*step );
-					weightN = 1 - weightP;
-				}
-				else if( nError>0 ){
-					weightN = 1 - ForecastRODImpl.FuncG( nError*step );
-					weightP = 1 - weightN;
-				}
-				else{
-					weightP = 0.5;
-					weightN = 0.5;
-				}
 
 			}catch ( NullStockIDException e ){
 				e.printStackTrace();
@@ -214,26 +183,65 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		else
 			return 22;
 	}
-	
 
-	/*
-	* judge if the forecast is right
-	* if dt >= 0.01, the forcast is wrong
-	*/
-	private static int preROE( double d ){
-		double dt = Math.abs(d);
-		if( dt<0.01 )
-			return (int)(dt/0.001);
+	/**
+	 * 
+	 * @Description: judge if real value in the zhi xin qu jian
+	 * @author: hzp
+	 * @date: May 17, 2017
+	 * @param: @param aveg
+	 * @param: @param fangcha
+	 * @param: @param num : chou yang ci shu
+	 * @param: @param alpha : ji suan zhi xin qu jian de α
+	 * @param: @param ROD
+	 */
+	private static boolean preROE( double aveg, double fangcha, int num, double alpha, double ROD){
+		double zalpha = 0.0;
+		if( alpha==0.1 )
+			zalpha = 1.65;
+		else if( alpha==0.05 )
+			zalpha = 1.96;
+		else if( alpha==0.01 )
+			zalpha = 2.58;
+		double lower = aveg - fangcha*zalpha/Math.sqrt(num);
+		double upper = aveg + fangcha*zalpha/Math.sqrt(num);
+		if( ROD>=lower && ROD<=upper )
+			return true;
 		else
-			return 10;
+			return false;
+
 	}
-	
-	/*
-	* G(index)
-	*/
-	private static double FuncG( double index ){
-		double denominator = 1.0 + Math.pow( Math.E , index);
-		return 1.0/denominator;
+
+	private static double[] calAvgAndFangcha( double[] closes ){
+		// select stock's numOfDay-day data random, calculate yangben avg and fangcha
+		int numOfDay = closes.length;
+
+		double[] yangbenAvg = new double[30];
+		double avg = 0.0;
+		double fangcha = 0.0;
+		for( int i=0; i<30; i++ ){
+			double RODSum = 0;
+			for( int j=0; i<20; j++ ){
+				double random = Math.random();
+				int index = (int)(random*numOfDay);
+				if( index>(numOfDay-1) )
+					index = numOfDay-1;
+				RODSum += closes[index];
+			}
+			yangbenAvg[i] = RODSum / 20;
+		}
+		for( int i=0; i<yangbenAvg.length; i++ ){
+			avg += yangbenAvg[i];
+			fangcha += Math.pow( yangbenAvg[i], 2 );
+		}
+		avg = avg / yangbenAvg.length;
+		fangcha -= Math.pow( avg, 2 );
+
+		double AvgAndFangcha[] = new double[2];
+		AvgAndFangcha[0] = avg;
+		AvgAndFangcha[1] = fangcha;
+
+		return AvgAndFangcha;
 	}
 
 }

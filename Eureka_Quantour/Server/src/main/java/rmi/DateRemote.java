@@ -210,15 +210,26 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 	}
 
 	@Override
-	public StockRODVO getStockROD( String stockcode, LocalDate begindate, LocalDate enddate, double step, int numOfDay )
+	public StockRODVO getStockROD( String stockcode, LocalDate begindate, LocalDate enddate, int numOfDay, double alpha )
 			throws RemoteException{
 		// TODO Auto-generated method stub
-		return frodi.getStockROD( stockcode, begindate, enddate, step, numOfDay );
+		return frodi.getStockROD( stockcode, begindate, enddate, numOfDay, alpha );
 	}
 
 	@Override
 	public PredictVO predict(String stockcode, LocalDate date) throws RemoteException {
 		// TODO Auto-generated method stub
 		return frodi.predict(stockcode, date);
+	}
+
+	@Override
+	public List<Double> getTimeSharingData(String code, LocalDate date)
+			throws TimeShraingLackException, NullStockIDException, RemoteException {
+		return sli.getTimeSharingData(code, date);
+	}
+
+	@Override
+	public List<String> fuzzySearch(String input) throws RemoteException{
+		return sli.fuzzySearch(input);
 	}
 }
