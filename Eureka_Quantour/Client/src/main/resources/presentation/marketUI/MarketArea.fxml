@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<GridPane maxHeight="240.0" maxWidth="720.0" minHeight="240.0" minWidth="720.0" prefHeight="240.0" prefWidth="720.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="presentation.marketUI.MarketAreaController">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="720.0" minWidth="720.0" prefWidth="720.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints maxHeight="240.0" minHeight="24.0" prefHeight="240.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <FlowPane fx:id="buttonsPane" prefHeight="200.0" prefWidth="200.0" styleClass="background" stylesheets="@../../styles/MarketCareer.css" />
+   </children>
+</GridPane>

@@ -159,11 +159,9 @@ public class MarketUIController implements Initializable {
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
 					Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
-					e.printStackTrace();
 				}catch (NullMarketException e2) {
 					// TODO: handle exception
 					Notifications.create().title("信息").text(e2.toString()).showInformation();
-					e2.printStackTrace();
 				}
 			}
 		});
@@ -186,7 +184,6 @@ public class MarketUIController implements Initializable {
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
 					Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
-					e.printStackTrace();
 				}catch (NullMarketException e2) {
 					// TODO: handle exception
 					Notifications.create().title("信息").text(e2.toString()).showInformation();
@@ -221,7 +218,6 @@ public class MarketUIController implements Initializable {
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
 					Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
-					e.printStackTrace();
 				} catch (NullMarketException e2) {
 					// TODO: handle exception
 					Notifications.create().title("信息").text(e2.toString()).showInformation();
@@ -245,7 +241,6 @@ public class MarketUIController implements Initializable {
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
 					Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
-					e.printStackTrace();
 				}catch (NullMarketException e2) {
 					// TODO: handle exception
 					Notifications.create().title("信息").text(e2.toString()).showInformation();
@@ -269,7 +264,6 @@ public class MarketUIController implements Initializable {
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
 					Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
-					e.printStackTrace();
 				}catch (NullMarketException e2) {
 					// TODO: handle exception
 					Notifications.create().title("信息").text(e2.toString()).showInformation();
@@ -293,7 +287,6 @@ public class MarketUIController implements Initializable {
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
 					Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
-					e.printStackTrace();
 				}catch (NullMarketException e2) {
 					// TODO: handle exception
 					Notifications.create().title("信息").text(e2.toString()).showInformation();
@@ -319,7 +312,6 @@ public class MarketUIController implements Initializable {
 		} catch (RemoteException e1) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
-			e1.printStackTrace();
 		}catch (NullMarketException e2) {
 			// TODO: handle exception
 			Notifications.create().title("信息").text(e2.toString()).showInformation();
@@ -345,7 +337,10 @@ public class MarketUIController implements Initializable {
 //		stage.initStyle(StageStyle.TRANSPARENT);
 		stage.show();
 	}
-	
+	@FXML
+	protected void goBrowseArea(ActionEvent e){
+		
+	}
 	/*
 	 * 设置industryLabel内容，为MarketCareerController调用
 	 */
@@ -450,15 +445,12 @@ public class MarketUIController implements Initializable {
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
 					Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
-					e.printStackTrace();
 				} catch (NullStockIDException e) {
 					// TODO Auto-generated catch block
 					Notifications.create().title("搜索异常").text(e.toString()).showError();
-					e.printStackTrace();
 				} catch (NullDateException e) {
 					// TODO Auto-generated catch block
 					Notifications.create().title("搜索异常").text(e.toString()).showError();
-					e.printStackTrace();
 				}
 			}
 		});
@@ -684,15 +676,12 @@ public class MarketUIController implements Initializable {
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
 					Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
-					e.printStackTrace();
 				} catch (NullStockIDException e) {
 					// TODO Auto-generated catch block
 					Notifications.create().title("搜索异常").text(e.toString()).showError();
-					e.printStackTrace();
 				} catch (NullDateException e) {
 					// TODO Auto-generated catch block
 					Notifications.create().title("搜索异常").text(e.toString()).showError();
-					e.printStackTrace();
 				}
 			}
 		});
@@ -762,23 +751,18 @@ public class MarketUIController implements Initializable {
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
-			e.printStackTrace();
 		} catch (DateInvalidException e) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("日期错误").text(e.toString()).showError();
-			e.printStackTrace();
 		} catch (BeginInvalidException e) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("日期错误").text(e.toString()).showError();
-			e.printStackTrace();
 		} catch (EndInvalidException e) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("日期错误").text(e.toString()).showError();
-			e.printStackTrace();
 		} catch (NullStockIDException e) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("搜索异常").text(e.toString()).showError();
-			e.printStackTrace();
 		}
 	}
 	
@@ -796,27 +780,21 @@ public class MarketUIController implements Initializable {
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
-			e.printStackTrace();
 		} catch (DateInvalidException e) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("日期错误").text(e.toString()).showError();
-			e.printStackTrace();
 		} catch (BeginInvalidException e) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("日期错误").text(e.toString()).showError();
-			e.printStackTrace();
 		} catch (EndInvalidException e) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("日期错误").text(e.toString()).showError();
-			e.printStackTrace();
 		} catch (NullStockIDException e) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("搜索异常").text(e.toString()).showError();
-			e.printStackTrace();
 		} catch (DateOverException e) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("日期错误").text(e.toString()).showError();
-			e.printStackTrace();
 		}	
 	}
 	
@@ -853,11 +831,9 @@ public class MarketUIController implements Initializable {
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("网络连接错误").text(e.toString()).showWarning();
-			e.printStackTrace();
 		} catch (NullMarketException e) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("无此市场").text(e.toString()).showError();
-			e.printStackTrace();
 		}
 
 
