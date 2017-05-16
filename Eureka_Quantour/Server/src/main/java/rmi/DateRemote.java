@@ -227,4 +227,9 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 			throws TimeShraingLackException, NullStockIDException, RemoteException {
 		return sli.getTimeSharingData(code, date);
 	}
+
+	@Override
+	public List<String> fuzzySearch(String input) throws RemoteException{
+		return sli.fuzzySearch(input);
+	}
 }

@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import com.sun.org.apache.regexp.internal.RE;
 import data.service.IDataInterface;
 import data.serviceimpl.DataInterfaceImpl;
 import exception.*;
@@ -446,5 +447,11 @@ public class StockLogicImpl implements StockLogicInterface{
 	 */
 	public List<Double> getTimeSharingData(String code,LocalDate date)throws TimeShraingLackException,NullStockIDException,RemoteException{
 		return idi.getTimeSharingData(code, date);
+	}
+
+	@Override
+	public List<String> fuzzySearch(String input) throws RemoteException {
+		List<String> list=idi.fuzzySearch(input);
+		return list.subList(0,9);
 	}
 }

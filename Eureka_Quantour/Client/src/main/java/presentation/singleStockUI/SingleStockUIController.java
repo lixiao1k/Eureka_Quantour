@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javafx.scene.control.ComboBox;
 import org.controlsfx.control.Notifications;
 
 import dataController.DataContorller;
@@ -95,8 +96,13 @@ public class SingleStockUIController implements Initializable{
 	
 	@FXML
 	Label shouyilvLabel;
+
+	@FXML
+	Pane fuuzy;
 	
 	private DataContorller dataController;
+
+	private ComboBox<String> fuzzySearch=new ComboBox<>();
 	/*
 	 * @description添加至股池，弹出相应界面
 	 */
@@ -130,6 +136,7 @@ public class SingleStockUIController implements Initializable{
 		ComparedInfoVO vo1 = null;
 		LocalDate end = (LocalDate)dataContorller.get("SystemTime");
 		LocalDate begin = end.minusDays(200);
+
 		try {
 //			System.out.println("sa");
 			vo1 = stockLogicInterface.getComparedInfo((String)dataContorller.get("SingleStockNow"),
@@ -334,6 +341,19 @@ public class SingleStockUIController implements Initializable{
 		dataController = DataContorller.getInstance();
 		Image searchImage = new Image(getClass().getResourceAsStream("search.png"));
 		searchButton.setGraphic(new ImageView(searchImage));
+		RemoteHelper remote = RemoteHelper.getInstance();
+		StockLogicInterface stockLogicInterface = remote.getStockLogic();
+		searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+
+			try {
+				fuzzySearch.getItems().addAll(stockLogicInterface.fuzzySearch(newValue));
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
+
+			System.out.println("textfield changed from " + oldValue + " to " + newValue);
+		});
+//		fuuzy.getChildren().add(fuzzySearch);
 		if(dataController.get("SingleStockNow")!=null){
 			initialAllPane();
 		}
