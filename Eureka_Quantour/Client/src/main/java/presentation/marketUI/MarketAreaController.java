@@ -48,9 +48,6 @@ public class MarketAreaController implements Initializable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		for(String str:list){
-			System.out.println(str);
-		}
 //		if(list!=null){
 //			for(String str:list){
 //				Button button = new Button(str);

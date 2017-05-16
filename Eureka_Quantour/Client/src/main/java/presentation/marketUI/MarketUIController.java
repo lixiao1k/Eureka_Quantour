@@ -344,7 +344,7 @@ public class MarketUIController implements Initializable {
 		Parent career = null;
 		try {
 			career = (GridPane)loader.load();
-			MarketCareerController controller = loader.getController();
+			MarketAreaController controller = loader.getController();
 			controller.setController(this);
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
