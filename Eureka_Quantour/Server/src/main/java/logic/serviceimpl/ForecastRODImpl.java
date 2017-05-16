@@ -2,6 +2,7 @@ package logic.serviceimpl;
 
 import java.rmi.RemoteException;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.time.LocalDate;
 
 import data.service.IDataInterface;
@@ -48,7 +49,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 			}catch ( NullStockIDException e ){
 				e.printStackTrace();
 			}catch ( NullDateException e){
-				date = date.plusDays(1);
+				date = date.minusDays(1);
 			}
 		}
 		if( dataNum<(numOfDay-1) ){
@@ -59,11 +60,40 @@ public class ForecastRODImpl implements ForecastRODInterface{
 				closes[dataNum] = closes[index];
 			}
 		}
-		
+
+		ssi = new SingleStockInfoVO();
+		ssi.setClose(-1);
+		while( ssi.getClose()==-1 && date.compareTo(zuizao)>0 ){
+			try{
+				ssi = new SingleStockInfoVO( idata.getSingleStockInfo(stockcode, date) );
+				date = date.minusDays(1);
+			}catch ( NullStockIDException e ){
+				e.printStackTrace();
+			}catch ( NullDateException e){
+				date = date.minusDays(1);
+			}
+		}
+
+		double closeT = ssi.getClose();
+		if( closeT==-1 ){
+			int index = (int)(Math.random()*numOfDay);
+			if( index>numOfDay-1)
+				index = numOfDay-1;
+			closeT = closes[index];
+		}
+
+		for( int i=0; i<numOfDay; i++ ){
+			double RODT = (closes[i]-closeT)/closeT;
+			closeT = closes[i];
+			closes[i] = RODT;
+		}
 		
 		//the number of day owning data
-		int dayNum = 0;
+		int dayNum = numOfDay-1;
 		
+		double close1 = 0;
+		double close2 = 0;
+
 		// the true ROD of one day
 		double ROD = 0;
 
@@ -75,8 +105,6 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		int iROD = 0;
 		
 		// save two days' close
-		double close1 = 0;
-		double close2 = 0;
 		ssi = new SingleStockInfoVO();
 		ssi.setClose(-1);
 		date = begindate;
@@ -92,7 +120,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 				date = date.plusDays(1);
 			}
 		}
-
+		
 		while( date.compareTo(enddate)<=0 ){
 			double[] AvgAndFangcha = new double[2];
 			boolean ifROE = false;
@@ -110,21 +138,37 @@ public class ForecastRODImpl implements ForecastRODInterface{
 				// the number of data existing add one
 				srod.nodata[idate][0]++;
 
-				ROD = (close2-close1)/close1;				
+				ROD = (close2-close1)/close1;	
+				// ROD = close1;		
 
 				iROD = ForecastRODImpl.doubletoindex( ROD );
 				srod.wROD[idate][iROD]++;
 				
 				AvgAndFangcha = ForecastRODImpl.calAvgAndFangcha( closes );
 				ifROE = ForecastRODImpl.preROE( AvgAndFangcha[0], AvgAndFangcha[1], 1, alpha, ROD);
-
+				if( ifROE )
+					srod.zhixin[0]++;
+				else
+					srod.zhixin[1]++;
+				
 				// update the numOfDay-day data in array
-				closes[dayNum] = close1;
-				dayNum++;
-				if( dayNum==numOfDay )
-					dayNum = 0;
+				closes[dayNum] = ROD;
+				dayNum--;
+				if( dayNum==-1 )
+					dayNum = numOfDay-1;
 
-
+				if( AvgAndFangcha[0]>0 ){
+					if( ROD>0 )
+						srod.Pos[0]++;
+					else
+						srod.Pos[1]++;
+				}
+				else if( AvgAndFangcha[0]<0 ){
+					if( ROD<0 )
+						srod.Neg[0]++;
+					else
+						srod.Neg[1]++;
+				}
 				
 
 			}catch ( NullStockIDException e ){
@@ -132,7 +176,6 @@ public class ForecastRODImpl implements ForecastRODInterface{
 			}catch ( NullDateException e){
 				srod.nodata[idate][1]++;
 			}
-			
 		}
 		return srod;
 	}
@@ -184,6 +227,39 @@ public class ForecastRODImpl implements ForecastRODInterface{
 			return 22;
 	}
 
+	// select stock's numOfDay-day data random, calculate yangben avg and fangcha
+	private static double[] calAvgAndFangcha( double[] closes ){
+		int numOfDay = closes.length;
+		
+		double[] yangbenAvg = new double[30];
+		double avg = 0.0;
+		double fangcha = 0.0;
+		for( int i=0; i<30; i++ ){
+			double RODSum = 0;
+			for( int j=0; j<20; j++ ){
+				double random = Math.random();
+				int index = (int)(random*numOfDay);
+				if( index>(numOfDay-1) )
+					index = numOfDay-1;
+				RODSum += closes[index];
+			}
+			yangbenAvg[i] = RODSum / 20;
+		}
+		for( int i=0; i<yangbenAvg.length; i++ ){
+			avg += yangbenAvg[i];
+			fangcha += Math.pow( yangbenAvg[i], 2 );
+		}
+		avg /= yangbenAvg.length;
+		fangcha /= yangbenAvg.length;
+		fangcha -= Math.pow( avg, 2 );
+
+		double AvgAndFangcha[] = new double[2];
+		AvgAndFangcha[0] = avg;
+		AvgAndFangcha[1] = fangcha;
+		
+		return AvgAndFangcha;
+	}
+
 	/**
 	 * 
 	 * @Description: judge if real value in the zhi xin qu jian
@@ -203,45 +279,19 @@ public class ForecastRODImpl implements ForecastRODInterface{
 			zalpha = 1.96;
 		else if( alpha==0.01 )
 			zalpha = 2.58;
-		double lower = aveg - fangcha*zalpha/Math.sqrt(num);
-		double upper = aveg + fangcha*zalpha/Math.sqrt(num);
-		if( ROD>=lower && ROD<=upper )
+		double lower = aveg - Math.sqrt(fangcha)*zalpha/Math.sqrt(num);
+		double upper = aveg + Math.sqrt(fangcha)*zalpha/Math.sqrt(num);
+
+//		System.out.println( fangcha + "  " + aveg);
+//		System.out.println( lower + "  " + ROD + "  " + upper);
+//		System.out.println();
+
+		if( ROD>=lower && ROD<=upper ){
 			return true;
-		else
+		}
+		else{
 			return false;
-
-	}
-
-	private static double[] calAvgAndFangcha( double[] closes ){
-		// select stock's numOfDay-day data random, calculate yangben avg and fangcha
-		int numOfDay = closes.length;
-
-		double[] yangbenAvg = new double[30];
-		double avg = 0.0;
-		double fangcha = 0.0;
-		for( int i=0; i<30; i++ ){
-			double RODSum = 0;
-			for( int j=0; i<20; j++ ){
-				double random = Math.random();
-				int index = (int)(random*numOfDay);
-				if( index>(numOfDay-1) )
-					index = numOfDay-1;
-				RODSum += closes[index];
-			}
-			yangbenAvg[i] = RODSum / 20;
 		}
-		for( int i=0; i<yangbenAvg.length; i++ ){
-			avg += yangbenAvg[i];
-			fangcha += Math.pow( yangbenAvg[i], 2 );
-		}
-		avg = avg / yangbenAvg.length;
-		fangcha -= Math.pow( avg, 2 );
-
-		double AvgAndFangcha[] = new double[2];
-		AvgAndFangcha[0] = avg;
-		AvgAndFangcha[1] = fangcha;
-
-		return AvgAndFangcha;
 	}
 
 }
