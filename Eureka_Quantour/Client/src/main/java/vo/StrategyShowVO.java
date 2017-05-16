@@ -25,10 +25,10 @@ public class StrategyShowVO implements Serializable{
     //评价
     private List<CommentVO> comments;
 
-
+    
     private String Strategyname;
     private boolean publicorPrivate;
-
+    
     //输入参数
 
     private StrategyConditionVO strategyConditionVO;
