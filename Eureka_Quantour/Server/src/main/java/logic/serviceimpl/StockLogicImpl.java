@@ -388,16 +388,23 @@ public class StockLogicImpl implements StockLogicInterface{
 		List<StrategyShowPO> list=idi.getStrategyList(createrName);
 		List<StrategyListVO> reslist=new ArrayList<>();
 		for(StrategyShowPO po:list){
-//			reslist.add(new StrategyListVO());
+			reslist.add(new StrategyListVO(po.getCreaterName(),po.getStrategyName(),po.getStrategyYearReturn()));
 		}
+		Collections.sort(reslist);
 
-		return null;
+		return reslist;
 	}
 
 	@Override
 	public List<StrategyListVO> getStrategyList() throws RemoteException {
-		idi.getAreaList();
-		return null;
+		List<StrategyShowPO> list=idi.getStrategyList();
+		List<StrategyListVO> reslist=new ArrayList<>();
+		for(StrategyShowPO po:list){
+			reslist.add(new StrategyListVO(po.getCreaterName(),po.getStrategyName(),po.getStrategyYearReturn()));
+		}
+		Collections.sort(reslist);
+
+		return reslist;
 	}
 
 	@Override

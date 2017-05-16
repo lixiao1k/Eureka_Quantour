@@ -19,8 +19,8 @@ public class StrategyShowPO {
 
     
     public StrategyShowPO(String createrName, String strategyName, 
-    		Double alpha, Double beta, Double sharp, Double zuidahuiche,
-			Double strategyYearReturn,int length) {
+    		double alpha, double beta, double sharp, double zuidahuiche,
+			double strategyYearReturn,int length) {
 		super();
 		this.createrName = createrName;
 		this.strategyName = strategyName;
@@ -49,7 +49,8 @@ public class StrategyShowPO {
 		this.zuidahuiche = zuidahuiche;
 		StrategyYearReturn = strategyYearReturn;
 	}
-	public void add(double br,double sr,LocalDate time,int index){
+
+	public void add(double br, double sr, LocalDate time, int index){
 
     	TimeList.set(index, time);
         BasicReturn.set(index, br);
@@ -100,7 +101,7 @@ public class StrategyShowPO {
 	/**
 	 * @param alpha the alpha to set
 	 */
-	public void setAlpha(Double alpha) {
+	public void setAlpha(double alpha) {
 		Alpha = alpha;
 	}
 	/**
@@ -112,7 +113,7 @@ public class StrategyShowPO {
 	/**
 	 * @param beta the beta to set
 	 */
-	public void setBeta(Double beta) {
+	public void setBeta(double beta) {
 		Beta = beta;
 	}
 	/**
@@ -124,7 +125,7 @@ public class StrategyShowPO {
 	/**
 	 * @param sharp the sharp to set
 	 */
-	public void setSharp(Double sharp) {
+	public void setSharp(double sharp) {
 		Sharp = sharp;
 	}
 	/**
@@ -136,7 +137,7 @@ public class StrategyShowPO {
 	/**
 	 * @param zuidahuiche the zuidahuiche to set
 	 */
-	public void setZuidahuiche(Double zuidahuiche) {
+	public void setZuidahuiche(double zuidahuiche) {
 		this.zuidahuiche = zuidahuiche;
 	}
 	/**
@@ -148,7 +149,7 @@ public class StrategyShowPO {
 	/**
 	 * @param strategyYearReturn the strategyYearReturn to set
 	 */
-	public void setStrategyYearReturn(Double strategyYearReturn) {
+	public void setStrategyYearReturn(double strategyYearReturn) {
 		StrategyYearReturn = strategyYearReturn;
 	}
 	/**
@@ -178,4 +179,5 @@ public class StrategyShowPO {
 	public void setStrategyName(String strategyName) {
 		this.strategyName = strategyName;
 	}
+
 }

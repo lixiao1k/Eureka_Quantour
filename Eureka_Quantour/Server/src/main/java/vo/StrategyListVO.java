@@ -11,21 +11,13 @@ public class StrategyListVO implements Comparable<StrategyListVO>, Serializable{
     private String createrName;
     private String strategyName;
     private double strategyYearReturn;
-    private boolean publicorPrivate;
 
-    public boolean isPublicorPrivate() {
-        return publicorPrivate;
-    }
 
-    public void setPublicorPrivate(boolean publicorPrivate) {
-        this.publicorPrivate = publicorPrivate;
-    }
 
-    public StrategyListVO(String createrName, String strategyName, double strategyYearReturn, boolean publicorPrivate) {
+    public StrategyListVO(String createrName, String strategyName, double strategyYearReturn) {
         this.createrName = createrName;
         this.strategyName = strategyName;
         this.strategyYearReturn = strategyYearReturn;
-        this.publicorPrivate = publicorPrivate;
     }
 
     public String getCreaterName() {
