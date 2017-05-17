@@ -1,5 +1,6 @@
 package presentation.strategyUI;
 
+import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.time.LocalDate;
@@ -9,14 +10,21 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
+
 import org.controlsfx.control.Notifications;
 
 import dataController.DataContorller;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -24,16 +32,20 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import logic.service.StockLogicInterface;
 import presentation.chart.areaChart.DanTengChart;
 import presentation.chart.chartService;
 import presentation.chart.barChart.YieldDistributeChart;
 import presentation.chart.lineChart.YieldComparedChart;
+import presentation.marketUI.MarketConceptController;
 import rmi.RemoteHelper;
 import vo.SaleVO;
 import vo.StrategyConditionVO;
@@ -91,23 +103,16 @@ public class StrategyUIController implements Initializable{
 	Label timeLabel;
 	
 	@FXML
-	TextField meandaysTextField;//几日均值
-	
-	@FXML
-	TextField createPeriodTextField;//形成期
-	
-	@FXML
-	Label psLabel1;
-	
-	@FXML
-	Label psLabel2;
-	
-	@FXML
 	AnchorPane anchorPane4;
 	
 	@FXML
 	AnchorPane anchorPane5;
 	
+	@FXML
+	Label changableLabel;
+	
+	@FXML
+	TextField changableTextField;
 	
 	private DataContorller dataController;
 	
@@ -159,7 +164,6 @@ public class StrategyUIController implements Initializable{
 		int meandays = 0;
 		boolean flag = true;//判断是否能够继续调用策略
 		if(momentumRadioButton.isSelected()){
-			meandaysTextField.setEditable(false);
 			if(stockSetComboBox.getValue()!=null){
 				stockSet = stockSetComboBox.getValue();
 			}else{
@@ -185,10 +189,11 @@ public class StrategyUIController implements Initializable{
 				Notifications.create().title("输入异常").text("请输入持有期").showWarning();
 			}
 			
-			if(createPeriodTextField.getText().length()!=0){
+			if(changableTextField.getText().length()!=0){
 				int num =0;
+			    num = Integer.parseInt(changableTextField.getText());
 				try{
-				    num = Integer.parseInt(createPeriodTextField.getText());
+				    num = Integer.parseInt(changableTextField.getText());
 				    if(num<=0){
 				    	Notifications.create().title("输入异常").text("形成期请输入正数").showWarning();
 				    	flag = false;
@@ -228,9 +233,10 @@ public class StrategyUIController implements Initializable{
 			}
 			
 			if(flag){
+
 				List<Integer> list = new ArrayList<>();
 				list.add(createdays);
-				System.out.println(list);
+
 				strategyConditionVO = new StrategyConditionVO("动量策略",list,nums);
 				saleVO = new SaleVO(holddays,price);
 				RemoteHelper remote = RemoteHelper.getInstance();
@@ -257,7 +263,6 @@ public class StrategyUIController implements Initializable{
 				}	
 			}
 		}else{
-			meandaysTextField.setEditable(true);
 			if(stockSetComboBox.getValue()!=null){
 				stockSet = stockSetComboBox.getValue();
 			}else{
@@ -305,10 +310,10 @@ public class StrategyUIController implements Initializable{
 				Notifications.create().title("输入异常").text("请输入股票数").showWarning();
 			}
 			
-			if(meandaysTextField.getText().length()!=0){
+			if(changableTextField.getText().length()!=0){
 				int num =0;
 				try{
-				    num = Integer.parseInt(meandaysTextField.getText());
+				    num = Integer.parseInt(changableTextField.getText());
 				    if(num<=0){
 				    	Notifications.create().title("输入异常").text("几日均值请输入正数").showWarning();
 				    	flag = false;
@@ -323,7 +328,9 @@ public class StrategyUIController implements Initializable{
 				Notifications.create().title("输入异常").text("请输入几日均值数").showWarning();
 			}
 			if(flag){
+
 				List<Integer> meandaylist =new ArrayList<>();
+
 				meandaylist.add(meandays);
 				StrategyConditionVO strategyConditionVO2 = new StrategyConditionVO("均值策略",meandaylist,nums);
 				SaleVO saleVO2 = new SaleVO(holddays,price);
@@ -356,6 +363,29 @@ public class StrategyUIController implements Initializable{
 
 	}
 
+	@FXML
+	protected void saveStrategy(ActionEvent e){
+		List<Integer> list = new ArrayList<>();
+		
+		
+		
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(getClass().getResource("StrategyPopUp.fxml"));
+		Parent popup = null;
+		try {
+			popup = (AnchorPane)loader.load();
+			StrategyPopUpController controller = loader.getController();
+			controller.setController(this);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		Scene scene = new Scene(popup);
+		Stage stage = new Stage();
+		stage.setScene(scene);
+		stage.initStyle(StageStyle.TRANSPARENT);
+		stage.show();
+	}
 	
 	
 	@FXML
@@ -376,8 +406,23 @@ public class StrategyUIController implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
-		psLabel1.getStylesheets().add(getClass().getClassLoader().getResource("styles/PSLabel.css").toExternalForm());
-		psLabel2.getStylesheets().add(getClass().getClassLoader().getResource("styles/PSLabel.css").toExternalForm());
+		changableLabel.setText("形成期");
+		momentumRadioButton.setUserData("动量");
+		meanRadioButton.setUserData("均值");
+		strategy.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+				// TODO Auto-generated method stub
+				if(strategy.getSelectedToggle()!=null){
+				  if(strategy.getSelectedToggle().getUserData().equals("均值")){
+					  changableLabel.setText("几日均值");
+				  }else if(strategy.getSelectedToggle().getUserData().equals("动量")){
+					  changableLabel.setText("持有期");
+				  }
+				}
+			}
+		});
 		dataController = DataContorller.getInstance();
 		Image saveImage = new Image(getClass().getResourceAsStream("save.png"));
 		saveButton.setGraphic(new ImageView(saveImage));

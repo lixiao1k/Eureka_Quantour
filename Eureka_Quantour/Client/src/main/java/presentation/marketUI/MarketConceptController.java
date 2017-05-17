@@ -21,7 +21,8 @@ import logic.service.StockLogicInterface;
 import rmi.RemoteHelper;
 import vo.SingleStockInfoVO;
 
-public class MarketAreaController implements Initializable{
+public class MarketConceptController implements Initializable{
+
 	@FXML
 	FlowPane buttonsPane;
 	
@@ -30,7 +31,7 @@ public class MarketAreaController implements Initializable{
 	public void setController(MarketUIController controller){
 		this.controller = controller;
 	}
-
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
@@ -40,8 +41,9 @@ public class MarketAreaController implements Initializable{
 		List<String> list = null;
 
 		try {
-			list = stockLogicInterface.getAreaList();
+			list = stockLogicInterface.getConceptList();
 			int length = list.size();
+			list = list.subList(0, 160);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -49,7 +51,7 @@ public class MarketAreaController implements Initializable{
 		if(list!=null){
 			for(String str:list){
 				Button button = new Button(str);
-				button.setPrefSize(180, 30);
+				button.setPrefSize(90, 30);
 				button.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent event) {
@@ -81,6 +83,7 @@ public class MarketAreaController implements Initializable{
 				buttonsPane.getChildren().add(button);
 			}
 		}
+		
 	}
 
 }

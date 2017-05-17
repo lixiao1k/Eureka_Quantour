@@ -386,7 +386,6 @@ public class SingleStockUIController implements Initializable{
 							}
 						});
 					}
-					System.out.println(oldValue+"  "+newValue);
 				} catch (RemoteException e) {
 					e.printStackTrace();
 				}
