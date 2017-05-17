@@ -135,7 +135,8 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 	}
 
 	@Override
-	public void saveStragety(StrategyVO strategyVO, String username) throws RemoteException {
+	public void saveStragety(StrategyVO strategyVO, String username) throws RemoteException, StrategyRepeatException {
+		sli.saveStragety(strategyVO, username);
 
 	}
 

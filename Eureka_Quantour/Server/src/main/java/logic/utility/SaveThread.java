@@ -42,9 +42,9 @@ public class SaveThread extends Thread{
             basicreturn =stragety.getBasicReturn();
             strategylist= stragety.getStragetyReturn();
         } catch (NullStockIDException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         } catch (PriceTypeException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
         List<LocalDate> timelist=stragety.getTimelist();
         double alpha=stragety.getAlpha();
