@@ -4,6 +4,7 @@ import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.text.DecimalFormat;
 
 import dataController.DataContorller;
 import javafx.event.ActionEvent;
@@ -58,7 +59,9 @@ public class BrowseStrategyController implements Initializable{
 		hb.setPrefSize(245, 30);
 		Label name = getLabel(80, Pos.CENTER_LEFT, "  "+vo.getStrategyName());
 		Label creater = getLabel(80, Pos.CENTER, vo.getCreaterName());
-		Label yearreturn = getLabel(85, Pos.CENTER_RIGHT, Double.toString(vo.getStrategyYearReturn()*100)+"%");
+		DecimalFormat df = new DecimalFormat("0.00");
+
+		Label yearreturn = getLabel(85, Pos.CENTER_RIGHT, df.format(vo.getStrategyYearReturn()*100)+"%");
 		hb.getChildren().addAll(name,creater,yearreturn);
 		return hb;
 	}

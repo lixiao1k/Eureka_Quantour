@@ -15,6 +15,8 @@ import logic.serviceimpl.ForecastRODImpl;
 import logic.serviceimpl.StockLogicImpl;
 import vo.*;
 
+import javax.swing.plaf.synth.SynthEditorPaneUI;
+
 /**
  * 
  * @Description: TODO
@@ -58,21 +60,6 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 		return sli.getMarketInfo(date,marketname);
 	}
 
-
-//	@Override
-//	public ComparedInfoVO getComparedInfo(String stockCodeA, String stockCodeB, LocalDate begin, LocalDate end)
-//			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException {
-//		// TODO Auto-generated method stub
-//		return sli.getComparedInfo(stockCodeA, stockCodeB, begin, end);
-//	}
-
-//	@Override
-//	public MarketInfoVO getMarketInfo(Calendar date)
-//			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException {
-//		// TODO Auto-generated method stub
-//		return sli.getMarketInfo(date);
-//	}
-
 	@Override
 	public List<String> getStockSet(String username) throws RemoteException {
 		return sli.getStockSet(username);
@@ -82,11 +69,6 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 	public List<SingleStockInfoVO> getStockSetSortedInfo(String stockSetName, LocalDate now, String username) throws RemoteException, NullMarketException {
 		return sli.getStockSetSortedInfo(stockSetName,now,username);
 	}
-
-//	@Override
-//	public List<SingleStockInfoVO> getStockSetSortedInfo(String stockSetName, LocalDate now) {
-//		return sli.getStockSetSortedInfo(stockSetName,now);
-//	}
 
 	@Override
 	public SingleStockInfoVO getStockBasicInfo(String code, LocalDate now) throws NullStockIDException, NullDateException, RemoteException {
@@ -152,21 +134,23 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 
 	@Override
 	public StrategyShowVO getStrategy(String createrName, String StrategyName) throws RemoteException {
-		return null;
+
+		return sli.getStrategy(createrName, StrategyName);
 	}
 
 	@Override
 	public List<StrategyListVO> getStrategyList(String createrName) throws RemoteException {
-		return null;
+		return sli.getStrategyList(createrName);
 	}
 
 	@Override
 	public List<StrategyListVO> getStrategyList() throws RemoteException {
-		return null;
+		return sli.getStrategyList();
 	}
 
 	@Override
 	public void setPublic(String creatroName, String straetgyName, boolean property) throws RemoteException {
+		sli.setPublic(creatroName, straetgyName, property);
 
 	}
 
