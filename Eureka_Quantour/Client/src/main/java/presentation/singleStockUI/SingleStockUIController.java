@@ -7,7 +7,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import javafx.scene.control.ComboBox;
+import javafx.event.EventHandler;
+import javafx.scene.layout.VBox;
 import org.controlsfx.control.Notifications;
 
 import dataController.DataContorller;
@@ -98,11 +99,11 @@ public class SingleStockUIController implements Initializable{
 	Label shouyilvLabel;
 
 	@FXML
-	Pane fuuzy;
+	Pane fuzzy;
 	
 	private DataContorller dataController;
 
-	private ComboBox<String> fuzzySearch=new ComboBox<>();
+	private VBox fuzzySearch=new VBox();
 	/*
 	 * @description添加至股池，弹出相应界面
 	 */
@@ -146,19 +147,17 @@ public class SingleStockUIController implements Initializable{
 		} catch (RemoteException e1) {
 			// TODO Auto-generated catch block
 		    Notifications.create().title("网络连接异常").text(e1.toString()).showWarning();
-			e1.printStackTrace();
 		} catch (DateInvalidException e1) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("日期异常").text(e1.toString()).showWarning();
-			e1.printStackTrace();
 		} catch (BeginInvalidException e1) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("日期异常").text(e1.toString()).showWarning();
-			e1.printStackTrace();
 		} catch (EndInvalidException e1) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("日期异常").text(e1.toString()).showWarning();
-			e1.printStackTrace();
+		} catch (NullStockIDException e) {
+
 		}
 		try {
 			String code = stockLogicInterface.nameToCode(name);
@@ -168,15 +167,12 @@ public class SingleStockUIController implements Initializable{
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 		    Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
-			e.printStackTrace();
 		} catch (NullStockIDException e) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("无股票").text(e.toString()).showError();
-			e.printStackTrace();
 		} catch (NullDateException e) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("无日期").text(e.toString()).showError();
-			e.printStackTrace();
 		}
 		
 	}
@@ -343,17 +339,66 @@ public class SingleStockUIController implements Initializable{
 		searchButton.setGraphic(new ImageView(searchImage));
 		RemoteHelper remote = RemoteHelper.getInstance();
 		StockLogicInterface stockLogicInterface = remote.getStockLogic();
+
+		fuzzySearch.setStyle("-fx-background-color: lightgrey;-fx-opacity: 0.7;");
+
 		searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
 
 			try {
-				fuzzySearch.getItems().addAll(stockLogicInterface.fuzzySearch(newValue));
+				fuzzySearch.getChildren().clear();
+				List<String> list=stockLogicInterface.fuzzySearch(newValue);
+				for (String name:list){
+					Button bt=new Button(name);
+					fuzzySearch.getChildren().add(bt);
+					bt.setPrefWidth(140);
+					bt.setStyle("-fx-background-color: transparent;");
+					bt.setOnAction(new EventHandler<ActionEvent>() {
+
+						@Override
+						public void handle(ActionEvent event) {
+							searchTextField.setText(bt.getText().split("\t")[0]);
+							fuzzySearch.getChildren().clear();
+						}
+					});
+				}
 			} catch (RemoteException e) {
 				e.printStackTrace();
 			}
 
-			System.out.println("textfield changed from " + oldValue + " to " + newValue);
 		});
-//		fuuzy.getChildren().add(fuzzySearch);
+		fuzzySearch.setVisible(true);
+		searchTextField.focusedProperty().addListener(( observable,  oldValue,  newValue) -> {
+			if (newValue){
+				try {
+					fuzzySearch.getChildren().clear();
+					List<String> list=stockLogicInterface.fuzzySearch(searchTextField.getText());
+					for (String name:list){
+						Button bt=new Button(name);
+						bt.setPrefWidth(140);
+						bt.setStyle("-fx-background-color: transparent;");
+						fuzzySearch.getChildren().add(bt);
+						bt.setOnAction(new EventHandler<ActionEvent>() {
+
+							@Override
+							public void handle(ActionEvent event) {
+								searchTextField.setText(bt.getText().split("\t")[0]);
+								fuzzySearch.getChildren().clear();
+							}
+						});
+					}
+					System.out.println(oldValue+"  "+newValue);
+				} catch (RemoteException e) {
+					e.printStackTrace();
+				}
+
+
+
+
+			}else{
+				fuzzySearch.getChildren().clear();
+			}
+		});
+		fuzzy.getChildren().add(fuzzySearch);
 		if(dataController.get("SingleStockNow")!=null){
 			initialAllPane();
 		}

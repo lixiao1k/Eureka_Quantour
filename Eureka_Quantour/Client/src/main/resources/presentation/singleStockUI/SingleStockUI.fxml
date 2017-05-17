@@ -11,7 +11,7 @@
          <children>
             <TextField fx:id="searchTextField" layoutX="34.0" layoutY="15.0" prefHeight="15.0" prefWidth="102.0" promptText="股票搜索" />
             <Button fx:id="searchButton" layoutX="125.0" layoutY="14.0" mnemonicParsing="false" onAction="#search" prefHeight="23.0" prefWidth="23.0" styleClass="transperantButton" />
-            <Button fx:id="addButton" layoutX="29.0" layoutY="230.0" mnemonicParsing="false" onAction="#add2StockSet" styleClass="main-button" text="添加至股池" />
+            <Button fx:id="addButton" layoutX="40.0" layoutY="327.0" mnemonicParsing="false" onAction="#add2StockSet" styleClass="main-button" text="添加至股池" />
             <Pane fx:id="fuzzy" layoutX="15.0" layoutY="41.0" prefHeight="141.0" prefWidth="139.0" />
          </children></AnchorPane>
       <AnchorPane layoutX="169.0" maxWidth="781.0" prefHeight="758.0" prefWidth="781.0" styleClass="left1-segment" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="169.0" AnchorPane.topAnchor="0.0">

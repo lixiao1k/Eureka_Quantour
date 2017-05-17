@@ -97,12 +97,9 @@ public class StockLogicImpl implements StockLogicInterface{
 
 	@Override
 	public ComparedInfoVO getComparedInfo(String stockCodeA, LocalDate begin, LocalDate end)
-			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException {
-		try {
+			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException {
 			utility.ifDateValid(begin, end,stockCodeA);
-		} catch (NullStockIDException e) {
-			e.printStackTrace();
-		}
+
 		LocalDate itr=LocalDate.of(begin.getYear(),begin.getMonth(),begin.getDayOfMonth());
 
 		List<Double> duishushouyiilv=new ArrayList<>();
@@ -130,9 +127,7 @@ public class StockLogicImpl implements StockLogicInterface{
 					diantu.set(s+10,p);
 
 
-				} catch (NullStockIDException e) {
-					e.printStackTrace();
-				} catch (NullDateException e) {
+				}  catch (NullDateException e) {
 					continue;
 				}
 
@@ -453,6 +448,12 @@ public class StockLogicImpl implements StockLogicInterface{
 	@Override
 	public List<String> fuzzySearch(String input) throws RemoteException {
 		List<String> list=idi.fuzzySearch(input);
-		return list.subList(0,9);
+		if (list.size()<10)
+			return list;
+		List<String> sublist=new ArrayList<>();
+		for (int i=0;i<10;i++){
+			sublist.add(list.get(i));
+		}
+		return sublist;
 	}
 }
