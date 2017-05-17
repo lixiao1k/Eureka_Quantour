@@ -155,6 +155,14 @@ public class test {
             p.println("在置信区间 "+srod.zhixin[0]+"  "+"不在 "+srod.zhixin[1]);
             p.println("在置信区间 "+nf.format( srod.zhixin[0]/(srod.zhixin[0]+srod.zhixin[1]+0.0) ));
             p.println("最优预测置信区间预估天数 : "+maxsZhi);
+
+//          p.println();
+//          for( int i=0; i<23; i++ ){
+//              for( int j=0; j<23;j++ ){
+//                  p.print(srod.firstFloor[i][j]+"  ");
+//              }
+//              p.println();
+//          }
             p.close();
         }catch(FileNotFoundException e){
              e.printStackTrace();

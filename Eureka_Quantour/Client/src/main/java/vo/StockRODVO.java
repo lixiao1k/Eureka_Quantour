@@ -15,6 +15,15 @@ public class StockRODVO implements Serializable{
 	*/
 	public int[][] nodata = new int[5][2];
 
+	/*
+	* yesterday and today's ROD guanxi
+	* yesterday,the day before yesterday and today's ROD guanxi
+	*/
+	public int[][] firstFloor = new int[23][23];
+	public int[][][] secondFloor = new int[23][23][23];
+
+	public int[][] YesAvgROD = new int[23][23];
+
 	public int[] zhixin = new int[2];
 	
 	public int[] Pos = new int[2];
@@ -33,6 +42,19 @@ public class StockRODVO implements Serializable{
 			for( int j=0; j<nodata[0].length; j++ )
 				nodata[i][j] = 0;
 			
+		for( int i=0; i<firstFloor.length; i++ )
+			for( int j=0; j<firstFloor[0].length; j++ )
+				firstFloor[i][j] = 0;
+
+		for( int i=0; i<secondFloor.length; i++ )
+			for( int j=0; j<secondFloor[0].length; j++ )
+				for( int k=0; k<secondFloor[0][0].length; k++ )
+					secondFloor[i][j][k] = 0;
+
+		for( int i=0; i<YesAvgROD.length; i++ )
+			for( int j=0; j<YesAvgROD[0].length; j++ )
+				YesAvgROD[i][j] = 0;
+
 		for( int i=0; i<zhixin.length; i++ )
 			zhixin[i] = 0;
 
