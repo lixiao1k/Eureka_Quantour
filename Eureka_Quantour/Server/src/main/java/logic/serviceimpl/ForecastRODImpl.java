@@ -2,7 +2,6 @@ package logic.serviceimpl;
 
 import java.rmi.RemoteException;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.time.LocalDate;
 
 import data.service.IDataInterface;
@@ -33,33 +32,42 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		StockRODVO srod = new StockRODVO();
 		LocalDate zuizao = LocalDate.of(2005,2,1);
 
+/* **************************************************************************************************************** */
 		// save qian numOfDay day stock's close
-		if( numOfDay<0 )
-			numOfDay = 1;
+		if( numOfDay<100 )
+			numOfDay = 100;
 		double[] closes = new double[numOfDay];
-		int dataNum = 0;
+		int dataNum = numOfDay-1;
 		LocalDate date = begindate;
 		SingleStockInfoVO ssi = new SingleStockInfoVO();
-		while( dataNum<numOfDay && date.compareTo(zuizao)>0 ){
+		while( dataNum>-1 && date.compareTo(zuizao)>0 ){
 			try{
 				ssi = new SingleStockInfoVO( idata.getSingleStockInfo(stockcode, date) );
 				date = date.minusDays(1);
 				closes[dataNum] = ssi.getClose();
-				dataNum++;
+				dataNum--;
 			}catch ( NullStockIDException e ){
 				e.printStackTrace();
 			}catch ( NullDateException e){
 				date = date.minusDays(1);
 			}
 		}
-		if( dataNum<(numOfDay-1) ){
-			for( ; dataNum<numOfDay; dataNum++ ){
-				int index = (int)(Math.random()*dataNum);
-				if( index>dataNum-1 )
-					index = dataNum-1;
+		if( dataNum>-1 ){
+			for( ; dataNum>-1; dataNum-- ){
+				int index = (int)( Math.random()*(numOfDay-dataNum) );
+				if( index<=dataNum )
+					index = dataNum+1;
+				else if( index>=numOfDay-1 )
+					index = numOfDay-1;
 				closes[dataNum] = closes[index];
 			}
 		}
+/* **************************************************************************************************************** */
+
+
+/* **************************************************************************************************************** */		
+		// calculate numOfDay-day's ROD
+		double[] RODs = new double[numOfDay];
 
 		ssi = new SingleStockInfoVO();
 		ssi.setClose(-1);
@@ -85,24 +93,65 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		for( int i=0; i<numOfDay; i++ ){
 			double RODT = (closes[i]-closeT)/closeT;
 			closeT = closes[i];
-			closes[i] = RODT;
+			RODs[i] = RODT;
 		}
-		
+/* **************************************************************************************************************** */
+
+
+/* **************************************************************************************************************** */
+		/*
+		* begin fill in firstFloor and secondFloor
+		* Q : qian tian
+		* Z : zuo tian
+		* i : index
+		*/
+		double QROD = RODs[0];
+		double ZROD = RODs[1];
+		int iQROD = ForecastRODImpl.doubletoindex(QROD);
+		int iZROD = ForecastRODImpl.doubletoindex(ZROD);
+		int avgNum = 2;
+		double avg = (closes[0]+closes[1]) / 2;
+		double ROD = 0;
+		int iROD = 0;
+		for( int i=2; i<numOfDay; i++ ){
+			ROD = RODs[i];
+			iROD = ForecastRODImpl.doubletoindex(ROD);
+			srod.firstFloor[iZROD][iROD]++;
+			srod.secondFloor[iQROD][iZROD][iROD]++;
+
+			double ZClose = closes[i-1];
+			int iYesAvgROD = ForecastRODImpl.doubletoindex( (ZClose-avg)/avg );
+			srod.YesAvgROD[iYesAvgROD][iROD]++;
+
+			QROD = ZROD;
+			ZROD = ROD;
+			iQROD = iZROD;
+			iZROD = iROD;
+			avg = (avg*avgNum+closes[i])/(avgNum+1);
+			avgNum++;
+		}
+/* **************************************************************************************************************** */
+
+
+/* **************************************************************************************************************** */
 		//the number of day owning data
-		int dayNum = numOfDay-1;
+		int dayNum = 0;
 		
 		double close1 = 0;
 		double close2 = 0;
 
-		// the true ROD of one day
-		double ROD = 0;
+		QROD = RODs[RODs.length-2];
+		ZROD = RODs[RODs.length-1];
+		ROD = 0;
 
 		/*
 		* get the index of array in StockRODVO
 		* the initialzaion of idate is -1 which show the day is weekend
 		*/
 		int idate = -1;
-		int iROD = 0;
+		iQROD = ForecastRODImpl.doubletoindex(QROD);
+		iZROD = ForecastRODImpl.doubletoindex(ZROD);
+		iROD = 0;
 		
 		// save two days' close
 		ssi = new SingleStockInfoVO();
@@ -122,6 +171,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		}
 		
 		while( date.compareTo(enddate)<=0 ){
+			double PreROD = 0;
 			double[] AvgAndFangcha = new double[2];
 			boolean ifROE = false;
 			try{
@@ -138,32 +188,45 @@ public class ForecastRODImpl implements ForecastRODInterface{
 				// the number of data existing add one
 				srod.nodata[idate][0]++;
 
-				ROD = (close2-close1)/close1;	
-				// ROD = close1;		
-
+				ROD = (close2-close1)/close1;		
 				iROD = ForecastRODImpl.doubletoindex( ROD );
 				srod.wROD[idate][iROD]++;
 				
-				AvgAndFangcha = ForecastRODImpl.calAvgAndFangcha( closes );
-				ifROE = ForecastRODImpl.preROE( AvgAndFangcha[0], AvgAndFangcha[1], 1, alpha, ROD);
+				AvgAndFangcha = ForecastRODImpl.calAvgAndFangcha( RODs );
+				int iYesAvgROD = ForecastRODImpl.doubletoindex( (close2-avg)/avg );
+				PreROD = 0.5*AvgAndFangcha[0] + 0.6*ForecastRODImpl.calAvg( srod.firstFloor[iZROD] ) 
+							- 0.2*ForecastRODImpl.calAvg( srod.secondFloor[iQROD][iZROD] )
+							+ 0.1*ForecastRODImpl.calAvg( srod.YesAvgROD[iYesAvgROD] );
+				ifROE = ForecastRODImpl.preROE( PreROD, AvgAndFangcha[1], 1, alpha, ROD);
 				if( ifROE )
 					srod.zhixin[0]++;
 				else
 					srod.zhixin[1]++;
 				
-				// update the numOfDay-day data in array
-				closes[dayNum] = ROD;
-				dayNum--;
-				if( dayNum==-1 )
-					dayNum = numOfDay-1;
+				// update the srod's content
+				srod.firstFloor[iZROD][iROD]++;
+				srod.secondFloor[iQROD][iZROD][iROD]++;
+				srod.YesAvgROD[iYesAvgROD][iROD]++;
 
-				if( AvgAndFangcha[0]>0 ){
+				iQROD = iZROD;
+				iZROD = iROD;
+				avg = (avg*avgNum+close2)/(avgNum+1);
+				avgNum++;
+				
+				// update the numOfDay-day data in array
+				RODs[dayNum] = ROD;
+				closes[dayNum] = close2;
+				dayNum++;
+				if( dayNum==numOfDay-1 )
+					dayNum = 0;
+
+				if( PreROD>0 ){
 					if( ROD>0 )
 						srod.Pos[0]++;
 					else
 						srod.Pos[1]++;
 				}
-				else if( AvgAndFangcha[0]<0 ){
+				else if( PreROD<0 ){
 					if( ROD<0 )
 						srod.Neg[0]++;
 					else
@@ -177,6 +240,8 @@ public class ForecastRODImpl implements ForecastRODInterface{
 				srod.nodata[idate][1]++;
 			}
 		}
+/* **************************************************************************************************************** */
+
 		return srod;
 	}
 	
@@ -236,14 +301,14 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		double fangcha = 0.0;
 		for( int i=0; i<30; i++ ){
 			double RODSum = 0;
-			for( int j=0; j<20; j++ ){
+			for( int j=0; j<5; j++ ){
 				double random = Math.random();
 				int index = (int)(random*numOfDay);
 				if( index>(numOfDay-1) )
 					index = numOfDay-1;
 				RODSum += closes[index];
 			}
-			yangbenAvg[i] = RODSum / 20;
+			yangbenAvg[i] = RODSum / 5;
 		}
 		for( int i=0; i<yangbenAvg.length; i++ ){
 			avg += yangbenAvg[i];
@@ -258,6 +323,27 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		AvgAndFangcha[1] = fangcha;
 		
 		return AvgAndFangcha;
+	}
+
+	private static double calAvg( int[] EROD ){
+		double sum = 0;
+		double lower = -0.1;
+		double upper = -0.09;
+		int numSum = 0;
+		for( int i=1; i<11; i++ ){
+			numSum += EROD[i];
+			sum += EROD[i]*(lower+upper)/2;
+			lower += 0.01;
+			upper += 0.01;
+		}
+		for( int i=12; i<22; i++ ){
+			numSum += EROD[i];
+			sum += EROD[i]*(lower+upper)/2;
+			lower += 0.01;
+			upper += 0.01;
+		}
+		sum /= numSum;
+		return sum;
 	}
 
 	/**
