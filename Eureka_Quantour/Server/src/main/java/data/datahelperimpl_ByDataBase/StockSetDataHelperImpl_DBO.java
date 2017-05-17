@@ -115,6 +115,7 @@ public class StockSetDataHelperImpl_DBO implements IStockSetDataHelper {
 		if(isStockExist(setid,stockName)){
 			throw new StockNameRepeatException();
 		}
+		System.out.println(stockName+":"+stockSetName);
 		String sql="insert into stockset values(?,?)";
 		Connection conn=ConnectionPoolManager.getInstance().getConnection("quantour");
 		PreparedStatement pstmt=null;

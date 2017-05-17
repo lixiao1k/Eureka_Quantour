@@ -85,7 +85,7 @@ public interface StockLogicInterface extends Remote {
 	StrategyShowVO getStrategy ( String createrName, String StrategyName ) throws RemoteException;
 
 	List<StrategyListVO> getStrategyList ( String createrName) throws RemoteException;
-
+	
 	List<StrategyListVO> getStrategyList ( )throws RemoteException;
 
 	// 修改策略公开或私有属性

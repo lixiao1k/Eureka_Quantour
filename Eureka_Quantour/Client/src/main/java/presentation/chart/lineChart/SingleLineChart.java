@@ -53,10 +53,12 @@ public class SingleLineChart implements chartService{
 //        xAxis.setOpacity(0);
         
         yAxis = new NumberAxis();
-    	yAxis.autoRangingProperty().set(true);
+    	yAxis.autoRangingProperty().set(false);
+        yAxis.setLowerBound(8.85);
+        yAxis.setUpperBound(9.20);
         yAxis.setAnimated(true);
         yAxis.forceZeroInRangeProperty().setValue(false);
-        yAxis.setUpperBound(1.25);
+ //       yAxis.setUpperBound(1.25);
         yAxis.setOpacity(0.5);
         
         lineChart = new LineChart<>(xAxis, yAxis);

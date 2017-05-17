@@ -14,7 +14,7 @@ public class StockSetDataController {
 	private IStockSetDataHelper stocksetdatahelper_FILE;
 	private IStockSetDataHelper stocksetdatahelper_DBO;
 	private StockSetDataController(){
-		stocksetdatahelper_FILE=StockSetDataHelperImpl_DBO.getInstance();
+		//stocksetdatahelper_FILE=StockSetDataHelperImpl_DBO.getInstance();
 		stocksetdatahelper_DBO=StockSetDataHelperImpl_DBO.getInstance();
 	}
 	public static StockSetDataController getInstance(){
@@ -37,7 +37,7 @@ public class StockSetDataController {
 	 */
 	public void addStockSet(String stockSetName, String username) throws StockSetNameRepeatException{
 		stocksetdatahelper_DBO.addStockSet(stockSetName, username);
-		stocksetdatahelper_FILE.addStockSet(stockSetName, username);
+		//stocksetdatahelper_FILE.addStockSet(stockSetName, username);
 	}
 	/**
 	 * 删除一个股票池
@@ -46,7 +46,7 @@ public class StockSetDataController {
 	 */
 	public void deleteStockSet(String stockSetName, String username){
 		stocksetdatahelper_DBO.deleteStockSet(stockSetName, username);
-		stocksetdatahelper_FILE.deleteStockSet(stockSetName, username);
+		//stocksetdatahelper_FILE.deleteStockSet(stockSetName, username);
 	}
 	/**
 	 * 添加一个新的股票到股票池中
@@ -58,7 +58,7 @@ public class StockSetDataController {
 	public void addStockToStockSet(String stockName, String stockSetName, String username) throws
 	StockNameRepeatException{
 		stocksetdatahelper_DBO.addStockToStockSet(stockName, stockSetName, username);
-		stocksetdatahelper_FILE.addStockToStockSet(stockName, stockSetName, username);
+		//stocksetdatahelper_FILE.addStockToStockSet(stockName, stockSetName, username);
 	}
 	/**
 	 * 从股票池中删除一个股票
@@ -69,7 +69,7 @@ public class StockSetDataController {
 	public void deleteStockFromStockSet(String stockName, String stockSetName, String username){
 		System.out.println(stockName);
 		stocksetdatahelper_DBO.deleteStockFromStockSet(stockName, stockSetName, username);
-		stocksetdatahelper_FILE.deleteStockFromStockSet(stockName, stockSetName, username);
+		//stocksetdatahelper_FILE.deleteStockFromStockSet(stockName, stockSetName, username);
 	}
 	/**
 	 * 获取某个用户自定义股票池的股票编号

@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.List;
 
+import data.serviceimpl.StrategyDataController;
 import exception.DateOverException;
 import exception.LogErrorException;
 import exception.NullDateException;
@@ -17,6 +18,7 @@ import exception.StrategyRepeatException;
 import exception.TimeShraingLackException;
 import exception.UserNameRepeatException;
 import po.CommentPO;
+import po.CompanyInfoPO;
 import po.SingleStockInfoPO;
 import po.StockSetInfoPO;
 import po.StrategyInfoPO;
@@ -31,6 +33,22 @@ import vo.StrategyVO;
  */
 public interface IDataInterface 
 {
+	/**
+	 * 获取某只股票最近的股本结构和基本收益变化
+	 * @param time
+	 * @param code
+	 * @return
+	 * @throws NullStockIDException 
+	 */
+	public CompanyInfoPO getLatestCommpanyInfo(LocalDate time,String code) throws NullStockIDException;
+	
+	/**
+	 * 获取某只股票所有的股本结构和基本收益变化情况
+	 * @param code
+	 * @return
+	 * @throws NullStockIDException 
+	 */
+	public List<CompanyInfoPO> getCompanyDetail(String code) throws NullStockIDException;
 	/**
 	 * 
 	 * @param stockCode

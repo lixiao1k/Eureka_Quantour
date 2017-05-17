@@ -856,30 +856,35 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 		path=path+index;
 		File file=new File(path);
 		List<Double> result=new ArrayList<Double>();
-		for(int i=0;i<=16200;i++){
+		for(int i=0;i<=14400;i++){
 			result.add(0.0);
 		}
 		try{
 			if(!file.exists()){
+				System.out.println(index+":"+code+":"+date);
 				throw new TimeShraingLackException();
 			}
 			else{
 				BufferedReader br=new BufferedReader(new FileReader(file));
 				br.readLine();
-				int min=16200;
+				int min=14400;
 				try{
 				while(br.ready()){
 					String[] temp=br.readLine().split("\t");
 					LocalTime lt=LocalTime.parse(temp[0], DateTimeFormatter.ofPattern("HH:mm:ss"));
 					if(lt.isAfter(LocalTime.of(12, 0))){
-						int i=(int) (Duration.between( LocalTime.of(13, 0, 0),lt).toMillis()/1000)+9000;
+						int i=(int) (Duration.between( LocalTime.of(13, 0, 0),lt).toMillis()/1000)+7200;
 						if(i<min){
 							min=i;
 						}
-						result.set(i, Double.valueOf(temp[1]));
+						if(i>14400){							
+						}
+						else{
+							result.set(i, Double.valueOf(temp[1]));
+						}
 					}
 					else{
-						int i=(int) (Duration.between( LocalTime.of(9, 0, 0),lt).toMillis()/1000);
+						int i=(int) (Duration.between( LocalTime.of(9, 30, 0),lt).toMillis()/1000);
 						if(i>=0){
 							if(i<min){
 								min=i;
@@ -890,11 +895,13 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 				}
 				}catch(Exception e){
 					br.close();
+					System.out.println(index+":"+code+":"+date);
+					e.printStackTrace();
 					throw new TimeShraingLackException();
 				}
 				br.close();
 				double last=result.get(min);
-				for(int i=0;i<=16200;i++){
+				for(int i=0;i<=14400;i++){
 					if(result.get(i)==0.0){
 						result.set(i, last);
 					}
