@@ -25,6 +25,7 @@
             <Button fx:id="singleStockButton" layoutY="136.0" maxHeight="66.0" mnemonicParsing="false" onAction="#browseSingleStock" prefHeight="66.0" prefWidth="63.0" styleClass="main-button" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
             <Button fx:id="strategyButton" layoutX="3.0" layoutY="202.0" maxHeight="66.0" mnemonicParsing="false" onAction="#browseStrategy" prefHeight="66.0" prefWidth="63.0" styleClass="main-button" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
             <Button fx:id="statisticsButton" layoutX="4.0" layoutY="268.0" mnemonicParsing="false" onAction="#browseStatistics" prefHeight="66.0" prefWidth="63.0" styleClass="main-button" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <Button fx:id="browseStrategyButton" layoutY="334.0" mnemonicParsing="false" onAction="#browseStrategySet" prefHeight="66.0" prefWidth="63.0" styleClass="main-button" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="mainAnchorPane" layoutX="61.0" layoutY="42.0" prefHeight="757.0" prefWidth="1219.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="61.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="43.0">

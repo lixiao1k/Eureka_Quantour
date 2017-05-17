@@ -350,16 +350,22 @@ public class StrategyDataHelperImpl_DBO implements IStrategyDataHelper{
 		List<StrategyShowPO> result=new ArrayList<StrategyShowPO>();
 		Connection conn=ConnectionPoolManager.getInstance().getConnection("quantour");
 		String sql="select * from quantour.strategyshow A ,quantour.strategy B where A.strategyid=B.strategyid and username = '"+createrName+"'";
+		System.out.println(sql);
 		PreparedStatement pstmt=null;
 		try {
 			pstmt = (PreparedStatement)conn.prepareStatement(sql);
 			ResultSet rs=pstmt.executeQuery();
 			while(rs.next()){
 				double alpha=rs.getDouble(2);
+
 				double beta=rs.getDouble(3);
+				System.out.println("beta  "+beta);
 				double sharp=rs.getDouble(4);
+				System.out.println(" sharp"+sharp);
 				double huiche=rs.getDouble(5);
 				double yearreturn=rs.getDouble(6);
+				System.out.println("yea  "+yearreturn);
+
 				int length=rs.getInt(7);
 				String name=rs.getString("username");
 				String strategyname=rs.getString("strategyname");

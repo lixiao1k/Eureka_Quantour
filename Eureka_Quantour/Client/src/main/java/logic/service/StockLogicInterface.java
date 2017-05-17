@@ -36,7 +36,7 @@ public interface StockLogicInterface extends Remote {
 	* @return: ComparedInfoVO
 	*/
 	ComparedInfoVO getComparedInfo ( String stockCodeA, LocalDate begin, LocalDate end )
-			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException;
+			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException,NullStockIDException;
 	/**
 	* @Description: to get market's information by date,
 	*               invoke getMarketByDate() in data layer
@@ -70,11 +70,11 @@ public interface StockLogicInterface extends Remote {
 	void addStockToStockSet(String stockName, String stockSetName, String username) throws StockNameRepeatException,RemoteException;
 
 	void deleteStockFromStockSet(String stockName, String stockSetName, String username)throws RemoteException;
-	
+
 	String nameToCode(String name) throws RemoteException;
 
 	//按照用户名保存策略
-	void saveStragety(StrategyVO strategyVO, String username) throws RemoteException;
+	void saveStragety(StrategyVO strategyVO, String username) throws RemoteException, StrategyRepeatException;
 
 	//按照用户名和策略名称删除策略
 	void deleteStrategy ( String createName, String strategyName) throws RemoteException;
@@ -95,5 +95,7 @@ public interface StockLogicInterface extends Remote {
 
 	List<String> getConceptList() throws RemoteException;
 
-	public List<Double> getTimeSharingData(String code,LocalDate date)throws TimeShraingLackException,NullStockIDException, RemoteException;
+	List<Double> getTimeSharingData(String code,LocalDate date)throws TimeShraingLackException,NullStockIDException, RemoteException;
+
+	List<String> fuzzySearch(String input) throws RemoteException;
 }

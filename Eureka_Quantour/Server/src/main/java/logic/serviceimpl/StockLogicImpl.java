@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import com.sun.org.apache.regexp.internal.RE;
 import data.service.IDataInterface;
 import data.serviceimpl.DataInterfaceImpl;
 import exception.*;
@@ -96,12 +97,9 @@ public class StockLogicImpl implements StockLogicInterface{
 
 	@Override
 	public ComparedInfoVO getComparedInfo(String stockCodeA, LocalDate begin, LocalDate end)
-			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException {
-		try {
+			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException {
 			utility.ifDateValid(begin, end,stockCodeA);
-		} catch (NullStockIDException e) {
-			e.printStackTrace();
-		}
+
 		LocalDate itr=LocalDate.of(begin.getYear(),begin.getMonth(),begin.getDayOfMonth());
 
 		List<Double> duishushouyiilv=new ArrayList<>();
@@ -129,9 +127,7 @@ public class StockLogicImpl implements StockLogicInterface{
 					diantu.set(s+10,p);
 
 
-				} catch (NullStockIDException e) {
-					e.printStackTrace();
-				} catch (NullDateException e) {
+				}  catch (NullDateException e) {
 					continue;
 				}
 
@@ -250,8 +246,7 @@ public class StockLogicImpl implements StockLogicInterface{
 
 	@Override
 	public SingleStockInfoVO getStockBasicInfo(String code, LocalDate now) throws NullStockIDException, NullDateException {
-
-
+		idi.addBrowseTimes(code);
 		return new SingleStockInfoVO(idi.getSingleStockInfo(code,now));
 	}
 
@@ -262,6 +257,7 @@ public class StockLogicImpl implements StockLogicInterface{
 				||stockSetName.equals("ZXB") )
 			username=null;
 		List<String> stocklistname=idi.getStockSetInfo(stockSetName,username);
+		System.out.println(strategyConditionVO.getExtra());
 
 		stragety=new Return(stocklistname,begin,now,s,strategyConditionVO);
 	}
@@ -386,10 +382,31 @@ public class StockLogicImpl implements StockLogicInterface{
 		StrategyShowPO showPO=idi.getStrategy(createrName, StrategyName);
 		List<CommentPO> commentPOS=idi.getStrategyComments(createrName, StrategyName);
 
+		List<CommentVO> commentVOS=new ArrayList<>();
+		for (CommentPO po:commentPOS){
+			commentVOS.add(new CommentVO(po.getComments(),po.getTime(),po.getCreaterName()));
+		}
+		StrategyShowVO res=new StrategyShowVO();
+		res.setTimeList(showPO.getTimeList());
+		res.setBasicReturn(showPO.getBasicReturn());
+		res.setBasicReturn(showPO.getStrategyReturn());
+		res.setAlpha(showPO.getAlpha());
+		res.setBeta(showPO.getBeta());
+		res.setSharp(showPO.getSharp());
+		res.setZuidahuiche(showPO.getZuidahuiche());
+		res.setStrategyYearReturn(showPO.getStrategyYearReturn());
+		res.setComments(commentVOS);
+		res.setStrategyname(showPO.getStrategyName());
+		res.setPublicorPrivate(infoPO.isPublicorprivate());
+		res.setStrategyConditionVO(new StrategyConditionVO(infoPO.getStrategTypeNname(),infoPO.getParameter(),infoPO.getPurchasenum()));
+		res.setSaleVO(new SaleVO(infoPO.getTiaocangqi(),infoPO.getTiaocangjiage(),infoPO.getPurchasenum()));
 
 
 
-		return null;
+
+
+
+		return res;
 	}
 
 	@Override
@@ -397,6 +414,7 @@ public class StockLogicImpl implements StockLogicInterface{
 		List<StrategyShowPO> list=idi.getStrategyList(createrName);
 		List<StrategyListVO> reslist=new ArrayList<>();
 		for(StrategyShowPO po:list){
+			System.out.println(po.getStrategyYearReturn());
 			reslist.add(new StrategyListVO(po.getCreaterName(),po.getStrategyName(),po.getStrategyYearReturn()));
 		}
 		Collections.sort(reslist);
@@ -446,5 +464,17 @@ public class StockLogicImpl implements StockLogicInterface{
 	 */
 	public List<Double> getTimeSharingData(String code,LocalDate date)throws TimeShraingLackException,NullStockIDException,RemoteException{
 		return idi.getTimeSharingData(code, date);
+	}
+
+	@Override
+	public List<String> fuzzySearch(String input) throws RemoteException {
+		List<String> list=idi.fuzzySearch(input);
+		if (list.size()<10)
+			return list;
+		List<String> sublist=new ArrayList<>();
+		for (int i=0;i<10;i++){
+			sublist.add(list.get(i));
+		}
+		return sublist;
 	}
 }

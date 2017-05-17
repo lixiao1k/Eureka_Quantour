@@ -30,7 +30,8 @@ public class Main extends Application{
 		try {
 			rmic = RemoteHelper.getInstance();
 //			rmic.setRemote(Naming.lookup("rmi://localhost:8888/DateRemote"));
-			rmic.setRemote(Naming.lookup("rmi://172.25.169.207:8888/DateRemote"));
+			rmic.setRemote(Naming.lookup("rmi://172.25.169.209:8888/DateRemote"));
+
 			System.out.println("连接服务器成功！");
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -44,5 +45,4 @@ public class Main extends Application{
 		}
 		launch(args);
 	}
-
 }
