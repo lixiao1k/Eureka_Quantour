@@ -35,7 +35,7 @@ public interface StockLogicInterface extends Remote {
 	 * @return: ComparedInfoVO
 	 */
 	ComparedInfoVO getComparedInfo ( String stockCodeA, LocalDate begin, LocalDate end )
-			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException;
+			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException;
 	/**
 	 * @Description: to get market's information by date,
 	 *               invoke getMarketByDate() in data layer
