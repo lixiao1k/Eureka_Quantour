@@ -55,10 +55,10 @@ public class BrowseStrategyController implements Initializable{
 	
 	private HBox getHBox(StrategyListVO vo){
 		HBox hb = new HBox();
-		hb.setPrefSize(255, 30);
-		Label name = getLabel(100, Pos.CENTER_LEFT, vo.getStrategyName());
-		Label creater = getLabel(100, Pos.CENTER_LEFT, vo.getCreaterName());
-		Label yearreturn = getLabel(55, Pos.CENTER_RIGHT, Double.toString(vo.getStrategyYearReturn()*100)+"%");
+		hb.setPrefSize(245, 30);
+		Label name = getLabel(80, Pos.CENTER_LEFT, "  "+vo.getStrategyName());
+		Label creater = getLabel(80, Pos.CENTER, vo.getCreaterName());
+		Label yearreturn = getLabel(85, Pos.CENTER_RIGHT, Double.toString(vo.getStrategyYearReturn()*100)+"%");
 		hb.getChildren().addAll(name,creater,yearreturn);
 		return hb;
 	}
@@ -68,9 +68,9 @@ public class BrowseStrategyController implements Initializable{
 		label.setMaxWidth(width);
 		label.setAlignment(alignment);
 		label.setStyle("-fx-border-width: 1;"
-				+ "-fx-border-color: black;"
-				+ "-fx-background-color:rgba(255,255,255,0.1);"
-				+ "-fx-text-fill: rgb(255, 255, 255, 0.9);"
+				+ "-fx-background-color:#6d8187;"
+				+"-fx-font-size: 14px;"
+				+ "-fx-text-fill:ivory;"
 				+ "-fx-font-weight:bold");
 		return label;
 	}
