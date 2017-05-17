@@ -469,7 +469,7 @@ public class StockInfoFetchByWeb {
 					flag=true;
 				}
 				if(flag){
-					//System.out.println("正在处理第"+count+"个，总共"+i+"个"+"剩余"+(i-count)+"个。");
+					System.out.println("正在处理第"+count+"个，总共"+i+"个"+"剩余"+(i-count)+"个。");
 					//dealSingleInfo_Minutes(code,lt,date);
 					//check_Minutes(code,date);
 					//check_Minutes(code,date);

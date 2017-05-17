@@ -81,7 +81,8 @@ public class StockDataFetchImpl implements IStockDataFetch{
 //		System.out.println("计算均线完成");
 //		System.out.println("开始汇总股票信息");
 //		infoByweb.indexationStockDate(true);
-		infoByweb.fetchExponent();
+//		infoByweb.fetchExponent();
+		infoByweb.fetchStockInfo_Minutes();
 		System.out.println("汇总股票信息完成");
 	}
 }
