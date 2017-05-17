@@ -23,8 +23,9 @@ public class SaveThread extends Thread{
         this.username=username;
         this.name=name;
         List<String> stocklistname=idi.getStockSetInfo("HS300",null);
-        LocalDate now=LocalDate.now();
+        LocalDate now=LocalDate.of(2016,1,1);
         LocalDate start=now.minusDays(100);
+        System.out.println(strategyConditionVO.getName());
         stragety=new Return(stocklistname,start,now,saleVO,strategyConditionVO);
 
     }
