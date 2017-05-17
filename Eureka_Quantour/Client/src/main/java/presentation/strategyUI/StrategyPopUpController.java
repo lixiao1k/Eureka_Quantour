@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 import org.controlsfx.control.Notifications;
 
 import dataController.DataContorller;
+import exception.StrategyRepeatException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -59,6 +60,9 @@ public class StrategyPopUpController implements Initializable{
 			} catch (RemoteException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
+			} catch (StrategyRepeatException e1) {
+				// TODO Auto-generated catch block
+				Notifications.create().title("异常").text("策略名重复").showWarning();
 			}
 			Notifications.create().title("成功").text("保存成功").showInformation();
 			Stage root =(Stage) name.getScene().getWindow();
