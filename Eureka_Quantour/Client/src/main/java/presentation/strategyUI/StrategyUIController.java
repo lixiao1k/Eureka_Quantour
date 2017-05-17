@@ -1,5 +1,6 @@
 package presentation.strategyUI;
 
+import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.time.LocalDate;
@@ -9,6 +10,8 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
+
 import org.controlsfx.control.Notifications;
 
 import dataController.DataContorller;
@@ -18,7 +21,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -32,11 +38,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import logic.service.StockLogicInterface;
 import presentation.chart.areaChart.DanTengChart;
 import presentation.chart.chartService;
 import presentation.chart.barChart.YieldDistributeChart;
 import presentation.chart.lineChart.YieldComparedChart;
+import presentation.marketUI.MarketConceptController;
 import rmi.RemoteHelper;
 import vo.SaleVO;
 import vo.StrategyConditionVO;
@@ -92,12 +101,6 @@ public class StrategyUIController implements Initializable{
 	
 	@FXML
 	Label timeLabel;
-	
-	@FXML
-	Label psLabel1;
-	
-	@FXML
-	Label psLabel2;
 	
 	@FXML
 	AnchorPane anchorPane4;
@@ -233,12 +236,9 @@ public class StrategyUIController implements Initializable{
 
 				List<Integer> list = new ArrayList<>();
 				list.add(createdays);
-				System.out.println(list);
 
 				strategyConditionVO = new StrategyConditionVO("动量策略",list,nums);
 				saleVO = new SaleVO(holddays,price);
-				System.out.println("holddays:"+holddays);
-				System.out.println("price:"+price);
 				RemoteHelper remote = RemoteHelper.getInstance();
 				StockLogicInterface stockLogicInterface = remote.getStockLogic();
 				try {
@@ -365,7 +365,26 @@ public class StrategyUIController implements Initializable{
 
 	@FXML
 	protected void saveStrategy(ActionEvent e){
+		List<Integer> list = new ArrayList<>();
 		
+		
+		
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(getClass().getResource("StrategyPopUp.fxml"));
+		Parent popup = null;
+		try {
+			popup = (AnchorPane)loader.load();
+			StrategyPopUpController controller = loader.getController();
+			controller.setController(this);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		Scene scene = new Scene(popup);
+		Stage stage = new Stage();
+		stage.setScene(scene);
+		stage.initStyle(StageStyle.TRANSPARENT);
+		stage.show();
 	}
 	
 	
@@ -402,11 +421,8 @@ public class StrategyUIController implements Initializable{
 					  changableLabel.setText("持有期");
 				  }
 				}
-				
 			}
 		});
-		psLabel1.getStylesheets().add(getClass().getClassLoader().getResource("styles/PSLabel.css").toExternalForm());
-		psLabel2.getStylesheets().add(getClass().getClassLoader().getResource("styles/PSLabel.css").toExternalForm());
 		dataController = DataContorller.getInstance();
 		Image saveImage = new Image(getClass().getResourceAsStream("save.png"));
 		saveButton.setGraphic(new ImageView(saveImage));

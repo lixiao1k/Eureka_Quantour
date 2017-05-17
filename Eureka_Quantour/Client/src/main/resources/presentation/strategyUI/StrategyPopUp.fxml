@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="100.0" prefWidth="300.0" styleClass="background" stylesheets="@../../styles/Strategy.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="presentation.strategyUI.StrategyPopUpController">
+   <children>
+      <TextField fx:id="name" layoutX="44.0" layoutY="14.0" prefHeight="23.0" prefWidth="97.0" promptText="策略名称" />
+      <RadioButton fx:id="publicRB" layoutX="160.0" layoutY="18.0" mnemonicParsing="false" text="公开">
+         <toggleGroup>
+            <ToggleGroup fx:id="isPublic" />
+         </toggleGroup>
+      </RadioButton>
+      <RadioButton fx:id="privateRB" layoutX="227.0" layoutY="18.0" mnemonicParsing="false" text="私有" toggleGroup="$isPublic" />
+      <Button layoutX="69.0" layoutY="63.0" mnemonicParsing="false" onAction="#save" styleClass="main-button" text="保存" />
+      <Button layoutX="181.0" layoutY="63.0" mnemonicParsing="false" onAction="#cancel" styleClass="main-button" text="取消" />
+   </children>
+</AnchorPane>

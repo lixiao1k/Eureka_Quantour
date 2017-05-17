@@ -380,7 +380,7 @@ public class MarketUIController implements Initializable {
 		Scene scene = new Scene(career);
 		Stage stage = new Stage();
 		stage.setScene(scene);
-//		stage.initStyle(StageStyle.TRANSPARENT);
+		stage.initStyle(StageStyle.TRANSPARENT);
 		stage.show();
 	}
 	/*

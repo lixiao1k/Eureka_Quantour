@@ -49,8 +49,6 @@
                   <RadioButton fx:id="openRadioButton" layoutX="150.0" layoutY="102.0" mnemonicParsing="false" text="开盘" toggleGroup="$price" />
                </children>
             </AnchorPane>
-            <Label fx:id="psLabel1" layoutX="15.0" layoutY="380.0" prefHeight="23.0" prefWidth="276.0" text="动量策略不用填写几日均值栏" />
-            <Label fx:id="psLabel2" layoutX="15.0" layoutY="403.0" prefHeight="17.0" prefWidth="276.0" text="均值策略不用填写形成期" />
             <Button layoutX="173.0" layoutY="483.0" mnemonicParsing="false" onAction="#saveStrategy" styleClass="main-button" text="保存策略" />
          </children>
       </AnchorPane>
