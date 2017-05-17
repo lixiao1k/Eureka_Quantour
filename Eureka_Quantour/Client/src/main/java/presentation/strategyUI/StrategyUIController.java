@@ -364,11 +364,7 @@ public class StrategyUIController implements Initializable{
 	}
 
 	@FXML
-	protected void saveStrategy(ActionEvent e){
-		List<Integer> list = new ArrayList<>();
-		
-		
-		
+	protected void saveStrategy(ActionEvent e){	
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("StrategyPopUp.fxml"));
 		Parent popup = null;
@@ -385,6 +381,35 @@ public class StrategyUIController implements Initializable{
 		stage.setScene(scene);
 		stage.initStyle(StageStyle.TRANSPARENT);
 		stage.show();
+	}
+	
+	public StrategyConditionVO getStrategyConditionVO(){
+		List<Integer> list = new ArrayList<>();
+		int num=0,stocknums;
+		try{
+			num=Integer.parseInt(changableTextField.getText());
+			list.add(num);
+		}catch(NumberFormatException e){
+			Notifications.create().title("错误").text("请输入正整数").showWarning();
+		}
+		if(num<=0){
+			Notifications.create().title("错误").text("请输入正整数").showWarning();
+		}
+
+
+		String name = strategy.getSelectedToggle().getUserData().toString();
+		stocknums=Integer.parseInt(numOfStockTextField.getText());
+		StrategyConditionVO strategyConditionVO = new StrategyConditionVO(name,list,stocknums);
+		return strategyConditionVO;
+	}
+	
+	public SaleVO getSaleVO(){
+		List<Integer> list = new ArrayList<>();
+		int holddays;
+		holddays = Integer.parseInt(holdPeriodTextField.getText());
+		String priceStr = price.getSelectedToggle().getUserData().toString();
+		SaleVO saleVO = new SaleVO(holddays,priceStr);
+		return saleVO;
 	}
 	
 	
@@ -409,6 +434,8 @@ public class StrategyUIController implements Initializable{
 		changableLabel.setText("形成期");
 		momentumRadioButton.setUserData("动量");
 		meanRadioButton.setUserData("均值");
+		closeRadioButton.setUserData("收盘价");
+		openRadioButton.setUserData("开盘价");
 		strategy.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
 
 			@Override
