@@ -17,6 +17,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
+import javafx.scene.shape.StrokeLineCap;
 import presentation.chart.chartService;
 import presentation.chart.function.CatchMouseMove;
 import presentation.chart.function.CatchMouseMoveService;
@@ -134,6 +135,7 @@ public class TimeShareChart implements chartService{
 
 		
 /* *********************************************************************************************************** */	
+		// chart and path
 		AnchorPane chartAPane = new AnchorPane();
 		StackPane chartSPane = new StackPane();
 		Label info = catchMouseMove.catchMouseReturnInfoForStackPaneSN(lineChart, dataMap, point, "time", 5);
@@ -144,17 +146,21 @@ public class TimeShareChart implements chartService{
 		
 		int pathLeftjuli = 10;
 		Path path1 = new Path();
-		path1.getElements().add( new MoveTo(pathLeftjuli, 0) );
-		path1.getElements().add( new LineTo(width, 0) );
+		path1.getElements().add( new MoveTo(pathLeftjuli, 2) );
+		path1.getElements().add( new LineTo(width, 2) );
+		path1.setStroke( Color.GRAY );
 		Path path2 = new Path();
 		path2.getElements().add( new MoveTo(pathLeftjuli, height/4) );
 		path2.getElements().add( new LineTo(width, height/4) );
+		path2.setStroke( Color.GRAY );
 		Path path3 = new Path();
 		path3.getElements().add( new MoveTo(pathLeftjuli, height/2) );
 		path3.getElements().add( new LineTo(width, height/2) );
+		path3.setStroke( Color.WHITE );
 		Path path4 = new Path();
 		path4.getElements().add( new MoveTo(pathLeftjuli, height/4*3) );
 		path4.getElements().add( new LineTo(width, height/4*3) );
+		path4.setStroke( Color.GRAY );
 		chartAPane.getChildren().add(path1);
 		chartAPane.getChildren().add(path2);
 		chartAPane.getChildren().add(path3);
@@ -169,10 +175,10 @@ public class TimeShareChart implements chartService{
 		
 		Label top1 = new Label( df.format(MidValue*1.1) );
 		Label top2 = new Label( df.format(MidValue*1.05) );
-		top1.setTextFill(Color.web("#f391a9"));
-		top2.setTextFill(Color.web("#f391a9"));
+		top1.setTextFill(Color.web("#f15b6c"));
+		top2.setTextFill(Color.web("#f15b6c"));
 		StackPane topP = new StackPane();
-		topP.setPrefSize(leftjuli, height/4);
+		topP.setPrefSize(leftjuli, height/4+5);
 		topP.getChildren().add(top1);
 		topP.getChildren().add(top2);
 		StackPane.setAlignment(top1, Pos.TOP_CENTER);
@@ -197,7 +203,7 @@ public class TimeShareChart implements chartService{
 		yPane.getChildren().add(mid);
 		yPane.getChildren().add(botP);	
 		AnchorPane.setTopAnchor(mid, height/4+0.0);
-		AnchorPane.setTopAnchor(botP, height/4*3+0.0);
+		AnchorPane.setTopAnchor(botP, height/4*3-5.0);
 /* *********************************************************************************************************** */		
 	
 		
