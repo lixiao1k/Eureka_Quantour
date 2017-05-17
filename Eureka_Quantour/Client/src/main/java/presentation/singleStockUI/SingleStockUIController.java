@@ -340,7 +340,7 @@ public class SingleStockUIController implements Initializable{
 		RemoteHelper remote = RemoteHelper.getInstance();
 		StockLogicInterface stockLogicInterface = remote.getStockLogic();
 
-		fuzzySearch.setStyle("-fx-background-color: lightgrey;-fx-opacity: 0.7;");
+		fuzzySearch.setStyle("-fx-background-color: lightgrey;-fx-opacity: 0.4;");
 
 		searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
 
@@ -358,6 +358,7 @@ public class SingleStockUIController implements Initializable{
 						public void handle(ActionEvent event) {
 							searchTextField.setText(bt.getText().split("\t")[0]);
 							fuzzySearch.getChildren().clear();
+							search(new ActionEvent());
 						}
 					});
 				}
@@ -383,12 +384,17 @@ public class SingleStockUIController implements Initializable{
 							public void handle(ActionEvent event) {
 								searchTextField.setText(bt.getText().split("\t")[0]);
 								fuzzySearch.getChildren().clear();
+								search(new ActionEvent());
 							}
 						});
 					}
 				} catch (RemoteException e) {
 					e.printStackTrace();
 				}
+
+
+
+
 
 
 
