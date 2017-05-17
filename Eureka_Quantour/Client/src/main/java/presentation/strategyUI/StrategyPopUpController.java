@@ -60,6 +60,7 @@ public class StrategyPopUpController implements Initializable{
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+			Notifications.create().title("成功").text("保存成功").showInformation();
 			Stage root =(Stage) name.getScene().getWindow();
 			root.close();
 		}else{

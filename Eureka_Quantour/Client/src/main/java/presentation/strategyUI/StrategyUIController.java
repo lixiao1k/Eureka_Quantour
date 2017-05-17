@@ -395,8 +395,6 @@ public class StrategyUIController implements Initializable{
 		if(num<=0){
 			Notifications.create().title("错误").text("请输入正整数").showWarning();
 		}
-
-
 		String name = strategy.getSelectedToggle().getUserData().toString();
 		stocknums=Integer.parseInt(numOfStockTextField.getText());
 		StrategyConditionVO strategyConditionVO = new StrategyConditionVO(name,list,stocknums);
@@ -404,9 +402,16 @@ public class StrategyUIController implements Initializable{
 	}
 	
 	public SaleVO getSaleVO(){
-		List<Integer> list = new ArrayList<>();
-		int holddays;
-		holddays = Integer.parseInt(holdPeriodTextField.getText());
+		int holddays=0;
+		try{
+			holddays = Integer.parseInt(holdPeriodTextField.getText());
+		}catch(NumberFormatException e){
+			Notifications.create().title("错误").text("请输入正整数").showWarning();
+		}
+		if(holddays<=0){
+			Notifications.create().title("错误").text("请输入正整数").showWarning();
+		}
+
 		String priceStr = price.getSelectedToggle().getUserData().toString();
 		SaleVO saleVO = new SaleVO(holddays,priceStr);
 		return saleVO;
@@ -432,8 +437,8 @@ public class StrategyUIController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
 		changableLabel.setText("形成期");
-		momentumRadioButton.setUserData("动量");
-		meanRadioButton.setUserData("均值");
+		momentumRadioButton.setUserData("动量策略");
+		meanRadioButton.setUserData("均值策略");
 		closeRadioButton.setUserData("收盘价");
 		openRadioButton.setUserData("开盘价");
 		strategy.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
