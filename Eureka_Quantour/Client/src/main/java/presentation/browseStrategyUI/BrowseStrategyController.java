@@ -94,6 +94,9 @@ public class BrowseStrategyController implements Initializable{
 		hb.getChildren().addAll(name,creater,yearreturn,show);
 
 		DecimalFormat df = new DecimalFormat("0.00");
+		
+		Label yearreturn = getLabel(85, Pos.CENTER_RIGHT, df.format(vo.getStrategyYearReturn()*100)+"%");
+		hb.getChildren().addAll(name,creater,yearreturn);
 		return hb;
 	}
 	private Label getLabel(double width, Pos alignment,String text){
