@@ -26,7 +26,7 @@ public class test {
 		LocalDate begindate = LocalDate.of(2013, 3, 6);
 		LocalDate enddate = LocalDate.of(2016, 3, 6);
 		
-		String stockcode = "300033";
+		String stockcode = "000938";
 		
 		double alpha = 0.01;
 		int numOfDay = 1;

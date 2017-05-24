@@ -24,13 +24,14 @@ public class ForecastRODImpl implements ForecastRODInterface{
 	private static DecimalFormat df = new DecimalFormat("0.0000");
 	
 	private IDataInterface idata = new DataInterfaceImpl();
+
+	private LocalDate zuizao = LocalDate.of(2005,2,1);
 	
 	@Override
 	public StockRODVO getStockROD( String stockcode, LocalDate begindate, LocalDate enddate, int numOfDay, double alpha, int m, int k )
 			throws RemoteException{
 		// TODO Auto-generated method stub
 		StockRODVO srod = new StockRODVO();
-		LocalDate zuizao = LocalDate.of(2005,2,1);
 
 /* **************************************************************************************************************** */
 		// save qian numOfDay day stock's close
@@ -172,7 +173,8 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		
 		while( date.compareTo(enddate)<=0 ){
 			double PreROD = 0;
-			double[] AvgAndFangcha = new double[2];
+			double average = 0.0;
+			double square = 0.0;
 			boolean ifROE = false;
 			try{
 				close1 = close2;
@@ -192,15 +194,14 @@ public class ForecastRODImpl implements ForecastRODInterface{
 				iROD = ForecastRODImpl.doubletoindex( ROD );
 				srod.wROD[idate][iROD]++;
 				
-				AvgAndFangcha = ForecastRODImpl.calAvgAndFangcha( RODs );
+				average = ForecastRODImpl.calAvg( RODs );
+				square = ForecastRODImpl.calVariance( RODs );
 				int iYesAvgROD = ForecastRODImpl.doubletoindex( (close2-avg)/avg );
-//				PreROD = 0.5*AvgAndFangcha[0] + 0.6*ForecastRODImpl.calAvg( srod.firstFloor[iZROD] ) 
-//							- 0.2*ForecastRODImpl.calAvg( srod.secondFloor[iQROD][iZROD] )
-//							+ 0.1*ForecastRODImpl.calAvg( srod.YesAvgROD[iYesAvgROD] );
+
 				double today = ForecastRODImpl.predictPrice( closes, m, k );
 				PreROD = (today-close1) / close1;
 				
-				ifROE = ForecastRODImpl.preROE( PreROD, AvgAndFangcha[1], 1, alpha, ROD);
+				ifROE = ForecastRODImpl.preROE( PreROD, square, 1, alpha, ROD);
 				if( ifROE )
 					srod.zhixin[0]++;
 				else
@@ -248,13 +249,55 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		return srod;
 	}
 	
+	@Override
+	public PredictVO predict(String stockcode, LocalDate date) throws RemoteException {
+		// TODO Auto-generated method stub
+		PredictVO predictVO = new PredictVO();
+		SingleStockInfoVO ssi = new SingleStockInfoVO();
 
+		double[] closes = new double[100];
+		LocalDate dateT = date;
+		int index = closes.length-1;
+		while( index>-1 && dateT.compareTo(zuizao)>0 ){
+			try{
+				dateT = dateT.minusDays(1);
+				ssi = new SingleStockInfoVO( idata.getSingleStockInfo(stockcode, dateT) );
+				closes[index] = ssi.getClose();
+				index--;
+			}catch ( NullStockIDException e ){
+				e.printStackTrace();
+			}catch ( NullDateException e){
+			}
+		}
+
+		if( index>-1 ){
+			while( index>-1 ){
+				int indexT = index + (int)(Math.random()*( closes.length - index ));
+				if( indexT>closes.length-1 )
+					indexT = closes.length-1;
+				if( indexT>index ){
+					closes[index] = closes[indexT];
+					index--;
+				}
+			}
+		}
+
+		// double predictPrice = ForecastRODImpl.predictPrice( closes, 5, 25);
+		double predictPrice = ForecastRODImpl.predictPrice( closes );
+		predictVO.setPredictPrice( predictPrice );
+
+		double predictROD = (predictPrice-closes[closes.length-1]) / closes[closes.length-1];
+		predictVO.setPredictROD( predictROD );
+
+		return predictVO;
+	}
 	
+
+/* **************************************************************************************************************** */
+	// KNN algorithm
 	public static double predictPrice( double[] closes, int m, int k ){
 		
 		double result = 0;
-/* **************************************************************************************************************** */
-		// KNN algorithm
 		int n = closes.length;
 	
 		if( n<m )
@@ -274,7 +317,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 	
 		double[] cos = new double[vNum];
 		for( int i=0; i<vNum; i++ )
-			cos[i] = ForecastRODImpl.calCos( baseVector, vectors[i] );
+			cos[i] = ForecastRODImpl.calCosIncludeAngle( baseVector, vectors[i] );
 		double[] cosSave = new double[vNum];
 		cosSave = cos;
 		
@@ -309,18 +352,24 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		}
 
 		result =  sum / k;
-/* **************************************************************************************************************** */
 		
 		return result;
 	}
+/* **************************************************************************************************************** */
 
 
-	@Override
-	public PredictVO predict(String stockcode, LocalDate date) throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+/* **************************************************************************************************************** */
+	private static double predictPrice( double[] closes ){
+		if( closes.length<2 )
+			return 0;
+		double ZPrice = closes[closes.length-1];
+		double QPrice = closes[closes.length-2];
+		double result = ZPrice + (ZPrice - QPrice)/2;
+		return result;
 	}
-	
+/* **************************************************************************************************************** */
+
+
 	private static int getDayOfWeek( LocalDate date){
 		String dow = date.getDayOfWeek().toString();
 		if( dow.equals("MONDAY"))
@@ -362,58 +411,23 @@ public class ForecastRODImpl implements ForecastRODInterface{
 			return 22;
 	}
 
-	// select stock's numOfDay-day data random, calculate yangben avg and fangcha
-	private static double[] calAvgAndFangcha( double[] closes ){
-		int numOfDay = closes.length;
-		
-		double[] yangbenAvg = new double[30];
-		double avg = 0.0;
-		double fangcha = 0.0;
-		for( int i=0; i<30; i++ ){
-			double RODSum = 0;
-			for( int j=0; j<5; j++ ){
-				double random = Math.random();
-				int index = (int)(random*numOfDay);
-				if( index>(numOfDay-1) )
-					index = numOfDay-1;
-				RODSum += closes[index];
-			}
-			yangbenAvg[i] = RODSum / 5;
-		}
-		for( int i=0; i<yangbenAvg.length; i++ ){
-			avg += yangbenAvg[i];
-			fangcha += Math.pow( yangbenAvg[i], 2 );
-		}
-		avg /= yangbenAvg.length;
-		fangcha /= yangbenAvg.length;
-		fangcha -= Math.pow( avg, 2 );
-
-		double AvgAndFangcha[] = new double[2];
-		AvgAndFangcha[0] = avg;
-		AvgAndFangcha[1] = fangcha;
-		
-		return AvgAndFangcha;
+	private static double calAvg( double[] data ){
+		double sum = 0.0;
+		for( int i=0; i<data.length; i++ )
+			sum += data[i];
+		return sum / data.length;
 	}
 
-	private static double calAvg( int[] EROD ){
-		double sum = 0;
-		double lower = -0.1;
-		double upper = -0.09;
-		int numSum = 0;
-		for( int i=1; i<11; i++ ){
-			numSum += EROD[i];
-			sum += EROD[i]*(lower+upper)/2;
-			lower += 0.01;
-			upper += 0.01;
-		}
-		for( int i=12; i<22; i++ ){
-			numSum += EROD[i];
-			sum += EROD[i]*(lower+upper)/2;
-			lower += 0.01;
-			upper += 0.01;
-		}
-		sum /= numSum;
-		return sum;
+	private static double calVariance( double[] data ){
+		double avg = ForecastRODImpl.calAvg( data );
+		double avgSquare = Math.pow( avg, 2 );
+
+		double[] data2 = new double[data.length];
+		for( int i=0; i<data.length; i++ )
+			data2[i] = Math.pow( data[i], 2 );
+		double squareAvg = ForecastRODImpl.calAvg( data2 );
+
+		return (squareAvg - avgSquare);
 	}
 
 	/**
@@ -421,13 +435,11 @@ public class ForecastRODImpl implements ForecastRODInterface{
 	 * @Description: judge if real value in the zhi xin qu jian
 	 * @author: hzp
 	 * @date: May 17, 2017
-	 * @param: @param aveg
-	 * @param: @param fangcha
 	 * @param: @param num : chou yang ci shu
 	 * @param: @param alpha : ji suan zhi xin qu jian de α
-	 * @param: @param ROD
+	 * @param: @param real
 	 */
-	private static boolean preROE( double aveg, double fangcha, int num, double alpha, double ROD){
+	private static boolean preROE( double average, double square, int num, double alpha, double real){
 		double zalpha = 0.0;
 		if( alpha==0.1 )
 			zalpha = 1.65;
@@ -435,14 +447,10 @@ public class ForecastRODImpl implements ForecastRODInterface{
 			zalpha = 1.96;
 		else if( alpha==0.01 )
 			zalpha = 2.58;
-		double lower = aveg - Math.sqrt(fangcha)*zalpha/Math.sqrt(num);
-		double upper = aveg + Math.sqrt(fangcha)*zalpha/Math.sqrt(num);
+		double lower = average - Math.sqrt(square)*zalpha/Math.sqrt(num);
+		double upper = average + Math.sqrt(square)*zalpha/Math.sqrt(num);
 
-//		System.out.println( fangcha + "  " + aveg);
-//		System.out.println( lower + "  " + ROD + "  " + upper);
-//		System.out.println();
-
-		if( ROD>=lower && ROD<=upper ){
+		if( real>=lower && real<=upper ){
 			return true;
 		}
 		else{
@@ -456,7 +464,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 	 * @author: hzp
 	 * @date: May 23, 2017
 	 */
-	private static double calCos( double[] vector1, double[] vector2 ){
+	private static double calCosIncludeAngle( double[] vector1, double[] vector2 ){
 		if( vector1.length!=vector2.length )
 			return 0;
 		double vectorMul = ForecastRODImpl.vectorMul( vector1, vector2 );
@@ -495,5 +503,23 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		return sum;
 	}
 
+	/**
+	 * 
+	 * @Description: function : Wi = w1 + (i-1) * d; k Wi's values' sum = 1
+	 * @author: hzp
+	 * @date: May 24, 2017
+	 * @param: @param k : number of factor's weight 
+	 * @param: @param i : index of factor
+	 */
+	private static double getweight( int k, int i ){
+		if( i>k )
+			return 0;
+		double w0 = 0.004;
+		double d = 2 * (1-k*w0) / ( k*(k-1) );
+		if( i==0 )
+			return w0;
+		else
+			return w0 + (i-1)*d;
+	}
 
 }
