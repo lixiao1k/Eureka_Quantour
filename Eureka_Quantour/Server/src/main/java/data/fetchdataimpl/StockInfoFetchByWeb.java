@@ -34,6 +34,8 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.xmlbeans.impl.xb.ltgfmt.Code;
+
 import com.mysql.cj.jdbc.PreparedStatement;
 
 import data.common.DateLeaf;
@@ -255,6 +257,61 @@ public class StockInfoFetchByWeb {
 			pro2.store(out1, "update rights_url");
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	
+	
+	
+	
+	
+	public void fetchCompany() throws InternetdisconnectException{
+		webmethod.testInternet();
+		File root=new File("config/stock/info");
+		String[] stocklist=root.list();
+		int i=stocklist.length;
+		int count=0;
+		LocalDate ld=LocalDate.of(2005, 2, 1);
+		boolean flag=false;
+		for(String stock:stocklist){
+			count++;
+			System.out.println("正在处理第"+count+"个，总共"+i+"个"+"剩余"+(i-count)+"个。");
+			try {
+				if(stock.equals("600876")){
+					flag=true;
+				}
+				if(flag){
+					fetchSingleCompany(ld,stock);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	private void fetchSingleCompany(LocalDate ld,String code) throws IOException{
+		String codepath="config/stock/info/"+code+"/";
+		Properties pro=new Properties();
+		BufferedInputStream is = new BufferedInputStream(
+				new FileInputStream(codepath+"config.properties"));
+		pro.load(is);
+		is.close();
+		String url=pro.getProperty("rights_url","null");
+		String index=url.substring(18,url.length()-12);
+		for(int i=ld.getYear();i<=LocalDate.now().getYear();i++){
+			String url1="http://quote.cfi.cn/quote.aspx?contenttype=cwzbMgfxzb&stockid="
+					+ index
+					+ "&jzrq="
+					+ i;
+			String url2="http://quote.cfi.cn/quote.aspx?contenttype=gbjg&stockid="
+					+ index
+					+ "&jzrq="
+					+ i;
+			boolean isA=true;
+			if(code.charAt(0)=='2'||code.charAt(0)=='9'){
+				isA=false;
+			}
+			fetchAndmatch1(url1, code);
+			fetchAndmatch2(url2,code,isA);
 		}
 	}
 	/**
@@ -1543,6 +1600,213 @@ public class StockInfoFetchByWeb {
 		else{
 			return Double.parseDouble(str);
 		}
+	}
+	private void fetchAndmatch1(String destUrl,String code) throws IOException{
+		int BUFFER_SIZE = 8096;
+		BufferedInputStream bis = null;
+		HttpURLConnection httpUrl = null;
+		URL url = null;
+		byte[] buf = new byte[BUFFER_SIZE];
+		int size = 0; 
+		url = new URL(destUrl);   
+		httpUrl = (HttpURLConnection) url.openConnection();
+//		httpUrl.setRequestProperty( "User-agent", "Mozilla/9.0 (compatible; MSIE 10.0; Windows NT 8.1; .NET CLR 2.0.50727)" );
+		try{
+			httpUrl.connect();
+		}catch(Exception e){
+			System.out.println(destUrl);
+			httpUrl.connect();
+		}
+		bis = new BufferedInputStream(httpUrl.getInputStream());
+		String total="";
+		while ((size = bis.read(buf)) != -1){
+			total=total+new String(buf,0,size);
+		}
+		bis.close();
+		if(total.indexOf(("禁止访问"))>=0){
+			System.out.println("ip is banned");
+			try {
+				Thread.sleep(6000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			fetchAndmatch1(destUrl,code);
+		}
+  		String pattern="<tr.*?>.*?</tr>";
+  		List<String> date=new ArrayList<String>();
+  		List<Double> basic=new ArrayList<Double>();
+  		List<Double> netasset=new ArrayList<Double>();
+  		int count=0;
+  		for(String row:match(total,pattern)){
+  			count++;
+  			if(count==2){
+  				for(String day:match(row,"[0-9]{4}-[0-9]{2}-[0-9]{2}")){
+  					date.add(day);
+  				}
+  			}
+  			if(count==4){
+  				for(String day:match(row,"-?[0-9]+\\.[0-9]+|--")){
+  					if(day.equals("--")){
+  						basic.add(0.0);
+  					}
+  					else{
+  						basic.add(Double.valueOf(day));
+  					}
+  				}
+  			}
+  			if(count==8){
+  				for(String day:match(row,"[0-9]+\\.[0-9]+|--")){
+  					if(day.equals("--")){
+  						netasset.add(0.0);
+  					}
+  					else{
+  						netasset.add(Double.valueOf(day));
+  					}
+  				}
+  			}
+  		}
+  		Connection conn=ConnectionPoolManager.getInstance().getConnection("quantour");
+		String sql="insert into companyquota values(?,?,?,?)";
+		PreparedStatement pstmt=null;
+		try {
+			pstmt = (PreparedStatement)conn.prepareStatement(sql);
+			for(int i=0;i<date.size();i++){
+				pstmt.setString(1, code);
+				pstmt.setString(2, date.get(i));
+				pstmt.setDouble(3, basic.get(i));
+				pstmt.setDouble(4, netasset.get(i));
+				pstmt.addBatch();
+			}
+			pstmt.executeBatch();
+			pstmt.close();
+			ConnectionPoolManager.getInstance().close("quantour", conn);
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}catch(IndexOutOfBoundsException e){
+			System.out.println(code+destUrl);
+			System.out.println(date.size()+":"+basic.size()+":"+netasset.size());
+			System.out.println(total);
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+	}
+	private void fetchAndmatch2(String destUrl,String code,boolean isA) throws IOException{
+		int BUFFER_SIZE = 8096;
+		BufferedInputStream bis = null;
+		HttpURLConnection httpUrl = null;
+		URL url = null;
+		byte[] buf = new byte[BUFFER_SIZE];
+		int size = 0; 
+		url = new URL(destUrl);
+		httpUrl = (HttpURLConnection) url.openConnection();
+	//	httpUrl.setRequestProperty( "User-agent", "Mozilla/9.0 (compatible; MSIE 10.0; Windows NT 8.1; .NET CLR 2.0.50727)" );
+		try{
+			httpUrl.connect();
+		}catch(Exception e){
+			System.out.println(destUrl);
+			httpUrl.connect();
+		}
+		bis = new BufferedInputStream(httpUrl.getInputStream());
+		String total="";
+		while ((size = bis.read(buf)) != -1){
+			total=total+new String(buf,0,size);
+		}
+		bis.close();
+		if(total.indexOf(("禁止访问"))>=0){
+			System.out.println("ip is banned");
+			try {
+				Thread.sleep(6000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			fetchAndmatch2(destUrl,code,isA);
+		}
+  		String pattern="<tr.*?>.*?</tr>";
+  		List<String> date=new ArrayList<String>();
+  		List<Long> basic=new ArrayList<Long>();
+  		List<Long> flu=new ArrayList<Long>();
+  		int count=0;
+  		for(String row:match(total,pattern)){
+  			count++;
+  			if(count==2){
+  				for(String day:match(row,"[0-9]{4}-[0-9]{2}-[0-9]{2}")){
+  					date.add(day);
+  				}
+  			}
+  			if(count==4){
+  				for(String day:match(row,"[0-9]+\\.[0]{2}|--")){
+  					if(day.equals("--")){
+  						basic.add((long) 0);
+  					}
+  					else{
+  						basic.add(Long.valueOf(day.substring(0, day.length()-3)));
+  					}
+  				}
+  			}
+  			if(count==6&&isA){
+  				for(String day:match(row,"[0-9]+\\.[0]{2}|--")){
+  					if(day.equals("--")){
+  						flu.add((long) 0);
+  					}
+  					else{
+  						flu.add(Long.valueOf(day.substring(0, day.length()-3)));
+  					}
+  				}
+  			}
+  			if(count==11&&!isA){
+  				for(String day:match(row,"[0-9]+\\.[0]{2}|--")){
+  					if(day.equals("--")){
+  						flu.add((long) 0);
+  					}
+  					else{
+  						flu.add(Long.valueOf(day.substring(0, day.length()-3)));
+  					}
+  				}
+  			}
+  		}
+  		Connection conn=ConnectionPoolManager.getInstance().getConnection("quantour");
+		String sql="insert into companycaptial values(?,?,?,?)";
+		PreparedStatement pstmt=null;
+		try {
+			pstmt = (PreparedStatement)conn.prepareStatement(sql);
+			for(int i=0;i<date.size();i++){
+				pstmt.setString(1, code);
+				pstmt.setString(2, date.get(i));
+				pstmt.setLong(3, basic.get(i));
+				pstmt.setLong(4, flu.get(i));
+				pstmt.addBatch();
+			}
+			pstmt.executeBatch();
+			pstmt.close();
+			ConnectionPoolManager.getInstance().close("quantour", conn);
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}catch(IndexOutOfBoundsException e){
+			System.out.println(code+destUrl);
+			System.out.println(date.size()+":"+basic.size()+":"+flu.size());
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+	}
+	private List<String> match(String total,String pattern){
+		List<String> date=new ArrayList<String>();
+		String p=pattern;
+  		Pattern pat=Pattern.compile(p);
+  		Matcher m=pat.matcher(total);
+  		while(m.find()){
+  			date.add(m.group());
+  		}
+  		return date;
 	}
 }
 class DateWriter{

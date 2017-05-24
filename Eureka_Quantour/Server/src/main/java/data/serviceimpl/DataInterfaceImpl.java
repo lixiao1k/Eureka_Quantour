@@ -19,6 +19,7 @@ import exception.StrategyRepeatException;
 import exception.TimeShraingLackException;
 import exception.UserNameRepeatException;
 import po.CommentPO;
+import po.CompanyInfoPO;
 import po.SingleStockInfoPO;
 import po.StrategyInfoPO;
 import po.StrategyShowPO;
@@ -35,13 +36,25 @@ public class DataInterfaceImpl implements IDataInterface
 	private StockDataController_2 stock2;
 	private StockSetDataController stockset;
 	private StrategyDataController strategy;
+	private CompanyDataController company;
 	public DataInterfaceImpl(){
 		stock2=StockDataController_2.getInstance();
 		user=UserDataController.getInstance();
 		stockset=StockSetDataController.getInstance();
 		strategy=StrategyDataController.getInstance();
+		company=CompanyDataController.getInstance();
 	}
+	
+	public CompanyInfoPO getLatestCommpanyInfo(LocalDate time,String code) throws NullStockIDException{
+		return company.getLatestCommpanyInfo(time, code);
+	}
+	public List<CompanyInfoPO> getCompanyDetail(String code) throws NullStockIDException{
+		return company.getCompanyDetail(code);
+	}
+	
 //------------------------------------用户------------------------------------
+	
+	
 	
 	/**
 	 * 
@@ -96,6 +109,8 @@ public class DataInterfaceImpl implements IDataInterface
 	public void deleteStrategy ( String createName, String strategyName){
 		strategy.deleteStrategy(createName, strategyName);
 	}
+	
+	
 
 	/**
 	 * 评价策略

@@ -246,8 +246,7 @@ public class StockLogicImpl implements StockLogicInterface{
 
 	@Override
 	public SingleStockInfoVO getStockBasicInfo(String code, LocalDate now) throws NullStockIDException, NullDateException {
-
-
+		idi.addBrowseTimes(code);
 		return new SingleStockInfoVO(idi.getSingleStockInfo(code,now));
 	}
 
@@ -383,10 +382,31 @@ public class StockLogicImpl implements StockLogicInterface{
 		StrategyShowPO showPO=idi.getStrategy(createrName, StrategyName);
 		List<CommentPO> commentPOS=idi.getStrategyComments(createrName, StrategyName);
 
+		List<CommentVO> commentVOS=new ArrayList<>();
+		for (CommentPO po:commentPOS){
+			commentVOS.add(new CommentVO(po.getComments(),po.getTime(),po.getCreaterName()));
+		}
+		StrategyShowVO res=new StrategyShowVO();
+		res.setTimeList(showPO.getTimeList());
+		res.setBasicReturn(showPO.getBasicReturn());
+		res.setBasicReturn(showPO.getStrategyReturn());
+		res.setAlpha(showPO.getAlpha());
+		res.setBeta(showPO.getBeta());
+		res.setSharp(showPO.getSharp());
+		res.setZuidahuiche(showPO.getZuidahuiche());
+		res.setStrategyYearReturn(showPO.getStrategyYearReturn());
+		res.setComments(commentVOS);
+		res.setStrategyname(showPO.getStrategyName());
+		res.setPublicorPrivate(infoPO.isPublicorprivate());
+		res.setStrategyConditionVO(new StrategyConditionVO(infoPO.getStrategTypeNname(),infoPO.getParameter(),infoPO.getPurchasenum()));
+		res.setSaleVO(new SaleVO(infoPO.getTiaocangqi(),infoPO.getTiaocangjiage(),infoPO.getPurchasenum()));
 
 
 
-		return null;
+
+
+
+		return res;
 	}
 
 	@Override
@@ -394,6 +414,7 @@ public class StockLogicImpl implements StockLogicInterface{
 		List<StrategyShowPO> list=idi.getStrategyList(createrName);
 		List<StrategyListVO> reslist=new ArrayList<>();
 		for(StrategyShowPO po:list){
+			System.out.println(po.getStrategyYearReturn());
 			reslist.add(new StrategyListVO(po.getCreaterName(),po.getStrategyName(),po.getStrategyYearReturn()));
 		}
 		Collections.sort(reslist);

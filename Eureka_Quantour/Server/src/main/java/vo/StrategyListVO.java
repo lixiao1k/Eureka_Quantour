@@ -1,6 +1,7 @@
 package vo;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 
 /**
  * Created by huihantao on 2017/5/15.
@@ -18,6 +19,8 @@ public class StrategyListVO implements Comparable<StrategyListVO>, Serializable{
         this.createrName = createrName;
         this.strategyName = strategyName;
         this.strategyYearReturn = strategyYearReturn;
+        double d = 0.200;
+        DecimalFormat df = new DecimalFormat("0.00");
     }
 
     public String getCreaterName() {
@@ -46,7 +49,7 @@ public class StrategyListVO implements Comparable<StrategyListVO>, Serializable{
 
     @Override
     public int compareTo(StrategyListVO o) {
-        return (int) (this.getStrategyYearReturn()*100-100*o.getStrategyYearReturn());
+        return (int) -(this.getStrategyYearReturn()*100-100*o.getStrategyYearReturn());
     }
 
 

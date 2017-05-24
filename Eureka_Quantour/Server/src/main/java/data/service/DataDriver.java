@@ -18,6 +18,7 @@ import exception.StockHaltingException;
 import exception.StockNameRepeatException;
 import exception.StockSetNameRepeatException;
 import exception.StrategyRepeatException;
+import exception.TimeShraingLackException;
 import exception.UserNameRepeatException;
 import po.CommentPO;
 import po.SingleStockInfoPO;
@@ -103,6 +104,14 @@ public class DataDriver {
 					System.out.println(e.toString());
 				}
 			}
+			else if(mode.equals("get companyinfo")){
+				try {
+					System.out.println(data.getLatestCommpanyInfo(LocalDate.of(2017, 2, 3), "000001").getBasicIncome());
+				} catch (NullStockIDException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 			else if(mode.equals("del stock from stockset")){
 				String username=sc.nextLine();
 				String stockSetName=sc.nextLine();
@@ -123,6 +132,14 @@ public class DataDriver {
 					for(String name:data.getStockSetInfo(stockSetName,username)){
 						System.out.println(name);
 					}
+				}
+			}
+			else if(mode.equals("get timesharing")){
+				try {
+					data.getTimeSharingData("000001", LocalDate.of(2017, 4, 19));
+				} catch (TimeShraingLackException | NullStockIDException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 			else if(mode.equals("translate1")){

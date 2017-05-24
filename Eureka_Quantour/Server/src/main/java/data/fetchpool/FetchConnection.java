@@ -6,6 +6,21 @@ public class FetchConnection {
 	private String targetpath;
 	private int index;
 	private boolean status;
+	private String code;
+	private String url2;
+	public FetchConnection(String url, String type, String targetpath, int index, boolean status, String code,
+			boolean isA,String url2) {
+		super();
+		this.url = url;
+		this.type = type;
+		this.targetpath = targetpath;
+		this.index = index;
+		this.status = status;
+		this.code = code;
+		this.isA = isA;
+		this.url2=url2;
+	}
+	private boolean isA;
 	public FetchConnection(String url,String type,String targetpath,int index,boolean status){
 		setUrl(url);
 		setType(type);
@@ -86,5 +101,41 @@ public class FetchConnection {
 	 */
 	public void setStatus(boolean status) {
 		this.status = status;
+	}
+	/**
+	 * @return the code
+	 */
+	public String getCode() {
+		return code;
+	}
+	/**
+	 * @param code the code to set
+	 */
+	public void setCode(String code) {
+		this.code = code;
+	}
+	/**
+	 * @return the isA
+	 */
+	public boolean isA() {
+		return isA;
+	}
+	/**
+	 * @param isA the isA to set
+	 */
+	public void setA(boolean isA) {
+		this.isA = isA;
+	}
+	/**
+	 * @return the url2
+	 */
+	public String getUrl2() {
+		return url2;
+	}
+	/**
+	 * @param url2 the url2 to set
+	 */
+	public void setUrl2(String url2) {
+		this.url2 = url2;
 	}
 }

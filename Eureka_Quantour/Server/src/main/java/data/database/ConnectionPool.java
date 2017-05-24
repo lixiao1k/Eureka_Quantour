@@ -25,7 +25,7 @@ public class ConnectionPool implements IConnectionPool {
         super();  
         this.dbBean = dbBean;  
         init();  
-        cheackPool();  
+       // cheackPool();  
     }  
   
     // 初始化  

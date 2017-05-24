@@ -34,6 +34,16 @@ public class FetchPoolManagement {
         }   
     	return index;
     }  
+    // 获得连接,根据连接池名字 获得连接  
+    public int  getConnection(String poolName,String url,String path,String type,String code,boolean isA,String url2){   
+        int index=0;
+    	if(pools.size()>0 && pools.containsKey(poolName)){  
+            index=getPool(poolName).getConnection(url, path, type, code, isA, url2);
+        }else{  
+            System.out.println("Error:Can't find this connecion pool ->"+poolName);  
+        }   
+    	return index;
+    }  
     public void startConn(String poolName,int index){
     	if(pools.size()>0 && pools.containsKey(poolName)){  
     		getPool(poolName).startConnection(index);  
