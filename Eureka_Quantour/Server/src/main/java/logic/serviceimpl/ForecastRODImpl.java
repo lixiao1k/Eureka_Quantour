@@ -26,7 +26,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 	private IDataInterface idata = new DataInterfaceImpl();
 	
 	@Override
-	public StockRODVO getStockROD( String stockcode, LocalDate begindate, LocalDate enddate, int numOfDay, double alpha )
+	public StockRODVO getStockROD( String stockcode, LocalDate begindate, LocalDate enddate, int numOfDay, double alpha, int m, int k )
 			throws RemoteException{
 		// TODO Auto-generated method stub
 		StockRODVO srod = new StockRODVO();
@@ -194,9 +194,12 @@ public class ForecastRODImpl implements ForecastRODInterface{
 				
 				AvgAndFangcha = ForecastRODImpl.calAvgAndFangcha( RODs );
 				int iYesAvgROD = ForecastRODImpl.doubletoindex( (close2-avg)/avg );
-				PreROD = 0.5*AvgAndFangcha[0] + 0.6*ForecastRODImpl.calAvg( srod.firstFloor[iZROD] ) 
-							- 0.2*ForecastRODImpl.calAvg( srod.secondFloor[iQROD][iZROD] )
-							+ 0.1*ForecastRODImpl.calAvg( srod.YesAvgROD[iYesAvgROD] );
+//				PreROD = 0.5*AvgAndFangcha[0] + 0.6*ForecastRODImpl.calAvg( srod.firstFloor[iZROD] ) 
+//							- 0.2*ForecastRODImpl.calAvg( srod.secondFloor[iQROD][iZROD] )
+//							+ 0.1*ForecastRODImpl.calAvg( srod.YesAvgROD[iYesAvgROD] );
+				double today = ForecastRODImpl.predictPrice( closes, m, k );
+				PreROD = (today-close1) / close1;
+				
 				ifROE = ForecastRODImpl.preROE( PreROD, AvgAndFangcha[1], 1, alpha, ROD);
 				if( ifROE )
 					srod.zhixin[0]++;
@@ -233,7 +236,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 						srod.Neg[1]++;
 				}
 				
-
+				
 			}catch ( NullStockIDException e ){
 				e.printStackTrace();
 			}catch ( NullDateException e){
@@ -245,6 +248,73 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		return srod;
 	}
 	
+
+	
+	public static double predictPrice( double[] closes, int m, int k ){
+		
+		double result = 0;
+/* **************************************************************************************************************** */
+		// KNN algorithm
+		int n = closes.length;
+	
+		if( n<m )
+			return 0.0;
+
+		int vLen = m;
+		int vNum = n-m;
+
+		double[] baseVector = new double[vLen];
+		for( int i=0; i<vLen; i++ )
+			baseVector[i] = closes[i+vNum];
+	
+		double[][] vectors = new double[vNum][vLen];
+		for( int i=0; i<vNum; i++ )
+			for( int j=0; j<vLen; j++ )
+				vectors[i][j] = closes[i+j];
+	
+		double[] cos = new double[vNum];
+		for( int i=0; i<vNum; i++ )
+			cos[i] = ForecastRODImpl.calCos( baseVector, vectors[i] );
+		double[] cosSave = new double[vNum];
+		cosSave = cos;
+		
+		// bubble sort cos
+		for( int i=0; i<vNum-1; i++ ){
+			for( int j=0; j<vNum-1-i; j++ ){
+				if( cos[j]>cos[j+1] ){
+					double temp = cos[j];
+					cos[j] = cos[j+1];
+					cos[j+1] = temp;
+				}
+			}
+		}
+
+		// get the first k index in cosSave
+		int[] index = new int[k];
+		for( int i=0; i<k; i++ ){
+			for( int j=0; j<vNum; j++ ){
+				if( df.format(cosSave[j]).equals(df.format(cos[i])) ){
+					index[j] = i;
+					break;
+				}
+			}
+		}
+
+		double sum = 0;
+		for( int i=0; i<k; i++ ){
+			if( index[i]==(vNum-1) )
+				sum += baseVector[vLen-1];
+			else
+				sum += vectors[index[i]+1][vLen-1];
+		}
+
+		result =  sum / k;
+/* **************************************************************************************************************** */
+		
+		return result;
+	}
+
+
 	@Override
 	public PredictVO predict(String stockcode, LocalDate date) throws RemoteException {
 		// TODO Auto-generated method stub
@@ -268,7 +338,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 	}
 	
 	/*
-	* return the distribution of ROD in array
+	* return the index of distribution of ROD in array
 	*/
 	private static int doubletoindex( double ROD){
 		String str = df.format(ROD);
@@ -379,5 +449,51 @@ public class ForecastRODImpl implements ForecastRODInterface{
 			return false;
 		}
 	}
+
+	/**
+	 * 
+	 * @Description: calculate cos ( two vector's include angle )
+	 * @author: hzp
+	 * @date: May 23, 2017
+	 */
+	private static double calCos( double[] vector1, double[] vector2 ){
+		if( vector1.length!=vector2.length )
+			return 0;
+		double vectorMul = ForecastRODImpl.vectorMul( vector1, vector2 );
+		double vectorModelMul = ForecastRODImpl.vectorModel( vector1 )*ForecastRODImpl.vectorModel( vector2 );
+
+		return vectorMul / vectorModelMul;
+	}
+
+	/**
+	 * 
+	 * @Description: calculate two vector mul
+	 * @author: hzp
+	 * @date: May 23, 2017
+	 */
+	private static double vectorMul( double[] vector1, double[] vector2 ){
+		if( vector1.length!=vector1.length )
+			return 0;
+
+		double sum = 0;
+		for( int i=0; i<vector1.length; i++ )
+			sum += vector1[i]*vector2[i];
+		return sum;
+	}
+
+	/**
+	 * 
+	 * @Description: calculate vector's model
+	 * @author: hzp
+	 * @date: May 23, 2017
+	 */
+	private static double vectorModel( double[] vector ){
+		double sum = 0;
+		for( int i=0; i<vector.length; i++ )
+			sum += Math.pow( vector[i], 2 );
+		sum = Math.sqrt( sum );
+		return sum;
+	}
+
 
 }

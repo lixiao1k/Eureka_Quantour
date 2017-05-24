@@ -34,9 +34,11 @@ public class test {
 		int maxsDay = 0;
 		double maxz = 0;
 		int maxsZhi = 0;
+		int m = 50;
+		int k = 5;
 		for( int i=0; i<300; i++ ){
 			try{
-				srod = remote.getForecastROD().getStockROD( stockcode, begindate, enddate, numOfDay, alpha);
+				srod = remote.getForecastROD().getStockROD( stockcode, begindate, enddate, numOfDay, alpha, m, k);
 			}catch(RemoteException e){
 				e.printStackTrace();
 			}
@@ -52,7 +54,7 @@ public class test {
 		}
 
 		try{
-			srod = remote.getForecastROD().getStockROD( stockcode, begindate, enddate, maxsDay, alpha);
+			srod = remote.getForecastROD().getStockROD( stockcode, begindate, enddate, maxsDay, alpha, m, k);
 		}catch(RemoteException e){
 			e.printStackTrace();
 		}
@@ -146,7 +148,7 @@ public class test {
             
             
             try{
-    			srod = remote.getForecastROD().getStockROD( stockcode, begindate, enddate, maxsZhi, alpha);
+    			srod = remote.getForecastROD().getStockROD( stockcode, begindate, enddate, maxsZhi, alpha, 50, 5);
     		}catch(RemoteException e){
     			e.printStackTrace();
     		}
