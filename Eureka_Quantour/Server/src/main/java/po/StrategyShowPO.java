@@ -16,6 +16,7 @@ public class StrategyShowPO {
     private double Sharp;
     private double zuidahuiche;
     private double StrategyYearReturn;
+    private double jizhunYearReturn;
 
     
     public StrategyShowPO(String createrName, String strategyName, 
@@ -45,7 +46,8 @@ public class StrategyShowPO {
 
     }
 
-	public StrategyShowPO(List<LocalDate> timeList, List<Double> basicReturn, List<Double> strategyReturn, double alpha, double beta, double sharp, double zuidahuiche, double strategyYearReturn) {
+
+	public StrategyShowPO(List<LocalDate> timeList, List<Double> basicReturn, List<Double> strategyReturn, double alpha, double beta, double sharp, double zuidahuiche, double strategyYearReturn, double jizhunYearReturn) {
 		TimeList = timeList;
 		BasicReturn = basicReturn;
 		StrategyReturn = strategyReturn;
@@ -54,6 +56,7 @@ public class StrategyShowPO {
 		Sharp = sharp;
 		this.zuidahuiche = zuidahuiche;
 		StrategyYearReturn = strategyYearReturn;
+		this.jizhunYearReturn = jizhunYearReturn;
 	}
 
 	public void add(double br, double sr, LocalDate time, int index){
@@ -63,6 +66,16 @@ public class StrategyShowPO {
         BasicReturn.set(index, br);
         StrategyReturn.set(index, sr);
     }
+
+
+	public double getJizhunYearReturn() {
+		return jizhunYearReturn;
+	}
+
+	public void setJizhunYearReturn(double jizhunYearReturn) {
+		this.jizhunYearReturn = jizhunYearReturn;
+	}
+
 	/**
 	 * @return the timeList
 	 */

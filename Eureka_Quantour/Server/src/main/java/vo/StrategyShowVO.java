@@ -22,6 +22,7 @@ public class StrategyShowVO implements Serializable{
     private double Sharp;
     private double zuidahuiche;
     private double StrategyYearReturn;
+    private double jizhunYearReturn;
     //评价
     private List<CommentVO> comments;
 
@@ -38,6 +39,14 @@ public class StrategyShowVO implements Serializable{
 
 
     public StrategyShowVO() {
+    }
+
+    public double getJizhunYearReturn() {
+        return jizhunYearReturn;
+    }
+
+    public void setJizhunYearReturn(double jizhunYearReturn) {
+        this.jizhunYearReturn = jizhunYearReturn;
     }
 
     public List<LocalDate> getTimeList() {
