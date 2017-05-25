@@ -20,9 +20,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import logic.service.StockLogicInterface;
+import presentation.chart.chartService;
+import presentation.chart.lineChart.YieldComparedChart;
 import rmi.RemoteHelper;
 import vo.CommentVO;
 import vo.StrategyListVO;
@@ -91,6 +94,7 @@ public class BrowseStrategyController implements Initializable{
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
 				setJudge(vo);
+				setLine(vo);
 			}
 		});
 		DecimalFormat df = new DecimalFormat("0.00");	
@@ -164,7 +168,26 @@ public class BrowseStrategyController implements Initializable{
 	}
 	
 	private void setLine(StrategyListVO vo){
-		
+		String createrName = vo.getCreaterName();
+		String strategyName = vo.getStrategyName();
+		RemoteHelper remoteHelper = RemoteHelper.getInstance();
+		StockLogicInterface stockLogicInterface = remoteHelper.getStockLogic();
+		StrategyShowVO strategyShowVO = null;
+		try {
+			strategyShowVO = stockLogicInterface.getStrategy(createrName, strategyName);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(strategyShowVO!=null){
+			System.out.println(strategyShowVO.getTimeList());
+			System.out.println(strategyShowVO.getBasicReturn());
+			System.out.println(strategyShowVO.getStrategyReturn());
+			chartService cService = new YieldComparedChart(strategyShowVO.getTimeList(),
+					strategyShowVO.getBasicReturn(), strategyShowVO.getStrategyReturn());
+			Pane pane = cService.getchart(630, 228, true);
+			anchorPane1.getChildren().add(pane);
+		}
 	}
 	
 	@Override

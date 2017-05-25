@@ -152,6 +152,25 @@
 .text-area {
 	-fx-padding: 6 5 6 5;
 }
+.text-area .content {
+    /*the is 1px less top and bottom than TextInput because of scrollpane border */
+    -fx-padding: 0.25em 0.583em 0.25em 0.583em; /* 3 7 3 7 */
+    -fx-cursor: text;
+    -fx-background-color:
+          	rgb(255, 255, 255, 0.3),
+    	linear-gradient(rgb(0, 0, 0, 0.5), rgb(0, 0, 0, 0.8) 50%),
+        rgb(218, 226, 224);
+    -fx-background-radius: 2;
+}
+.text-area:focused .content {
+    -fx-background-color: 
+        -fx-control-inner-background,
+        -fx-faint-focus-color,
+        linear-gradient(from 0px 0px to 0px 5px, derive(-fx-control-inner-background, -9%), -fx-control-inner-background);
+    -fx-background-insets: 0, 0, 2;
+    -fx-background-radius: 2, 1, 0;
+}
+
 .hbox {
     -fx-background-color: white;
     -fx-background-radius: 5.0;
