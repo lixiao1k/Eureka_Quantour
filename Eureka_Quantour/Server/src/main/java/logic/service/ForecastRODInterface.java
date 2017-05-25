@@ -13,17 +13,19 @@ public interface ForecastRODInterface extends Remote {
 	 * 
 	 * @Description: TODO
 	 * @author: hzp
-	 * @date: May 13, 2017
+	 * @date: May 23, 2017
 	 * @param: @param stockcode
 	 * @param: @param begindate
 	 * @param: @param enddate
 	 * @param: @param numOfDay
 	 * @param: @param alpha
+	 * @param: @param m : number of vector's character
+	 * @param: @param k : number of KNN data
 	 * @param: @return
 	 * @param: @throws RemoteException 
 	 * @return: StockRODVO
 	 */
-	public StockRODVO getStockROD( String stockcode, LocalDate begindate, LocalDate enddate, int numOfDay, double alpha )
+	public StockRODVO getStockROD( String stockcode, LocalDate begindate, LocalDate enddate, int numOfDay, double alpha, int m, int k )
 			throws RemoteException;
 	
 	/**

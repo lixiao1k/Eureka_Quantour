@@ -13,6 +13,8 @@
             <Button fx:id="searchButton" layoutX="125.0" layoutY="14.0" mnemonicParsing="false" onAction="#search" prefHeight="23.0" prefWidth="23.0" styleClass="transperantButton" />
             <Button fx:id="addButton" layoutX="40.0" layoutY="327.0" mnemonicParsing="false" onAction="#add2StockSet" styleClass="main-button" text="添加至股池" />
             <Pane fx:id="fuzzy" layoutX="15.0" layoutY="41.0" prefHeight="141.0" prefWidth="139.0" />
+            <Button layoutX="147.0" layoutY="288.0" mnemonicParsing="false" styleClass="main-button1" text="日" AnchorPane.rightAnchor="0.0" />
+            <Button layoutX="148.0" layoutY="304.0" mnemonicParsing="false" styleClass="main-button1" text="分" AnchorPane.rightAnchor="0.0" />
          </children></AnchorPane>
       <AnchorPane layoutX="169.0" maxWidth="781.0" prefHeight="758.0" prefWidth="781.0" styleClass="left1-segment" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="169.0" AnchorPane.topAnchor="0.0">
          <children>
