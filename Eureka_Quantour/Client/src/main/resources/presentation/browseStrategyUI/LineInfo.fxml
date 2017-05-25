@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="38.0" prefWidth="608.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.browseStrategyUI.LineInfoPaneController">
+   <children>
+      <Label fx:id="strYear1" layoutX="14.0" layoutY="12.0" maxHeight="15.0" maxWidth="84.0" prefHeight="15.0" prefWidth="84.0" text="策略年化收益率" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="13.0" />
+      <Label fx:id="strYear2" layoutX="104.0" layoutY="13.0" maxHeight="15.0" maxWidth="60.0" prefHeight="15.0" prefWidth="60.0" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="13.0" />
+      <Label fx:id="baseYear1" layoutX="177.0" layoutY="13.0" maxHeight="15.0" maxWidth="84.0" prefHeight="15.0" prefWidth="84.0" text="基准年化收益率" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="13.0" />
+      <Label fx:id="baseYear2" layoutX="261.0" layoutY="13.0" maxHeight="15.0" maxWidth="60.0" prefHeight="15.0" prefWidth="60.0" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="13.0" />
+      <Label fx:id="alpha1" layoutX="321.0" layoutY="13.0" text="α" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="13.0" />
+      <Label fx:id="alpha2" layoutX="329.0" layoutY="13.0" maxHeight="15.0" maxWidth="39.0" prefHeight="15.0" prefWidth="39.0" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="13.0" />
+      <Label fx:id="beta1" layoutX="368.0" layoutY="13.0" text="β" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="13.0" />
+      <Label fx:id="beta2" layoutX="376.0" layoutY="13.0" maxHeight="15.0" maxWidth="39.0" prefHeight="15.0" prefWidth="39.0" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="13.0" />
+      <Label layoutX="415.0" layoutY="13.0" text="夏普比率" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="13.0" fx:id="xiapu1" />
+      <Label layoutX="463.0" layoutY="13.0" maxHeight="15.0" maxWidth="48.0" prefHeight="15.0" prefWidth="48.0" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="13.0" fx:id="xiapu2" />
+      <Label fx:id="huice1" layoutX="511.0" layoutY="13.0" text="最大回测" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="13.0" />
+      <Label fx:id="huice2" layoutX="559.0" layoutY="13.0" maxHeight="15.0" maxWidth="48.0" prefHeight="15.0" prefWidth="48.0" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="13.0" />
+   </children>
+</AnchorPane>

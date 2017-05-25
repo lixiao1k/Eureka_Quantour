@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="121.0" prefWidth="533.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+   <children>
+      <Label fx:id="strategyName1" layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="57.0" text="策略名：" AnchorPane.bottomAnchor="84.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="10.0" />
+      <Label fx:id="strategyName2" layoutX="71.0" layoutY="17.0" prefHeight="25.0" prefWidth="92.0" AnchorPane.bottomAnchor="84.0" AnchorPane.topAnchor="10.0" />
+      <Label fx:id="createrName1" layoutX="175.0" layoutY="17.0" prefHeight="25.0" prefWidth="57.0" text="创建者：" AnchorPane.bottomAnchor="84.0" AnchorPane.topAnchor="10.0" />
+      <Label fx:id="createrName2" layoutX="232.0" layoutY="17.0" prefHeight="25.0" prefWidth="81.0" AnchorPane.bottomAnchor="84.0" AnchorPane.topAnchor="10.0" />
+      <Label fx:id="type1" layoutX="14.0" layoutY="46.0" text="策略类型：" AnchorPane.bottomAnchor="60.0" AnchorPane.topAnchor="46.0" />
+      <Label fx:id="type2" layoutX="74.0" layoutY="46.0" prefHeight="15.0" prefWidth="74.0" AnchorPane.bottomAnchor="60.0" AnchorPane.topAnchor="46.0" />
+      <Label fx:id="stocksNum1" layoutX="175.0" layoutY="46.0" text="股票数：" AnchorPane.bottomAnchor="60.0" AnchorPane.topAnchor="46.0" />
+      <Label fx:id="stocksNum2" layoutX="232.0" layoutY="46.0" prefHeight="15.0" prefWidth="27.0" AnchorPane.bottomAnchor="60.0" AnchorPane.topAnchor="46.0" />
+      <Label fx:id="holddays1" layoutX="14.0" layoutY="77.0" text="持有期：" AnchorPane.bottomAnchor="29.0" AnchorPane.topAnchor="77.0" />
+      <Label fx:id="holddays2" layoutX="74.0" layoutY="77.0" prefHeight="15.0" prefWidth="48.0" AnchorPane.bottomAnchor="29.0" AnchorPane.topAnchor="77.0" />
+      <Label fx:id="price1" layoutX="175.0" layoutY="77.0" text="价格：" AnchorPane.bottomAnchor="29.0" AnchorPane.topAnchor="77.0" />
+      <Label fx:id="price2" layoutX="230.0" layoutY="77.0" prefHeight="15.0" prefWidth="36.0" AnchorPane.bottomAnchor="29.0" AnchorPane.topAnchor="77.0" />
+      <Label fx:id="changeable" layoutX="298.0" layoutY="77.0" prefHeight="15.0" prefWidth="118.0" />
+   </children>
+</AnchorPane>

@@ -37,7 +37,9 @@
          </children>
       </AnchorPane>
       <Button layoutX="814.0" layoutY="613.0" mnemonicParsing="false" onAction="#judge" prefHeight="29.0" prefWidth="48.0" styleClass="main-button" text="评价" />
-      <AnchorPane fx:id="anchorPane1" layoutX="262.0" layoutY="-1.0" prefHeight="231.0" prefWidth="635.0" styleClass="top-segment" AnchorPane.topAnchor="0.0" />
-      <TextArea fx:id="judgeTextArea" layoutX="286.0" layoutY="419.0" prefHeight="160.0" prefWidth="588.0" wrapText="true" />
+      <AnchorPane fx:id="anchorPane1" layoutX="262.0" layoutY="31.0" prefHeight="200.0" prefWidth="635.0" styleClass="top-segment" AnchorPane.topAnchor="31.0" />
+      <TextArea fx:id="judgeTextArea" layoutX="286.0" layoutY="458.0" prefHeight="121.0" prefWidth="588.0" wrapText="true" />
+      <AnchorPane fx:id="lineinfoPane" layoutX="279.0" layoutY="237.0" prefHeight="38.0" prefWidth="608.0" AnchorPane.bottomAnchor="483.0" AnchorPane.leftAnchor="279.0" AnchorPane.rightAnchor="330.0" AnchorPane.topAnchor="237.0" />
+      <AnchorPane fx:id="strategyInfoPane" layoutX="279.0" layoutY="275.0" prefHeight="121.0" prefWidth="533.0" />
    </children>
 </AnchorPane>

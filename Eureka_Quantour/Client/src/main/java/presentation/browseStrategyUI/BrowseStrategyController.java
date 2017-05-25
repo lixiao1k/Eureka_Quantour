@@ -1,5 +1,6 @@
 package presentation.browseStrategyUI;
 
+import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.List;
@@ -10,8 +11,10 @@ import dataController.DataContorller;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -19,6 +22,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -26,6 +30,7 @@ import javafx.scene.text.Text;
 import logic.service.StockLogicInterface;
 import presentation.chart.chartService;
 import presentation.chart.lineChart.YieldComparedChart;
+import presentation.marketUI.MarketAreaController;
 import rmi.RemoteHelper;
 import vo.CommentVO;
 import vo.StrategyListVO;
@@ -42,6 +47,12 @@ public class BrowseStrategyController implements Initializable{
 	
 	@FXML
 	AnchorPane anchorPane1;
+	
+	@FXML
+	AnchorPane lineinfoPane;
+	
+	@FXML
+	AnchorPane strategyInfoPane;
 	
 	@FXML
 	TextArea judgeTextArea;
@@ -93,6 +104,8 @@ public class BrowseStrategyController implements Initializable{
 			@Override
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
+				dataController.upDate("CreaterName", vo.getCreaterName());
+				dataController.upDate("StrategyName", vo.getStrategyName());
 				setJudge(vo);
 				setLine(vo);
 			}
@@ -125,6 +138,7 @@ public class BrowseStrategyController implements Initializable{
 			e.printStackTrace();
 		}
 		List<CommentVO> commentVOs = strategyShowVO.getComments();
+		judgeFlowPane.getChildren().clear();
 		for(CommentVO vo1:commentVOs){
 			System.out.println("sda");
 			System.out.println(vo1.getComment());
@@ -185,8 +199,23 @@ public class BrowseStrategyController implements Initializable{
 			System.out.println(strategyShowVO.getStrategyReturn());
 			chartService cService = new YieldComparedChart(strategyShowVO.getTimeList(),
 					strategyShowVO.getBasicReturn(), strategyShowVO.getStrategyReturn());
-			Pane pane = cService.getchart(630, 228, true);
+			Pane pane = cService.getchart(630, 180, true);
+			anchorPane1.getChildren().clear();
 			anchorPane1.getChildren().add(pane);
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("LineInfo.fxml"));
+			Parent lineInfo = null;
+			try {
+				lineInfo = (AnchorPane)loader.load();
+				LineInfoPaneController controller = loader.getController();
+				controller.setInfo(strategyShowVO);
+				lineinfoPane.getChildren().clear();
+				lineinfoPane.getChildren().add(lineInfo);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
 		}
 	}
 	
