@@ -223,7 +223,8 @@ public class StrategyDataHelperImpl_DBO implements IStrategyDataHelper{
 				double huiche=rs.getDouble(5);
 				double yearreturn=rs.getDouble(6);
 				int length=rs.getInt(7);
-				result=new StrategyShowPO(createrName,StrategyName,alpha,beta,sharp,huiche,yearreturn,length);
+				double basicreturn=rs.getDouble(8);
+				result=new StrategyShowPO(createrName,StrategyName,alpha,beta,sharp,huiche,yearreturn,length,basicreturn);
 			}
 			rs.close();
 			pstmt.close();
@@ -274,7 +275,8 @@ public class StrategyDataHelperImpl_DBO implements IStrategyDataHelper{
 			pstmt.setDouble(4, vo.getSharp());
 			pstmt.setDouble(5, vo.getStrategyYearReturn());
 			pstmt.setDouble(6, vo.getZuidahuiche());
-			pstmt.setDouble(7, vo.getBasicReturn().size());
+			pstmt.setInt(7, vo.getBasicReturn().size());
+			pstmt.setDouble(8, vo.getJizhunYearReturn());
 			pstmt.executeUpdate();
 			pstmt.close();
 			ConnectionPoolManager.getInstance().close("quantour", conn);
@@ -363,9 +365,10 @@ public class StrategyDataHelperImpl_DBO implements IStrategyDataHelper{
 				double yearreturn=rs.getDouble(6);
 
 				int length=rs.getInt(7);
+				double jizhunreturn=rs.getDouble(8);
 				String name=rs.getString("username");
 				String strategyname=rs.getString("strategyname");
-				result.add(new StrategyShowPO(name,strategyname,alpha,beta,sharp,huiche,yearreturn,length));
+				result.add(new StrategyShowPO(name,strategyname,alpha,beta,sharp,huiche,yearreturn,length,jizhunreturn));
 			}
 			rs.close();
 			pstmt.close();
@@ -397,9 +400,10 @@ public class StrategyDataHelperImpl_DBO implements IStrategyDataHelper{
 				double huiche=rs.getDouble(5);
 				double yearreturn=rs.getDouble(6);
 				int length=rs.getInt(7);
+				double jizhunreturn=rs.getDouble(8);
 				String name=rs.getString("username");
 				String strategyname=rs.getString("strategyname");
-				result.add(new StrategyShowPO(name,strategyname,alpha,beta,sharp,huiche,yearreturn,length));
+				result.add(new StrategyShowPO(name,strategyname,alpha,beta,sharp,huiche,yearreturn,length,jizhunreturn));
 			}
 			rs.close();
 			pstmt.close();

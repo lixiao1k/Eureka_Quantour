@@ -21,7 +21,7 @@ public class StrategyShowPO {
     
     public StrategyShowPO(String createrName, String strategyName, 
     		double alpha, double beta, double sharp, double zuidahuiche,
-			double strategyYearReturn,int length) {
+			double strategyYearReturn,int length,double jizhunYearReturn) {
 		super();
 		this.createrName = createrName;
 		this.strategyName = strategyName;
@@ -42,7 +42,7 @@ public class StrategyShowPO {
     	this.Sharp=sharp;
     	this.zuidahuiche=zuidahuiche;
     	this.StrategyYearReturn=strategyYearReturn;
-
+    	this.jizhunYearReturn=jizhunYearReturn;
 
     }
 
