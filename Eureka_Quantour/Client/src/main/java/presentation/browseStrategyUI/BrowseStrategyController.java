@@ -14,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -39,6 +40,8 @@ public class BrowseStrategyController implements Initializable{
 	@FXML
 	AnchorPane anchorPane1;
 	
+	@FXML
+	TextArea judgeTextArea;
 	@FXML
 	protected void browseMine(ActionEvent e){
 		RemoteHelper remoteHelper = RemoteHelper.getInstance();
@@ -77,7 +80,6 @@ public class BrowseStrategyController implements Initializable{
 		hb.setPrefSize(245, 30);
 		Label name = getLabel(70, Pos.CENTER_LEFT, "  "+vo.getStrategyName());
 		Label creater = getLabel(80, Pos.CENTER, vo.getCreaterName());
-		Label yearreturn = getLabel(85, Pos.CENTER_RIGHT, Double.toString(vo.getStrategyYearReturn()*100)+"%");
 		Button show = new Button();
 		show.setPrefSize(20, 15);
 		Image showImage = new Image(getClass().getResourceAsStream("show.png"));
@@ -91,12 +93,9 @@ public class BrowseStrategyController implements Initializable{
 				setJudge(vo);
 			}
 		});
+		DecimalFormat df = new DecimalFormat("0.00");	
+		Label yearreturn = getLabel(85, Pos.CENTER_LEFT, df.format(vo.getStrategyYearReturn()*100)+"%");
 		hb.getChildren().addAll(name,creater,yearreturn,show);
-
-		DecimalFormat df = new DecimalFormat("0.00");
-		
-		Label yearreturn = getLabel(85, Pos.CENTER_RIGHT, df.format(vo.getStrategyYearReturn()*100)+"%");
-		hb.getChildren().addAll(name,creater,yearreturn);
 		return hb;
 	}
 	private Label getLabel(double width, Pos alignment,String text){
