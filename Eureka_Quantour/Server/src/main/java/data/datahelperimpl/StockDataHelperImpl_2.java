@@ -295,9 +295,9 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 				}
 				indexBuffer.getMbb(Integer.valueOf(code), stockInfo+"/"+code+"/mainIndex");
 			}
-			for(int cal:datesort){
-				dataBuffer.getMbb(cal, "config/resources/date/calendarDate/"+cal);
-			}
+//			for(int cal:datesort){
+//				dataBuffer.getMbb(cal, "config/resources/date/calendarDate/"+cal);
+//			}
 			br.close();
 		} catch (IOException e) {
 			e.printStackTrace();

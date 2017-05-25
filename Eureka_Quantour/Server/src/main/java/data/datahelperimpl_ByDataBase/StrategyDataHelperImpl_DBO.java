@@ -223,7 +223,8 @@ public class StrategyDataHelperImpl_DBO implements IStrategyDataHelper{
 				double huiche=rs.getDouble(5);
 				double yearreturn=rs.getDouble(6);
 				int length=rs.getInt(7);
-				result=new StrategyShowPO(createrName,StrategyName,alpha,beta,sharp,huiche,yearreturn,length);
+				double basicreturn=rs.getDouble(8);
+				result=new StrategyShowPO(createrName,StrategyName,alpha,beta,sharp,huiche,yearreturn,length,basicreturn);
 			}
 			rs.close();
 			pstmt.close();
@@ -274,7 +275,8 @@ public class StrategyDataHelperImpl_DBO implements IStrategyDataHelper{
 			pstmt.setDouble(4, vo.getSharp());
 			pstmt.setDouble(5, vo.getStrategyYearReturn());
 			pstmt.setDouble(6, vo.getZuidahuiche());
-			pstmt.setDouble(7, vo.getBasicReturn().size());
+			pstmt.setInt(7, vo.getBasicReturn().size());
+			pstmt.setDouble(8, vo.getJizhunYearReturn());
 			pstmt.executeUpdate();
 			pstmt.close();
 			ConnectionPoolManager.getInstance().close("quantour", conn);
@@ -350,7 +352,6 @@ public class StrategyDataHelperImpl_DBO implements IStrategyDataHelper{
 		List<StrategyShowPO> result=new ArrayList<StrategyShowPO>();
 		Connection conn=ConnectionPoolManager.getInstance().getConnection("quantour");
 		String sql="select * from quantour.strategyshow A ,quantour.strategy B where A.strategyid=B.strategyid and username = '"+createrName+"'";
-		System.out.println(sql);
 		PreparedStatement pstmt=null;
 		try {
 			pstmt = (PreparedStatement)conn.prepareStatement(sql);
@@ -359,17 +360,15 @@ public class StrategyDataHelperImpl_DBO implements IStrategyDataHelper{
 				double alpha=rs.getDouble(2);
 
 				double beta=rs.getDouble(3);
-				System.out.println("beta  "+beta);
 				double sharp=rs.getDouble(4);
-				System.out.println(" sharp"+sharp);
 				double huiche=rs.getDouble(5);
 				double yearreturn=rs.getDouble(6);
-				System.out.println("yea  "+yearreturn);
 
 				int length=rs.getInt(7);
+				double jizhunreturn=rs.getDouble(8);
 				String name=rs.getString("username");
 				String strategyname=rs.getString("strategyname");
-				result.add(new StrategyShowPO(name,strategyname,alpha,beta,sharp,huiche,yearreturn,length));
+				result.add(new StrategyShowPO(name,strategyname,alpha,beta,sharp,huiche,yearreturn,length,jizhunreturn));
 			}
 			rs.close();
 			pstmt.close();
@@ -401,9 +400,10 @@ public class StrategyDataHelperImpl_DBO implements IStrategyDataHelper{
 				double huiche=rs.getDouble(5);
 				double yearreturn=rs.getDouble(6);
 				int length=rs.getInt(7);
+				double jizhunreturn=rs.getDouble(8);
 				String name=rs.getString("username");
 				String strategyname=rs.getString("strategyname");
-				result.add(new StrategyShowPO(name,strategyname,alpha,beta,sharp,huiche,yearreturn,length));
+				result.add(new StrategyShowPO(name,strategyname,alpha,beta,sharp,huiche,yearreturn,length,jizhunreturn));
 			}
 			rs.close();
 			pstmt.close();

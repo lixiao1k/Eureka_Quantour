@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import com.sun.org.apache.regexp.internal.RE;
 import data.service.IDataInterface;
 import data.serviceimpl.DataInterfaceImpl;
 import exception.*;
@@ -389,7 +388,7 @@ public class StockLogicImpl implements StockLogicInterface{
 		StrategyShowVO res=new StrategyShowVO();
 		res.setTimeList(showPO.getTimeList());
 		res.setBasicReturn(showPO.getBasicReturn());
-		res.setBasicReturn(showPO.getStrategyReturn());
+		res.setStrategyReturn(showPO.getStrategyReturn());
 		res.setAlpha(showPO.getAlpha());
 		res.setBeta(showPO.getBeta());
 		res.setSharp(showPO.getSharp());
@@ -400,6 +399,7 @@ public class StockLogicImpl implements StockLogicInterface{
 		res.setPublicorPrivate(infoPO.isPublicorprivate());
 		res.setStrategyConditionVO(new StrategyConditionVO(infoPO.getStrategTypeNname(),infoPO.getParameter(),infoPO.getPurchasenum()));
 		res.setSaleVO(new SaleVO(infoPO.getTiaocangqi(),infoPO.getTiaocangjiage(),infoPO.getPurchasenum()));
+		res.setJizhunYearReturn(showPO.getJizhunYearReturn());
 
 
 
