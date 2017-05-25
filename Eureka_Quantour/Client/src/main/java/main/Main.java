@@ -29,6 +29,7 @@ public class Main extends Application{
 
 		try {
 			rmic = RemoteHelper.getInstance();
+
 //			rmic.setRemote(Naming.lookup("rmi://localhost:8888/DateRemote"));
 			rmic.setRemote(Naming.lookup("rmi://114.212.43.205:8888/DateRemote"));
 

@@ -9,7 +9,7 @@ import vo.StockRODVO;
 
 public interface ForecastRODInterface extends Remote {
 	
-	public StockRODVO getStockROD( String stockcode, LocalDate begindate, LocalDate enddate, int numOfDay, double alpha )
+	public StockRODVO getStockROD( String stockcode, LocalDate begindate, LocalDate enddate, int numOfDay, double alpha, int m, int k )
 			throws RemoteException;	
 	/**
 	 * 
