@@ -32,9 +32,9 @@ public class YieldComparedChart implements chartService {
 	private AnchorPane infopane = new AnchorPane();
 	
 	private ComparedChart comparedChart;
-    private int space = 40;
+    private int space;
 
-	public YieldComparedChart( YieldChartDataVO ycd){
+	public YieldComparedChart( YieldChartDataVO ycd ){
 		LocalDate[] date = listToArray.changeLocalDate(ycd.getDatelist());
     	List<Double[]> doubleList = new ArrayList<>();
     	List<String> dataName = new ArrayList<>();
@@ -49,6 +49,7 @@ public class YieldComparedChart implements chartService {
     	comparedChart = new ComparedChart( date, doubleList, dataName, ChartKind.YIELDCOMPARED);
     	
     	double layout = 70;
+        space = 40;
     	
     	/**
          * @author: hzp
@@ -134,6 +135,21 @@ public class YieldComparedChart implements chartService {
     	index += layout;
     	AnchorPane.setLeftAnchor(maxre, index);
 	}
+
+    public YieldComparedChart( List<LocalDate> date, List<Double> jichu, List<Double> celve){
+        space = 0;
+        infopane.setPrefSize( 0, 0 );
+
+        LocalDate[] dates = listToArray.changeLocalDate( date );
+        List<Double[]> doubleList = new ArrayList<>();
+        List<String> dataName = new ArrayList<>();
+        doubleList.add( listToArray.changeDouble(jichu) );
+        dataName.add("基础");
+        doubleList.add( listToArray.changeDouble(celve) );
+        dataName.add("策略");
+
+        comparedChart = new ComparedChart( dates, doubleList, dataName, ChartKind.YIELDCOMPARED);
+    }
 	
 	 @Override
 	 public Pane getchart(int width, int height, boolean withdate) {
