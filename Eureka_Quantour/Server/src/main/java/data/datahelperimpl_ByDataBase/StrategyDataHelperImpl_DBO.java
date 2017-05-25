@@ -65,7 +65,7 @@ public class StrategyDataHelperImpl_DBO implements IStrategyDataHelper{
 	}
 	public StrategyInfoPO applyStrategy(String createrName,String strategyName){
 		Connection conn=ConnectionPoolManager.getInstance().getConnection("quantour");
-		String sql="select strategyid from strategy where binary username ='"+createrName+"' and strategyname='"+strategyName+"'";
+		String sql="select * from strategy where binary username ='"+createrName+"' and strategyname='"+strategyName+"'";
 		PreparedStatement pstmt=null;
 		StrategyInfoPO result=null;
 		try {
