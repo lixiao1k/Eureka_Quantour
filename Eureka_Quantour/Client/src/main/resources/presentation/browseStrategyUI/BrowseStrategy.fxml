@@ -36,7 +36,8 @@
             </ScrollPane>
          </children>
       </AnchorPane>
-      <Button layoutX="815.0" layoutY="670.0" mnemonicParsing="false" onAction="#judge" prefHeight="29.0" prefWidth="48.0" styleClass="main-button" text="评价" />
+      <Button layoutX="814.0" layoutY="613.0" mnemonicParsing="false" onAction="#judge" prefHeight="29.0" prefWidth="48.0" styleClass="main-button" text="评价" />
       <AnchorPane fx:id="anchorPane1" layoutX="262.0" layoutY="-1.0" prefHeight="231.0" prefWidth="635.0" styleClass="top-segment" AnchorPane.topAnchor="0.0" />
+      <TextArea fx:id="judgeTextArea" layoutX="286.0" layoutY="419.0" prefHeight="160.0" prefWidth="588.0" wrapText="true" />
    </children>
 </AnchorPane>
