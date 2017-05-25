@@ -70,6 +70,7 @@ public class Return {
 
     private Double getYear(List<Double> list){
         double shuzi=list.get(list.size()-1);
+        System.out.println("shuzi   "+shuzi);
         int i=0;
         LocalDate itr=LocalDate.of(begin.getYear(),begin.getMonth(),begin.getDayOfMonth());
         for (;itr.compareTo(end)<=0;itr=itr.plusDays(1)){
@@ -77,6 +78,8 @@ public class Return {
         }
         double a=1+shuzi;
         double b=365.0/i;
+        System.out.println("shit    "+a +"   "+b);
+        System.out.println("jieguo     "+(Math.pow(a,b)-1));
         return Math.pow(a,b)-1;
     }
 
@@ -286,7 +289,6 @@ public class Return {
         }
     }
 
-
     private class dongliangcelue implements Comparator<SingleStockInfoPO> {
 
         private int days;
@@ -346,6 +348,38 @@ public class Return {
 
             return q-p;
 
+        }
+    }
+
+    private class pingjuechengjiaoe implements Comparator<SingleStockInfoPO>{
+
+        private int days;
+        private pingjuechengjiaoe(List<Integer> objects){
+            this.days=objects.get(0);
+        }
+
+        @Override
+        public int compare(SingleStockInfoPO o1, SingleStockInfoPO o2) {
+            LocalDate time=o1.getDate();
+            String code1=o1.getCode();
+            String code2=o1.getCode();
+            int j=0;
+            long chengjiaoliang1=1;
+            long chengjiaoliang2=1;
+            for (int i=0;i<days;i++) {
+                try {
+                    SingleStockInfoPO po1=idi.getSingleStockInfo(code1,time.minusDays(i));
+                    SingleStockInfoPO po2=idi.getSingleStockInfo(code2,time.minusDays(i));
+                    j++;
+                    chengjiaoliang1+=po1.getVolume();
+                    chengjiaoliang2+=po2.getVolume();
+                } catch (NullStockIDException e) {
+                    e.printStackTrace();
+                } catch (NullDateException e) {
+                    e.printStackTrace();
+                }
+            }
+            return 0;
         }
     }
 

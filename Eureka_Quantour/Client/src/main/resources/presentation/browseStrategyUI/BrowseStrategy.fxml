@@ -6,8 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane prefHeight="758.0" prefWidth="1217.0" styleClass="background" stylesheets="@../../styles/BrowseStrategy.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="presentation.browseStrategyUI.BrowseStrategyController">
+<AnchorPane prefHeight="758.0" prefWidth="1217.0" styleClass="background" stylesheets="@../../styles/BrowseStrategy.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.browseStrategyUI.BrowseStrategyController">
    <children>
       <AnchorPane layoutY="23.0" prefHeight="735.0" prefWidth="260.0" styleClass="left-segment" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="30.0">
          <children>
@@ -24,5 +23,21 @@
       </AnchorPane>
       <Button layoutY="3.0" mnemonicParsing="false" onAction="#browseMine" prefHeight="23.0" prefWidth="130.0" styleClass="main-button" text="我的" />
       <Button layoutX="130.0" layoutY="3.0" mnemonicParsing="false" onAction="#browseAll" prefHeight="23.0" prefWidth="130.0" styleClass="main-button" text="所有" />
+      <AnchorPane layoutX="897.0" layoutY="3.0" prefHeight="758.0" prefWidth="320.0" styleClass="top-segment" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ScrollPane layoutX="-3.0" layoutY="-3.0" prefHeight="760.0" prefWidth="322.0" styleClass="background" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <content>
+                  <FlowPane fx:id="judgeFlowPane" prefHeight="760.0" prefWidth="314.0" vgap="5.0">
+                     <padding>
+                        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                     </padding>
+                  </FlowPane>
+               </content>
+            </ScrollPane>
+         </children>
+      </AnchorPane>
+      <Button layoutX="814.0" layoutY="613.0" mnemonicParsing="false" onAction="#judge" prefHeight="29.0" prefWidth="48.0" styleClass="main-button" text="评价" />
+      <AnchorPane fx:id="anchorPane1" layoutX="262.0" layoutY="-1.0" prefHeight="231.0" prefWidth="635.0" styleClass="top-segment" AnchorPane.topAnchor="0.0" />
+      <TextArea fx:id="judgeTextArea" layoutX="286.0" layoutY="419.0" prefHeight="160.0" prefWidth="588.0" wrapText="true" />
    </children>
 </AnchorPane>
