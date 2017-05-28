@@ -24,7 +24,7 @@ public class RemoteHelper {
     		dateRemote = new DateRemote();
     		LocateRegistry.createRegistry(8888);
 
-    		Naming.bind("rmi://114.212.43.205:8888/DateRemote",dateRemote);
+    		Naming.bind("rmi://localhost:8888/DateRemote",dateRemote);
    		// Naming.bind("rmi://172.28.165.219:8888/DateRemote", dateRemote);
 
     		System.out.println("Success");
