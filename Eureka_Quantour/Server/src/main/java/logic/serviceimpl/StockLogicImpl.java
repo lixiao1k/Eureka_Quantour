@@ -197,7 +197,7 @@ public class StockLogicImpl implements StockLogicInterface{
 			p++;
 			diantu.set(s+10,p);
 		}
-		List<Integer> shanxingtu=new ArrayList();
+		List<Integer> shanxingtu=new ArrayList<>();
 		shanxingtu.add(fu5dao10);
 		shanxingtu.add(fu0dao5);
 		shanxingtu.add(zheng0dao5);
@@ -400,12 +400,6 @@ public class StockLogicImpl implements StockLogicInterface{
 		res.setStrategyConditionVO(new StrategyConditionVO(infoPO.getStrategTypeNname(),infoPO.getParameter(),infoPO.getPurchasenum()));
 		res.setSaleVO(new SaleVO(infoPO.getTiaocangqi(),infoPO.getTiaocangjiage(),infoPO.getPurchasenum()));
 		res.setJizhunYearReturn(showPO.getJizhunYearReturn());
-
-
-
-
-
-
 		return res;
 	}
 

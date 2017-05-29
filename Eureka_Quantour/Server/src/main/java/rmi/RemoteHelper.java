@@ -1,5 +1,5 @@
 package rmi;
-/*
+/**
  * @author: lxd
  * @time:2017/3/12
  */
@@ -23,10 +23,7 @@ public class RemoteHelper {
     		IDataInterface data=new DataInterfaceImpl();
     		dateRemote = new DateRemote();
     		LocateRegistry.createRegistry(8888);
-
     		Naming.bind("rmi://localhost:8888/DateRemote",dateRemote);
-   		// Naming.bind("rmi://172.28.165.219:8888/DateRemote", dateRemote);
-
     		System.out.println("Success");
     	}catch(RemoteException e){
     		e.printStackTrace();

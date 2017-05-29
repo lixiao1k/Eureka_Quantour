@@ -39,14 +39,12 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 	@Override
 	public List<SingleStockInfoVO> getSingleStockInfoByTime(String stockCode, LocalDate begin, LocalDate end)
 			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException {
-		// TODO Auto-generated method stub
 		return sli.getSingleStockInfoByTime(stockCode, begin, end);
 	}
 
 	@Override
 	public List<EMAInfoVO> getEMAInfo(String stockCode, LocalDate begin, LocalDate end)
 			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException, DateOverException {
-		// TODO Auto-generated method stub
 		return sli.getEMAInfo(stockCode, begin, end);
 	}
 
@@ -77,7 +75,6 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 
 	@Override
 	public void setStrategy(StrategyConditionVO strategyConditionVO, SaleVO s, LocalDate begin, LocalDate now, String stockSetName, String username) throws RemoteException {
-		System.out.println(strategyConditionVO.getName());
 		sli.setStrategy(strategyConditionVO, s, begin, now, stockSetName, username);
 	}
 
@@ -119,22 +116,20 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 	@Override
 	public void saveStragety(StrategyVO strategyVO, String username) throws RemoteException, StrategyRepeatException {
 		sli.saveStragety(strategyVO, username);
-
 	}
 
 	@Override
 	public void deleteStrategy(String createName, String strategyName) throws RemoteException {
-
+		sli.deleteStrategy(createName, strategyName);
 	}
 
 	@Override
 	public void comment(String Username, String strategyName, String commenterName, LocalDateTime time, String comment) throws RemoteException {
-
+		sli.comment(Username, strategyName, commenterName, time, comment);
 	}
 
 	@Override
 	public StrategyShowVO getStrategy(String createrName, String StrategyName) throws RemoteException {
-
 		return sli.getStrategy(createrName, StrategyName);
 	}
 
@@ -151,7 +146,6 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 	@Override
 	public void setPublic(String creatroName, String straetgyName, boolean property) throws RemoteException {
 		sli.setPublic(creatroName, straetgyName, property);
-
 	}
 
 	@Override
@@ -163,7 +157,6 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 	public List<String> getConceptList() throws RemoteException {
 		return sli.getConceptList();
 	}
-
 
 	@Override
 	public void signUp(String username, char[] password) throws RemoteException, UserNameRepeatException {
@@ -188,13 +181,11 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 	@Override
 	public StockRODVO getStockROD( String stockcode, LocalDate begindate, LocalDate enddate, int numOfDay, double alpha, int m, int k )
 			throws RemoteException{
-		// TODO Auto-generated method stub
 		return frodi.getStockROD( stockcode, begindate, enddate, numOfDay, alpha, m, k);
 	}
 
 	@Override
 	public PredictVO predict(String stockcode, LocalDate date) throws RemoteException {
-		// TODO Auto-generated method stub
 		return frodi.predict(stockcode, date);
 	}
 
