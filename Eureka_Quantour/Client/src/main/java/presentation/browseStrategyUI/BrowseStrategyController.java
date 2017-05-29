@@ -3,6 +3,7 @@ package presentation.browseStrategyUI;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.text.DecimalFormat;
@@ -73,12 +74,26 @@ public class BrowseStrategyController implements Initializable{
 	
 	@FXML
 	protected void browseAll(ActionEvent e){
-		
+
 	}
 	
 	@FXML
 	protected void judge(ActionEvent e){
-		
+		String comment = judgeTextArea.getText();
+		RemoteHelper remoteHelper = RemoteHelper.getInstance();
+		StockLogicInterface stockLogicInterface = remoteHelper.getStockLogic();
+		try {
+			System.out.println((String)dataController.get("CreaterName"));
+			System.out.println((String)dataController.get("StrategyName"));
+			System.out.println((String)dataController.get("UserName"));
+			System.out.println(LocalDate.now());
+			System.out.println(comment);
+			stockLogicInterface.comment((String)dataController.get("CreaterName"),(String)dataController.get("StrategyName"),
+                    (String)dataController.get("UserName"),LocalDate.now(),comment);
+			System.out.println(LocalDate.now());
+		} catch (RemoteException e1) {
+			e1.printStackTrace();
+		}
 	}
 	private void setFlowPane(List<StrategyListVO> list){
 		strategyFlowPane.getChildren().clear();
