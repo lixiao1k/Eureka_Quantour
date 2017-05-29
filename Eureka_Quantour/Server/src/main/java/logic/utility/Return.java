@@ -70,7 +70,6 @@ public class Return {
 
     private Double getYear(List<Double> list){
         double shuzi=list.get(list.size()-1);
-        System.out.println("shuzi   "+shuzi);
         int i=0;
         LocalDate itr=LocalDate.of(begin.getYear(),begin.getMonth(),begin.getDayOfMonth());
         for (;itr.compareTo(end)<=0;itr=itr.plusDays(1)){
@@ -78,8 +77,6 @@ public class Return {
         }
         double a=1+shuzi;
         double b=365.0/i;
-        System.out.println("shit    "+a +"   "+b);
-        System.out.println("jieguo     "+(Math.pow(a,b)-1));
         return Math.pow(a,b)-1;
     }
 

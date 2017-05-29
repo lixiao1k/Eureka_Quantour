@@ -265,7 +265,7 @@ public class StrategyDataHelperImpl_DBO implements IStrategyDataHelper{
 	public void addStrategyShow ( String createrName, String StrategyName ,StrategyShowPO vo){
 		String id=getStrategyid(createrName,StrategyName);
 		Connection conn=ConnectionPoolManager.getInstance().getConnection("quantour");
-		String sql="insert into strategyshow values(?,?,?,?,?,?,?)";
+		String sql="insert into strategyshow values(?,?,?,?,?,?,?,?)";
 		PreparedStatement pstmt=null;
 		try {
 			pstmt = (PreparedStatement)conn.prepareStatement(sql);
