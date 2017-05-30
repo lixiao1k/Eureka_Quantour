@@ -1,5 +1,6 @@
 package data.datahelperimpl_ByDataBase;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -164,7 +165,14 @@ public class StrategyDataHelperImpl_DBO implements IStrategyDataHelper{
 			pstmt = (PreparedStatement)conn.prepareStatement(sql);
 			pstmt.setString(1, strategyid);
 			pstmt.setString(2, FileMethod.getInstance().getUUID());
-			pstmt.setString(3, comment);
+//			pstmt.setString(3, comment);
+
+			try {
+				System.out.println(comment);
+				pstmt.setString(3, new String(comment.getBytes(),"utf-8"));
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
 			pstmt.setString(4, commenterName);
 			pstmt.setString(5, time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 			pstmt.executeUpdate();

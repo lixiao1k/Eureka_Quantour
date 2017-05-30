@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.text.DecimalFormat;
@@ -89,7 +90,7 @@ public class BrowseStrategyController implements Initializable{
 			System.out.println(LocalDate.now());
 			System.out.println(comment);
 			stockLogicInterface.comment((String)dataController.get("CreaterName"),(String)dataController.get("StrategyName"),
-                    (String)dataController.get("UserName"),LocalDate.now(),comment);
+                    (String)dataController.get("UserName"), LocalDateTime.now(),comment);
 			System.out.println(LocalDate.now());
 		} catch (RemoteException e1) {
 			e1.printStackTrace();
@@ -155,7 +156,6 @@ public class BrowseStrategyController implements Initializable{
 		List<CommentVO> commentVOs = strategyShowVO.getComments();
 		judgeFlowPane.getChildren().clear();
 		for(CommentVO vo1:commentVOs){
-			System.out.println("sda");
 			System.out.println(vo1.getComment());
 			VBox vb = getCommentVBox(vo1);
 			judgeFlowPane.getChildren().add(vb);
