@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import com.sun.org.apache.regexp.internal.RE;
 import javafx.event.EventHandler;
 import javafx.scene.layout.VBox;
 import org.controlsfx.control.Notifications;
@@ -104,6 +105,27 @@ public class SingleStockUIController implements Initializable{
 	private DataContorller dataController;
 
 	private VBox fuzzySearch=new VBox();
+//  查看年月k线图
+	@FXML
+	protected void goBrowseDay(ActionEvent e){
+		String name = (String)dataController.get("SingleStockNow");
+		RemoteHelper remoteHelper = RemoteHelper.getInstance();
+		StockLogicInterface stockLogicInterface = remoteHelper.getStockLogic();
+		try {
+			String code = stockLogicInterface.nameToCode(name);
+			setKlinePane(code);
+			setEMAChartPane(code);
+		} catch (RemoteException e1) {
+			e1.printStackTrace();
+		}
+
+	}
+ //查看日k线图
+	@FXML
+	protected void goBrowseMinute(ActionEvent e){
+
+	}
+
 	/*
 	 * @description添加至股池，弹出相应界面
 	 */
@@ -272,23 +294,18 @@ public class SingleStockUIController implements Initializable{
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
-			e.printStackTrace();
 		} catch (DateInvalidException e) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("日期错误").text(e.toString()).showError();
-			e.printStackTrace();
 		} catch (BeginInvalidException e) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("日期错误").text(e.toString()).showError();
-			e.printStackTrace();
 		} catch (EndInvalidException e) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("日期错误").text(e.toString()).showError();
-			e.printStackTrace();
 		} catch (NullStockIDException e) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("搜索异常").text(e.toString()).showError();
-			e.printStackTrace();
 		}
 	}
 	
@@ -307,27 +324,21 @@ public class SingleStockUIController implements Initializable{
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
-			e.printStackTrace();
 		} catch (DateInvalidException e) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("日期错误").text(e.toString()).showError();
-			e.printStackTrace();
 		} catch (BeginInvalidException e) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("日期错误").text(e.toString()).showError();
-			e.printStackTrace();
 		} catch (EndInvalidException e) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("日期错误").text(e.toString()).showError();
-			e.printStackTrace();
 		} catch (NullStockIDException e) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("搜索异常").text(e.toString()).showError();
-			e.printStackTrace();
 		} catch (DateOverException e) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("日期错误").text(e.toString()).showError();
-			e.printStackTrace();
 		}	
 	}
 	

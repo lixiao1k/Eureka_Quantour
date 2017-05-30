@@ -30,6 +30,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import logic.service.StockLogicInterface;
+import org.controlsfx.control.Notifications;
 import presentation.chart.chartService;
 import presentation.chart.lineChart.YieldComparedChart;
 import presentation.marketUI.MarketAreaController;
@@ -37,6 +38,7 @@ import rmi.RemoteHelper;
 import vo.CommentVO;
 import vo.StrategyListVO;
 import vo.StrategyShowVO;
+import vo.StrategyVO;
 
 public class BrowseStrategyController implements Initializable{
 
@@ -60,21 +62,40 @@ public class BrowseStrategyController implements Initializable{
 	TextArea judgeTextArea;
 	@FXML
 	protected void browseMine(ActionEvent e){
+		setBrowseMine();
+	}
+
+	private void setBrowseMine(){
 		RemoteHelper remoteHelper = RemoteHelper.getInstance();
 		StockLogicInterface stockLogicInterface = remoteHelper.getStockLogic();
 		try {
 			List<StrategyListVO> list = stockLogicInterface.getStrategyList((String)dataController.get("UserName"));
-			System.out.println((String)dataController.get("UserName"));
-			System.out.println(list);
 			setFlowPane(list);
+			if(list!=null){
+				setJudge(list.get(0));
+				setLine(list.get(0));
+			}
 		} catch (RemoteException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 	}
-	
+
 	@FXML
 	protected void browseAll(ActionEvent e){
+		RemoteHelper remoteHelper = RemoteHelper.getInstance();
+		StockLogicInterface stockLogicInterface = remoteHelper.getStockLogic();
+		try {
+			List<StrategyListVO> list = stockLogicInterface.getStrategyList();
+			setFlowPane(list);
+			if(list!=null){
+				setJudge(list.get(0));
+				setLine(list.get(0));
+			}
+		} catch (RemoteException e1) {
+			e1.printStackTrace();
+		}
+
 
 	}
 	
@@ -83,17 +104,27 @@ public class BrowseStrategyController implements Initializable{
 		String comment = judgeTextArea.getText();
 		RemoteHelper remoteHelper = RemoteHelper.getInstance();
 		StockLogicInterface stockLogicInterface = remoteHelper.getStockLogic();
-		try {
-			System.out.println((String)dataController.get("CreaterName"));
-			System.out.println((String)dataController.get("StrategyName"));
-			System.out.println((String)dataController.get("UserName"));
-			System.out.println(LocalDate.now());
-			System.out.println(comment);
-			stockLogicInterface.comment((String)dataController.get("CreaterName"),(String)dataController.get("StrategyName"),
-                    (String)dataController.get("UserName"), LocalDateTime.now(),comment);
-			System.out.println(LocalDate.now());
-		} catch (RemoteException e1) {
-			e1.printStackTrace();
+		if(comment.length()<=10){
+			Notifications.create().title("错误").text("评论字数果断，需大于10个字").showWarning();
+		}else if(comment.length()>140){
+			Notifications.create().title("错误").text("评论字数超出140字").showWarning();
+		}else{
+			try {
+				stockLogicInterface.comment((String)dataController.get("CreaterName"),(String)dataController.get("StrategyName"),
+						(String)dataController.get("UserName"), LocalDateTime.now(),comment);
+
+			} catch (RemoteException e1) {
+				e1.printStackTrace();
+			}
+			StrategyShowVO strategyShowVO = null;
+			try {
+				strategyShowVO = stockLogicInterface.getStrategy((String) dataController.get("CreaterName"),
+                        (String)dataController.get("StrategyName"));
+			} catch (RemoteException e1) {
+				e1.printStackTrace();
+			}
+			set4setJudge(strategyShowVO);
+			judgeTextArea.clear();
 		}
 	}
 	private void setFlowPane(List<StrategyListVO> list){
@@ -153,6 +184,10 @@ public class BrowseStrategyController implements Initializable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		set4setJudge(strategyShowVO);
+	}
+
+	private void set4setJudge(StrategyShowVO strategyShowVO){
 		List<CommentVO> commentVOs = strategyShowVO.getComments();
 		judgeFlowPane.getChildren().clear();
 		for(CommentVO vo1:commentVOs){
@@ -160,12 +195,11 @@ public class BrowseStrategyController implements Initializable{
 			VBox vb = getCommentVBox(vo1);
 			judgeFlowPane.getChildren().add(vb);
 		}
-		
 	}
 	
 	private VBox getCommentVBox(CommentVO vo){
 		VBox vb = new VBox();
-		vb.setPrefSize(300, 130);
+		vb.setPrefSize(300, 100);
 		HBox hb = new HBox();
 		hb.setPrefSize(300, 50);
 		hb.setSpacing(10);
@@ -173,8 +207,8 @@ public class BrowseStrategyController implements Initializable{
 		name.setText(vo.getCommenterName());
 		name.setStyle(
 				"-fx-font-size: 18px;"
-						+ "-fx-fill:  linear-gradient(cyan , dodgerblue);"
-						+ "-fx-font-smoothing-type: lcd;");
+						+ "-fx-fill:#ffff00"
+						);
 		Text date = new Text();
 		date.setText(vo.getCommentTime().toString());
 		date.setStyle(
@@ -242,27 +276,12 @@ public class BrowseStrategyController implements Initializable{
 
 		}
 	}
-//
-//	public void setStrategyInfo(StrategyListVO vo){
-//		String createrName = vo.getCreaterName();
-//		String strategyName = vo.getStrategyName();
-//		RemoteHelper remoteHelper = RemoteHelper.getInstance();
-//		StockLogicInterface stockLogicInterface = remoteHelper.getStockLogic();
-//		StrategyShowVO vo1 = null;
-//		try {
-//			vo1 = stockLogicInterface.getStrategy(createrName, strategyName);
-//		} catch (RemoteException e) {
-//			e.printStackTrace();
-//		}
-//		if(vo1!=null){
-//			FXML
-//		}
-//
-//	}
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
 		dataController = DataContorller.getInstance();
+		setBrowseMine();
 	}
 
 }
