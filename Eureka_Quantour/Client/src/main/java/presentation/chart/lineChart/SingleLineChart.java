@@ -16,11 +16,14 @@ import presentation.chart.function.CommonSetService;
 import presentation.chart.function.ListToArray;
 import presentation.chart.function.ListToArrayService;
 
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import en_um.ChartKind;
 
 /**
  * @Description: TODO
@@ -32,6 +35,9 @@ public class SingleLineChart implements chartService{
 	private CatchMouseMoveService catchMouseMove = new CatchMouseMove();
 	private ListToArrayService listToArray = new ListToArray();
 	private CommonSetService commonSet = new CommonSet();
+
+    private NumberFormat nf = NumberFormat.getPercentInstance();
+    private DecimalFormat df = new DecimalFormat("0.000"); 
 
 	private AnchorPane pane = new AnchorPane();
 	private StackPane chartpane = new StackPane();
@@ -45,20 +51,20 @@ public class SingleLineChart implements chartService{
     private Map<String, String> dataMap = new HashMap<String,String>();
     private String[] dates;
 
-    public SingleLineChart(List<LocalDate> date, List<Double> doubleList, String dataName) {
+    public SingleLineChart(List<LocalDate> date, List<Double> doubleList, String dataName, ChartKind kind) {
         xAxis = new CategoryAxis();
         xAxis.setGapStartAndEnd(false);
         xAxis.setTickLabelsVisible(false);
-//        xAxis.setPrefHeight(0);
-//        xAxis.setOpacity(0);
+        xAxis.setPrefHeight(0);
+        xAxis.setOpacity(0.7);
         
         yAxis = new NumberAxis();
-    	yAxis.autoRangingProperty().set(false);
-        yAxis.setLowerBound(8.85);
-        yAxis.setUpperBound(9.20);
+    	yAxis.autoRangingProperty().set(true);
+        // yAxis.setLowerBound(8.85);
+        // yAxis.setUpperBound(9.20);
         yAxis.setAnimated(true);
         yAxis.forceZeroInRangeProperty().setValue(false);
- //       yAxis.setUpperBound(1.25);
+ //     yAxis.setUpperBound(1.25);
         yAxis.setOpacity(0.5);
         
         lineChart = new LineChart<>(xAxis, yAxis);
@@ -79,7 +85,11 @@ public class SingleLineChart implements chartService{
 	        if( j<datas.length && datas[j]!=0 && datas[j]!=Integer.MIN_VALUE ){
 	        	serie.getData().add( new XYChart.Data<>(dates[j], datas[j]) );
 	        	
-	        	String dataFormat = NumberFormat.getPercentInstance().format(datas[j]);
+	        	String dataFormat = "";
+                if( kind==ChartKind.YIELDDISTRIBUTE )
+	        	    dataFormat = nf.format( datas[j] );
+                else
+                    dataFormat = df.format( datas[j] );
 	        	if( dataStrings[j]!=null )
 	        		dataStrings[j] += "/"+dataName+" : "+dataFormat;
 	        	else

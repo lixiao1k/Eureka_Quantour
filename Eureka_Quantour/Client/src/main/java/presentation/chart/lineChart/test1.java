@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import en_um.ChartKind;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
@@ -56,7 +57,7 @@ public class test1 extends Application{
     		list2.add(list3.get(i));
     	}
     	long i1=System.currentTimeMillis();
-    	SingleLineChart sc=new SingleLineChart(list1,list2,"hello");
+    	SingleLineChart sc=new SingleLineChart(list1,list2,"hello",ChartKind.YIELDDISTRIBUTE);
 //    	new test().testEMAChart();
 		try{
 	        Stage dialogStage = new Stage();

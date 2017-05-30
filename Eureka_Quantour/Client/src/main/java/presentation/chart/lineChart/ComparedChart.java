@@ -125,15 +125,6 @@ public class ComparedChart implements chartService{
         lineChart.getData().addAll(series);
         lineChart.setLegendSide(Side.TOP);
     }
-    /**
-     * @Description: input a ComparedInfoVO and draw a ComparedChart to compare two stock's situation
-     * @author: hzp
-     * @time: 2017年4月3日
-     * @return: ComparedChart
-     */
-    public ComparedChart setData(ComparedInfoVO ci){
-    	return null;
-    }
     
     @Override
     public Pane getchart(int width, int height, boolean withdate) {

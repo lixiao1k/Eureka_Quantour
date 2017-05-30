@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import en_um.ChartKind;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
@@ -67,7 +68,7 @@ public class test extends Application{
 //    		dates[i] = datelist.get(i);
 //    		d1[i] = jizhunlist.get(i);
 //    	}
-		singleLineChart = new SingleLineChart(datelist, jizhunlist, "hello");
+		singleLineChart = new SingleLineChart(datelist, jizhunlist, "hello", ChartKind.YIELDDISTRIBUTE);
 //		singleLineChart.setName("SingleLineChart");
     }
     

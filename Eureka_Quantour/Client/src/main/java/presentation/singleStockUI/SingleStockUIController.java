@@ -209,7 +209,7 @@ public class SingleStockUIController implements Initializable{
 	}
 	
 	private void setLogPane(ComparedInfoVO vo){
-		chartService chartservice = new SingleLineChart(vo.getDate(),vo.getLogYieldA(), "对数收益率");
+		chartService chartservice = new SingleLineChart(vo.getDate(),vo.getLogYieldA(), "对数收益率", ChartKind.YIELDDISTRIBUTE);
 		Pane pane = chartservice.getchart(271, 212, true);
 		logPane.getChildren().clear();
 		logPane.getChildren().add(pane);
