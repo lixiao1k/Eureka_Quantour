@@ -62,7 +62,33 @@ public class StrategyInfoPaneController implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
-		
+		strategyName1.setStyle(
+				"-fx-font-size: 12px;");
+		strategyName2.setStyle(
+				"-fx-font-size: 12px;");
+		createrName1.setStyle(
+				"-fx-font-size: 12px;");
+		createrName2.setStyle(
+				"-fx-font-size: 12px;");
+		type1.setStyle(
+				"-fx-font-size: 12px;");
+		type2.setStyle(
+				"-fx-font-size: 12px;");
+		stocksNum1.setStyle(
+				"-fx-font-size: 12px;");
+		stocksNum2.setStyle(
+				"-fx-font-size: 12px;");
+		holddays1.setStyle(
+				"-fx-font-size: 12px;");
+		holddays2.setStyle(
+				"-fx-font-size: 12px;");
+		price1.setStyle(
+				"-fx-font-size: 12px;");
+		price2.setStyle(
+				"-fx-font-size: 12px;");
+		changeable.setStyle(
+				"-fx-font-size: 12px;");
+
 	}
 
 }

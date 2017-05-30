@@ -209,9 +209,6 @@ public class BrowseStrategyController implements Initializable{
 			e.printStackTrace();
 		}
 		if(strategyShowVO!=null){
-			System.out.println(strategyShowVO.getTimeList());
-			System.out.println(strategyShowVO.getBasicReturn());
-			System.out.println(strategyShowVO.getStrategyReturn());
 			chartService cService = new YieldComparedChart(strategyShowVO.getTimeList(),
 					strategyShowVO.getBasicReturn(), strategyShowVO.getStrategyReturn());
 			Pane pane = cService.getchart(630, 180, true);
@@ -219,7 +216,7 @@ public class BrowseStrategyController implements Initializable{
 			anchorPane1.getChildren().add(pane);
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("LineInfo.fxml"));
-			Parent lineInfo = null;
+			Parent lineInfo;
 			try {
 				lineInfo = (AnchorPane)loader.load();
 				LineInfoPaneController controller = loader.getController();
@@ -230,10 +227,38 @@ public class BrowseStrategyController implements Initializable{
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			
+			FXMLLoader loader1 = new FXMLLoader();
+			loader1.setLocation(getClass().getResource("StrategyInfo.fxml"));
+			Parent strategyInfo;
+			try {
+				strategyInfo = (AnchorPane)loader1.load();
+				strategyInfoPane.getChildren().clear();
+				strategyInfoPane.getChildren().add(strategyInfo);
+				StrategyInfoPaneController controller = loader1.getController();
+				controller.setInfo(createrName,strategyName,strategyShowVO.getStrategyConditionVO(),strategyShowVO.getSaleVO());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
 		}
 	}
-	
+//
+//	public void setStrategyInfo(StrategyListVO vo){
+//		String createrName = vo.getCreaterName();
+//		String strategyName = vo.getStrategyName();
+//		RemoteHelper remoteHelper = RemoteHelper.getInstance();
+//		StockLogicInterface stockLogicInterface = remoteHelper.getStockLogic();
+//		StrategyShowVO vo1 = null;
+//		try {
+//			vo1 = stockLogicInterface.getStrategy(createrName, strategyName);
+//		} catch (RemoteException e) {
+//			e.printStackTrace();
+//		}
+//		if(vo1!=null){
+//			FXML
+//		}
+//
+//	}
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
