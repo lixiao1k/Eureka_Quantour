@@ -15,7 +15,7 @@
             <Label fx:id="timeLabel" layoutX="528.0" layoutY="13.0" prefHeight="17.0" prefWidth="98.0" />
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="-1.0" layoutY="42.0" prefHeight="715.0" prefWidth="305.0" styleClass="left-segment" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
+      <AnchorPane layoutY="43.0" prefHeight="715.0" prefWidth="305.0" styleClass="left-segment" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
          <children>
             <Button fx:id="makeStrategyButton" layoutX="55.0" layoutY="483.0" mnemonicParsing="false" onAction="#makeStrategy" styleClass="main-button" text="生成策略" />
             <AnchorPane layoutX="5.5" layoutY="3.5" prefHeight="161.0" prefWidth="298.0" styleClass="top1-segment" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="2.0">
@@ -47,9 +47,11 @@
                      </toggleGroup>
                   </RadioButton>
                   <RadioButton fx:id="openRadioButton" layoutX="150.0" layoutY="102.0" mnemonicParsing="false" text="开盘" toggleGroup="$price" />
+                  <Button layoutX="278.0" layoutY="64.0" mnemonicParsing="false" onAction="#print1" prefHeight="17.0" prefWidth="18.0" styleClass="main-button1" text="印" AnchorPane.rightAnchor="0.0" />
                </children>
             </AnchorPane>
             <Button layoutX="173.0" layoutY="483.0" mnemonicParsing="false" onAction="#saveStrategy" styleClass="main-button" text="保存策略" />
+            <Button layoutX="281.0" layoutY="497.0" mnemonicParsing="false" onAction="#print2" styleClass="main-button1" text="印" AnchorPane.rightAnchor="0.0" />
          </children>
       </AnchorPane>
       <AnchorPane layoutX="305.0" layoutY="43.0" prefHeight="715.0" prefWidth="916.0" styleClass="left2-segment" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="43.0">

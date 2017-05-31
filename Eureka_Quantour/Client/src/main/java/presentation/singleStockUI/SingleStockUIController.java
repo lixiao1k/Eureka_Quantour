@@ -42,10 +42,12 @@ import javafx.stage.StageStyle;
 import logic.service.StockLogicInterface;
 import logic.service.Stub;
 import presentation.chart.chartService;
+import presentation.chart.function.SaveAs;
 import presentation.chart.klineChart.KLineChart;
 import presentation.chart.lineChart.EMAChart;
 import presentation.chart.lineChart.SingleLineChart;
 import presentation.chart.scatterchart.YieldPointChart;
+import presentation.saveAsPNG.SaveAsPNG;
 import rmi.RemoteHelper;
 import vo.ComparedInfoVO;
 import vo.EMAInfoVO;
@@ -219,6 +221,9 @@ public class SingleStockUIController implements Initializable{
 		Pane pane = chartservice.getchart(271, 212, true);
 		logPane.getChildren().clear();
 		logPane.getChildren().add(pane);
+		chartservice = new SingleLineChart(vo.getDate(),vo.getLogYieldA(), "对数收益率", ChartKind.YIELDDISTRIBUTE);
+		Pane pane1 = chartservice.getchart(271, 212, true);
+		dataController.upDate("LogPane",pane1);
 	}
 	/*
 	 * 画收益率分布图
@@ -228,6 +233,9 @@ public class SingleStockUIController implements Initializable{
 		Pane pane = chartservice.getchart(271, 203, true);
 		RAFdistributionPane.getChildren().clear();
 		RAFdistributionPane.getChildren().add(pane);
+		chartservice = new YieldPointChart(list, ChartKind.POINTONE);
+		Pane pane1 = chartservice.getchart(271,203,true);
+		dataController.upDate("DotPane",pane1);
 	}
 	/*
 	 * @description初始化股票基本信息界面
@@ -235,9 +243,9 @@ public class SingleStockUIController implements Initializable{
 	private void setStockInfoPane(String code,String name,double close,double RAF,double high
 			,double low,double open,long volume){
 		codeLabel.setText(code);
-		codeLabel.setStyle("-fx-text-fill: rgb(255, 255, 255, 1);-fx-font-weight:bold; -fx-font-size: 18;");
+		codeLabel.setStyle("-fx-text-fill: rgb(255, 255, 255);-fx-font-weight:bold; -fx-font-size: 18;");
 		nameLabel.setText(name);
-		nameLabel.setStyle("-fx-text-fill: rgb(255, 255, 255, 1);-fx-font-weight:bold; -fx-font-size: 18;");
+		nameLabel.setStyle("-fx-text-fill: rgb(255, 255, 255);-fx-font-weight:bold; -fx-font-size: 18;");
 		closeLabel.setText(Double.toString(close));
 		addLabelColor(closeLabel, close,28);
 		if(RAF>0){
@@ -262,21 +270,21 @@ public class SingleStockUIController implements Initializable{
 	public void addLabelColor(Label label,double num,int size){
 		if(size==0){
 			if(num>0){
-				label.setStyle("-fx-text-fill: rgb(255, 0, 0, 1);-fx-font-weight:bold");
+				label.setStyle("-fx-text-fill: rgb(255, 0, 0);-fx-font-weight:bold");
 			}else if(num<0){
-				label.setStyle("-fx-text-fill: rgb(0, 255, 0, 1);-fx-font-weight:bold");
+				label.setStyle("-fx-text-fill: rgb(0, 255, 0);-fx-font-weight:bold");
 			}else{
-				label.setStyle("-fx-text-fill: rgb(255, 255, 255, 1);-fx-font-weight:bold");
+				label.setStyle("-fx-text-fill: rgb(255, 255, 255);-fx-font-weight:bold");
 			}
 		}else{
 			if(num>0){
-				label.setStyle("-fx-text-fill: rgb(255, 0, 0, 1);-fx-font-weight:bold"
+				label.setStyle("-fx-text-fill: rgb(255, 0, 0);-fx-font-weight:bold"
 						+ ";-fx-font-size:28");
 			}else if(num<0){
-				label.setStyle("-fx-text-fill: rgb(0, 255, 0, 1);-fx-font-weight:bold"
+				label.setStyle("-fx-text-fill: rgb(0, 255, 0);-fx-font-weight:bold"
 						+ ";-fx-font-size:28");
 			}else{
-				label.setStyle("-fx-text-fill: rgb(255, 255, 255, 1);-fx-font-weight:bold"
+				label.setStyle("-fx-text-fill: rgb(255, 255, 255);-fx-font-weight:bold"
 						+ ";-fx-font-size:28");
 			}
 		}
@@ -326,12 +334,17 @@ public class SingleStockUIController implements Initializable{
 		LocalDate systime =(LocalDate)dataController.get("SystemTime");
 		LocalDate begintime = systime.minusDays(200);
 		List<EMAInfoVO> vo;
+		List<EMAInfoVO> vo1;
 		chartService chartservice;
 		try {
 			emaChartAnchorPane.getChildren().clear();
 			vo=stockLogicInterface.getEMAInfo(code, begintime, systime);
 			chartservice = new EMAChart(vo);
-			emaChartAnchorPane.getChildren().add(chartservice.getchart(758, 295,true));			
+			emaChartAnchorPane.getChildren().add(chartservice.getchart(758, 295,true));
+			vo1=stockLogicInterface.getEMAInfo(code, begintime, systime);
+			chartservice = new EMAChart(vo1);
+			Pane pane = chartservice.getchart(758,295,true);
+			dataController.upDate("EMAChart",pane);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("网络连接异常").text(e.toString()).showWarning();
@@ -355,30 +368,32 @@ public class SingleStockUIController implements Initializable{
 	@FXML
 	protected void printKline(ActionEvent e){
 		Pane pane = (Pane) dataController.get("KLineChart");
-		Scene scene1 = new Scene(pane);
-		saveAsPng(scene1);
-	}
-
-
-	private void saveAsPng(Scene scene){
-		WritableImage image = scene.snapshot(null);
-		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("保存为");
-		FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("PNG files (*.png)","*.png");
-		fileChooser.getExtensionFilters().add(filter);
-		File file = fileChooser.showSaveDialog(null);
-		if(file!=null){
-			if(!file.getPath().endsWith(".png")){
-				file = new File(file.getPath()+".png");
-			}
-		}
-		try {
-			ImageIO.write(SwingFXUtils.fromFXImage(image,null),"png",file);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		print(pane);
 
 	}
+
+	@FXML
+	protected void printEMA(ActionEvent e){
+		Pane pane = (Pane) dataController.get("EMAChart");
+		print(pane);
+	}
+
+	@FXML
+	protected void printRAF(ActionEvent e){
+		Pane pane = (Pane) dataController.get("DotPane");
+		print(pane);
+	}
+
+	@FXML
+	protected void printLog(ActionEvent e){
+		Pane pane = (Pane) dataController.get("LogPane");
+		print(pane);
+	}
+	private void print(Pane pane){
+		SaveAsPNG saveAsPNG = new SaveAsPNG();
+		saveAsPNG.print(pane);
+	}
+
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

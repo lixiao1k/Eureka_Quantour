@@ -1,5 +1,6 @@
 package presentation.strategyUI;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
@@ -9,9 +10,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 
+import javafx.stage.FileChooser;
 import org.controlsfx.control.Notifications;
 
 import dataController.DataContorller;
@@ -46,11 +50,14 @@ import presentation.chart.chartService;
 import presentation.chart.barChart.YieldDistributeChart;
 import presentation.chart.lineChart.YieldComparedChart;
 import presentation.marketUI.MarketConceptController;
+import presentation.saveAsPNG.SaveAsPNG;
 import rmi.RemoteHelper;
 import vo.SaleVO;
 import vo.StrategyConditionVO;
 import vo.YieldChartDataVO;
 import vo.YieldDistributionHistogramDataVO;
+
+import javax.imageio.ImageIO;
 
 public class StrategyUIController implements Initializable{
 	
@@ -117,39 +124,7 @@ public class StrategyUIController implements Initializable{
 	private DataContorller dataController;
 	
 	private ObservableList<String> stocksetlist = FXCollections.observableArrayList();
-	
-	/*
-	 * 预测策略的监听
-	 */
-//	@FXML
-//	protected void goBrowsePredict(ActionEvent e){
-//		String marketName = "";
-//		String chiyouqi = "";
-//		String xinchengqi = "";
-//		if(stockSetComboBox.getValue()!=null){
-//			marketName = stockSetComboBox.getValue();
-//		}else{
-//			Notifications.create().title("异常").text("请选择市场").showWarning();
-//		}
-//		chiyouqi = holdPeriodTextField.getText();
-//		xinchengqi = createPeriodTextField.getText();
-//		RemoteHelper remote = RemoteHelper.getInstance();
-//		StockLogicInterface stockLogicInterface = remote.getStockLogic();
-//		List<List<Double>> datelist1=new ArrayList<>();
-//		List<List<Double>> datelist2=new ArrayList<>();
-//		try {
-//			if(momentumRadioButton.isSelected()) {
-//
-//			}else{
-//
-//			}
-////			主pane上把pane加上
-//		} catch (RemoteException e1) {
-//			e1.printStackTrace();
-//		}
-//
-//	}
-//	
+
 	@FXML
 	protected void makeStrategy(ActionEvent e){
 		anchorPane4.getChildren().clear();
@@ -256,6 +231,12 @@ public class StrategyUIController implements Initializable{
 					chart2AnchorPane.getChildren().add(pane);
 					chart1AnchorPane.getChildren().clear();
 					chart1AnchorPane.getChildren().add(pane1);
+					chartservice = new YieldComparedChart(yieldChartDataVO);
+					Pane pane2 = chartservice.getchart(900,250,true);
+					chartservice = new YieldDistributeChart(yieldDistributionHistogramDataVO);
+					Pane pane3 = chartservice.getchart(900, 250, true);
+					dataController.upDate("ComparedChart",pane2);
+					dataController.upDate("DistributeChart",pane3);
 	 			} catch (RemoteException e1) {
 					// TODO Auto-generated catch block
 					Notifications.create().title("网络连接异常").text(e1.toString()).showWarning();
@@ -351,6 +332,12 @@ public class StrategyUIController implements Initializable{
 					chart2AnchorPane.getChildren().add(pane);
 					chart1AnchorPane.getChildren().clear();
 					chart1AnchorPane.getChildren().add(pane1);
+					chartservice = new YieldComparedChart(yieldChartDataVO1);
+					Pane pane2 = chartservice.getchart(900,250,true);
+					chartservice = new YieldDistributeChart(yieldDistributionHistogramDataVO1);
+					Pane pane3 = chartservice.getchart(900, 250, true);
+					dataController.upDate("ComparedChart",pane2);
+					dataController.upDate("DistributeChart",pane3);
 				} catch (RemoteException e1) {
 					// TODO Auto-generated catch block
 					Notifications.create().title("网络连接异常").text(e1.toString()).show();
@@ -432,6 +419,22 @@ public class StrategyUIController implements Initializable{
 		}
 	}
 
+	@FXML
+	protected void print1(ActionEvent e){
+		Pane pane = (Pane) dataController.get("DistributeChart");
+		print(pane);
+	}
+
+	@FXML
+	protected void print2(ActionEvent e){
+		Pane pane = (Pane) dataController.get("ComparedChart");
+		print(pane);
+
+	}
+	private void print(Pane pane){
+		SaveAsPNG saveAsPNG = new SaveAsPNG();
+		saveAsPNG.print(pane);
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

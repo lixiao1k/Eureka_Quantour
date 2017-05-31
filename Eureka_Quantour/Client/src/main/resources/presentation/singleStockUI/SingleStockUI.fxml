@@ -7,7 +7,7 @@
 
 <AnchorPane prefHeight="758.0" prefWidth="1217.0" styleClass="background" stylesheets="@../../styles/SingleStock.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.singleStockUI.SingleStockUIController">
    <children>
-      <AnchorPane layoutY="-1.0" prefHeight="758.0" prefWidth="169.0" styleClass="left-segment" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <AnchorPane layoutY="9.0" prefHeight="758.0" prefWidth="169.0" styleClass="left-segment" AnchorPane.bottomAnchor="-9.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="9.0">
          <children>
             <TextField fx:id="searchTextField" layoutX="34.0" layoutY="15.0" prefHeight="15.0" prefWidth="102.0" promptText="股票搜索" />
             <Button fx:id="searchButton" layoutX="125.0" layoutY="14.0" mnemonicParsing="false" onAction="#search" prefHeight="23.0" prefWidth="23.0" styleClass="transperantButton" />
@@ -16,6 +16,7 @@
             <Button layoutX="144.0" layoutY="277.0" mnemonicParsing="false" onAction="#goBrowseDay" styleClass="main-button1" text="日" AnchorPane.rightAnchor="0.0" />
             <Button layoutX="148.0" layoutY="293.0" mnemonicParsing="false" onAction="#goBrowseMinute" styleClass="main-button1" text="分" AnchorPane.rightAnchor="0.0" />
             <Button layoutX="145.0" layoutY="309.0" mnemonicParsing="false" onAction="#printKline" styleClass="main-button1" text="印" AnchorPane.rightAnchor="0.0" />
+            <Button layoutX="107.0" layoutY="609.0" mnemonicParsing="false" onAction="#printEMA" styleClass="main-button1" text="印" AnchorPane.rightAnchor="0.0" />
          </children></AnchorPane>
       <AnchorPane layoutX="169.0" maxWidth="781.0" prefHeight="758.0" prefWidth="781.0" styleClass="left1-segment" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="169.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -37,9 +38,11 @@
             <Label fx:id="openLabel" layoutX="179.5" layoutY="64.5" prefHeight="17.0" prefWidth="90.0" AnchorPane.leftAnchor="178.0" AnchorPane.topAnchor="63.0" />
             <Label layoutX="144.0" layoutY="90.0" text="成交量：" AnchorPane.leftAnchor="122.0" AnchorPane.topAnchor="87.0" />
             <Label fx:id="volumeLabel" layoutX="179.5" layoutY="90.5" prefHeight="17.0" prefWidth="90.0" AnchorPane.leftAnchor="178.0" AnchorPane.topAnchor="89.0" />
+            <Button layoutX="-8.0" layoutY="130.0" mnemonicParsing="false" onAction="#printRAF" styleClass="main-button1" text="印" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" />
          </children></AnchorPane>
       <AnchorPane fx:id="RAFdistributionPane" layoutX="951.0" layoutY="152.0" prefHeight="203.0" prefWidth="271.0" />
       <AnchorPane fx:id="logPane" layoutX="951.0" layoutY="424.0" prefHeight="212.0" prefWidth="271.0" />
       <Label fx:id="shouyilvLabel" layoutX="1043.0" layoutY="371.0" prefHeight="17.0" prefWidth="102.0" text="收益率分布图" />
+      <Button layoutX="951.0" layoutY="408.0" mnemonicParsing="false" onAction="#printLog" styleClass="main-button1" text="印" />
    </children>
 </AnchorPane>
