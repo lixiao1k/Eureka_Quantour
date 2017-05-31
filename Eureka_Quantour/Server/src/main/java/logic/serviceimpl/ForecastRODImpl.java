@@ -256,6 +256,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		SingleStockInfoVO ssi = new SingleStockInfoVO();
 
 		double[] closes = new double[100];
+		LocalDate[] dates = new LocalDate[100];
 		LocalDate dateT = date;
 		int index = closes.length-1;
 		while( index>-1 && dateT.compareTo(zuizao)>0 ){
@@ -263,6 +264,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 				dateT = dateT.minusDays(1);
 				ssi = new SingleStockInfoVO( idata.getSingleStockInfo(stockcode, dateT) );
 				closes[index] = ssi.getClose();
+				dates[index] = ssi.getDate();
 				index--;
 			}catch ( NullStockIDException e ){
 				e.printStackTrace();
@@ -277,13 +279,14 @@ public class ForecastRODImpl implements ForecastRODInterface{
 					indexT = closes.length-1;
 				if( indexT>index ){
 					closes[index] = closes[indexT];
+					dates[index] = dates[indexT];
 					index--;
 				}
 			}
 		}
 
 		// double predictPrice = ForecastRODImpl.predictPrice( closes, 5, 25);
-		double predictPrice = ForecastRODImpl.predictPrice( closes );
+		double predictPrice = ForecastRODImpl.predictPrice( closes, dates );
 		predictVO.setPredictPrice( predictPrice );
 
 		double predictROD = (predictPrice-closes[closes.length-1]) / closes[closes.length-1];
@@ -294,16 +297,25 @@ public class ForecastRODImpl implements ForecastRODInterface{
 	
 
 /* **************************************************************************************************************** */
-	// KNN algorithm
-	public static double predictPrice( double[] closes, int m, int k ){
-		
+	/**
+	 * [predictPrice description]
+	 * @Author H2P
+	 * @Date   2017-06-01
+	 * @param  closes     datas of close price
+	 * @param  m          length of vector
+	 * @param  k          number of relevant character
+	 */
+	public static double predictPrice( double[] closes, LocalDate[] dates, int m, int k ){
+		// KNN algorithm
 		double result = 0;
 		int n = closes.length;
 	
 		if( n<m )
 			return 0.0;
 
+		// length of vector
 		int vLen = m;
+		// number of vector
 		int vNum = n-m;
 
 		double[] baseVector = new double[vLen];
@@ -315,17 +327,20 @@ public class ForecastRODImpl implements ForecastRODInterface{
 			for( int j=0; j<vLen; j++ )
 				vectors[i][j] = closes[i+j];
 	
-		double[] cos = new double[vNum];
-		for( int i=0; i<vNum; i++ )
-			cos[i] = ForecastRODImpl.calCosIncludeAngle( baseVector, vectors[i] );
-		double[] cosSave = new double[vNum];
+		double[][] cos = new double[vNum][2];
+		for( int i=0; i<vNum; i++ ){
+			cos[i][0] = ForecastRODImpl.calCosIncludeAngle( baseVector, vectors[i] );
+			cos[i][1] = dates[i];
+		}
+		double[][] cosSave = new double[vNum][2];
 		cosSave = cos;
 		
 		// bubble sort cos
 		for( int i=0; i<vNum-1; i++ ){
 			for( int j=0; j<vNum-1-i; j++ ){
-				if( cos[j]>cos[j+1] ){
-					double temp = cos[j];
+				if( cos[j][0]>cos[j+1][0] ){
+					double[] temp = new double[2];
+					temp = cos[j];
 					cos[j] = cos[j+1];
 					cos[j+1] = temp;
 				}
@@ -342,6 +357,8 @@ public class ForecastRODImpl implements ForecastRODInterface{
 				}
 			}
 		}
+
+
 
 		double sum = 0;
 		for( int i=0; i<k; i++ ){
