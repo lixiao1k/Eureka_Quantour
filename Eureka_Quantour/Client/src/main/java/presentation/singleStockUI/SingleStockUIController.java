@@ -1,5 +1,6 @@
 package presentation.singleStockUI;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
@@ -8,8 +9,11 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import com.sun.org.apache.regexp.internal.RE;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import org.controlsfx.control.Notifications;
 
 import dataController.DataContorller;
@@ -46,6 +50,8 @@ import rmi.RemoteHelper;
 import vo.ComparedInfoVO;
 import vo.EMAInfoVO;
 import vo.SingleStockInfoVO;
+
+import javax.imageio.ImageIO;
 
 public class SingleStockUIController implements Initializable{
 	@FXML
@@ -283,13 +289,18 @@ public class SingleStockUIController implements Initializable{
 		LocalDate systime = (LocalDate)dataController.get("SystemTime");
 		LocalDate beginTime = systime.minusDays(200);
 		List<SingleStockInfoVO> vo;
+		List<SingleStockInfoVO> vo1;
 		chartService chartservice;
 		try {
 			vo = stockLogicInterface.getSingleStockInfoByTime(code,
 				beginTime,systime);
 			chartservice = new KLineChart(vo);
-
 			kChartAnchorPane.getChildren().add(chartservice.getchart(758, 320,true));
+			vo1 = stockLogicInterface.getSingleStockInfoByTime(code,
+					beginTime,systime);
+			chartservice = new KLineChart(vo1);
+			Pane pane = chartservice.getchart(758,320,true);
+			dataController.upDate("KLineChart",pane);
 			
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
@@ -340,6 +351,33 @@ public class SingleStockUIController implements Initializable{
 			// TODO Auto-generated catch block
 			Notifications.create().title("日期错误").text(e.toString()).showError();
 		}	
+	}
+	@FXML
+	protected void printKline(ActionEvent e){
+		Pane pane = (Pane) dataController.get("KLineChart");
+		Scene scene1 = new Scene(pane);
+		saveAsPng(scene1);
+	}
+
+
+	private void saveAsPng(Scene scene){
+		WritableImage image = scene.snapshot(null);
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("保存为");
+		FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("PNG files (*.png)","*.png");
+		fileChooser.getExtensionFilters().add(filter);
+		File file = fileChooser.showSaveDialog(null);
+		if(file!=null){
+			if(!file.getPath().endsWith(".png")){
+				file = new File(file.getPath()+".png");
+			}
+		}
+		try {
+			ImageIO.write(SwingFXUtils.fromFXImage(image,null),"png",file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 	
 	@Override
