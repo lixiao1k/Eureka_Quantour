@@ -38,14 +38,16 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		if( numOfDay<100 )
 			numOfDay = 100;
 		double[] closes = new double[numOfDay];
+		LocalDate[] dates = new LocalDate[numOfDay];
 		int dataNum = numOfDay-1;
 		LocalDate date = begindate;
 		SingleStockInfoVO ssi = new SingleStockInfoVO();
 		while( dataNum>-1 && date.compareTo(zuizao)>0 ){
 			try{
 				ssi = new SingleStockInfoVO( idata.getSingleStockInfo(stockcode, date) );
-				date = date.minusDays(1);
+				dates[dataNum] = date;
 				closes[dataNum] = ssi.getClose();
+				date = date.minusDays(1);
 				dataNum--;
 			}catch ( NullStockIDException e ){
 				e.printStackTrace();
@@ -61,6 +63,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 				else if( index>=numOfDay-1 )
 					index = numOfDay-1;
 				closes[dataNum] = closes[index];
+				dates[dataNum] = dates[index];
 			}
 		}
 /* **************************************************************************************************************** */
@@ -198,7 +201,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 				square = ForecastRODImpl.calVariance( RODs );
 				int iYesAvgROD = ForecastRODImpl.doubletoindex( (close2-avg)/avg );
 
-				double today = ForecastRODImpl.predictPrice( closes, m, k );
+				double today = ForecastRODImpl.predictPrice( closes, dates, m, k );
 				PreROD = (today-close1) / close1;
 				
 				ifROE = ForecastRODImpl.preROE( PreROD, square, 1, alpha, ROD);
@@ -220,6 +223,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 				// update the numOfDay-day data in array
 				RODs[dayNum] = ROD;
 				closes[dayNum] = close2;
+				dates[dayNum] = date;
 				dayNum++;
 				if( dayNum==numOfDay-1 )
 					dayNum = 0;
@@ -286,7 +290,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		}
 
 		// double predictPrice = ForecastRODImpl.predictPrice( closes, 5, 25);
-		double predictPrice = ForecastRODImpl.predictPrice( closes, dates );
+		double predictPrice = ForecastRODImpl.predictPrice( closes, dates, 5, 25 );
 		predictVO.setPredictPrice( predictPrice );
 
 		double predictROD = (predictPrice-closes[closes.length-1]) / closes[closes.length-1];
@@ -298,9 +302,8 @@ public class ForecastRODImpl implements ForecastRODInterface{
 
 /* **************************************************************************************************************** */
 	/**
-	 * [predictPrice description]
-	 * @Author H2P
-	 * @Date   2017-06-01
+	 * @author H2P
+	 * @date   2017-06-01
 	 * @param  closes     datas of close price
 	 * @param  m          length of vector
 	 * @param  k          number of relevant character
@@ -327,48 +330,37 @@ public class ForecastRODImpl implements ForecastRODInterface{
 			for( int j=0; j<vLen; j++ )
 				vectors[i][j] = closes[i+j];
 	
-		double[][] cos = new double[vNum][2];
+		// calcuate cos two vectors' include angle
+		double[] cos = new double[vNum];
+		double[] dateD = new double[vNum];
 		for( int i=0; i<vNum; i++ ){
-			cos[i][0] = ForecastRODImpl.calCosIncludeAngle( baseVector, vectors[i] );
-			cos[i][1] = dates[i];
-		}
-		double[][] cosSave = new double[vNum][2];
-		cosSave = cos;
-		
-		// bubble sort cos
-		for( int i=0; i<vNum-1; i++ ){
-			for( int j=0; j<vNum-1-i; j++ ){
-				if( cos[j][0]>cos[j+1][0] ){
-					double[] temp = new double[2];
-					temp = cos[j];
-					cos[j] = cos[j+1];
-					cos[j+1] = temp;
-				}
-			}
+			cos[i] = ForecastRODImpl.calCosIncludeAngle( baseVector, vectors[i] );
+			LocalDate dateT = dates[i+vLen];
+			dateD[i] = dateT.getYear() + dateT.getMonthValue() + dateT.getDayOfMonth();
 		}
 
-		// get the first k index in cosSave
-		int[] index = new int[k];
+		// sort value of cos max to min
+		int[] cosSortIndex = ForecastRODImpl.getSortIndexMaxToMin( cos );
+		// select k max value of cos
+		double[] KCos = new double[k];
+		double[] KDateSave = new double[k];
 		for( int i=0; i<k; i++ ){
 			for( int j=0; j<vNum; j++ ){
-				if( df.format(cosSave[j]).equals(df.format(cos[i])) ){
-					index[j] = i;
-					break;
+				if( cosSortIndex[j]==i ){
+					KCos[i] = cos[j];
+					KDateSave[i] = dateD[j];
 				}
 			}
 		}
 
+		// sort date min to max
+		int[] dateSortIndex = ForecastRODImpl.getSortIndexMinToMax( KDateSave );
+		for( int i=0; i<k; i++ )
+			dateSortIndex[i] += i;
 
-
-		double sum = 0;
-		for( int i=0; i<k; i++ ){
-			if( index[i]==(vNum-1) )
-				sum += baseVector[vLen-1];
-			else
-				sum += vectors[index[i]+1][vLen-1];
-		}
-
-		result =  sum / k;
+		// sort cos according dateSortIndex
+		double[] ECos = new double[k];
+//		for( )
 		
 		return result;
 	}
@@ -539,4 +531,62 @@ public class ForecastRODImpl implements ForecastRODInterface{
 			return w0 + (i-1)*d;
 	}
 
+	/**
+	 * @Description:
+	 * @author: 	 hzp
+	 * @date:        2017-06-01
+	 * @param        nums       sort nums and return every num's order
+	 */
+	private static int[] getSortIndexMinToMax( double[] nums ){
+		int len = nums.length;
+
+		double[][] temp = new double[len][2];
+		for( int i=0; i<len; i++ ){
+			temp[i][0] = nums[i];
+			temp[i][1] = i;
+		}
+
+		for( int k=0; k<len-1; k++ ){
+			for( int i=0; i<len-1-k; i++ ){
+				if( temp[i][0]>temp[i+1][0] ){
+					double tempD = temp[i][0];
+					double tempIndex = temp[i][1];
+
+					temp[i][0] = temp[i+1][0];
+					temp[i][1] = temp[i+1][1];
+
+					temp[i+1][0] = tempD;
+					temp[i+1][1] = tempIndex;
+				}
+			}
+		}
+
+		int[] index = new int[len];
+		for( int i=0; i<len; i++ )
+			index[(int)temp[i][1]] = i;
+
+		return index; 
+	}
+
+	private static int[] getSortIndexMaxToMin( double[] nums ){
+		int[] indexMinToMax = ForecastRODImpl.getSortIndexMinToMax( nums );
+		return ForecastRODImpl.arrayConverse( indexMinToMax );
+	}
+
+	private static int[] arrayConverse( int[] index ){
+		int len = index.length;
+
+		int[] result = new int[len];
+		for( int i=0; i<len; i++ )
+			result[i] = index[len-1-i];
+
+		return result;
+	}
+
+	private static double[] intTodouble( int[] numI ){
+		double[] numD = new double[numI.length];
+		for( int i=0; i<numI.length; i++ )
+			numD[i] = (double)numI[i];
+		return numD;
+	}
 }
