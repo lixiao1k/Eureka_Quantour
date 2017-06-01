@@ -33,6 +33,7 @@ import logic.service.StockLogicInterface;
 import org.controlsfx.control.Notifications;
 import presentation.chart.chartService;
 import presentation.chart.lineChart.YieldComparedChart;
+import presentation.mainScreen.MainScreenController;
 import presentation.marketUI.MarketAreaController;
 import rmi.RemoteHelper;
 import vo.CommentVO;
@@ -60,6 +61,22 @@ public class BrowseStrategyController implements Initializable{
 	
 	@FXML
 	TextArea judgeTextArea;
+
+	@FXML
+	Button useStrategyButton;
+
+	private  MainScreenController controller;
+
+	@FXML
+	protected void useStrategy(ActionEvent e) throws IOException {
+		setAndUseStrategy();
+	}
+
+	private void setAndUseStrategy() throws IOException {
+		controller.setBrowseStrategyUI(true);
+
+	}
+
 	@FXML
 	protected void browseMine(ActionEvent e){
 		setBrowseMine();
@@ -71,9 +88,11 @@ public class BrowseStrategyController implements Initializable{
 		try {
 			List<StrategyListVO> list = stockLogicInterface.getStrategyList((String)dataController.get("UserName"));
 			setFlowPane(list);
-			if(list!=null){
+			if(list!=null&&list.size()!=0){
 				setJudge(list.get(0));
 				setLine(list.get(0));
+				dataController.upDate("CreaterName",list.get(0).getCreaterName());
+				dataController.upDate("StrategyName",list.get(0).getStrategyName());
 			}
 		} catch (RemoteException e1) {
 			// TODO Auto-generated catch block
@@ -88,9 +107,11 @@ public class BrowseStrategyController implements Initializable{
 		try {
 			List<StrategyListVO> list = stockLogicInterface.getStrategyList();
 			setFlowPane(list);
-			if(list!=null){
+			if(list!=null&&list.size()!=0){
 				setJudge(list.get(0));
 				setLine(list.get(0));
+				dataController.upDate("CreaterName",list.get(0).getCreaterName());
+				dataController.upDate("StrategyName",list.get(0).getStrategyName());
 			}
 		} catch (RemoteException e1) {
 			e1.printStackTrace();
@@ -118,6 +139,7 @@ public class BrowseStrategyController implements Initializable{
 			}
 			StrategyShowVO strategyShowVO = null;
 			try {
+
 				strategyShowVO = stockLogicInterface.getStrategy((String) dataController.get("CreaterName"),
                         (String)dataController.get("StrategyName"));
 			} catch (RemoteException e1) {
@@ -180,6 +202,7 @@ public class BrowseStrategyController implements Initializable{
 		StrategyShowVO strategyShowVO = null;
 		try {
 			strategyShowVO = stockLogicInterface.getStrategy(vo.getCreaterName(), vo.getStrategyName());
+			dataController.upDate("StrategyShowVO",strategyShowVO);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -277,11 +300,18 @@ public class BrowseStrategyController implements Initializable{
 		}
 	}
 
+	public void setController(MainScreenController controller){
+		this.controller = controller;
+	}
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
 		dataController = DataContorller.getInstance();
 		setBrowseMine();
+		Image index = new Image(getClass().getResourceAsStream("index.png"));
+		useStrategyButton.setGraphic(new ImageView(index));
+		useStrategyButton.getStylesheets().add(getClass().getClassLoader().getResource("styles/ButtonFile1.css").toExternalForm());
 	}
 
 }

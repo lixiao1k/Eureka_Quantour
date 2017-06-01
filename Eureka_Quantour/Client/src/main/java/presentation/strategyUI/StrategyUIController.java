@@ -52,10 +52,7 @@ import presentation.chart.lineChart.YieldComparedChart;
 import presentation.marketUI.MarketConceptController;
 import presentation.saveAsPNG.SaveAsPNG;
 import rmi.RemoteHelper;
-import vo.SaleVO;
-import vo.StrategyConditionVO;
-import vo.YieldChartDataVO;
-import vo.YieldDistributionHistogramDataVO;
+import vo.*;
 
 import javax.imageio.ImageIO;
 
@@ -434,6 +431,30 @@ public class StrategyUIController implements Initializable{
 	private void print(Pane pane){
 		SaveAsPNG saveAsPNG = new SaveAsPNG();
 		saveAsPNG.print(pane);
+	}
+
+	public void setStrategy(StrategyShowVO vo){
+		StrategyConditionVO conditionVO = vo.getStrategyConditionVO();
+		SaleVO saleVO = vo.getSaleVO();
+		String name = conditionVO.getName();//动量策略，均值策略
+		int changeableStr = conditionVO.getExtra().get(0);
+		int nums = conditionVO.getNums();
+		int tiaocangqi = saleVO.getTiaocangqi();
+		String price = saleVO.getTiaocangjiage();
+		if(name.equals("动量策略")){
+			momentumRadioButton.setSelected(true);
+		}else{
+			meanRadioButton.setSelected(true);
+		}
+		changableTextField.setText(Integer.toString(changeableStr));
+		numOfStockTextField.setText(Integer.toString(nums));
+		holdPeriodTextField.setText(Integer.toString(tiaocangqi));
+		if(price.equals("收盘价")){
+			closeRadioButton.setSelected(true);
+		}else{
+			openRadioButton.setSelected(true);
+		}
+
 	}
 
 	@Override

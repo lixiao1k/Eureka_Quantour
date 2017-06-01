@@ -26,9 +26,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import presentation.browseStrategyUI.BrowseStrategyController;
 import presentation.marketUI.MarketUIController;
 import presentation.stockSetUI.StockSetUIController;
+import presentation.strategyUI.StrategyUIController;
 import rmi.RemoteHelper;
+import vo.StrategyShowVO;
 
 public class MainScreenController implements Initializable{
 	
@@ -116,14 +119,31 @@ public class MainScreenController implements Initializable{
 	
 	@FXML
 	protected void browseStrategy(ActionEvent e) throws IOException{
-		setBrowseStrategyUI();
+		setBrowseStrategyUI(false);
 	}
-	public void setBrowseStrategyUI() throws IOException{
+
+	/**
+	 *
+	 * @param isInitialStrategy  如果是false，就不用初始化策略，是true，初始化策略，用于策略运用中
+	 * @throws IOException
+	 */
+	public void setBrowseStrategyUI(boolean isInitialStrategy) throws IOException{
 		ObservableList<Node> nodeList = mainAnchorPane.getChildren();
 		nodeList.clear();
-		AnchorPane strategyPane = (AnchorPane)FXMLLoader.load(getClass().getClassLoader().getResource("presentation/strategyUI/StrategyUI.fxml"));
+		AnchorPane strategyPane;
+		if(isInitialStrategy){
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getClassLoader().getResource("presentation/strategyUI/StrategyUI.fxml"));
+			strategyPane = (AnchorPane)loader.load();
+			StrategyUIController controller = loader.getController();
+			controller.setStrategy((StrategyShowVO) dataController.get("StrategyShowVO"));
+		}else{
+			strategyPane = (AnchorPane)FXMLLoader.load(getClass().getClassLoader().getResource("presentation/strategyUI/StrategyUI.fxml"));
+
+		}
 		mainAnchorPane.getChildren().add(strategyPane);
 	}
+
 	
 	@FXML
 	protected void browseStatistics(ActionEvent e) throws IOException{
@@ -148,7 +168,11 @@ public class MainScreenController implements Initializable{
 	public void setBrowseStrategySetUI() throws IOException{
 		ObservableList<Node> nodeList = mainAnchorPane.getChildren();
 		nodeList.clear();
-		AnchorPane strategyPane = (AnchorPane)FXMLLoader.load(getClass().getClassLoader().getResource("presentation/browseStrategyUI/BrowseStrategy.fxml"));
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(getClass().getClassLoader().getResource("presentation/browseStrategyUI/BrowseStrategy.fxml"));
+		AnchorPane strategyPane = (AnchorPane)loader.load();
+		BrowseStrategyController controller = loader.getController();
+		controller.setController(this);
 		mainAnchorPane.getChildren().add(strategyPane);
 	}
 
