@@ -17,7 +17,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
-import javafx.scene.shape.StrokeLineCap;
 import presentation.chart.chartService;
 import presentation.chart.function.CatchMouseMove;
 import presentation.chart.function.CatchMouseMoveService;
@@ -52,11 +51,11 @@ public class TimeShareChart implements chartService{
 		for( int i=0; i<arrayLen; i++ ){
 			point[i] = hour+":"+minute+":"+second;
 			second += mergePoint;
-			if( second>60 ){
+			if( second>=60 ){
 				second -= 60;
 				minute++;
-				if( minute>59 ){
-					minute -= 59;
+				if( minute>=60 ){
+					minute -= 60;
 					hour++;
 				}
 				if( hour==11 && minute==30 ){
