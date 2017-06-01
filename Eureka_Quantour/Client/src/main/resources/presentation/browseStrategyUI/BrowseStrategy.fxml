@@ -43,5 +43,6 @@
       <AnchorPane fx:id="strategyInfoPane" layoutX="279.0" layoutY="275.0" prefHeight="121.0" prefWidth="326.0" />
       <Label layoutX="605.0" layoutY="349.0" text="运用策略" />
       <Button fx:id="useStrategyButton" layoutX="678.0" layoutY="322.0" mnemonicParsing="false" onAction="#useStrategy" prefHeight="27.0" prefWidth="54.0" />
+      <Button layoutX="798.0" layoutY="380.0" mnemonicParsing="false" onAction="#deleteStrategy" styleClass="main-button" text="删除策略" />
    </children>
 </AnchorPane>

@@ -68,6 +68,25 @@ public class BrowseStrategyController implements Initializable{
 	private  MainScreenController controller;
 
 	@FXML
+	protected void deleteStrategy(ActionEvent e){
+		String createrName = (String) dataController.get("CreaterName");
+		String strategyName = (String) dataController.get("StrategyName");
+		RemoteHelper remoteHelper = RemoteHelper.getInstance();
+		StockLogicInterface stockLogicInterface = remoteHelper.getStockLogic();
+		if(createrName.length()!=0&&strategyName.length()!=0&&createrName.equals((String)dataController.get("UserName"))){
+			try {
+				stockLogicInterface.deleteStrategy(createrName,strategyName);
+				Notifications.create().title("成功").text("删除成功").showWarning();
+			} catch (RemoteException e1) {
+				e1.printStackTrace();
+			}
+		}else if(!createrName.equals((String)dataController.get("UserName"))){
+			Notifications.create().title("异常").text("只能删除自己的策略").showWarning();
+		}
+		setBrowseMine();
+	}
+
+	@FXML
 	protected void useStrategy(ActionEvent e) throws IOException {
 		setAndUseStrategy();
 	}
@@ -106,6 +125,8 @@ public class BrowseStrategyController implements Initializable{
 		StockLogicInterface stockLogicInterface = remoteHelper.getStockLogic();
 		try {
 			List<StrategyListVO> list = stockLogicInterface.getStrategyList();
+			System.out.println("here");
+			System.out.println(list);
 			setFlowPane(list);
 			if(list!=null&&list.size()!=0){
 				setJudge(list.get(0));
