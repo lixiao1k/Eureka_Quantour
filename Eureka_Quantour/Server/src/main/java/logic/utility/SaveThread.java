@@ -25,7 +25,6 @@ public class SaveThread extends Thread{
         List<String> stocklistname=idi.getStockSetInfo("HS300",null);
         LocalDate now=LocalDate.of(2016,1,1);
         LocalDate start=now.minusDays(100);
-        System.out.println(strategyConditionVO.getName());
         stragety=new Return(stocklistname,start,now,saleVO,strategyConditionVO);
 
     }
@@ -54,10 +53,7 @@ public class SaveThread extends Thread{
         double yearreturn=stragety.gerYearReturn();
         double jizhunyearreturn=stragety.gerBasicYearReturn();
         double zuidahuiche=stragety.getzuidaguiceh();
-
-
-        System.out.println("aes  asf "+yearreturn);
-
+        
         StrategyShowPO po=new StrategyShowPO(timelist,basicreturn,strategylist,alpha,beta,sharp,zuidahuiche,yearreturn,jizhunyearreturn);
         idi.addStrategyShow(username,name,po);
     }
