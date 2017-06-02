@@ -474,19 +474,15 @@ public class StockSetUIController implements Initializable {
 		} catch (DateInvalidException e) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("日期错误").text(e.toString()).showError();
-			e.printStackTrace();
 		} catch (BeginInvalidException e) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("日期错误").text(e.toString()).showError();
-			e.printStackTrace();
 		} catch (EndInvalidException e) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("日期错误").text(e.toString()).showError();
-			e.printStackTrace();
 		} catch (NullStockIDException e) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("搜索异常").text(e.toString()).showError();
-			e.printStackTrace();
 		}
 
 	}
@@ -509,24 +505,19 @@ public class StockSetUIController implements Initializable {
 		} catch (DateInvalidException e) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("日期错误").text(e.toString()).showError();
-			e.printStackTrace();
 		} catch (BeginInvalidException e) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("日期错误").text(e.toString()).showError();
-			e.printStackTrace();
 		} catch (EndInvalidException e) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("日期错误").text(e.toString()).showError();
-			e.printStackTrace();
 		} catch (NullStockIDException e) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("搜索异常").text(e.toString()).showError();
-			e.printStackTrace();
 		} catch (DateOverException e) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("日期错误").text(e.toString()).showError();
-			e.printStackTrace();
-		}	
+		}
 	}
 	/*
 	 * @description初始化股票基本信息界面
@@ -603,13 +594,7 @@ public class StockSetUIController implements Initializable {
 			Notifications.create().title("网络连接提示").text(e.toString()).showWarning();
 			e.printStackTrace();
 		}
-//		setStockSetSortedInfo(stub.getStockSetSortedInfo());
 		initialMenuAnchorPane();
-//		SingleStockInfoVO vo = stub.getStockSetSortedInfo().get(0);
-//		System.out.println(vo.getCode());
-//		setStockInfoPane(vo.getCode(), vo.getName(), vo.getClose(), vo.getFudu(), vo.getHigh()
-//				, vo.getLow(), vo.getOpen(), vo.getVolume());
-//		showDetailInfo();
 
 	}
 

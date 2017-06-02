@@ -17,11 +17,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -203,8 +202,52 @@ public class BrowseStrategyController implements Initializable{
 		DecimalFormat df = new DecimalFormat("0.00");	
 		Label yearreturn = getLabel(85, Pos.CENTER_LEFT, df.format(vo.getStrategyYearReturn()*100)+"%");
 		hb.getChildren().addAll(name,creater,yearreturn,show);
+		if(vo.getCreaterName().equals((String)dataController.get("UserName"))){
+			final ContextMenu contextMenu = new ContextMenu();
+			MenuItem menuItem = new MenuItem("public");
+			menuItem.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					menuItemEvent(false,vo);
+				}
+			});
+			MenuItem menuItem1 = new MenuItem("private");
+			menuItem1.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					menuItemEvent(true,vo);
+
+				}
+			});
+			contextMenu.getItems().addAll(menuItem,menuItem1);
+			name.setContextMenu(contextMenu);
+			creater.setContextMenu(contextMenu);
+			show.setContextMenu(contextMenu);
+			yearreturn.setContextMenu(contextMenu);
+
+
+		}
+
 		return hb;
 	}
+	private void menuItemEvent(boolean isPrivate,StrategyListVO vo){
+		RemoteHelper remoteHelper = RemoteHelper.getInstance();
+		StockLogicInterface stockLogicInterface = remoteHelper.getStockLogic();
+		if(isPrivate){
+			try {
+				stockLogicInterface.setPublic(vo.getCreaterName(),vo.getStrategyName(),false);
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
+		}else{
+			try {
+				stockLogicInterface.setPublic(vo.getCreaterName(),vo.getStrategyName(),true);
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 	private Label getLabel(double width, Pos alignment,String text){
 		Label label = new Label(text);
 		label.setPrefSize(width, 30);
