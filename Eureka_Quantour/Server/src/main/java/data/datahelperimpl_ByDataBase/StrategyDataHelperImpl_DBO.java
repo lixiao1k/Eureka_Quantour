@@ -433,7 +433,12 @@ public class StrategyDataHelperImpl_DBO implements IStrategyDataHelper{
 	public void setPublic(String creatroName, String straetgyName,boolean property){
 		String strategyid=getStrategyid(creatroName,straetgyName);
 		Connection conn=ConnectionPoolManager.getInstance().getConnection("quantour");
-		String sql="update strategy set pubOrpri='"+property+"' where strategyid ='"+strategyid+"'";
+		int flag=0;
+		if(property)
+		{
+			flag=1;
+		}
+		String sql="update strategy set pubOrpri='"+flag+"' where strategyid ='"+strategyid+"'";
 		PreparedStatement pstmt=null;
 		try {
 			pstmt = (PreparedStatement)conn.prepareStatement(sql);
