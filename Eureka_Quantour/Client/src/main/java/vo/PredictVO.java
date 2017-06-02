@@ -12,8 +12,10 @@ public class PredictVO implements Serializable{
 
 	private static final long serialVersionUID = -8674287798843908253L;
 
+	// 预测的价格
 	private double predictPrice;
 	
+	// 预测的价格所对应的涨跌幅
 	private double predictROD;
 	
 	PredictVO(){

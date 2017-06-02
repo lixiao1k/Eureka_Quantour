@@ -370,7 +370,7 @@ public class StockLogicImpl implements StockLogicInterface{
 		Boolean publicorprivate=strategyVO.isPublicorprivate();
 		String name=strategyVO.getName();
 		List<Integer> parameter=strategyConditionVO.getExtra();
-		int purchasenum=saleVO.getNum();
+		int purchasenum=strategyConditionVO.getNums();
 		int tiaocangqi=saleVO.getTiaocangqi();
 		String tiaocangjiage=saleVO.getTiaocangjiage();
 		StrategyInfoPO po=new StrategyInfoPO(strategytypename,publicorprivate,parameter,purchasenum,tiaocangqi,tiaocangjiage);
