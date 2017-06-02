@@ -36,6 +36,14 @@ public class TimeShareChart implements chartService{
     private String[] point;
     private double MidValue = 0;
     
+    /**
+     * @Description:
+     * @author: 	 hzp
+     * @date:        2017-05-20
+     * @param        prices     every second's data in 4h( 9:30-11:30,13:00-15:00 ), length = 4*3600
+     * @param        yMidValue  yesterday's close
+     * @param        mergePoint 多少秒为一点
+     */
 	public TimeShareChart( double[] prices, double yMidValue, int mergePoint){
 		MidValue = yMidValue;
 				

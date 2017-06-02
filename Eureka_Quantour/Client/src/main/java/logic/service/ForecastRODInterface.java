@@ -13,7 +13,7 @@ public interface ForecastRODInterface extends Remote {
 			throws RemoteException;	
 	/**
 	 * 
-	 * @Description: TODO
+	 * @Description: 预测明天股票价格
 	 * @author: hzp
 	 * @date: May 14, 2017
 	 * @param: stockcode : the code of stock
