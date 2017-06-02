@@ -6,6 +6,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 import data.datahelperimpl.StockDataHelperImpl_2;
+import data.datahelperimpl_ByDataBase.ExponentDataHelperImpl_DBO;
 import data.datahelperservice.IExponentDataHelper;
 import data.datahelperservice.IStockDataHelper_2;
 import data.parse.Parse;
@@ -29,6 +30,7 @@ public class StockDataController_2 {
 	private Parse parse;
 	private StockDataController_2(){
 		datahelper=new StockDataHelperImpl_2();
+		exphelper=ExponentDataHelperImpl_DBO.getInstance();
 		translate=Translate.getInstance();
 		parse=Parse.getInstance();
 	}

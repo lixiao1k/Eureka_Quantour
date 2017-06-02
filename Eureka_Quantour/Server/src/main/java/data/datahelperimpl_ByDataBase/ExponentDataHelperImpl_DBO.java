@@ -79,7 +79,7 @@ public class ExponentDataHelperImpl_DBO implements IExponentDataHelper{
 		List<SingleStockInfoPO> result=new ArrayList<SingleStockInfoPO>();
 		Connection conn=ConnectionPoolManager.getInstance().getConnection("quantour");
 		String sql="select * from quantour.exponent where code = '"+code+"' and date>='" 
-		+start.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) +"' and date<='"+start.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))+"'" ;
+		+start.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) +"' and date<='"+end.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))+"'" ;
 		PreparedStatement pstmt=null;
 		try {
 			pstmt = (PreparedStatement)conn.prepareStatement(sql);
@@ -108,7 +108,7 @@ public class ExponentDataHelperImpl_DBO implements IExponentDataHelper{
 		return null;
 	}
 	private String getcode(String name){
-		String sql="select code from stockinfo where binary username ='"+name+"'";
+		String sql="select code from stockinfo where binary name ='"+name+"'";
 		Connection conn=ConnectionPoolManager.getInstance().getConnection("quantour");
 		PreparedStatement pstmt=null;
 		String result="";

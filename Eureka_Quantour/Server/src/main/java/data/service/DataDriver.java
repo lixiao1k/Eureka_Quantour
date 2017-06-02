@@ -93,6 +93,13 @@ public class DataDriver {
 				inputtime=System.currentTimeMillis();
 				data.deleteStockSet(stockSetName, username);
 			}
+			else if(mode.equals("exponent"))
+			{
+				for(SingleStockInfoPO po:data.getPeriodExponent("SHA", LocalDate.of(2016, 5, 20), LocalDate.of(2017, 3, 15)))
+				{
+					System.out.println(po.toString());
+				}
+			}
 			else if(mode.equals("add stock to stockset")){
 				String username=sc.nextLine();
 				String stockSetName=sc.nextLine();
