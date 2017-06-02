@@ -45,6 +45,15 @@ public class DataInterfaceImpl implements IDataInterface
 		company=CompanyDataController.getInstance();
 	}
 	
+	public LocalDate getExponentMaxDay(String name)
+	{
+		return stock2.getExponentMaxDay(name);
+	}
+	public LocalDate getExponentMinDay(String name)
+	{
+		return stock2.getExponentMinDay(name);
+	}
+	
 	public CompanyInfoPO getLatestCommpanyInfo(LocalDate time,String code) throws NullStockIDException{
 		return company.getLatestCommpanyInfo(time, code);
 	}

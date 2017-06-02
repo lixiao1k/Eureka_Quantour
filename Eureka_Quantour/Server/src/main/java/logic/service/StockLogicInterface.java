@@ -15,6 +15,10 @@ import vo.*;
  * @time: 2017年3月6日
  */
 public interface StockLogicInterface extends Remote {
+	List<SingleStockInfoVO> getExponentInfoByTime (String name, LocalDate begin, LocalDate end )
+			 throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException;
+	
+	
 	/**
 	 * @Description: to get all stocks' information between "begin" and "end", 
 	 *               invoke getSingleStockInfo() in data layer

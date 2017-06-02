@@ -15,6 +15,22 @@ import vo.*;
  * @time: 2017年3月6日
  */
 public interface StockLogicInterface extends Remote {
+	
+	/**
+	 * 获得市场指数的k线图数据
+	 * @param name 市场名称，如（SHA，SHB,CYB）这种
+	 * @param begin 开始日期
+	 * @param end 结束日期
+	 * @return
+	 * @throws RemoteException
+	 * @throws DateInvalidException
+	 * @throws BeginInvalidException
+	 * @throws EndInvalidException
+	 * @throws NullStockIDException
+	 */
+	public List<SingleStockInfoVO> getExponentInfoByTime (String name, LocalDate begin, LocalDate end )
+			 throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException;
+	
 	/**
 	* @Description: to get all stocks' information between "begin" and "end", 
 	*               invoke getSingleStockInfo() in data layer

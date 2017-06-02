@@ -223,6 +223,14 @@ public class StockDataController_2 {
 			}
 		}
 	}
+	public LocalDate getExponentMaxDay(String name)
+	{
+		return exphelper.getExponentMaxDay(name);
+	}
+	public LocalDate getExponentMinDay(String name)
+	{
+		return exphelper.getExponentMinDay(name);
+	}
 //	
 //	/**
 //	 * 获取某个股票池的股票的某天信息

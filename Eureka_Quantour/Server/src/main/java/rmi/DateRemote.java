@@ -36,6 +36,10 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 		frodi = new ForecastRODImpl();
 	}
 
+	public List<SingleStockInfoVO> getExponentInfoByTime (String stockCode, LocalDate begin, LocalDate end )
+			 throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException{
+		return sli.getExponentInfoByTime(stockCode, begin, end);
+	}
 	@Override
 	public List<SingleStockInfoVO> getSingleStockInfoByTime(String stockCode, LocalDate begin, LocalDate end)
 			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException {

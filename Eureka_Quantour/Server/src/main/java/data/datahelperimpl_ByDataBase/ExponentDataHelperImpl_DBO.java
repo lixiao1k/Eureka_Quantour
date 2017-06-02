@@ -26,6 +26,54 @@ public class ExponentDataHelperImpl_DBO implements IExponentDataHelper{
 		if(datahelper==null) datahelper=new ExponentDataHelperImpl_DBO();
 		return datahelper;
 	}
+	public LocalDate getExponentMinDay(String name)
+	{
+		String code=getcode(name);
+		Connection conn=ConnectionPoolManager.getInstance().getConnection("quantour");
+		String sql="select min(date) from quantour.exponent where code = '"+code+"'";
+		PreparedStatement pstmt=null;
+		try {
+			pstmt = (PreparedStatement)conn.prepareStatement(sql);
+			ResultSet rs=pstmt.executeQuery();
+			if(rs.next()){
+				LocalDate ld=LocalDate.parse(rs.getString(1),DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+				return ld;
+			}
+			rs.close();
+			pstmt.close();
+			ConnectionPoolManager.getInstance().close("quantour", conn);
+			return null;
+		}catch (SQLException e) {
+			ConnectionPoolManager.getInstance().close("quantour", conn);
+			
+		}
+		return null;
+	}
+	
+	public LocalDate getExponentMaxDay(String name)
+	{
+		String code=getcode(name);
+		Connection conn=ConnectionPoolManager.getInstance().getConnection("quantour");
+		String sql="select max(date) from quantour.exponent where code = '"+code+"'";
+		PreparedStatement pstmt=null;
+		try {
+			pstmt = (PreparedStatement)conn.prepareStatement(sql);
+			ResultSet rs=pstmt.executeQuery();
+			if(rs.next()){
+				LocalDate ld=LocalDate.parse(rs.getString(1),DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+				return ld;
+			}
+			rs.close();
+			pstmt.close();
+			ConnectionPoolManager.getInstance().close("quantour", conn);
+			return null;
+		}catch (SQLException e) {
+			ConnectionPoolManager.getInstance().close("quantour", conn);
+			
+		}
+		return null;
+	}
+	
 	public List<SingleStockInfoPO> getPeriodExponent(String name,LocalDate start,LocalDate end){
 		String code=getcode(name);
 		List<SingleStockInfoPO> result=new ArrayList<SingleStockInfoPO>();

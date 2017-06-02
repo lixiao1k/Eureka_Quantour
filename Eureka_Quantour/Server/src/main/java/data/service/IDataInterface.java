@@ -33,6 +33,9 @@ import vo.StrategyVO;
  */
 public interface IDataInterface 
 {
+	
+	public LocalDate getExponentMaxDay(String name);
+	public LocalDate getExponentMinDay(String name);
 	/**
 	 * 获取某只股票最近的股本结构和基本收益变化
 	 * @param time

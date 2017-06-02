@@ -30,6 +30,20 @@ public class StockLogicImpl implements StockLogicInterface{
 	private Utility utility=Utility.getInstance();
 	private Return stragety;
 
+	public List<SingleStockInfoVO> getExponentInfoByTime (String name, LocalDate begin, LocalDate end )
+			 throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException{
+		utility.ifExpDateValid(begin, end,name);
+		
+		List<SingleStockInfoVO> lssi = new ArrayList<>();
+		List<SingleStockInfoPO> ls = idi.getPeriodExponent(name, begin, end);
+		for (SingleStockInfoPO temp:ls){
+			SingleStockInfoVO vo=new SingleStockInfoVO(temp);
+			lssi.add(vo);
+		}
+		return lssi;
+	}
+	
+	
 	@Override
 	public List<SingleStockInfoVO> getSingleStockInfoByTime(String stockCode, LocalDate begin, LocalDate end )
 			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException {

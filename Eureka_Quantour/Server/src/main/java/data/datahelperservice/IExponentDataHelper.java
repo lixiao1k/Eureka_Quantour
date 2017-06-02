@@ -7,5 +7,6 @@ import po.SingleStockInfoPO;
 
 public interface IExponentDataHelper {
 	public List<SingleStockInfoPO> getPeriodExponent(String name,LocalDate start,LocalDate end);
-	
+	public LocalDate getExponentMaxDay(String name);
+	public LocalDate getExponentMinDay(String name);
 }

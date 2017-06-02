@@ -25,7 +25,15 @@ public class Utility {
     }
 
 
+    public void ifExpDateValid(LocalDate begin, LocalDate end,String name) throws BeginInvalidException, DateInvalidException, EndInvalidException, NullStockIDException {
 
+        LocalDate start= idi.getExponentMinDay(name);
+        LocalDate jieshu= idi.getExponentMaxDay(name);
+        if (end.compareTo(start)<0)throw new EndInvalidException();
+        if (begin.compareTo(jieshu)>0)throw new EndInvalidException();
+        if (begin.compareTo(end)>0)
+            throw new DateInvalidException();
+    }
     public void ifDateValid(LocalDate begin, LocalDate end,String stockcode) throws BeginInvalidException, DateInvalidException, EndInvalidException, NullStockIDException {
 
         LocalDate start= idi.getMinDay(stockcode);
