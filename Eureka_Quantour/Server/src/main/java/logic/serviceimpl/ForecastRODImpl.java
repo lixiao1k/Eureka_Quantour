@@ -294,11 +294,17 @@ public class ForecastRODImpl implements ForecastRODInterface{
 			}
 		}
 
-		// double predictPrice = SBPredictPrice( closes[closes.length-1], closes[closes.length-2] );
+		double ZPrice = closes[closes.length-1];
+		double QPrice = closes[closes.length-2];
 		double predictPrice = KNNPredictPrice( closes, dates, 5, 25 );
-		predictVO.setPredictPrice( predictPrice );
+		double predictROD = (predictPrice - ZPrice) / ZPrice;
 
-		double predictROD = (predictPrice-closes[closes.length-1]) / closes[closes.length-1];
+		if( predictROD>0.1 || predictROD<-0.1 ){
+			predictPrice = SBPredictPrice( ZPrice, QPrice );
+			predictROD = (predictPrice - ZPrice) / ZPrice;
+
+		}
+		predictVO.setPredictPrice( predictPrice );
 		predictVO.setPredictROD( predictROD );
 
 		return predictVO;
