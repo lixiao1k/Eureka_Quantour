@@ -266,7 +266,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 
 		double[] closes = new double[100];
 		LocalDate[] dates = new LocalDate[100];
-		LocalDate dateT = date;
+		LocalDate dateT = date.plusDays(1);
 		int index = closes.length-1;
 		while( index>-1 && dateT.compareTo(zuizao)>0 ){
 			try{
