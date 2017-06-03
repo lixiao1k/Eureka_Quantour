@@ -2,6 +2,7 @@ package presentation.chart.lineChart;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javafx.geometry.Pos;
@@ -20,10 +21,13 @@ import javafx.scene.shape.Path;
 import presentation.chart.chartService;
 import presentation.chart.function.CatchMouseMove;
 import presentation.chart.function.CatchMouseMoveService;
+import presentation.chart.function.ListToArray;
+import presentation.chart.function.ListToArrayService;
 
 public class TimeShareChart implements chartService{
 
 	private CatchMouseMoveService catchMouseMove = new CatchMouseMove();
+	private ListToArrayService listToArray = new ListToArray();
 	
 	private DecimalFormat df = new DecimalFormat("0.00");
 	
@@ -44,8 +48,10 @@ public class TimeShareChart implements chartService{
      * @param        yMidValue  yesterday's close
      * @param        mergePoint 多少秒为一点
      */
-	public TimeShareChart( double[] prices, double yMidValue, int mergePoint){
+	public TimeShareChart( List<Double> price, double yMidValue, int mergePoint){
 		MidValue = yMidValue;
+
+		Double[] prices = listToArray.changeDouble( price );
 				
 		if( mergePoint<1 )
 			mergePoint = 1;
