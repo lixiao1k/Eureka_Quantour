@@ -294,8 +294,8 @@ public class ForecastRODImpl implements ForecastRODInterface{
 			}
 		}
 
-		double predictPrice = SBPredictPrice( closes[closes.length-1], closes[closes.length-2] );
-		// double predictPrice = KNNPredictPrice( closes, dates, 5, 25 );
+		// double predictPrice = SBPredictPrice( closes[closes.length-1], closes[closes.length-2] );
+		double predictPrice = KNNPredictPrice( closes, dates, 5, 25 );
 		predictVO.setPredictPrice( predictPrice );
 
 		double predictROD = (predictPrice-closes[closes.length-1]) / closes[closes.length-1];
@@ -369,7 +369,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		// sort date and value of cos
 		int[] sortIndex = new int[k];
 		for( int i=0; i<k; i++ ){
-			int minValue = -100;
+			int minValue = 9000000;
 			int index = 0;
 			for( int j=0; j<k; j++ ){
 				if( minValue>dateSortIndex[j] ){
@@ -384,9 +384,9 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		// calculate result
 		for( int i=0; i<k; i++ )
 			for( int j=0; j<k; j++ )
-				if( sortIndex[j]==i )
+				if( sortIndex[j]==i ){
 					result += KCloseSave[j] * statistic.getWeight( k, k-1-i );
-
+				}
 		return result;
 	}
 
