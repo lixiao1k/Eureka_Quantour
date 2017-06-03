@@ -9,6 +9,12 @@ import data.serviceimpl.DataInterfaceImpl;
 import exception.NullDateException;
 import exception.NullStockIDException;
 import logic.service.ForecastRODInterface;
+import logic.supportimpl.CalculateValueImpl;
+import logic.supportimpl.SortArrayImpl;
+import logic.supportimpl.StatisticImpl;
+import logic.supportservice.CalculateValueInterface;
+import logic.supportservice.SortArrayInterface;
+import logic.supportservice.StatisticInterface;
 import vo.PredictVO;
 import vo.SingleStockInfoVO;
 import vo.StockRODVO;
@@ -21,6 +27,10 @@ import vo.StockRODVO;
 public class ForecastRODImpl implements ForecastRODInterface{
 
 	private static DecimalFormat df = new DecimalFormat("0.0000");
+	
+	private CalculateValueInterface calValue = new CalculateValueImpl();
+	private SortArrayInterface sortArray = new SortArrayImpl();
+	private StatisticInterface statistic = new StatisticImpl();
 	
 	private IDataInterface idata = new DataInterfaceImpl();
 
@@ -110,18 +120,18 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		*/
 		double QROD = RODs[0];
 		double ZROD = RODs[1];
-		int iQROD = ForecastRODImpl.doubleToIndex(QROD);
-		int iZROD = ForecastRODImpl.doubleToIndex(ZROD);
+		int iQROD = doubleToIndex(QROD);
+		int iZROD = doubleToIndex(ZROD);
 		int avgNum = 2;
 		double avg = (closes[0]+closes[1]) / 2;
 		double ROD = 0;
 		int iROD = 0;
 		for( int i=2; i<numOfDay; i++ ){
 			ROD = RODs[i];
-			iROD = ForecastRODImpl.doubleToIndex(ROD);
+			iROD = doubleToIndex(ROD);
 
 			double ZClose = closes[i-1];
-			int iYesAvgROD = ForecastRODImpl.doubleToIndex( (ZClose-avg)/avg );
+			int iYesAvgROD = doubleToIndex( (ZClose-avg)/avg );
 			srod.YesterdayAvgROD[iYesAvgROD][iROD]++;
 
 			QROD = ZROD;
@@ -150,8 +160,8 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		* the initialzaion of idate is -1 which show the day is weekend
 		*/
 		int idate = -1;
-		iQROD = ForecastRODImpl.doubleToIndex(QROD);
-		iZROD = ForecastRODImpl.doubleToIndex(ZROD);
+		iQROD = doubleToIndex(QROD);
+		iZROD = doubleToIndex(ZROD);
 		iROD = 0;
 		
 		// save two days' close
@@ -181,7 +191,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 
 				// get next day's data
 				date = date.plusDays(1);
-				while( (idate = ForecastRODImpl.getDayOfWeek(date)) == -1 ){
+				while( (idate = getDayOfWeek(date)) == -1 ){
 					date = date.plusDays(1);
 				}
 				ssi = new SingleStockInfoVO( idata.getSingleStockInfo(stockcode, date) );
@@ -191,17 +201,17 @@ public class ForecastRODImpl implements ForecastRODInterface{
 				srod.nodata[idate][0]++;
 
 				ROD = (close2-close1)/close1;		
-				iROD = ForecastRODImpl.doubleToIndex( ROD );
+				iROD = doubleToIndex( ROD );
 				srod.wROD[idate][iROD]++;
 				
-				average = ForecastRODImpl.calAvg( RODs );
-				square = ForecastRODImpl.calVariance( RODs );
-				int iYesAvgROD = ForecastRODImpl.doubleToIndex( (close2-average)/average );
+				average = calValue.calAvg( RODs );
+				square = calValue.calVariance( RODs );
+				int iYesAvgROD = doubleToIndex( (close2-average)/average );
 
-				double today = ForecastRODImpl.KNNPredictPrice( closes, dates, m, k );
+				double today = KNNPredictPrice( closes, dates, m, k );
 				PreROD = (today-close1) / close1;
 				
-				ifROE = ForecastRODImpl.predictROE( PreROD, square, 1, alpha, ROD);
+				ifROE = statistic.predictROE( PreROD, square, 1, alpha, ROD);
 				if( ifROE )
 					srod.zhixin[0]++;
 				else
@@ -284,8 +294,8 @@ public class ForecastRODImpl implements ForecastRODInterface{
 			}
 		}
 
-		// double predictPrice = ForecastRODImpl.predictPrice( closes, 5, 25);
-		double predictPrice = ForecastRODImpl.KNNPredictPrice( closes, dates, 5, 25 );
+		double predictPrice = SBPredictPrice( closes[closes.length-1], closes[closes.length-2] );
+		// double predictPrice = KNNPredictPrice( closes, dates, 5, 25 );
 		predictVO.setPredictPrice( predictPrice );
 
 		double predictROD = (predictPrice-closes[closes.length-1]) / closes[closes.length-1];
@@ -295,7 +305,6 @@ public class ForecastRODImpl implements ForecastRODInterface{
 	}
 	
 
-/* **************************************************************************************************************** */
 	/**
 	 * @author H2P
 	 * @date   2017-06-01
@@ -303,7 +312,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 	 * @param  m          length of vector
 	 * @param  k          number of relevant character
 	 */
-	public static double KNNPredictPrice( double[] closes, LocalDate[] dates, int m, int k ){
+	public double KNNPredictPrice( double[] closes, LocalDate[] dates, int m, int k ){
 		// KNN algorithm
 		double result = 0;
 		int n = closes.length;
@@ -330,14 +339,14 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		double[] dateD = new double[vNum];
 		double[] closeD = new double[vNum];
 		for( int i=0; i<vNum; i++ ){
-			cos[i] = ForecastRODImpl.calCosIncludeAngle( baseVector, vectors[i] );
+			cos[i] = calValue.calCosIncludeAngle( baseVector, vectors[i] );
 			LocalDate dateT = dates[i+vLen];
 			dateD[i] = dateT.getYear() + dateT.getMonthValue() + dateT.getDayOfMonth();
 			closeD[i] = closes[i+vLen];
 		}
 
 		// sort value of cos from max to min
-		int[] cosSortIndex = ForecastRODImpl.getSortIndexMaxToMin( cos );
+		int[] cosSortIndex = sortArray.getSortIndexMaxToMin( cos );
 		// select k max value of cos
 		double[] KCos = new double[k];
 		double[] KDateSave = new double[k];
@@ -353,7 +362,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		}
 
 		// sort date from 近 to 远
-		int[] dateSortIndex = ForecastRODImpl.getSortIndexMinToMax( KDateSave );
+		int[] dateSortIndex = sortArray.getSortIndexMinToMax( KDateSave );
 		for( int i=0; i<k; i++ )
 			dateSortIndex[i] += i;
 
@@ -376,26 +385,28 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		for( int i=0; i<k; i++ )
 			for( int j=0; j<k; j++ )
 				if( sortIndex[j]==i )
-					result += KCloseSave[j] * ForecastRODImpl.getWeight( k, k-1-i );
+					result += KCloseSave[j] * statistic.getWeight( k, k-1-i );
 
 		return result;
 	}
-/* **************************************************************************************************************** */
 
-
-/* **************************************************************************************************************** */
-	private static double SBPredictPrice( double[] closes ){
-		if( closes.length<2 )
-			return 0;
-		double ZPrice = closes[closes.length-1];
-		double QPrice = closes[closes.length-2];
+	/**
+	 * @Description:
+	 * @author: 	 hzp
+	 * @date:        2017-06-03
+	 * @param        closes     [description]
+	 * @return                  [description]
+	 */
+	private double SBPredictPrice( double ZPrice, double QPrice ){
 		double result = ZPrice + (ZPrice - QPrice)/2;
+		if( result<0 )
+			return 0;
 		return result;
 	}
-/* **************************************************************************************************************** */
 
 
-	private static int getDayOfWeek( LocalDate date){
+
+	private int getDayOfWeek( LocalDate date){
 		String dow = date.getDayOfWeek().toString();
 		if( dow.equals("MONDAY"))
 			return 0;
@@ -414,7 +425,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 	/*
 	* return the index of distribution of ROD in array
 	*/
-	private static int doubleToIndex( double ROD){
+	private int doubleToIndex( double ROD){
 		String str = df.format(ROD);
 		double d = Double.valueOf(str);
 		
@@ -434,167 +445,6 @@ public class ForecastRODImpl implements ForecastRODInterface{
 			return 21;
 		else
 			return 22;
-	}
-
-	private static double calAvg( double[] data ){
-		double sum = 0.0;
-		for( int i=0; i<data.length; i++ )
-			sum += data[i];
-		return sum / data.length;
-	}
-
-	private static double calVariance( double[] data ){
-		double avg = ForecastRODImpl.calAvg( data );
-		double avgSquare = Math.pow( avg, 2 );
-
-		double[] data2 = new double[data.length];
-		for( int i=0; i<data.length; i++ )
-			data2[i] = Math.pow( data[i], 2 );
-		double squareAvg = ForecastRODImpl.calAvg( data2 );
-
-		return (squareAvg - avgSquare);
-	}
-
-	/**
-	 * 
-	 * @Description: judge if real value in the zhi xin qu jian
-	 * @author: hzp
-	 * @date: May 17, 2017
-	 * @param: @param num : chou yang ci shu
-	 * @param: @param alpha : ji suan zhi xin qu jian de α
-	 * @param: @param real
-	 */
-	private static boolean predictROE( double average, double square, int num, double alpha, double real){
-		double zalpha = 0.0;
-		if( alpha==0.1 )
-			zalpha = 1.65;
-		else if( alpha==0.05 )
-			zalpha = 1.96;
-		else if( alpha==0.01 )
-			zalpha = 2.58;
-		double lower = average - Math.sqrt(square)*zalpha/Math.sqrt(num);
-		double upper = average + Math.sqrt(square)*zalpha/Math.sqrt(num);
-
-		if( real>=lower && real<=upper ){
-			return true;
-		}
-		else{
-			return false;
-		}
-	}
-
-	/**
-	 * 
-	 * @Description: calculate cos ( two vector's include angle )
-	 * @author: hzp
-	 * @date: May 23, 2017
-	 */
-	private static double calCosIncludeAngle( double[] vector1, double[] vector2 ){
-		if( vector1.length!=vector2.length )
-			return 0;
-		double vectorMul = ForecastRODImpl.vectorMultiply( vector1, vector2 );
-		double vectorModelMul = ForecastRODImpl.vectorModel( vector1 )*ForecastRODImpl.vectorModel( vector2 );
-
-		return vectorMul / vectorModelMul;
-	}
-
-	/**
-	 * 
-	 * @Description: calculate two vectors' multiply-product
-	 * @author: hzp
-	 * @date: May 23, 2017
-	 */
-	private static double vectorMultiply( double[] vector1, double[] vector2 ){
-		if( vector1.length!=vector1.length )
-			return 0;
-
-		double sum = 0;
-		for( int i=0; i<vector1.length; i++ )
-			sum += vector1[i]*vector2[i];
-		return sum;
-	}
-
-	/**
-	 * 
-	 * @Description: calculate vector's model
-	 * @author: hzp
-	 * @date: May 23, 2017
-	 */
-	private static double vectorModel( double[] vector ){
-		double sum = 0;
-		for( int i=0; i<vector.length; i++ )
-			sum += Math.pow( vector[i], 2 );
-		sum = Math.sqrt( sum );
-		return sum;
-	}
-
-	/**
-	 * 进过测试，结果和为 1 
-	 * @Description: function : Wi = w0 + i * d; k Wi's values' sum = 1
-	 * @author: hzp
-	 * @date: May 24, 2017
-	 * @param: @param k : number of factor's weight 
-	 * @param: @param i : index of factor
-	 */
-	private static double getWeight( int k, int i ){
-		if( i>k )
-			return 0;
-		double w0 = 0.004;
-		double d = 2.0 * (1.0-k*w0) / ( k*(k-1.0) );
-
-		return w0 + i*d;
-	}
-
-	/**
-	 * @Description:
-	 * @author: 	 hzp
-	 * @date:        2017-06-01
-	 * @param        nums       sort nums and return every num's order
-	 */
-	private static int[] getSortIndexMinToMax( double[] nums ){
-		int len = nums.length;
-
-		double[][] temp = new double[len][2];
-		for( int i=0; i<len; i++ ){
-			temp[i][0] = nums[i];
-			temp[i][1] = i;
-		}
-
-		for( int k=0; k<len-1; k++ ){
-			for( int i=0; i<len-1-k; i++ ){
-				if( temp[i][0]>temp[i+1][0] ){
-					double tempD = temp[i][0];
-					double tempIndex = temp[i][1];
-
-					temp[i][0] = temp[i+1][0];
-					temp[i][1] = temp[i+1][1];
-
-					temp[i+1][0] = tempD;
-					temp[i+1][1] = tempIndex;
-				}
-			}
-		}
-
-		int[] index = new int[len];
-		for( int i=0; i<len; i++ )
-			index[(int)temp[i][1]] = i;
-
-		return index; 
-	}
-
-	private static int[] getSortIndexMaxToMin( double[] nums ){
-		int[] indexMinToMax = ForecastRODImpl.getSortIndexMinToMax( nums );
-		return ForecastRODImpl.arrayConverse( indexMinToMax );
-	}
-
-	private static int[] arrayConverse( int[] index ){
-		int len = index.length;
-
-		int[] result = new int[len];
-		for( int i=0; i<len; i++ )
-			result[i] = index[len-1-i];
-
-		return result;
 	}
 	
 }
