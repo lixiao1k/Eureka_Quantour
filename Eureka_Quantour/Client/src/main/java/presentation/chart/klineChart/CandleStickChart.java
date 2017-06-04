@@ -115,7 +115,7 @@ public class  CandleStickChart extends XYChart<String, Number> {
             		     +"high : "+df.format( bar.getHigh() )+"\n"
             		     +"low : "+df.format( bar.getLow() )+"\n";
 
-          	if( bar.getAve()!=Math.MAX_VALUE && bar.getAve()>0 )
+          	if( bar.getAve()!=Integer.MAX_VALUE && bar.getAve()>0 )
                 info += "5EMA : "+ df.format( bar.getAve() )+"\n";
             
             	info += "volume : ";

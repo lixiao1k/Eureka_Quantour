@@ -300,9 +300,14 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		double predictROD = (predictPrice - ZPrice) / ZPrice;
 
 		if( predictROD>0.1 || predictROD<-0.1 ){
-			predictPrice = SBPredictPrice( ZPrice, QPrice );
-			predictROD = (predictPrice - ZPrice) / ZPrice;
-
+			double predictPriceT = SBPredictPrice( ZPrice, QPrice );
+			double predictRODT = (predictPrice - ZPrice) / ZPrice;
+			if( (predictRODT<predictROD && predictROD<-0.1) ||
+				(predictRODT>predictROD && predictROD>0.1) );
+			else{
+				predictPrice = predictPriceT;
+				predictROD = predictRODT;
+			}
 		}
 		predictVO.setPredictPrice( predictPrice );
 		predictVO.setPredictROD( predictROD );
