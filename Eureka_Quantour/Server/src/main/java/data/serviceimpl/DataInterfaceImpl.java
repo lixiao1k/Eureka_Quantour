@@ -23,6 +23,7 @@ import po.CompanyInfoPO;
 import po.SingleStockInfoPO;
 import po.StrategyInfoPO;
 import po.StrategyShowPO;
+import po.TimeSharingPO;
 import vo.StrategyShowVO;
 /**
  * 数据层接口的实现
@@ -164,8 +165,20 @@ public class DataInterfaceImpl implements IDataInterface
 	public void clearStrategyShow (){
 		strategy.clearStrategyShow();
 	}
-	public List<Double> getTimeSharingData(String code,LocalDate date)throws TimeShraingLackException,NullStockIDException{
-		return stock2.getTimeSharingData(code, date);
+	public TimeSharingPO getTimeSharingData(String code,LocalDate date)throws TimeShraingLackException,NullStockIDException{
+		List<Double> list=stock2.getTimeSharingData(code, date);
+		double last_close=0;
+		try {
+			SingleStockInfoPO po=stock2.getSingleStockInfo(code, date);
+			last_close=po.getLclose();
+			if(last_close==0)
+			{
+				last_close=po.getClose();
+			}
+			return new TimeSharingPO(list,last_close);
+		} catch (NullDateException e) {
+			throw new TimeShraingLackException();
+		}
 	}
 	public List<CommentPO> getStrategyComments(String createrName,String strategyName){
 		return strategy.getStrategyComments(createrName, strategyName);

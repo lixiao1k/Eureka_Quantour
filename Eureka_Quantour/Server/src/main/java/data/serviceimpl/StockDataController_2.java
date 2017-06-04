@@ -17,6 +17,7 @@ import exception.NullStockIDException;
 import exception.StockHaltingException;
 import exception.TimeShraingLackException;
 import po.SingleStockInfoPO;
+import po.TimeSharingPO;
 /**
  * 股票模块数据的数据处理接口
  * @author 刘宇翔

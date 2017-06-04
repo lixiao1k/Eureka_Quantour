@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import exception.*;
+import po.CompanyInfoPO;
 import vo.*;
 
 /**
@@ -15,6 +16,9 @@ import vo.*;
  * @time: 2017年3月6日
  */
 public interface StockLogicInterface extends Remote {
+	
+	public CompanyInfoVO getLatestCommpanyInfo(LocalDate time,String code) throws NullStockIDException, NullDateException, RemoteException;
+	
 	List<SingleStockInfoVO> getExponentInfoByTime (String name, LocalDate begin, LocalDate end )
 			 throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException;
 	
@@ -105,7 +109,7 @@ public interface StockLogicInterface extends Remote {
 	 * @throws NullStockIDException
 	 * @throws RemoteException 
 	 */
-	List<Double> getTimeSharingData(String code,LocalDate date)throws TimeShraingLackException,NullStockIDException, RemoteException;
+	TimeSharingVO getTimeSharingData(String code,LocalDate date)throws TimeShraingLackException,NullStockIDException, RemoteException;
 
 	List<String> fuzzySearch(String input) throws  RemoteException;
 
