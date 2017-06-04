@@ -16,6 +16,7 @@ import po.CommentPO;
 import po.SingleStockInfoPO;
 import po.StrategyInfoPO;
 import po.StrategyShowPO;
+import po.TimeSharingPO;
 import vo.*;
 
 /**
@@ -470,8 +471,9 @@ public class StockLogicImpl implements StockLogicInterface{
 	 * @throws TimeShraingLackException
 	 * @throws NullStockIDException
 	 */
-	public List<Double> getTimeSharingData(String code,LocalDate date)throws TimeShraingLackException,NullStockIDException,RemoteException{
-		return idi.getTimeSharingData(code, date);
+	public TimeSharingVO getTimeSharingData(String code,LocalDate date)throws TimeShraingLackException,NullStockIDException,RemoteException{
+		TimeSharingPO po=idi.getTimeSharingData(code, date);
+		return new TimeSharingVO(po.getMinute_data(),po.getLast_close());
 	}
 
 	@Override

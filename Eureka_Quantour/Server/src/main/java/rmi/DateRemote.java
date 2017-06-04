@@ -194,7 +194,7 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 	}
 
 	@Override
-	public List<Double> getTimeSharingData(String code, LocalDate date)
+	public TimeSharingVO getTimeSharingData(String code, LocalDate date)
 			throws TimeShraingLackException, NullStockIDException, RemoteException {
 		return sli.getTimeSharingData(code, date);
 	}

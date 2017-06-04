@@ -95,10 +95,25 @@ public class DataDriver {
 			}
 			else if(mode.equals("exponent"))
 			{
-				for(SingleStockInfoPO po:data.getPeriodExponent("SHA", LocalDate.of(2016, 5, 20), LocalDate.of(2017, 3, 15)))
+				long t1=System.currentTimeMillis();
+				//data.getPeriodExponent("SHA", LocalDate.of(2005, 5, 20), LocalDate.of(2017, 3, 15));
+				LocalDate i=LocalDate.of(2005, 5, 20);
+				try
 				{
-					System.out.println(po.toString());
+					for(;i.isBefore( LocalDate.of(2017, 3, 15));i=data.addDays(i, 1))
+					{
+						
+					}
+				}catch(Exception e)
+				{
+					
 				}
+				long t2=System.currentTimeMillis();
+				System.out.println(t2-t1);
+//				for(SingleStockInfoPO po:data.getPeriodExponent("SHA", LocalDate.of(2016, 5, 20), LocalDate.of(2017, 3, 15)))
+//				{
+//					System.out.println(po.toString());
+//				}
 			}
 			else if(mode.equals("add stock to stockset")){
 				String username=sc.nextLine();
