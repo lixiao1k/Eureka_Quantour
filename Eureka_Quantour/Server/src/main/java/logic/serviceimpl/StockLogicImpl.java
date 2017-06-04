@@ -13,6 +13,7 @@ import logic.utility.Return;
 import logic.utility.SaveThread;
 import logic.utility.Utility;
 import po.CommentPO;
+import po.CompanyInfoPO;
 import po.SingleStockInfoPO;
 import po.StrategyInfoPO;
 import po.StrategyShowPO;
@@ -31,6 +32,19 @@ public class StockLogicImpl implements StockLogicInterface{
 	private Utility utility=Utility.getInstance();
 	private Return stragety;
 
+	public CompanyInfoVO getLatestCommpanyInfo(LocalDate time,String code) throws RemoteException,NullStockIDException, NullDateException
+	{
+		CompanyInfoPO po1=idi.getLatestCommpanyInfo(time, code);
+		SingleStockInfoPO po2=idi.getSingleStockInfo(code, time);
+		double shijing=po2.getClose()/po1.getNetAsset();
+		double shiying=po2.getClose()/(po1.getBasicIncome()*4);
+		double huanshou=(double)po2.getVolume()/po1.getFluCapitalization()*100;
+		CompanyInfoVO vo=new CompanyInfoVO(po1.getCode(),po1.getDate(),po1.getBasicIncome(),po1.getNetAsset(),
+				po1.getTotalCapitalization(),po1.getFluCapitalization()
+				,shiying,shijing,huanshou);
+		return vo;
+	}
+	
 	public List<SingleStockInfoVO> getExponentInfoByTime (String name, LocalDate begin, LocalDate end )
 			 throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException{
 		utility.ifExpDateValid(begin, end,name);

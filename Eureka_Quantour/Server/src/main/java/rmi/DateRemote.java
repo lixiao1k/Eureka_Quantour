@@ -13,6 +13,7 @@ import logic.service.StockLogicInterface;
 import logic.serviceimpl.ClientLogicImpl;
 import logic.serviceimpl.ForecastRODImpl;
 import logic.serviceimpl.StockLogicImpl;
+import po.CompanyInfoPO;
 import vo.*;
 
 import javax.swing.plaf.synth.SynthEditorPaneUI;
@@ -202,5 +203,10 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 	@Override
 	public List<String> fuzzySearch(String input) throws RemoteException{
 		return sli.fuzzySearch(input);
+	}
+	
+	public CompanyInfoVO getLatestCommpanyInfo(LocalDate time,String code) throws NullStockIDException, NullDateException, RemoteException
+	{
+		return sli.getLatestCommpanyInfo(time, code);
 	}
 }
