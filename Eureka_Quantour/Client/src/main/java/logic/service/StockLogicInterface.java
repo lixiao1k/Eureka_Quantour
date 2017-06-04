@@ -28,7 +28,7 @@ public interface StockLogicInterface extends Remote {
 	 * @throws EndInvalidException
 	 * @throws NullStockIDException
 	 */
-	public List<SingleStockInfoVO> getExponentInfoByTime (String name, LocalDate begin, LocalDate end )
+	public List<SingleStockInfoVO> getExponenftInfoByTime (String name, LocalDate begin, LocalDate end )
 			 throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException;
 	
 	/**

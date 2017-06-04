@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -12,8 +13,11 @@ import com.sun.org.apache.regexp.internal.RE;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import logic.service.ForecastRODInterface;
 import org.controlsfx.control.Notifications;
 
 import dataController.DataContorller;
@@ -51,6 +55,7 @@ import presentation.saveAsPNG.SaveAsPNG;
 import rmi.RemoteHelper;
 import vo.ComparedInfoVO;
 import vo.EMAInfoVO;
+import vo.PredictVO;
 import vo.SingleStockInfoVO;
 
 import javax.imageio.ImageIO;
@@ -130,7 +135,36 @@ public class SingleStockUIController implements Initializable{
 	}
  //查看日k线图
 	@FXML
-	protected void goBrowseMinute(ActionEvent e){
+	protected void goBrowseMinute(ActionEvent e) throws IOException {
+		String name = (String)dataController.get("SingleStockNow");
+		RemoteHelper remoteHelper = RemoteHelper.getInstance();
+		StockLogicInterface stockLogicInterface = remoteHelper.getStockLogic();
+		ForecastRODInterface forecastRODInterface = remoteHelper.getForecastROD();
+		String code = "";
+		PredictVO predictVO =null;
+		emaChartAnchorPane.getChildren().clear();
+		try {
+			code = stockLogicInterface.nameToCode(name);
+		} catch (RemoteException e1) {
+			e1.printStackTrace();
+		}
+		if(code!=""){
+			try {
+				predictVO = forecastRODInterface.predict(code,(LocalDate) dataController.get("SystemTime"));
+			} catch (RemoteException e1) {
+				e1.printStackTrace();
+			}
+		}
+		if(predictVO!=null){
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getClassLoader().getResource("presentation/singleStockUI/Predict.fxml"));
+			Pane pane = loader.load();
+			PredictController controller = loader.getController();
+			controller.set(predictVO);
+			emaChartAnchorPane.getChildren().add(pane);
+
+		}
+
 
 	}
 
