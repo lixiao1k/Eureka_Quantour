@@ -94,7 +94,7 @@ public class ExponentDataHelperImpl_DBO implements IExponentDataHelper{
 				double rate=rs.getDouble(8);
 				long volume=rs.getLong(9);
 				SingleStockInfoPO po=new SingleStockInfoPO(name,code,ld,open,high,low,volume,
-						close,0.0,0.0,lclose,0.0,0.0,rate,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0);
+						close,0.0,0.0,lclose,0.0,0.0,rate,rate,rate,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0);
 				result.add(po);
 			}
 			rs.close();

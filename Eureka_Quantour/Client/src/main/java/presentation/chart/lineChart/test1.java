@@ -31,7 +31,7 @@ public class test1 extends Application{
     	}
     	else{
     		try{
-    		List<SingleStockInfoVO> vo=remote.getStockLogic().getExponentInfoByTime("SHA", LocalDate.of(2015, 5, 7), LocalDate.of(2016, 5, 7));
+    		List<Double> list=remote.getStockLogic().getTimeSharingData("000001", LocalDate.of(2017, 5, 13));
     		System.out.println(vo.size());
     		}catch(Exception e){
     			e.printStackTrace();
