@@ -1,6 +1,7 @@
 package presentation.chart.lineChart;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,7 @@ public class TimeShareChart implements chartService{
 	private ListToArrayService listToArray = new ListToArray();
 	
 	private DecimalFormat df = new DecimalFormat("0.00");
+	private NumberFormat nf = NumberFormat.getPercentInstance();
 	
 	private NumberAxis yAxis;
     private CategoryAxis xAxis;
@@ -39,6 +41,7 @@ public class TimeShareChart implements chartService{
     private Map<String, String> dataMap = new HashMap<String,String>();
     private String[] point;
     private double MidValue = 0;
+    private double MaxROD = 0;
     
     /**
      * @Description:
@@ -79,6 +82,23 @@ public class TimeShareChart implements chartService{
 				}
 			}
 		}
+
+		double maxPrice = 0;
+		double minPrice = 1000000;
+		for( int i=0; i<prices.length; i++ ){
+			if( prices[i] > maxPrice )
+				maxPrice = prices[i];
+			if( prices[i] < minPrice )
+				minPrice = prices[i];
+		}
+		double maxROD = ( maxPrice - yMidValue ) / yMidValue;
+		double minROD = ( yMidValue - minPrice ) / yMidValue;
+		if( Math.abs(maxROD)>0.05 || Math.abs(minROD)>0.05 )
+			MaxROD = 0.1;
+		else if( Math.abs(maxROD)>0.025 || Math.abs(minROD)>0.025  )
+			MaxROD = 0.05;
+		else
+			MaxROD = 0.025;
 		
 		xAxis = new CategoryAxis();
         xAxis.setGapStartAndEnd(false);
@@ -90,10 +110,13 @@ public class TimeShareChart implements chartService{
         yAxis = new NumberAxis();
         yAxis.autoRangingProperty().set(false);
         yAxis.setAnimated(true);
+        yAxis.setMaxWidth(0);
 //      yAxis.forceZeroInRangeProperty().setValue(false);
         yAxis.setTickLabelsVisible(false);
-        yAxis.setLowerBound( yMidValue*0.9 );
-        yAxis.setUpperBound( yMidValue*1.1 );
+        double yMinValue = yMidValue * (1 - MaxROD);
+        double yMaxValue = yMidValue * (1 + MaxROD);
+        yAxis.setLowerBound( yMinValue );
+        yAxis.setUpperBound( yMaxValue );
         
         lineChart = new LineChart<>(xAxis, yAxis);
         lineChart.setHorizontalGridLinesVisible(false);
@@ -105,10 +128,10 @@ public class TimeShareChart implements chartService{
         XYChart.Series<String, Number> serie = new XYChart.Series<>();
         for( int i=0; i<point.length; i++ ){
         	if( i*mergePoint<(prices.length-1) ){
-        		if( prices[i*mergePoint]<(yMidValue*0.8) )
-        			prices[i*mergePoint] = yMidValue*0.9;
-        		if( prices[i*mergePoint]>(yMidValue*1.2) )
-        			prices[i*mergePoint] = yMidValue*1.1;
+        		if( prices[i*mergePoint]<yMinValue )
+        			prices[i*mergePoint] = yMinValue;
+        		if( prices[i*mergePoint]>yMaxValue )
+        			prices[i*mergePoint] = yMaxValue;
         		serie.getData().add( new XYChart.Data<>(point[i], prices[i*mergePoint]) );
         		dataMap.put( point[i], "price:"+df.format(prices[i*mergePoint]) );
         	}
@@ -125,7 +148,7 @@ public class TimeShareChart implements chartService{
 		int topjuli = 10;
 		int timeHeight = 20;
 		int rightjuli = 5;
-		int leftjuli = 30;
+		int leftjuli = 40;
 		height = height-timeHeight-topjuli;
 		width = width-leftjuli-rightjuli;
 		lineChart.setPrefSize(width, height);
@@ -139,9 +162,9 @@ public class TimeShareChart implements chartService{
 		timePane.getChildren().add(beginTime);
 		timePane.getChildren().add(midTime);
 		timePane.getChildren().add(endTime);
-		StackPane.setAlignment(beginTime, Pos.BOTTOM_LEFT);
-		StackPane.setAlignment(midTime, Pos.BOTTOM_CENTER);
-		StackPane.setAlignment(endTime, Pos.BOTTOM_RIGHT);
+		StackPane.setAlignment(beginTime, Pos.CENTER_LEFT);
+		StackPane.setAlignment(midTime, Pos.CENTER);
+		StackPane.setAlignment(endTime, Pos.CENTER_RIGHT);
 		timePane.getStylesheets().add(
     			getClass().getResource("/styles/DateLabel.css").toExternalForm() );
 /* *********************************************************************************************************** */
@@ -186,37 +209,40 @@ public class TimeShareChart implements chartService{
 		AnchorPane yPane = new AnchorPane();
 		yPane.setPrefSize(leftjuli, height);
 		
-		Label top1 = new Label( df.format(MidValue*1.1) );
-		Label top2 = new Label( df.format(MidValue*1.05) );
+		Label top1 = new Label( " "+df.format(MidValue*(1+MaxROD)) +"\n"+ "(+"+nf.format(MaxROD)+")" );
+		Label top2 = new Label( " "+df.format(MidValue*(1+MaxROD/2)) +"\n"+ "(+"+nf.format(MaxROD/2)+")" );
 		top1.setTextFill(Color.web("#f15b6c"));
 		top2.setTextFill(Color.web("#f15b6c"));
 		StackPane topP = new StackPane();
-		topP.setPrefSize(leftjuli, height/4+5);
+		topP.setPrefSize(leftjuli, height/4+15);
 		topP.getChildren().add(top1);
 		topP.getChildren().add(top2);
 		StackPane.setAlignment(top1, Pos.TOP_CENTER);
 		StackPane.setAlignment(top2, Pos.BOTTOM_CENTER);
 		
 		Label mid = new Label( df.format(MidValue) );
-		mid.setPrefSize(leftjuli, height/2);
 		mid.setTextFill(Color.WHITE);
+		StackPane botM = new StackPane();
+		botM.setPrefSize(leftjuli, height/2);
+		botM.getChildren().add(mid);
+		StackPane.setAlignment(mid, Pos.CENTER);
 		
-		Label bot1 = new Label( df.format(MidValue*0.95) );
-		Label bot2 = new Label( df.format(MidValue*0.9) );
+		Label bot1 = new Label( " "+df.format(MidValue*(1-MaxROD/2)) +"\n"+ "(-"+nf.format(MaxROD/2)+")"  );
+		Label bot2 = new Label( " "+df.format(MidValue*(1-MaxROD)) +"\n"+ "(-"+nf.format(MaxROD)+")"  );
 		bot1.setTextFill(Color.web("#45b97c"));
 		bot2.setTextFill(Color.web("#45b97c"));
 		StackPane botP = new StackPane();
-		botP.setPrefSize(leftjuli, height/4);
+		botP.setPrefSize(leftjuli, height/4+15);
 		botP.getChildren().add(bot1);
 		botP.getChildren().add(bot2);
 		StackPane.setAlignment(bot1, Pos.TOP_CENTER);
 		StackPane.setAlignment(bot2, Pos.BOTTOM_CENTER);
 		
 		yPane.getChildren().add(topP);
-		yPane.getChildren().add(mid);
+		yPane.getChildren().add(botM);
 		yPane.getChildren().add(botP);	
-		AnchorPane.setTopAnchor(mid, height/4+0.0);
-		AnchorPane.setTopAnchor(botP, height/4*3-5.0);
+		AnchorPane.setTopAnchor(botM, height/4+0.0);
+		AnchorPane.setTopAnchor(botP, height/4*3-15.0);
 /* *********************************************************************************************************** */		
 	
 		

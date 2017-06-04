@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import com.sun.org.apache.regexp.internal.RE;
+import exception.*;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.scene.image.WritableImage;
@@ -22,12 +23,6 @@ import org.controlsfx.control.Notifications;
 
 import dataController.DataContorller;
 import en_um.ChartKind;
-import exception.BeginInvalidException;
-import exception.DateInvalidException;
-import exception.DateOverException;
-import exception.EndInvalidException;
-import exception.NullDateException;
-import exception.NullStockIDException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -50,6 +45,7 @@ import presentation.chart.function.SaveAs;
 import presentation.chart.klineChart.KLineChart;
 import presentation.chart.lineChart.EMAChart;
 import presentation.chart.lineChart.SingleLineChart;
+import presentation.chart.lineChart.TimeShareChart;
 import presentation.chart.scatterchart.YieldPointChart;
 import presentation.saveAsPNG.SaveAsPNG;
 import rmi.RemoteHelper;
@@ -139,6 +135,7 @@ public class SingleStockUIController implements Initializable{
 		ForecastRODInterface forecastRODInterface = remoteHelper.getForecastROD();
 		String code = "";
 		PredictVO predictVO =null;
+		TimeSharingVO timeSharingVO = null;
 		emaChartAnchorPane.getChildren().clear();
 		try {
 			code = stockLogicInterface.nameToCode(name);
@@ -148,6 +145,13 @@ public class SingleStockUIController implements Initializable{
 		if(code!=""){
 			try {
 				predictVO = forecastRODInterface.predict(code,(LocalDate) dataController.get("SystemTime"));
+				try {
+					timeSharingVO = stockLogicInterface.getTimeSharingData(code,(LocalDate) dataController.get("SystemTime"));
+				} catch (TimeShraingLackException e1) {
+					e1.printStackTrace();
+				} catch (NullStockIDException e1) {
+					e1.printStackTrace();
+				}
 			} catch (RemoteException e1) {
 				e1.printStackTrace();
 			}
@@ -160,6 +164,12 @@ public class SingleStockUIController implements Initializable{
 			controller.set(predictVO);
 			emaChartAnchorPane.getChildren().add(pane);
 
+		}
+		if(timeSharingVO!=null){
+			chartService service = new TimeShareChart(timeSharingVO.getMinute_data(),timeSharingVO.getLast_close(),3);
+			Pane pane = service.getchart(758,320,true);
+			kChartAnchorPane.getChildren().clear();
+			kChartAnchorPane.getChildren().add(pane);
 		}
 
 
