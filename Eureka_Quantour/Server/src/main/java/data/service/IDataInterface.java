@@ -23,6 +23,7 @@ import po.SingleStockInfoPO;
 import po.StockSetInfoPO;
 import po.StrategyInfoPO;
 import po.StrategyShowPO;
+import po.TimeSharingPO;
 import vo.StrategyShowVO;
 import vo.StrategyVO;
 
@@ -65,7 +66,7 @@ public interface IDataInterface
 	 * @throws TimeShraingLackException
 	 * @throws NullStockIDException
 	 */
-	public List<Double> getTimeSharingData(String code,LocalDate date)throws TimeShraingLackException,NullStockIDException;
+	public TimeSharingPO getTimeSharingData(String code,LocalDate date)throws TimeShraingLackException,NullStockIDException;
 	/**
 	 * 应用策略，获得该策略的各个参数
 	 * @param createrName

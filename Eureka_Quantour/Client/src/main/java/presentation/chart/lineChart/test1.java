@@ -14,7 +14,9 @@ import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import rmi.RemoteHelper;
+import vo.CompanyInfoVO;
 import vo.EMAInfoVO;
+import vo.SingleStockInfoVO;
 import vo.YieldChartDataVO;
 
 public class test1 extends Application{
@@ -29,7 +31,8 @@ public class test1 extends Application{
     	}
     	else{
     		try{
-    		remote.getStockLogic().getTimeSharingData("000001", LocalDate.of(2017, 4, 19));
+    		List<SingleStockInfoVO> vo=remote.getStockLogic().getExponentInfoByTime("SHA", LocalDate.of(2015, 5, 7), LocalDate.of(2016, 5, 7));
+    		System.out.println(vo.size());
     		}catch(Exception e){
     			e.printStackTrace();
     		}
@@ -37,7 +40,7 @@ public class test1 extends Application{
     	List<LocalDate> list1=new ArrayList<LocalDate>();
     	List<Double> list3=null;
     	try{
-    		list3=remote.getStockLogic().getTimeSharingData("000001", LocalDate.of(2017, 4, 19));
+    		list3= (List<Double>) remote.getStockLogic().getTimeSharingData("000001", LocalDate.of(2017, 4, 19));
     		}catch(Exception e){
     			e.printStackTrace();
     		}

@@ -4,26 +4,25 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import com.sun.org.apache.regexp.internal.RE;
+import exception.*;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import logic.service.ForecastRODInterface;
 import org.controlsfx.control.Notifications;
 
 import dataController.DataContorller;
 import en_um.ChartKind;
-import exception.BeginInvalidException;
-import exception.DateInvalidException;
-import exception.DateOverException;
-import exception.EndInvalidException;
-import exception.NullDateException;
-import exception.NullStockIDException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -46,12 +45,11 @@ import presentation.chart.function.SaveAs;
 import presentation.chart.klineChart.KLineChart;
 import presentation.chart.lineChart.EMAChart;
 import presentation.chart.lineChart.SingleLineChart;
+import presentation.chart.lineChart.TimeShareChart;
 import presentation.chart.scatterchart.YieldPointChart;
 import presentation.saveAsPNG.SaveAsPNG;
 import rmi.RemoteHelper;
-import vo.ComparedInfoVO;
-import vo.EMAInfoVO;
-import vo.SingleStockInfoVO;
+import vo.*;
 
 import javax.imageio.ImageIO;
 
@@ -130,7 +128,51 @@ public class SingleStockUIController implements Initializable{
 	}
  //查看日k线图
 	@FXML
-	protected void goBrowseMinute(ActionEvent e){
+	protected void goBrowseMinute(ActionEvent e) throws IOException {
+		String name = (String)dataController.get("SingleStockNow");
+		RemoteHelper remoteHelper = RemoteHelper.getInstance();
+		StockLogicInterface stockLogicInterface = remoteHelper.getStockLogic();
+		ForecastRODInterface forecastRODInterface = remoteHelper.getForecastROD();
+		String code = "";
+		PredictVO predictVO =null;
+		TimeSharingVO timeSharingVO = null;
+		emaChartAnchorPane.getChildren().clear();
+		try {
+			code = stockLogicInterface.nameToCode(name);
+		} catch (RemoteException e1) {
+			e1.printStackTrace();
+		}
+		if(code!=""){
+			try {
+				predictVO = forecastRODInterface.predict(code,(LocalDate) dataController.get("SystemTime"));
+				try {
+					timeSharingVO = stockLogicInterface.getTimeSharingData(code,(LocalDate) dataController.get("SystemTime"));
+				} catch (TimeShraingLackException e1) {
+					e1.printStackTrace();
+				} catch (NullStockIDException e1) {
+					e1.printStackTrace();
+				}
+			} catch (RemoteException e1) {
+				e1.printStackTrace();
+			}
+		}
+		if(predictVO!=null){
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getClassLoader().getResource("presentation/singleStockUI/Predict.fxml"));
+			Pane pane = loader.load();
+			PredictController controller = loader.getController();
+			controller.set(predictVO);
+			emaChartAnchorPane.getChildren().add(pane);
+
+		}
+		if(timeSharingVO!=null){
+			chartService service = new TimeShareChart(timeSharingVO.getMinute_data(),timeSharingVO.getLast_close(),3);
+			Pane pane = service.getchart(758,320,true);
+			kChartAnchorPane.getChildren().clear();
+			kChartAnchorPane.getChildren().add(pane);
+		}
+
+
 
 	}
 
@@ -165,15 +207,13 @@ public class SingleStockUIController implements Initializable{
 		StockLogicInterface stockLogicInterface = remote.getStockLogic();
 		SingleStockInfoVO vo;
 		ComparedInfoVO vo1 = null;
+		CompanyInfoVO vo2 = null;
 		LocalDate end = (LocalDate)dataContorller.get("SystemTime");
 		LocalDate begin = end.minusDays(200);
 
 		try {
-//			System.out.println("sa");
 			vo1 = stockLogicInterface.getComparedInfo((String)dataContorller.get("SingleStockNow"),
 					begin, end);
-//			System.out.println(vo1);
-//			System.out.println("sa");
 		} catch (RemoteException e1) {
 			// TODO Auto-generated catch block
 		    Notifications.create().title("网络连接异常").text(e1.toString()).showWarning();
@@ -204,7 +244,27 @@ public class SingleStockUIController implements Initializable{
 			// TODO Auto-generated catch block
 			Notifications.create().title("无日期").text(e.toString()).showError();
 		}
-		
+
+		try {
+			String code = stockLogicInterface.nameToCode(name);
+			try {
+				vo2 = stockLogicInterface.getLatestCommpanyInfo((LocalDate)dataContorller.get("SystemTime"),code);
+			} catch (NullStockIDException e) {
+				e.printStackTrace();
+			} catch (NullDateException e) {
+				e.printStackTrace();
+			}
+
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		setCompanyInfoPane(vo2);
+
+
+	}
+
+	private void setCompanyInfoPane(CompanyInfoVO vo){
+		System.out.println(vo.toString());
 	}
 	
 	public void setBasicInfoPane(SingleStockInfoVO vo,ComparedInfoVO vo1){

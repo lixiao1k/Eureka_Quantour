@@ -61,7 +61,6 @@ public class CompanyDataHelperImpl_DBO implements ICompanyDataHelper{
 		}
 	}
 	public List<CompanyInfoPO> getCompanyDetail(String code){
-		
 		return null;
 	}
 }
