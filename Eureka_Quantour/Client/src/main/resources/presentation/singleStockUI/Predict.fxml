@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane prefHeight="307.0" prefWidth="774.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.singleStockUI.PredictController">
+   <children>
+      <Label fx:id="predict" layoutX="43.0" layoutY="22.0" prefHeight="37.0" prefWidth="101.0" text="单股预测：">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Label>
+      <Label fx:id="price1" layoutX="110.0" layoutY="67.0" text="明日价格：" />
+      <Label fx:id="dof1" layoutX="110.0" layoutY="111.0" prefHeight="17.0" prefWidth="83.0" text="明日涨跌幅：" />
+      <Label fx:id="price2" layoutX="193.0" layoutY="67.0" prefHeight="17.0" prefWidth="73.0" />
+      <Label fx:id="dof2" layoutX="193.0" layoutY="111.0" prefHeight="17.0" prefWidth="73.0" />
+   </children>
+</AnchorPane>
