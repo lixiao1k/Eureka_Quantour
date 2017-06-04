@@ -37,7 +37,7 @@ public class test1 extends Application{
     	List<LocalDate> list1=new ArrayList<LocalDate>();
     	List<Double> list3=null;
     	try{
-    		list3=remote.getStockLogic().getTimeSharingData("000001", LocalDate.of(2017, 4, 19));
+    		list3= (List<Double>) remote.getStockLogic().getTimeSharingData("000001", LocalDate.of(2017, 4, 19));
     		}catch(Exception e){
     			e.printStackTrace();
     		}
