@@ -53,10 +53,7 @@ import presentation.chart.lineChart.SingleLineChart;
 import presentation.chart.scatterchart.YieldPointChart;
 import presentation.saveAsPNG.SaveAsPNG;
 import rmi.RemoteHelper;
-import vo.ComparedInfoVO;
-import vo.EMAInfoVO;
-import vo.PredictVO;
-import vo.SingleStockInfoVO;
+import vo.*;
 
 import javax.imageio.ImageIO;
 
@@ -166,6 +163,7 @@ public class SingleStockUIController implements Initializable{
 		}
 
 
+
 	}
 
 	/*
@@ -199,15 +197,13 @@ public class SingleStockUIController implements Initializable{
 		StockLogicInterface stockLogicInterface = remote.getStockLogic();
 		SingleStockInfoVO vo;
 		ComparedInfoVO vo1 = null;
+		CompanyInfoVO vo2 = null;
 		LocalDate end = (LocalDate)dataContorller.get("SystemTime");
 		LocalDate begin = end.minusDays(200);
 
 		try {
-//			System.out.println("sa");
 			vo1 = stockLogicInterface.getComparedInfo((String)dataContorller.get("SingleStockNow"),
 					begin, end);
-//			System.out.println(vo1);
-//			System.out.println("sa");
 		} catch (RemoteException e1) {
 			// TODO Auto-generated catch block
 		    Notifications.create().title("网络连接异常").text(e1.toString()).showWarning();
@@ -238,7 +234,27 @@ public class SingleStockUIController implements Initializable{
 			// TODO Auto-generated catch block
 			Notifications.create().title("无日期").text(e.toString()).showError();
 		}
-		
+
+		try {
+			String code = stockLogicInterface.nameToCode(name);
+			try {
+				vo2 = stockLogicInterface.getLatestCommpanyInfo((LocalDate)dataContorller.get("SystemTime"),code);
+			} catch (NullStockIDException e) {
+				e.printStackTrace();
+			} catch (NullDateException e) {
+				e.printStackTrace();
+			}
+
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		setCompanyInfoPane(vo2);
+
+
+	}
+
+	private void setCompanyInfoPane(CompanyInfoVO vo){
+		System.out.println(vo.toString());
 	}
 	
 	public void setBasicInfoPane(SingleStockInfoVO vo,ComparedInfoVO vo1){
