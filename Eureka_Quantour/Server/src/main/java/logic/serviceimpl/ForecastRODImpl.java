@@ -112,82 +112,32 @@ public class ForecastRODImpl implements ForecastRODInterface{
 
 
 /* **************************************************************************************************************** */
-		/*
-		* begin fill in firstFloor and secondFloor
-		* Q : qian tian
-		* Z : zuo tian
-		* i : index
-		*/
-		double QROD = RODs[0];
-		double ZROD = RODs[1];
-		int iQROD = doubleToIndex(QROD);
-		int iZROD = doubleToIndex(ZROD);
-		int avgNum = 2;
-		double avg = (closes[0]+closes[1]) / 2;
-		double ROD = 0;
-		int iROD = 0;
-		for( int i=2; i<numOfDay; i++ ){
-			ROD = RODs[i];
-			iROD = doubleToIndex(ROD);
-
-			double ZClose = closes[i-1];
-			int iYesAvgROD = doubleToIndex( (ZClose-avg)/avg );
-			srod.YesterdayAvgROD[iYesAvgROD][iROD]++;
-
-			QROD = ZROD;
-			ZROD = ROD;
-			iQROD = iZROD;
-			iZROD = iROD;
-			avg = (avg*avgNum+closes[i])/(avgNum+1);
-			avgNum++;
-		}
-/* **************************************************************************************************************** */
-
-
-/* **************************************************************************************************************** */
 		//the number of day owning data
 		int dayNum = 0;
-		
-		double close1 = 0;
-		double close2 = 0;
 
-		QROD = RODs[RODs.length-2];
-		ZROD = RODs[RODs.length-1];
-		ROD = 0;
+		// zuo tian price
+		double ZPrice = 0;
+		// jin tian price
+		double JPrice = closes[closes.length-1];
+		double ROD = 0;
 
 		/*
 		* get the index of array in StockRODVO
 		* the initialzaion of idate is -1 which show the day is weekend
 		*/
 		int idate = -1;
-		iQROD = doubleToIndex(QROD);
-		iZROD = doubleToIndex(ZROD);
-		iROD = 0;
+		int iROD = 0;
 		
 		// save two days' close
 		ssi = new SingleStockInfoVO();
-		ssi.setClose(-1);
 		date = begindate;
-
-		// get the first data
-		while( ssi.getClose()==-1 ){
-			try{
-				ssi = new SingleStockInfoVO( idata.getSingleStockInfo(stockcode, date) );
-				close2 = ssi.getClose();
-			}catch ( NullStockIDException e ){
-				e.printStackTrace();
-			}catch ( NullDateException e){
-				date = date.plusDays(1);
-			}
-		}
 		
 		while( date.compareTo(enddate)<=0 ){
 			double PreROD = 0;
-			double average = 0.0;
 			double square = 0.0;
 			boolean ifROE = false;
 			try{
-				close1 = close2;
+				ZPrice = JPrice;
 
 				// get next day's data
 				date = date.plusDays(1);
@@ -195,21 +145,20 @@ public class ForecastRODImpl implements ForecastRODInterface{
 					date = date.plusDays(1);
 				}
 				ssi = new SingleStockInfoVO( idata.getSingleStockInfo(stockcode, date) );
-				close2 = ssi.getClose();
+				JPrice = ssi.getClose();
 
 				// the number of data existing add one
 				srod.nodata[idate][0]++;
 
-				ROD = (close2-close1)/close1;		
+				ROD = (JPrice - ZPrice) / ZPrice;		
 				iROD = doubleToIndex( ROD );
 				srod.wROD[idate][iROD]++;
 				
-				average = calValue.calAvg( RODs );
 				square = calValue.calVariance( RODs );
-				int iYesAvgROD = doubleToIndex( (close2-average)/average );
 
-				double today = KNNPredictPrice( closes, dates, m, k );
-				PreROD = (today-close1) / close1;
+				// double today = KNNPredictPrice( closes, dates, m, k );
+				double today = SbPredictPrice( ZPrice, closes[closes.length-2] );
+				PreROD = (today - ZPrice) / ZPrice;
 				
 				ifROE = statistic.predictROE( PreROD, square, 1, alpha, ROD);
 				if( ifROE )
@@ -217,17 +166,9 @@ public class ForecastRODImpl implements ForecastRODInterface{
 				else
 					srod.zhixin[1]++;
 				
-				// update the srod's content
-				srod.YesterdayAvgROD[iYesAvgROD][iROD]++;
-
-				iQROD = iZROD;
-				iZROD = iROD;
-				avg = (avg*avgNum+close2)/(avgNum+1);
-				avgNum++;
-				
 				// update the numOfDay-day data in array
 				RODs[dayNum] = ROD;
-				closes[dayNum] = close2;
+				closes[dayNum] = JPrice;
 				dates[dayNum] = date;
 				dayNum++;
 				if( dayNum==numOfDay-1 )
@@ -301,7 +242,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 
 		if( predictROD>0.1 || predictROD<-0.1 ){
 			double predictPriceT = SBPredictPrice( ZPrice, QPrice );
-			double predictRODT = (predictPrice - ZPrice) / ZPrice;
+			double predictRODT = (predictPriceT - ZPrice) / ZPrice;
 			if( (predictRODT<predictROD && predictROD<-0.1) ||
 				(predictRODT>predictROD && predictROD>0.1) );
 			else{
