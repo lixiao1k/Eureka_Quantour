@@ -1,8 +1,13 @@
 package vo;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class CompanyInfoVO {
+public class CompanyInfoVO implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2907112713693781792L;
 	private String code;
 	private LocalDate date;//截止日期
 	private double basicIncome;//基本每股收益
