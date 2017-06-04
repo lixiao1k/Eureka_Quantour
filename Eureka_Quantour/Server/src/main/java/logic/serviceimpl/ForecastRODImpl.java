@@ -156,9 +156,19 @@ public class ForecastRODImpl implements ForecastRODInterface{
 				
 				square = calValue.calVariance( RODs );
 
-				// double today = KNNPredictPrice( closes, dates, m, k );
-				double today = SbPredictPrice( ZPrice, closes[closes.length-2] );
-				PreROD = (today - ZPrice) / ZPrice;
+				double todayKNN = KNNPredictPrice( closes, dates, m, k );
+				double todaySB = SBPredictPrice( ZPrice, closes[closes.length-2] );
+				double RODKNN = (todayKNN - ZPrice) / ZPrice;
+				double RODSB = (todaySB - ZPrice) / ZPrice;
+				if( RODKNN<-0.1 || RODKNN>0.1 ){
+					if( (RODKNN<-0.1 && RODSB<RODKNN) ||
+						(RODKNN>0.1 && RODSB>RODKNN) )
+						PreROD = RODKNN;
+					else
+						PreROD = RODSB;
+				}
+				else
+					PreROD = RODKNN;
 				
 				ifROE = statistic.predictROE( PreROD, square, 1, alpha, ROD);
 				if( ifROE )
