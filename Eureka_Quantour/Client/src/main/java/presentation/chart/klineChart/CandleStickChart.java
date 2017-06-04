@@ -113,9 +113,12 @@ public class  CandleStickChart extends XYChart<String, Number> {
             String info = "open : "+df.format( bar.getOpen() )+"\n"
             		     +"close : "+df.format( bar.getClose() )+"\n"
             		     +"high : "+df.format( bar.getHigh() )+"\n"
-            		     +"low : "+df.format( bar.getLow() )+"\n"
-                         +"5EMA : "+ df.format( bar.getHigh() )+"\n"
-            		     +"volume : ";
+            		     +"low : "+df.format( bar.getLow() )+"\n";
+
+          	if( bar.getAve()!=Integer.MAX_VALUE && bar.getAve()>0 )
+                info += "5EMA : "+ df.format( bar.getAve() )+"\n";
+            
+            	info += "volume : ";
             if( volumeS.length()==0 )
             	info = info+volumed;
             else
@@ -175,14 +178,14 @@ public class  CandleStickChart extends XYChart<String, Number> {
                 }
                 if( seriesPath != null ){
                 	double datapoint = bar.getAve();
-                	if( datapoint!=Integer.MAX_VALUE ){
+                	if( datapoint!=Integer.MAX_VALUE && datapoint>0 ){
 	                    if(seriesPath.getElements().isEmpty()) {
 	                        seriesPath.getElements().add(
-	                        		new MoveTo(x, getYAxis().getDisplayPosition( bar.getAve() )));
+	                        		new MoveTo(x, getYAxis().getDisplayPosition( datapoint )));
 	                    }
 	                    else{
 	                        seriesPath.getElements().add(
-	                        		new LineTo(x, getYAxis().getDisplayPosition( bar.getAve() )));
+	                        		new LineTo(x, getYAxis().getDisplayPosition( datapoint )));
 	                    }
                 	}
                 }
