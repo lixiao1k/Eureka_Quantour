@@ -17,6 +17,11 @@
   	-fx-text-fill: #cde6c7;
  	 -fx-font-size: 1.6em;
 } 
+
+.label{
+	-fx-font-size: 11;
+}
+
 .axis-label {
  	-fx-background-color:transparent;
   	-fx-text-fill: #65c294;
