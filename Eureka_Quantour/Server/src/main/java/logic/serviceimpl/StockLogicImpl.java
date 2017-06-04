@@ -44,7 +44,6 @@ public class StockLogicImpl implements StockLogicInterface{
 				,shiying,shijing,huanshou);
 		return vo;
 	}
-	
 	public List<SingleStockInfoVO> getExponentInfoByTime (String name, LocalDate begin, LocalDate end )
 			 throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException{
 		utility.ifExpDateValid(begin, end,name);
