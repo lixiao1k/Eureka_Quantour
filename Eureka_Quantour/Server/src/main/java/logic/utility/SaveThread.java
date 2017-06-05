@@ -53,7 +53,7 @@ public class SaveThread extends Thread{
         double yearreturn=stragety.gerYearReturn();
         double jizhunyearreturn=stragety.gerBasicYearReturn();
         double zuidahuiche=stragety.getzuidaguiceh();
-        
+
         StrategyShowPO po=new StrategyShowPO(timelist,basicreturn,strategylist,alpha,beta,sharp,zuidahuiche,yearreturn,jizhunyearreturn);
         idi.addStrategyShow(username,name,po);
     }
