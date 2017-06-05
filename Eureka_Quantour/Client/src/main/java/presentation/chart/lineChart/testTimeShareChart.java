@@ -18,9 +18,9 @@ public class testTimeShareChart extends Application{
 		for( int i=0; i<prices.length; i++ ){
 			double dt = 0;
 			if( Math.random()>0.5 )
-				dt = d*(1+Math.random()/15);
+				dt = d*(1+Math.random()/30);
 			else
-				dt = d*(1-Math.random()/15);
+				dt = d*(1-Math.random()/30);
 			prices[i] = dt;
 		}
 		

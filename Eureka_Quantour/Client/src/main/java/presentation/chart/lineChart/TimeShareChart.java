@@ -148,7 +148,9 @@ public class TimeShareChart implements chartService{
 		int topjuli = 10;
 		int timeHeight = 20;
 		int rightjuli = 5;
-		int leftjuli = 40;
+		int leftjuli = 42;
+		if( MaxROD==0.025 )
+			leftjuli = 48;
 		height = height-timeHeight-topjuli;
 		width = width-leftjuli-rightjuli;
 		lineChart.setPrefSize(width, height);
@@ -209,8 +211,8 @@ public class TimeShareChart implements chartService{
 		AnchorPane yPane = new AnchorPane();
 		yPane.setPrefSize(leftjuli, height);
 		
-		Label top1 = new Label( " "+df.format(MidValue*(1+MaxROD)) +"\n"+ "(+"+nf.format(MaxROD)+")" );
-		Label top2 = new Label( " "+df.format(MidValue*(1+MaxROD/2)) +"\n"+ "(+"+nf.format(MaxROD/2)+")" );
+		Label top1 = new Label( "   "+df.format(MidValue*(1+MaxROD)) +"\n"+ "(+"+100*MaxROD+"%)" );
+		Label top2 = new Label( "   "+df.format(MidValue*(1+MaxROD/2)) +"\n"+ "(+"+100*MaxROD/2+"%)" );
 		top1.setTextFill(Color.web("#f15b6c"));
 		top2.setTextFill(Color.web("#f15b6c"));
 		StackPane topP = new StackPane();
@@ -227,8 +229,8 @@ public class TimeShareChart implements chartService{
 		botM.getChildren().add(mid);
 		StackPane.setAlignment(mid, Pos.CENTER);
 		
-		Label bot1 = new Label( " "+df.format(MidValue*(1-MaxROD/2)) +"\n"+ "(-"+nf.format(MaxROD/2)+")"  );
-		Label bot2 = new Label( " "+df.format(MidValue*(1-MaxROD)) +"\n"+ "(-"+nf.format(MaxROD)+")"  );
+		Label bot1 = new Label( "   "+df.format(MidValue*(1-MaxROD/2)) +"\n"+ "(-"+100*MaxROD/2+"%)"  );
+		Label bot2 = new Label( "   "+df.format(MidValue*(1-MaxROD)) +"\n"+ "(-"+100*MaxROD+"%)"  );
 		bot1.setTextFill(Color.web("#45b97c"));
 		bot2.setTextFill(Color.web("#45b97c"));
 		StackPane botP = new StackPane();
