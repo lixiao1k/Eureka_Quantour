@@ -25,8 +25,7 @@
     });
 </script>
 <body>
-
-
+<p1>fsghabcddenanjingdaxue</p1>
 
 <div id="recordContent">
     <canvas id="recordCvs" width="600" height="400"></canvas>
