@@ -27,6 +27,8 @@ public class test {
 		LocalDate enddate = LocalDate.of(2016, 3, 6);
 		
 		String stockcode = "000938";
+//		String stockcode = "300038";
+//		String stockcode = "600149";
 		
 		double alpha = 0.01;
 		int numOfDay = 1;
@@ -158,13 +160,6 @@ public class test {
             p.println("在置信区间 "+nf.format( srod.zhixin[0]/(srod.zhixin[0]+srod.zhixin[1]+0.0) ));
             p.println("最优预测置信区间预估天数 : "+maxsZhi);
 
-//          p.println();
-//          for( int i=0; i<23; i++ ){
-//              for( int j=0; j<23;j++ ){
-//                  p.print(srod.firstFloor[i][j]+"  ");
-//              }
-//              p.println();
-//          }
             p.close();
         }catch(FileNotFoundException e){
              e.printStackTrace();

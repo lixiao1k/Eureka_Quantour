@@ -24,5 +24,6 @@
       <Label fx:id="meanValue" layoutX="158.0" layoutY="343.0" prefHeight="22.0" prefWidth="127.0" />
       <Label fx:id="varianLabel" layoutX="32.0" layoutY="396.0" text="涨跌幅方差：" />
       <Label fx:id="varianValue" layoutX="158.0" layoutY="396.0" prefHeight="22.0" prefWidth="127.0" />
+      <AnchorPane fx:id="KLineAnchorPane" layoutX="739.0" layoutY="43.0" prefHeight="300.0" prefWidth="463.0" AnchorPane.bottomAnchor="415.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="43.0" />
    </children>
 </AnchorPane>

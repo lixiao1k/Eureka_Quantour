@@ -1,5 +1,8 @@
 package presentation.chart.lineChart;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
@@ -15,12 +18,17 @@ public class testTimeShareChart extends Application{
 		for( int i=0; i<prices.length; i++ ){
 			double dt = 0;
 			if( Math.random()>0.5 )
-				dt = d*(1+Math.random()/15);
+				dt = d*(1+Math.random()/30);
 			else
-				dt = d*(1-Math.random()/15);
+				dt = d*(1-Math.random()/30);
 			prices[i] = dt;
 		}
-		chart = new TimeShareChart(prices, 7.8, 60);
+		
+		List<Double> price = new ArrayList<>();
+		for( int i=0; i<prices.length; i++ )
+			price.add( prices[i] );
+		
+		chart = new TimeShareChart( price, 7.8, 60 );
 	}
 	
 	@Override

@@ -16,6 +16,17 @@ import vo.*;
  */
 public interface StockLogicInterface extends Remote {
 	
+	
+	/**
+	 * 获得公司详情
+	 * @param time 时间
+	 * @param code 股票编号
+	 * @return CompanyInfo 
+	 * @throws NullStockIDException
+	 * @throws NullDateException
+	 * @throws RemoteException
+	 */
+	public CompanyInfoVO getLatestCommpanyInfo(LocalDate time,String code) throws NullStockIDException, NullDateException, RemoteException;
 	/**
 	 * 获得市场指数的k线图数据
 	 * @param name 市场名称，如（SHA，SHB,CYB）这种
@@ -110,7 +121,7 @@ public interface StockLogicInterface extends Remote {
 
 	List<String> getConceptList() throws RemoteException;
 
-	List<Double> getTimeSharingData(String code,LocalDate date)throws TimeShraingLackException,NullStockIDException, RemoteException;
+	TimeSharingVO getTimeSharingData(String code,LocalDate date)throws TimeShraingLackException,NullStockIDException, RemoteException;
 
 	List<String> fuzzySearch(String input) throws RemoteException;
 }

@@ -5,16 +5,15 @@ import java.rmi.RemoteException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import exception.*;
 import org.controlsfx.control.Notifications;
 
 import dataController.DataContorller;
 import en_um.ChartKind;
-import exception.BeginInvalidException;
-import exception.DateInvalidException;
-import exception.EndInvalidException;
-import exception.NullMarketException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -27,10 +26,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import logic.service.StockLogicInterface;
 import presentation.chart.chartService;
+import presentation.chart.klineChart.KLineChart;
 import presentation.chart.piechart.YieldFanChart;
 import presentation.chart.scatterchart.YieldPointChart;
 import rmi.RemoteHelper;
+import sun.jvm.hotspot.oops.Klass;
 import vo.MarketInfoVO;
+import vo.SingleStockInfoVO;
 
 public class StatisticsUIController implements Initializable {
 	@FXML
@@ -83,6 +85,9 @@ public class StatisticsUIController implements Initializable {
 	
 	@FXML
 	Label varianLabel;
+
+	@FXML
+	AnchorPane KLineAnchorPane;
 	
 	
 	private DataContorller dataController;
@@ -98,27 +103,28 @@ public class StatisticsUIController implements Initializable {
 			MarketInfoVO marketInfoVO = stockLogicInterface.getMarketInfo((LocalDate)dataController.get("SystemTime"),
 					marketComboBox.getValue());
 			initialAllPane(marketInfoVO);
+			if(marketComboBox.getValue().equals("HS300")){
+				Notifications.create().title("异常").text("暂时无沪深300大盘指数").showWarning();
+			}else{
+				initKLinePane(marketComboBox.getValue());
+			}
+
 
 		} catch (RemoteException e1) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("网络连接异常").text(e1.toString()).showWarning();
-			e1.printStackTrace();
 		} catch (DateInvalidException e1) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("日期异常").text(e1.toString()).showWarning();
-			e1.printStackTrace();
 		} catch (BeginInvalidException e1) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("日期异常").text(e1.toString()).showWarning();
-			e1.printStackTrace();
 		} catch (EndInvalidException e1) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("日期异常").text(e1.toString()).showWarning();
-			e1.printStackTrace();
 		}catch (NullMarketException e1) {
 			// TODO: handle exception
 			Notifications.create().title("数据异常").text(e1.toString()).showWarning();
-			e1.printStackTrace();
 		}
 	}
 	
@@ -139,6 +145,31 @@ public class StatisticsUIController implements Initializable {
 		Pane dianPane = chartService2.getchart(334, 276, true);
 		RAFContributionPane.getChildren().clear();
 		RAFContributionPane.getChildren().add(dianPane);
+	}
+	private void initKLinePane(String code){
+		RemoteHelper remoteHelper = RemoteHelper.getInstance();
+		StockLogicInterface stockLogicInterface = remoteHelper.getStockLogic();
+		LocalDate end = (LocalDate)dataController.get("SystemTime");
+		LocalDate begin = end.minusDays(200);
+		List<SingleStockInfoVO> list = null;
+		try {
+			list = stockLogicInterface.getExponentInfoByTime(code,begin,end);
+			System.out.println(list);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		} catch (DateInvalidException e) {
+			Notifications.create().title("异常").text(e.toString()).showWarning();
+		} catch (BeginInvalidException e) {
+			Notifications.create().title("异常").text(e.toString()).showWarning();
+		} catch (EndInvalidException e) {
+			Notifications.create().title("异常").text(e.toString()).showWarning();
+		} catch (NullStockIDException e) {
+			Notifications.create().title("异常").text(e.toString()).showWarning();
+		}
+		chartService service = new KLineChart(list);
+		Pane pane = service.getchart(463,300,true);
+		KLineAnchorPane.getChildren().clear();
+		KLineAnchorPane.getChildren().add(pane);
 	}
 
 	@Override
