@@ -380,7 +380,7 @@ public class MarketUIController implements Initializable {
 		Scene scene = new Scene(career);
 		Stage stage = new Stage();
 		stage.setScene(scene);
-		stage.initStyle(StageStyle.TRANSPARENT);
+//		stage.initStyle(StageStyle.TRANSPARENT);
 		stage.show();
 	}
 	/*
@@ -541,11 +541,11 @@ public class MarketUIController implements Initializable {
 		label.setMaxWidth(width);
 		label.setAlignment(alignment);
 		if(Positive.ZERO==positive){
-			label.setStyle("-fx-border-width: 1;-fx-border-color: rgba(255,255,255,0.2);-fx-background-color:transparent;-fx-text-fill: rgb(255, 255, 255, 1);-fx-font-weight:bold");
+			label.setStyle("-fx-border-width: 1;-fx-border-color: rgba(255,255,255,0.2);-fx-background-color:transparent;-fx-text-fill: rgba(255, 255, 255, 1);-fx-font-weight:bold");
 		}else if(Positive.POSITIVE==positive){
-			label.setStyle("-fx-border-width: 1;-fx-border-color: rgba(255,255,255,0.2);-fx-background-color:transparent;-fx-text-fill: rgb(255, 0, 0, 1);-fx-font-weight:bold");
+			label.setStyle("-fx-border-width: 1;-fx-border-color: rgba(255,255,255,0.2);-fx-background-color:transparent;-fx-text-fill: rgba(255, 0, 0, 1);-fx-font-weight:bold");
 		}else{
-			label.setStyle("-fx-border-width: 1;-fx-border-color: rgba(255,255,255,0.2);-fx-background-color:transparent;-fx-text-fill: rgb(0, 255, 0, 1);-fx-font-weight:bold");
+			label.setStyle("-fx-border-width: 1;-fx-border-color: rgba(255,255,255,0.2);-fx-background-color:transparent;-fx-text-fill: rgba(0, 255, 0, 1);-fx-font-weight:bold");
 		}
 		return label;
 	}
@@ -564,9 +564,9 @@ public class MarketUIController implements Initializable {
 	private void setStockBasicInfoPane(String code,String name,double close,double RAF,double high
 			,double low,double open,long volume){
 		codeLabel.setText(code);
-		codeLabel.setStyle("-fx-text-fill: rgb(255, 255, 255, 1);-fx-font-weight:bold; -fx-font-size: 18;");
+		codeLabel.setStyle("-fx-text-fill: rgb(255, 255, 255);-fx-font-weight:bold; -fx-font-size: 18;");
 		nameLabel.setText(name);
-		nameLabel.setStyle("-fx-text-fill: rgb(255, 255, 255, 1);-fx-font-weight:bold; -fx-font-size: 18;");
+		nameLabel.setStyle("-fx-text-fill: rgb(255, 255, 255);-fx-font-weight:bold; -fx-font-size: 18;");
 		closeLabel.setText(Double.toString(close));
 		addLabelColor(closeLabel, close,28);
 		if(RAF>0){
@@ -591,21 +591,21 @@ public class MarketUIController implements Initializable {
 	public void addLabelColor(Label label,double num,int size){
 		if(size==0){
 			if(num>0){
-				label.setStyle("-fx-text-fill: rgb(255, 0, 0, 1);-fx-font-weight:bold");
+				label.setStyle("-fx-text-fill: rgb(255, 0, 0);-fx-font-weight:bold");
 			}else if(num<0){
-				label.setStyle("-fx-text-fill: rgb(0, 255, 0, 1);-fx-font-weight:bold");
+				label.setStyle("-fx-text-fill: rgb(0, 255, 0);-fx-font-weight:bold");
 			}else{
-				label.setStyle("-fx-text-fill: rgb(255, 255, 255, 1);-fx-font-weight:bold");
+				label.setStyle("-fx-text-fill: rgb(255, 255, 255);-fx-font-weight:bold");
 			}
 		}else{
 			if(num>0){
-				label.setStyle("-fx-text-fill: rgb(255, 0, 0, 1);-fx-font-weight:bold"
+				label.setStyle("-fx-text-fill: rgb(255, 0, 0);-fx-font-weight:bold"
 						+ ";-fx-font-size:28");
 			}else if(num<0){
-				label.setStyle("-fx-text-fill: rgb(0, 255, 0, 1);-fx-font-weight:bold"
+				label.setStyle("-fx-text-fill: rgb(0, 255, 0);-fx-font-weight:bold"
 						+ ";-fx-font-size:28");
 			}else{
-				label.setStyle("-fx-text-fill: rgb(255, 255, 255, 1);-fx-font-weight:bold"
+				label.setStyle("-fx-text-fill: rgb(255, 255, 255);-fx-font-weight:bold"
 						+ ";-fx-font-size:28");
 			}
 		}

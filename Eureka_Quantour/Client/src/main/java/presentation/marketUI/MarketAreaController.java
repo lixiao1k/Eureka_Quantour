@@ -1,11 +1,18 @@
 package presentation.marketUI;
 
+import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.layout.AnchorPane;
 import org.controlsfx.control.Notifications;
 
 import dataController.DataContorller;
@@ -78,6 +85,32 @@ public class MarketAreaController implements Initializable{
 						
 					}
 				});
+				ContextMenu contextMenu = new ContextMenu();
+				MenuItem menuItem = new MenuItem("添至");
+				menuItem.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent event) {
+//
+						dataContorller.upDate("Market_StockNow",str);
+						dataContorller.upDate("SetFlag",str);
+						FXMLLoader loader = new FXMLLoader();
+						loader.setLocation(getClass().getResource("MarketUIPopup.fxml"));
+						Parent popUp = null;
+						try {
+							popUp = (AnchorPane)loader.load();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						Scene scene = new Scene(popUp);
+						Stage stage = new Stage();
+						stage.setScene(scene);
+//						stage.initStyle(StageStyle.TRANSPARENT);
+						stage.show();
+					}
+				});
+				contextMenu.getItems().add(menuItem);
+				button.setContextMenu(contextMenu);
 				buttonsPane.getChildren().add(button);
 			}
 		}
