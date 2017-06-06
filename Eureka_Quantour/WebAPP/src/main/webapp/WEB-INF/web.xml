@@ -4,7 +4,19 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
 
+<servlet>
+    <servlet-name>UserloginServlet</servlet-name>
+    <servlet-class>servlet.UserloginServlet</servlet-class>
+</servlet>
+    
+    <servlet-mapping>
+        <servlet-name>UserloginServlet</servlet-name>
+        <url-pattern>/servlet/UserloginServlet</url-pattern>
+    </servlet-mapping>
 
+    <welcome-file-list>
+        <welcome-file>welcome.jsp</welcome-file>
+    </welcome-file-list>
 
 
 
