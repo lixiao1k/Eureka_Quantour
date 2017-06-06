@@ -136,6 +136,7 @@ public class SingleStockUIController implements Initializable{
 		String code = "";
 		PredictVO predictVO =null;
 		TimeSharingVO timeSharingVO = null;
+		CompanyInfoVO companyInfoVO = null;
 		emaChartAnchorPane.getChildren().clear();
 		try {
 			code = stockLogicInterface.nameToCode(name);
@@ -146,7 +147,7 @@ public class SingleStockUIController implements Initializable{
 			try {
 				predictVO = forecastRODInterface.predict(code,(LocalDate) dataController.get("SystemTime"));
 				try {
-					timeSharingVO = stockLogicInterface.getTimeSharingData(code,(LocalDate) dataController.get("SystemTime"));
+                	timeSharingVO = stockLogicInterface.getTimeSharingData(code,(LocalDate) dataController.get("SystemTime"));
 				} catch (TimeShraingLackException e1) {
 					e1.printStackTrace();
 				} catch (NullStockIDException e1) {
@@ -155,13 +156,20 @@ public class SingleStockUIController implements Initializable{
 			} catch (RemoteException e1) {
 				e1.printStackTrace();
 			}
+			try {
+				companyInfoVO = stockLogicInterface.getLatestCommpanyInfo((LocalDate)dataController.get("SystemTime"),code);
+			} catch (NullStockIDException e1) {
+				e1.printStackTrace();
+			} catch (NullDateException e1) {
+				e1.printStackTrace();
+			}
 		}
-		if(predictVO!=null){
+		if(predictVO!=null&&companyInfoVO!=null){
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getClassLoader().getResource("presentation/singleStockUI/Predict.fxml"));
 			Pane pane = loader.load();
 			PredictController controller = loader.getController();
-			controller.set(predictVO);
+			controller.set(predictVO,companyInfoVO);
 			emaChartAnchorPane.getChildren().add(pane);
 
 		}
@@ -207,7 +215,6 @@ public class SingleStockUIController implements Initializable{
 		StockLogicInterface stockLogicInterface = remote.getStockLogic();
 		SingleStockInfoVO vo;
 		ComparedInfoVO vo1 = null;
-		CompanyInfoVO vo2 = null;
 		LocalDate end = (LocalDate)dataContorller.get("SystemTime");
 		LocalDate begin = end.minusDays(200);
 
@@ -244,21 +251,6 @@ public class SingleStockUIController implements Initializable{
 			// TODO Auto-generated catch block
 			Notifications.create().title("无日期").text(e.toString()).showError();
 		}
-
-		try {
-			String code = stockLogicInterface.nameToCode(name);
-			try {
-				vo2 = stockLogicInterface.getLatestCommpanyInfo((LocalDate)dataContorller.get("SystemTime"),code);
-			} catch (NullStockIDException e) {
-				e.printStackTrace();
-			} catch (NullDateException e) {
-				e.printStackTrace();
-			}
-
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		}
-		setCompanyInfoPane(vo2);
 
 
 	}

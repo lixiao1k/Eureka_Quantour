@@ -7,17 +7,40 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
 <AnchorPane prefHeight="307.0" prefWidth="774.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.singleStockUI.PredictController">
    <children>
-      <Label fx:id="predict" layoutX="43.0" layoutY="22.0" prefHeight="37.0" prefWidth="101.0" text="单股预测：">
+      <Label fx:id="predict" layoutX="14.0" layoutY="23.0" prefHeight="37.0" prefWidth="101.0" text="单股预测：">
          <font>
             <Font size="19.0" />
          </font>
       </Label>
-      <Label fx:id="price1" layoutX="110.0" layoutY="67.0" text="明日价格：" />
-      <Label fx:id="dof1" layoutX="110.0" layoutY="111.0" prefHeight="17.0" prefWidth="83.0" text="明日涨跌幅：" />
-      <Label fx:id="price2" layoutX="193.0" layoutY="67.0" prefHeight="17.0" prefWidth="73.0" />
+      <Label fx:id="price1" layoutX="45.0" layoutY="67.0" text="明日价格：" />
+      <Label fx:id="dof1" layoutX="45.0" layoutY="103.0" prefHeight="17.0" prefWidth="101.0" text="明日涨跌幅：" />
+      <Label fx:id="price2" layoutX="110.0" layoutY="67.0" prefHeight="17.0" prefWidth="73.0" />
       <Label fx:id="dof2" layoutX="193.0" layoutY="111.0" prefHeight="17.0" prefWidth="73.0" />
+      <Label fx:id="dof21" layoutX="120.0" layoutY="103.0" prefHeight="17.0" prefWidth="73.0" />
+      <Label fx:id="caikuang" layoutX="260.0" layoutY="33.0" prefHeight="24.0" prefWidth="101.0" text="公司财况：">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Label>
+      <Label fx:id="stockcode1" layoutX="294.0" layoutY="67.0" text="股票代码：" />
+      <Label fx:id="stockcode2" layoutX="370.0" layoutY="67.0" prefHeight="17.0" prefWidth="65.0" />
+      <Label fx:id="date1" layoutX="460.0" layoutY="67.0" text="截止日期：" />
+      <Label fx:id="date2" layoutX="531.0" layoutY="67.0" prefHeight="17.0" prefWidth="108.0" />
+      <Label fx:id="shouyi1" layoutX="294.0" layoutY="103.0" text="基本每股收益：" />
+      <Label fx:id="shouyi2" layoutX="386.0" layoutY="103.0" prefHeight="17.0" prefWidth="65.0" />
+      <Label fx:id="jingzichan1" layoutX="460.0" layoutY="103.0" text="每股净资产：" />
+      <Label fx:id="jingzichan2" layoutX="538.0" layoutY="103.0" prefHeight="17.0" prefWidth="108.0" />
+      <Label fx:id="guben1" layoutX="294.0" layoutY="145.0" text="总股本：" />
+      <Label fx:id="guben2" layoutX="353.0" layoutY="145.0" prefHeight="17.0" prefWidth="91.0" />
+      <Label fx:id="liutong1" layoutX="460.0" layoutY="145.0" text="流通股本：" />
+      <Label fx:id="liutong2" layoutX="531.0" layoutY="145.0" prefHeight="17.0" prefWidth="108.0" />
+      <Label fx:id="shiyinglv1" layoutX="294.0" layoutY="186.0" text="市盈率：" />
+      <Label fx:id="shiyinglv2" layoutX="353.0" layoutY="186.0" prefHeight="17.0" prefWidth="91.0" />
+      <Label fx:id="shijinlv1" layoutX="460.0" layoutY="186.0" text="市净率：" />
+      <Label fx:id="shijinlv2" layoutX="514.0" layoutY="186.0" prefHeight="17.0" prefWidth="108.0" />
+      <Label fx:id="huanshoulv1" layoutX="294.0" layoutY="227.0" text="换手率：" />
+      <Label fx:id="huanshoulv2" layoutX="353.0" layoutY="227.0" prefHeight="17.0" prefWidth="65.0" />
    </children>
 </AnchorPane>
