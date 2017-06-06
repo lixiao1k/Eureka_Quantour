@@ -52,9 +52,9 @@
     -fx-minor-tick-length: 5;
 }
 
-.default-color0.chart-series-line { -fx-stroke: #0080ff; }
-.default-color1.chart-series-line { -fx-stroke: #f0e68c; }
+.default-color0.chart-series-line { -fx-stroke: #f0e68c; }
+.default-color1.chart-series-line { -fx-stroke: #0080ff; }
 
-.default-color0.chart-legend-item-symbol { -fx-background-color: #0080ff; }
-.default-color1.chart-legend-item-symbol { -fx-background-color: #f0e68c; }
+.default-color0.chart-legend-item-symbol { -fx-background-color: #f0e68c; }
+.default-color1.chart-legend-item-symbol { -fx-background-color: #0080ff; }
 
