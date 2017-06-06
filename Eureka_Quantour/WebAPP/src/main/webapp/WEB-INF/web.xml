@@ -5,17 +5,27 @@
          version="3.1">
 
 <servlet>
-    <servlet-name>UserloginServlet</servlet-name>
-    <servlet-class>servlet.UserloginServlet</servlet-class>
+    <servlet-name>Cookie</servlet-name>
+    <servlet-class>servlet.LoginCookie</servlet-class>
 </servlet>
     
     <servlet-mapping>
-        <servlet-name>UserloginServlet</servlet-name>
-        <url-pattern>/servlet/UserloginServlet</url-pattern>
+        <servlet-name>Cookie</servlet-name>
+        <url-pattern>/servlet/Cookie</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>a</servlet-name>
+        <servlet-class>servlet.a</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>a</servlet-name>
+        <url-pattern>/servlet/a</url-pattern>
     </servlet-mapping>
 
     <welcome-file-list>
-        <welcome-file>welcome.jsp</welcome-file>
+        <welcome-file>views/welcome.jsp</welcome-file>
     </welcome-file-list>
 
 

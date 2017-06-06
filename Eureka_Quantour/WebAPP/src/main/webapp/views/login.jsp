@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page language="java" pageEncoding="UTF-8"%>
 <html>
 <head>
     <title>JSP简单登录实例</title>
@@ -7,9 +8,9 @@
 <body>
 <h2>请登录</h2>
 
-<form method="POST" >
-    Login Name: <input type="text" name="Name"><br>
-    Login Password: <input type="text" name="Password" ><br>
+<form action="${pageContext.request.contextPath}/servlet/a" method="post">
+    Login 名字: <input type="text" name="Name"><br>
+    Login Password: <input type="password" name="Password" ><br>
     <input type="submit" value="Send"><br>
     <form>
 
