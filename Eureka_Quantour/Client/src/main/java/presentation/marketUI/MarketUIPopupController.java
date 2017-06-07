@@ -2,9 +2,11 @@ package presentation.marketUI;
 
 import java.net.URL;
 import java.rmi.RemoteException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import exception.NullMarketException;
 import org.controlsfx.control.Notifications;
 
 import dataController.DataContorller;
@@ -19,6 +21,7 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import logic.service.StockLogicInterface;
 import rmi.RemoteHelper;
+import vo.SingleStockInfoVO;
 
 public class MarketUIPopupController implements Initializable{
 	@FXML
@@ -42,23 +45,53 @@ public class MarketUIPopupController implements Initializable{
 		RemoteHelper remote = RemoteHelper.getInstance();
 		StockLogicInterface stockLogicInterface = remote.getStockLogic();
 		String name =(String)dataController.get("Market_StockNow");
-		try {
-			String code = stockLogicInterface.nameToCode(name);
-			stockLogicInterface.addStockToStockSet(code
-					, stockset, (String)dataController.get("UserName"));
-			Notifications.create().title("成功").text("成功将"+(String)dataController.
-					get("Market_StockNow")+"添加至"+stockset).showInformation();
-			Stage stage = (Stage) nameLabel.getScene().getWindow();
-			stage.close();
-		} catch (RemoteException e1) {
-			// TODO Auto-generated catch block
-			Notifications.create().title("网络连接异常").text(e1.toString()).showWarning();
-			e1.printStackTrace();
-		} catch (StockNameRepeatException e1) {
-			// TODO Auto-generated catch block
-			Notifications.create().title("添加错误").text(e1.toString()).showError();
-			e1.printStackTrace();
+		String code ="";
+		String setflag = "";
+		setflag =(String)dataController.get("SetFlag");
+		List<SingleStockInfoVO> stocklist = null;
+		if(setflag.equals(name)){
+			try {
+				stocklist = stockLogicInterface.getStockSetSortedInfo(name, (LocalDate)dataController.get("SystemTime"),null);
+				if(stocklist.size()!=0){
+					for(SingleStockInfoVO vo:stocklist){
+						try {
+							stockLogicInterface.addStockToStockSet(vo.getCode()
+                                    , stockset, (String)dataController.get("UserName"));
+						} catch (StockNameRepeatException e1) {
+							Notifications.create().title("异常").text(e.toString()).showWarning();
+						}
+					}
+					Notifications.create().title("成功").text("成功将添加至"+stockset).showInformation();
+					System.out.println("here");
+					Stage stage = (Stage) nameLabel.getScene().getWindow();
+					stage.close();
+				}
+
+			} catch (RemoteException e1) {
+				e1.printStackTrace();
+			} catch (NullMarketException e1) {
+				Notifications.create().title("异常").text(e.toString()).showWarning();
+			}
+		}else{
+			try {
+				code = stockLogicInterface.nameToCode(name);
+				stockLogicInterface.addStockToStockSet(code
+						, stockset, (String)dataController.get("UserName"));
+				Notifications.create().title("成功").text("成功将"+(String)dataController.
+						get("Market_StockNow")+"添加至"+stockset).showInformation();
+				Stage stage = (Stage) nameLabel.getScene().getWindow();
+				stage.close();
+			} catch (RemoteException e1) {
+				// TODO Auto-generated catch block
+				Notifications.create().title("网络连接异常").text(e1.toString()).showWarning();
+				e1.printStackTrace();
+			} catch (StockNameRepeatException e1) {
+				// TODO Auto-generated catch block
+				Notifications.create().title("添加错误").text(e1.toString()).showError();
+				e1.printStackTrace();
+			}
 		}
+
 	}
 	
 	@Override

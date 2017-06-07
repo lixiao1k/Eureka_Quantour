@@ -1,11 +1,19 @@
 package presentation.marketUI;
 
+import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.StageStyle;
 import org.controlsfx.control.Notifications;
 
 import dataController.DataContorller;
@@ -31,10 +39,12 @@ public class MarketCareerController implements Initializable{
 		this.controller = controller;
 	}
 
+	DataContorller dataContorller;
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
-		DataContorller dataContorller = DataContorller.getInstance();
+		dataContorller = DataContorller.getInstance();
 		RemoteHelper remote = RemoteHelper.getInstance();
 		StockLogicInterface stockLogicInterface = remote.getStockLogic();
 		List<String> list = null;
@@ -62,9 +72,9 @@ public class MarketCareerController implements Initializable{
 						RemoteHelper remote = RemoteHelper.getInstance();
 						StockLogicInterface stockLogicInterface = remote.getStockLogic();
 						try {
-							stocklist = stockLogicInterface.getStockSetSortedInfo(str,(LocalDate)dataContorller.get("SystemTime"),null);
+							stocklist = stockLogicInterface.getStockSetSortedInfo(str, (LocalDate) dataContorller.get("SystemTime"), null);
 							controller.initialAllStocksPane(stocklist);
-							if(stocklist!=null){
+							if (stocklist != null) {
 								controller.setStockDetailInfo(stocklist.get(0));
 							}
 
@@ -77,12 +87,38 @@ public class MarketCareerController implements Initializable{
 							Notifications.create().title("输入异常").text(e.toString()).showWarning();
 							e.printStackTrace();
 						}
-						
-						Stage stage = (Stage)button.getScene().getWindow();
+
+						Stage stage = (Stage) button.getScene().getWindow();
 						stage.close();
-						
+
 					}
 				});
+				ContextMenu contextMenu = new ContextMenu();
+				MenuItem menuItem = new MenuItem("添至");
+				menuItem.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent event) {
+//
+						dataContorller.upDate("Market_StockNow",str);
+						dataContorller.upDate("SetFlag",str);
+						FXMLLoader loader = new FXMLLoader();
+						loader.setLocation(getClass().getResource("MarketUIPopup.fxml"));
+						Parent popUp = null;
+						try {
+							popUp = (AnchorPane)loader.load();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						Scene scene = new Scene(popUp);
+						Stage stage = new Stage();
+						stage.setScene(scene);
+//						stage.initStyle(StageStyle.TRANSPARENT);
+						stage.show();
+					}
+				});
+				contextMenu.getItems().add(menuItem);
+				button.setContextMenu(contextMenu);
 				buttonsPane.getChildren().add(button);
 			}
 		}

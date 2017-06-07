@@ -1,7 +1,6 @@
 package presentation.chart.lineChart;
 
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +30,6 @@ public class TimeShareChart implements chartService{
 	private ListToArrayService listToArray = new ListToArray();
 	
 	private DecimalFormat df = new DecimalFormat("0.00");
-	private NumberFormat nf = NumberFormat.getPercentInstance();
 	
 	private NumberAxis yAxis;
     private CategoryAxis xAxis;
@@ -213,8 +211,10 @@ public class TimeShareChart implements chartService{
 		
 		Label top1 = new Label( "   "+df.format(MidValue*(1+MaxROD)) +"\n"+ "(+"+100*MaxROD+"%)" );
 		Label top2 = new Label( "   "+df.format(MidValue*(1+MaxROD/2)) +"\n"+ "(+"+100*MaxROD/2+"%)" );
-		top1.setTextFill(Color.valueOf("#f15b6c"));
-		top2.setTextFill(Color.valueOf("#f15b6c"));
+//		top1.setTextFill(Color.valueOf("#f15b6c"));
+//		top2.setTextFill(Color.valueOf("#f15b6c"));
+		top1.setTextFill(Color.rgb( 241, 91, 108 ) );
+		top2.setTextFill(Color.rgb( 241, 91, 108 ) );
 		StackPane topP = new StackPane();
 		topP.setPrefSize(leftjuli, height/4+15);
 		topP.getChildren().add(top1);
@@ -231,8 +231,10 @@ public class TimeShareChart implements chartService{
 		
 		Label bot1 = new Label( "   "+df.format(MidValue*(1-MaxROD/2)) +"\n"+ "(-"+100*MaxROD/2+"%)"  );
 		Label bot2 = new Label( "   "+df.format(MidValue*(1-MaxROD)) +"\n"+ "(-"+100*MaxROD+"%)"  );
-		bot1.setTextFill(Color.valueOf("#45b97c"));
-		bot2.setTextFill(Color.valueOf("#45b97c"));
+//		bot1.setTextFill(Color.valueOf("#45b97c"));
+//		bot2.setTextFill(Color.valueOf("#45b97c"));
+		bot1.setTextFill(Color.rgb( 69, 185, 124 ) );
+		bot2.setTextFill(Color.rgb( 69, 185, 124 ) );
 		StackPane botP = new StackPane();
 		botP.setPrefSize(leftjuli, height/4+15);
 		botP.getChildren().add(bot1);
