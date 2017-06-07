@@ -1,6 +1,8 @@
 package servlet;
 
 
+import rmi.RemoteHelper;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -14,10 +16,10 @@ public class SingleStock extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String code=req.getParameter("stockcode");
-        resp.getWriter().println(code);
-        resp.getWriter().println( "<script>");
-        resp.getWriter().println("      alert('My First JavaScript')");
-        resp.getWriter().println("</script>");
+//        RemoteHelper.getInstance().getStockLogic().getStockBasicInfo(code,);
+
+        resp.getWriter().println("<script language='JavaScript' src='scripts/test.js'></script>");
+        resp.getWriter().println("<button type=\"button\" onclick=\"test()\">Try it</button>");
 
     }
 

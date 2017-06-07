@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -35,9 +36,7 @@ public class Login extends HttpServlet {
         if (context.getAttribute("name")==null) {
             context.setAttribute("name", username);
         }
-        else{
-
-        }
+        context.setAttribute("time", LocalDate.now());
         resp.sendRedirect("/views/welcome.jsp");
 
 
