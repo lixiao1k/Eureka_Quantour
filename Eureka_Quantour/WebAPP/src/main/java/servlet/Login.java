@@ -34,12 +34,10 @@ public class Login extends HttpServlet {
 
         if (context.getAttribute("name")==null) {
             context.setAttribute("name", username);
-            System.out.println(username);
         }
         else{
 
         }
-
         resp.sendRedirect("/views/welcome.jsp");
 
 

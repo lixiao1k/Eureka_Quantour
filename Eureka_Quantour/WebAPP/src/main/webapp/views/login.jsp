@@ -29,7 +29,7 @@
 
 <h2>请登录</h2>
 
-<form action="${pageContext.request.contextPath}/login" method="post">
+<form action="/login" method="post">
     Login 名字: <input type="text" name="Name"><br>
     Login Password: <input type="password" name="Password"><br>
     <input type="submit" value="Send"><br>

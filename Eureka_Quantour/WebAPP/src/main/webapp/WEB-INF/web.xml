@@ -14,6 +14,18 @@
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
 
+
+
+    <servlet>
+        <servlet-name>SingleStock</servlet-name>
+        <servlet-class>servlet.SingleStock</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>SingleStock</servlet-name>
+        <url-pattern>/singleStock</url-pattern>
+    </servlet-mapping>
+
     <servlet>
         <servlet-name>a</servlet-name>
         <servlet-class>servlet.Login</servlet-class>
