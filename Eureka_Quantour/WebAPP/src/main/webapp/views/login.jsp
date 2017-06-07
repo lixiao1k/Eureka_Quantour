@@ -1,35 +1,39 @@
+<%@ page import="rmi.RemoteHelper" %>
+<%@ page import="java.rmi.Naming" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="UTF-8" %>
 <html>
 <head>
     <title>JSP简单登录实例</title>
 </head>
 
 <body>
+
+<%
+    RemoteHelper rmic;
+    boolean connected = true;
+    try {
+        rmic = RemoteHelper.getInstance();
+        rmic.setRemote(Naming.lookup("rmi://localhost:8888/DateRemote"));
+
+    } catch (Exception e) {
+        connected = false;
+    }
+    if (!connected){
+//        response.sendRedirect("views/netError.jsp");
+    }
+
+
+%>
+
+
 <h2>请登录</h2>
 
-<form action="${pageContext.request.contextPath}/servlet/a" method="post">
+<form action="${pageContext.request.contextPath}/login" method="post">
     Login 名字: <input type="text" name="Name"><br>
-    Login Password: <input type="password" name="Password" ><br>
+    Login Password: <input type="password" name="Password"><br>
     <input type="submit" value="Send"><br>
-    <form>
+    </form>
 
-            <%
-      if (request.getParameter("Name") != null
-              && request.getParameter("Password") != null) {
-          String Name = request.getParameter("Name");
-          String Password = request.getParameter("Password");
-          if (Name.equals("a") && Password.equals("a")) {
-              session.setAttribute("Login", "OK");
-              session.setAttribute("myCount", new Integer(1));
-              response.sendRedirect("welcome.jsp");
-          }
-          else {
-              %>
-        登录失败:用户名或密码不正确～
-            <%
-          }
-      }
-%>
 </body>
 </html>

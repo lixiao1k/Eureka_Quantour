@@ -4,32 +4,52 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
 
-<servlet>
-    <servlet-name>Cookie</servlet-name>
-    <servlet-class>servlet.LoginCookie</servlet-class>
-</servlet>
-    
+    <servlet>
+        <servlet-name>Logout</servlet-name>
+        <servlet-class>servlet.Logout</servlet-class>
+    </servlet>
+
     <servlet-mapping>
-        <servlet-name>Cookie</servlet-name>
-        <url-pattern>/servlet/Cookie</url-pattern>
+        <servlet-name>Logout</servlet-name>
+        <url-pattern>/logout</url-pattern>
     </servlet-mapping>
 
     <servlet>
         <servlet-name>a</servlet-name>
-        <servlet-class>servlet.a</servlet-class>
+        <servlet-class>servlet.Login</servlet-class>
     </servlet>
 
     <servlet-mapping>
         <servlet-name>a</servlet-name>
-        <url-pattern>/servlet/a</url-pattern>
+        <url-pattern>/login</url-pattern>
     </servlet-mapping>
 
+
+
+
+
+
+
+
+
+
+    <filter>
+        <filter-name>loggerfilter</filter-name>
+        <filter-class>filter.MyFilter</filter-class>
+        <init-param>
+            <param-name>charset</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>loggerfilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
     <welcome-file-list>
-        <welcome-file>views/welcome.jsp</welcome-file>
+        <welcome-file>/views/welcome.jsp</welcome-file>
     </welcome-file-list>
-
-
-
 
 
 </web-app>

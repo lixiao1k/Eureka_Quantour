@@ -6,21 +6,16 @@
 
 <%
 
-    String  Login = (String)session.getAttribute("Login");
-    int     nCount=0;
+    String  username = (String)config.getServletContext().getAttribute("name");
+    System.out.println(username);
 
-
-    if (Login != null && Login.equals("OK")) {
-        Integer myCount = (Integer)session.getAttribute("myCount");
-        if(myCount!=null)
+    if (username!= null) {
         {
-            nCount = myCount.intValue();
-            nCount = nCount + 1;
-            session.setAttribute("myCount",new Integer(nCount));
+            out.println(username);
         }
 %>
-登录成功,myCount=<%=nCount%></br>
-<input type=button value="退出" onclick="javascript:location.href='logout.jsp'">
+<input type=button value="退出" onclick="javascript:location.href='/logout'"
+actio>
 <%
 }
 else {
