@@ -417,18 +417,6 @@ public class SingleStockUIController implements Initializable{
 			Notifications.create().title("日期错误").text(e.toString()).showError();
 		}	
 	}
-	@FXML
-	protected void printKline(ActionEvent e){
-		Pane pane = (Pane) dataController.get("KLineChart");
-		print(pane);
-
-	}
-
-	@FXML
-	protected void printEMA(ActionEvent e){
-		Pane pane = (Pane) dataController.get("EMAChart");
-		print(pane);
-	}
 
 	@FXML
 	protected void printRAF(ActionEvent e){

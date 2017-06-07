@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
@@ -7,7 +8,7 @@
 
 <AnchorPane prefHeight="758.0" prefWidth="1217.0" styleClass="background" stylesheets="@../../styles/SingleStock.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentation.singleStockUI.SingleStockUIController">
    <children>
-      <AnchorPane layoutY="9.0" prefHeight="758.0" prefWidth="169.0" styleClass="left-segment" AnchorPane.bottomAnchor="-9.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="9.0">
+      <AnchorPane layoutY="9.0" prefHeight="758.0" prefWidth="169.0" styleClass="left-segment" AnchorPane.bottomAnchor="-9.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1053.0" AnchorPane.topAnchor="9.0">
          <children>
             <TextField fx:id="searchTextField" layoutX="34.0" layoutY="15.0" prefHeight="15.0" prefWidth="102.0" promptText="股票搜索" />
             <Button fx:id="searchButton" layoutX="125.0" layoutY="14.0" mnemonicParsing="false" onAction="#search" prefHeight="23.0" prefWidth="23.0" styleClass="transperantButton" />
@@ -15,8 +16,14 @@
             <Pane fx:id="fuzzy" layoutX="15.0" layoutY="41.0" prefHeight="141.0" prefWidth="139.0" />
             <Button layoutX="144.0" layoutY="277.0" mnemonicParsing="false" onAction="#goBrowseDay" styleClass="main-button1" text="日" AnchorPane.rightAnchor="0.0" />
             <Button layoutX="148.0" layoutY="293.0" mnemonicParsing="false" onAction="#goBrowseMinute" styleClass="main-button1" text="分" AnchorPane.rightAnchor="0.0" />
-            <Button layoutX="145.0" layoutY="309.0" mnemonicParsing="false" onAction="#printKline" styleClass="main-button1" text="印" AnchorPane.rightAnchor="0.0" />
-            <Button layoutX="107.0" layoutY="609.0" mnemonicParsing="false" onAction="#printEMA" styleClass="main-button1" text="印" AnchorPane.rightAnchor="0.0" />
+            <Button layoutX="141.0" layoutY="182.0" mnemonicParsing="false" onAction="#go125" styleClass="main-button1" text="125" AnchorPane.rightAnchor="0.0" />
+            <Button layoutX="112.0" layoutY="198.0" mnemonicParsing="false" onAction="#go150" styleClass="main-button1" text="150" AnchorPane.rightAnchor="0.0" />
+            <Button layoutX="112.0" layoutY="214.0" mnemonicParsing="false" styleClass="main-button1" text="175" AnchorPane.rightAnchor="0.0" />
+            <Button layoutX="112.0" layoutY="230.0" mnemonicParsing="false" styleClass="main-button1" text="200" AnchorPane.rightAnchor="0.0">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </Button>
          </children></AnchorPane>
       <AnchorPane layoutX="169.0" maxWidth="781.0" prefHeight="758.0" prefWidth="781.0" styleClass="left1-segment" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="169.0" AnchorPane.topAnchor="0.0">
          <children>
