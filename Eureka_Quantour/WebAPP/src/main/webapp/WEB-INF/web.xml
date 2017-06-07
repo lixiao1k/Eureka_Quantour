@@ -5,13 +5,13 @@
          version="3.1">
 
     <servlet>
-        <servlet-name>Cookie</servlet-name>
-        <servlet-class>servlet.LoginCookie</servlet-class>
+        <servlet-name>Logout</servlet-name>
+        <servlet-class>servlet.Logout</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>Cookie</servlet-name>
-        <url-pattern>/servlet/Cookie</url-pattern>
+        <servlet-name>Logout</servlet-name>
+        <url-pattern>/logout</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -21,8 +21,17 @@
 
     <servlet-mapping>
         <servlet-name>a</servlet-name>
-        <url-pattern>/servlet/a</url-pattern>
+        <url-pattern>/login</url-pattern>
     </servlet-mapping>
+
+
+
+
+
+
+
+
+
 
     <filter>
         <filter-name>loggerfilter</filter-name>
@@ -39,7 +48,7 @@
     </filter-mapping>
 
     <welcome-file-list>
-        <welcome-file>views/welcome.jsp</welcome-file>
+        <welcome-file>/views/welcome.jsp</welcome-file>
     </welcome-file-list>
 
 

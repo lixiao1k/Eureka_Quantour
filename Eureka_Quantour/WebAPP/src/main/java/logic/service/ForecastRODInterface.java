@@ -1,4 +1,4 @@
-package service;
+package logic.service;
 
 import vo.PredictVO;
 import vo.StockRODVO;
