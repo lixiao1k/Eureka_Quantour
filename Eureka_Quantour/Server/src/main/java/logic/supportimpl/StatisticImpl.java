@@ -1,11 +1,15 @@
 package logic.supportimpl;
 
+import java.text.DecimalFormat;
+
 import logic.supportservice.StatisticInterface;
 
 public class StatisticImpl implements StatisticInterface{
+	
+	private DecimalFormat df = new DecimalFormat("#0.0000");
 
 	@Override
-	public boolean predictROE(double preValue, double square, int num, double alpha, double realValue) {
+	public boolean predictROE(double average, double variance, int num, double alpha, double preValue) {
 		// TODO Auto-generated method stub
 		double zalpha = 0.0;
 		if( alpha==0.1 )
@@ -14,8 +18,8 @@ public class StatisticImpl implements StatisticInterface{
 			zalpha = 1.96;
 		else if( alpha==0.01 )
 			zalpha = 2.58;
-		double lower = realValue - Math.sqrt(square)*zalpha/Math.sqrt(num);
-		double upper = realValue + Math.sqrt(square)*zalpha/Math.sqrt(num);
+		double lower = average - Math.sqrt(variance)*zalpha/Math.sqrt(num);
+		double upper = average + Math.sqrt(variance)*zalpha/Math.sqrt(num);
 
 		if( preValue>=lower && preValue<=upper ){
 			return true;

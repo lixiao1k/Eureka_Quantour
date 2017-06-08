@@ -39,8 +39,8 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		// TODO Auto-generated method stub
 		StockRODVO srod = new StockRODVO();
 
-/* **************************************************************************************************************** */
-		// save qian numOfDay day stock's close
+/* save qian numOfDay-day stock's close
+ **************************************************************************************************************** */
 		if( numOfDay<100 )
 			numOfDay = 100;
 		double[] closes = new double[numOfDay];
@@ -75,8 +75,8 @@ public class ForecastRODImpl implements ForecastRODInterface{
 /* **************************************************************************************************************** */
 
 
-/* **************************************************************************************************************** */		
-		// calculate numOfDay-day's ROD
+/* calculate numOfDay-day's ROD
+ **************************************************************************************************************** */		
 		double[] RODs = new double[numOfDay];
 
 		// get pro day's close price
@@ -111,7 +111,6 @@ public class ForecastRODImpl implements ForecastRODInterface{
 
 
 /* **************************************************************************************************************** */
-
 		// zuo tian price
 		double ZPrice = 0;
 		// jin tian price
@@ -123,7 +122,6 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		
 		while( date.compareTo(enddate)<=0 ){
 			double PreROD = 0;
-			double square = 0.0;
 			boolean ifROE = false;
 			try{
 				ZPrice = JPrice;
@@ -134,8 +132,6 @@ public class ForecastRODImpl implements ForecastRODInterface{
 				JPrice = ssi.getClose();
 
 				ROD = (JPrice - ZPrice) / ZPrice;		
-				
-				square = calValue.calVariance( RODs );
 
 				double todayKNN = KNNPredictPrice( closes, dates, m, k );
 				double todaySB = SBPredictPrice( ZPrice, closes[numOfDay-2] );
@@ -151,7 +147,10 @@ public class ForecastRODImpl implements ForecastRODInterface{
 				else
 					PreROD = RODKNN;
 				
-				ifROE = statistic.predictROE( PreROD, square, 10, alpha, ROD);
+				double[] AveAndVar = new double[2];
+				AveAndVar = calValue.calTotalityAverageAndVariance( RODs );
+				
+				ifROE = statistic.predictROE( AveAndVar[0], AveAndVar[1], calValue.getNumOfSample(), alpha, PreROD );
 				if( ifROE )
 					srod.zhixin[0]++;
 				else
