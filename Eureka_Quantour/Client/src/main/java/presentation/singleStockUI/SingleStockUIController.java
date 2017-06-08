@@ -433,6 +433,25 @@ public class SingleStockUIController implements Initializable{
 		SaveAsPNG saveAsPNG = new SaveAsPNG();
 		saveAsPNG.print(pane);
 	}
+	@FXML
+	protected void go125(ActionEvent e){
+
+	}
+
+	@FXML
+	protected void go150(ActionEvent e){
+
+	}
+
+	@FXML
+	protected void go175(ActionEvent e){
+
+	}
+
+	@FXML
+	protected void go200(ActionEvent e){
+		
+	}
 
 	
 	@Override
