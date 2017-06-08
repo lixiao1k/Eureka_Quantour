@@ -5,7 +5,7 @@ import logic.supportservice.StatisticInterface;
 public class StatisticImpl implements StatisticInterface{
 
 	@Override
-	public boolean predictROE(double average, double square, int num, double alpha, double real) {
+	public boolean predictROE(double preValue, double square, int num, double alpha, double realValue) {
 		// TODO Auto-generated method stub
 		double zalpha = 0.0;
 		if( alpha==0.1 )
@@ -14,10 +14,10 @@ public class StatisticImpl implements StatisticInterface{
 			zalpha = 1.96;
 		else if( alpha==0.01 )
 			zalpha = 2.58;
-		double lower = average - Math.sqrt(square)*zalpha/Math.sqrt(num);
-		double upper = average + Math.sqrt(square)*zalpha/Math.sqrt(num);
+		double lower = realValue - Math.sqrt(square)*zalpha/Math.sqrt(num);
+		double upper = realValue + Math.sqrt(square)*zalpha/Math.sqrt(num);
 
-		if( real>=lower && real<=upper ){
+		if( preValue>=lower && preValue<=upper ){
 			return true;
 		}
 		else{

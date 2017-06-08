@@ -1,7 +1,6 @@
 package logic.serviceimpl;
 
 import java.rmi.RemoteException;
-import java.text.DecimalFormat;
 import java.time.LocalDate;
 
 import data.service.IDataInterface;
@@ -25,8 +24,6 @@ import vo.StockRODVO;
  * @date: May 13, 2017
  */
 public class ForecastRODImpl implements ForecastRODInterface{
-
-	private static DecimalFormat df = new DecimalFormat("0.0000");
 	
 	private CalculateValueInterface calValue = new CalculateValueImpl();
 	private SortArrayInterface sortArray = new SortArrayImpl();
@@ -56,12 +53,12 @@ public class ForecastRODImpl implements ForecastRODInterface{
 				ssi = new SingleStockInfoVO( idata.getSingleStockInfo(stockcode, date) );
 				dates[dataNum] = date;
 				closes[dataNum] = ssi.getClose();
-				date = date.minusDays(1);
+				date = getValidBeforeDate( date );
 				dataNum--;
 			}catch ( NullStockIDException e ){
 				e.printStackTrace();
 			}catch ( NullDateException e){
-				date = date.minusDays(1);
+				date = getValidBeforeDate( date );
 			}
 		}
 		if( dataNum>-1 ){
@@ -82,16 +79,17 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		// calculate numOfDay-day's ROD
 		double[] RODs = new double[numOfDay];
 
+		// get pro day's close price
 		ssi = new SingleStockInfoVO();
 		ssi.setClose(-1);
 		while( ssi.getClose()==-1 && date.compareTo(zuizao)>0 ){
 			try{
 				ssi = new SingleStockInfoVO( idata.getSingleStockInfo(stockcode, date) );
-				date = date.minusDays(1);
+				date = getValidBeforeDate( date );
 			}catch ( NullStockIDException e ){
 				e.printStackTrace();
 			}catch ( NullDateException e){
-				date = date.minusDays(1);
+				date = getValidBeforeDate( date );
 			}
 		}
 
@@ -103,6 +101,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 			closeT = closes[index];
 		}
 
+		// calculate every day's ROD
 		for( int i=0; i<numOfDay; i++ ){
 			double RODT = (closes[i]-closeT)/closeT;
 			closeT = closes[i];
@@ -112,23 +111,13 @@ public class ForecastRODImpl implements ForecastRODInterface{
 
 
 /* **************************************************************************************************************** */
-		//the number of day owning data
-		int dayNum = 0;
 
 		// zuo tian price
 		double ZPrice = 0;
 		// jin tian price
-		double JPrice = closes[closes.length-1];
+		double JPrice = closes[numOfDay-1];
 		double ROD = 0;
-
-		/*
-		* get the index of array in StockRODVO
-		* the initialzaion of idate is -1 which show the day is weekend
-		*/
-		int idate = -1;
-		int iROD = 0;
 		
-		// save two days' close
 		ssi = new SingleStockInfoVO();
 		date = begindate;
 		
@@ -140,24 +129,16 @@ public class ForecastRODImpl implements ForecastRODInterface{
 				ZPrice = JPrice;
 
 				// get next day's data
-				date = date.plusDays(1);
-				while( (idate = getDayOfWeek(date)) == -1 ){
-					date = date.plusDays(1);
-				}
+				date = getValidLatterDate( date );
 				ssi = new SingleStockInfoVO( idata.getSingleStockInfo(stockcode, date) );
 				JPrice = ssi.getClose();
 
-				// the number of data existing add one
-				srod.nodata[idate][0]++;
-
 				ROD = (JPrice - ZPrice) / ZPrice;		
-				iROD = doubleToIndex( ROD );
-				srod.wROD[idate][iROD]++;
 				
 				square = calValue.calVariance( RODs );
 
 				double todayKNN = KNNPredictPrice( closes, dates, m, k );
-				double todaySB = SBPredictPrice( ZPrice, closes[closes.length-2] );
+				double todaySB = SBPredictPrice( ZPrice, closes[numOfDay-2] );
 				double RODKNN = (todayKNN - ZPrice) / ZPrice;
 				double RODSB = (todaySB - ZPrice) / ZPrice;
 				if( RODKNN<-0.1 || RODKNN>0.1 ){
@@ -170,19 +151,21 @@ public class ForecastRODImpl implements ForecastRODInterface{
 				else
 					PreROD = RODKNN;
 				
-				ifROE = statistic.predictROE( PreROD, square, 1, alpha, ROD);
+				ifROE = statistic.predictROE( PreROD, square, 10, alpha, ROD);
 				if( ifROE )
 					srod.zhixin[0]++;
 				else
 					srod.zhixin[1]++;
 				
 				// update the numOfDay-day data in array
-				RODs[dayNum] = ROD;
-				closes[dayNum] = JPrice;
-				dates[dayNum] = date;
-				dayNum++;
-				if( dayNum==numOfDay-1 )
-					dayNum = 0;
+				for( int i=0; i<numOfDay-1; i++ ){
+					RODs[i] = RODs[i+1];
+					closes[i] = closes[i+1];
+					dates[i] = dates[i+1];
+				}
+				RODs[numOfDay-1] = ROD;
+				closes[numOfDay-1] = JPrice;
+				dates[numOfDay-1] = date;
 
 				if( PreROD>0 ){
 					if( ROD>0 )
@@ -200,9 +183,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 				
 			}catch ( NullStockIDException e ){
 				e.printStackTrace();
-			}catch ( NullDateException e){
-				srod.nodata[idate][1]++;
-			}
+			}catch ( NullDateException e){}
 		}
 /* **************************************************************************************************************** */
 
@@ -215,13 +196,15 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		PredictVO predictVO = new PredictVO();
 		SingleStockInfoVO ssi = new SingleStockInfoVO();
 
-		double[] closes = new double[100];
-		LocalDate[] dates = new LocalDate[100];
+		// get before 100 days' data
+		int vLen = 100;
+		double[] closes = new double[vLen];
+		LocalDate[] dates = new LocalDate[vLen];
 		LocalDate dateT = date.plusDays(1);
-		int index = closes.length-1;
+		int index = vLen-1;
 		while( index>-1 && dateT.compareTo(zuizao)>0 ){
 			try{
-				dateT = dateT.minusDays(1);
+				dateT = getValidBeforeDate( date );
 				ssi = new SingleStockInfoVO( idata.getSingleStockInfo(stockcode, dateT) );
 				closes[index] = ssi.getClose();
 				dates[index] = ssi.getDate();
@@ -231,12 +214,12 @@ public class ForecastRODImpl implements ForecastRODInterface{
 			}catch ( NullDateException e){
 			}
 		}
-
+		// fill none in array by random
 		if( index>-1 ){
 			while( index>-1 ){
-				int indexT = index + (int)(Math.random()*( closes.length - index ));
-				if( indexT>closes.length-1 )
-					indexT = closes.length-1;
+				int indexT = index + (int)(Math.random()*( vLen - index ));
+				if( indexT>vLen-1 )
+					indexT = vLen-1;
 				if( indexT>index ){
 					closes[index] = closes[indexT];
 					dates[index] = dates[indexT];
@@ -245,9 +228,9 @@ public class ForecastRODImpl implements ForecastRODInterface{
 			}
 		}
 
-		double ZPrice = closes[closes.length-1];
-		double QPrice = closes[closes.length-2];
-		double predictPrice = KNNPredictPrice( closes, dates, 5, 25 );
+		double ZPrice = closes[vLen-1];
+		double QPrice = closes[vLen-2];
+		double predictPrice = KNNPredictPrice( closes, dates, 5, 15 );
 		double predictROD = (predictPrice - ZPrice) / ZPrice;
 
 		if( predictROD>0.1 || predictROD<-0.1 ){
@@ -276,10 +259,9 @@ public class ForecastRODImpl implements ForecastRODInterface{
 	 */
 	public double KNNPredictPrice( double[] closes, LocalDate[] dates, int m, int k ){
 		// KNN algorithm
-		double result = 0;
 		int n = closes.length;
 	
-		if( n<m )
+		if( n<m || closes.length!=dates.length )
 			return 0.0;
 
 		// length of vector
@@ -299,12 +281,13 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		// calcuate cos two vectors' include angle
 		double[] cos = new double[vNum];
 		double[] dateD = new double[vNum];
-		double[] closeD = new double[vNum];
+		double[][] closeD = new double[vNum][2];
 		for( int i=0; i<vNum; i++ ){
 			cos[i] = calValue.calCosIncludeAngle( baseVector, vectors[i] );
 			LocalDate dateT = dates[i+vLen];
 			dateD[i] = dateT.getYear() + dateT.getMonthValue() + dateT.getDayOfMonth();
-			closeD[i] = closes[i+vLen];
+			closeD[i][0] = closes[i+vLen-1];
+			closeD[i][1] = closes[i+vLen];
 		}
 
 		// sort value of cos from max to min
@@ -312,13 +295,15 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		// select k max value of cos
 		double[] KCos = new double[k];
 		double[] KDateSave = new double[k];
-		double[] KCloseSave = new double[k];
+		// save every vector's last close price and latter close price
+		double[][] KCloseSave = new double[k][2];
 		for( int i=0; i<k; i++ ){
 			for( int j=0; j<vNum; j++ ){
 				if( cosSortIndex[j]==i ){
 					KCos[i] = cos[j];
 					KDateSave[i] = dateD[j];
-					KCloseSave[i] = closeD[j];
+					KCloseSave[i][0] = closeD[j][0];
+					KCloseSave[i][1] = closeD[j][1];
 				}
 			}
 		}
@@ -344,11 +329,14 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		}
 
 		// calculate result
+		double result = 0;
 		for( int i=0; i<k; i++ )
 			for( int j=0; j<k; j++ )
 				if( sortIndex[j]==i ){
-					result += KCloseSave[j] * statistic.getWeight( k, k-1-i );
+					result += (KCloseSave[j][1] - KCloseSave[j][0]) / KCloseSave[j][0] * 100.0 * statistic.getWeight( k, k-1-i );
 				}
+		result = 1 + result / 100.0;
+		result = result * closes[n-1];
 		return result;
 	}
 
@@ -366,8 +354,12 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		return result;
 	}
 
-
-
+	/**
+	 * @Description: 根据日期返回 星期 的代号，如果是-1表示不是交易日
+	 * @author: hzp
+	 * @date: 2017年6月8日
+	 * @param date
+	 */
 	private int getDayOfWeek( LocalDate date){
 		String dow = date.getDayOfWeek().toString();
 		if( dow.equals("MONDAY"))
@@ -383,30 +375,19 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		else
 			return -1;
 	}
-	
-	/*
-	* return the index of distribution of ROD in array
-	*/
-	private int doubleToIndex( double ROD){
-		String str = df.format(ROD);
-		double d = Double.valueOf(str);
-		
-		if( d<-0.1)
-			return 0;
-		else if( d>=-0.1 && d<=0 ){
-			int result = (int)((d+0.1) / 0.01);
-			result += 1;
-			return result;
-		}
-		else if( d>0 && d<0.1 ){
-			int result = (int)((d+0.1) / 0.01);
-			result += 2;
-			return result;
-		}
-		else if( d==0.1 )
-			return 21;
-		else
-			return 22;
+
+	private LocalDate getValidLatterDate( LocalDate date ){
+		date = date.plusDays(1);
+		while( getDayOfWeek(date)==-1 )
+			date = date.plusDays(1);
+		return date;
+	}
+
+	private LocalDate getValidBeforeDate( LocalDate date ){
+		date = date.minusDays(1);
+		while( getDayOfWeek(date)==-1 )
+			date = date.minusDays(1);
+		return date;
 	}
 	
 }

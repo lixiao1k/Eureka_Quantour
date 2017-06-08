@@ -17,7 +17,7 @@ public interface StatisticInterface {
 	 * @param: @param alpha : ji suan zhi xin qu jian de α
 	 * @param: @param real
 	 */
-	boolean predictROE( double average, double square, int num, double alpha, double real);
+	boolean predictROE( double preValue, double square, int num, double alpha, double realValue);
 	
 	/**
 	 * 进过测试，结果和为 1 
