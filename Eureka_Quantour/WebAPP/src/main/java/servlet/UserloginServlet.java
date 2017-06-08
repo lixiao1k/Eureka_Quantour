@@ -17,7 +17,6 @@ public class UserloginServlet extends HttpServlet{
         String userName = request.getParameter("userName");
         String userPassword = request.getParameter("userPassword");
         String message="awesgrd";
-        System.out.println(userName);
         request.setAttribute("message", message);
         request.getRequestDispatcher("/userlogin.jsp").forward(request,
                 response);

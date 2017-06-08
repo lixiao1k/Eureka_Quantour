@@ -1,29 +1,64 @@
-<%@ page contentType="text/html" pageEncoding="UTF-8" import="java.util.*"%>
+<%@ page contentType="text/html" pageEncoding="UTF-8" import="java.util.*" %>
 
 <html>
-<body>
-<h2>欢迎页面(测试session)</h2>
-
-<%
-
-    String  username = (String)config.getServletContext().getAttribute("name");
-    System.out.println(username);
-
-    if (username!= null) {
-        {
-            out.println(username);
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>jQuery UI Datepicker - Default functionality</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $( function() {
+            $( "#datepicker" ).datepicker();
+        } );
+    </script>
+    <style>
+        div{
+            float: left;
         }
-%>
-<input type=button value="退出" onclick="javascript:location.href='/logout'"
-actio>
+    </style>
+
+
+
+</head>
+
+<body>
+<%--check log in--%>
 <%
-}
-else {
-%>
-<jsp:forward page="login.jsp"/>
-<%
+    String username = (String) config.getServletContext().getAttribute("name");
+
+    if (username != null) {
+        {
+            out.println("<div>");
+            out.println("<p1>");
+            out.println(username);
+            out.println("</p1>");
+            out.println("</div>");
+        }
+
+
+} else {
+        response.sendRedirect("/views/login.jsp");
     }
 %>
+
+
+<p2>个人主页</p2>
+
+
+<div>
+<input type=button value="退出" onclick="location.href='/logout'">
+</div>
+<div>
+<p>Date: <input type="text" id="datepicker"></p>
+</div>
+<br>
+
+<input type ="button"  value="单个股票查询" onclick="location.href='/views/stock.jsp'">
+<br>
+
+
+
 
 </body>
 </html>

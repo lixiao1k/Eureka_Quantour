@@ -15,9 +15,8 @@ public interface StatisticInterface {
 	 * @date: May 17, 2017
 	 * @param: @param num : chou yang ci shu
 	 * @param: @param alpha : ji suan zhi xin qu jian de α
-	 * @param: @param real
 	 */
-	boolean predictROE( double average, double square, int num, double alpha, double real);
+	boolean predictROE( double average, double variance, int num, double alpha, double preValue);
 	
 	/**
 	 * 进过测试，结果和为 1 

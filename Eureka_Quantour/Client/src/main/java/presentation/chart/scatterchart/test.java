@@ -26,19 +26,20 @@ public class test {
 		LocalDate begindate = LocalDate.of(2013, 3, 6);
 		LocalDate enddate = LocalDate.of(2016, 3, 6);
 		
-		String stockcode = "000938";
-//		String stockcode = "300038";
+//		String stockcode = "000938";
+		String stockcode = "300038";
 //		String stockcode = "600149";
 		
 		double alpha = 0.01;
-		int numOfDay = 1;
+		int numOfDay = 100;
 		double maxs = 0;
 		int maxsDay = 0;
 		double maxz = 0;
 		int maxsZhi = 0;
 		int m = 50;
 		int k = 5;
-		for( int i=0; i<300; i++ ){
+		
+		for( int i=0; i<120; i++ ){
 			try{
 				srod = remote.getForecastROD().getStockROD( stockcode, begindate, enddate, numOfDay, alpha, m, k);
 			}catch(RemoteException e){
@@ -68,50 +69,6 @@ public class test {
             p.println();
             p.println( stockcode );
             p.println();
-            for( int i=0; i<5; i++ ){
-            	for( int j=1; j<22; j++){
-            		if( j<20 ){
-    					if( srod.wROD[i][j]<10 )
-    						p.print( " "+srod.wROD[i][j]+" " );
-    					else
-    						p.print( srod.wROD[i][j]+" " );
-    				}
-    				else{
-    					if( srod.wROD[i][j]<10 )
-    						p.print( " "+srod.wROD[i][j]+" " );
-    					else
-    						p.print( srod.wROD[i][j]+" " );
-    				}
-            	}
-            	p.println();
-            }
-            
-            p.println();
-            for( int i=0; i<5; i++){
-            	if( srod.wROD[i][0]>=10 )
-            		p.print( "星期 "+(i+1)+" 有 "+srod.wROD[i][0]+" 天跌 >10%;" );
-            	else
-            		p.print( "星期 "+(i+1)+" 有 "+" "+srod.wROD[i][0]+" 天跌 >10%;" );
-            	p.print( " " );
-            	if( srod.wROD[i][22]>=10 )
-            		p.print( "有 "+srod.wROD[i][22]+" 天涨 >10%;" );    
-            	else
-            		p.print( "有 "+" "+srod.wROD[i][22]+" 天涨 >10%;" );  
-            	
-            	p.print(" ");
-            	
-            	if( srod.nodata[i][0]>=100 )
-            		p.print( "有 "+srod.nodata[i][0]+" 天" );
-            	else if( srod.nodata[i][0]>=10 )
-            		p.print( "有 "+" "+srod.nodata[i][0]+" 天" );
-            	else
-            		p.print( "有 "+"  "+srod.nodata[i][0]+" 天" );
-            	p.print( "  " );
-            	if( srod.nodata[i][1]>=10 )
-            		p.println( srod.nodata[i][1]+" 天没数据" );
-            	else
-            		p.println( " "+srod.nodata[i][1]+" 天没数据" );
-            }
             
             p.println();
             if( srod.Pos[0]>=100 )
