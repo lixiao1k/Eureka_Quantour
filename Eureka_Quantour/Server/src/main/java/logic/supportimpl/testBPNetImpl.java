@@ -3,7 +3,6 @@ package logic.supportimpl;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import data.service.IDataInterface;
@@ -16,7 +15,7 @@ public class testBPNetImpl {
 	
 	private static IDataInterface idata = new DataInterfaceImpl();
 	
-	private static DecimalFormat df = new DecimalFormat("#0.0000"); 
+	private static DecimalFormat df = new DecimalFormat("#0.00"); 
 	
 	private static LocalDate zuizao = LocalDate.of(2005,2,1);
 	private static String stockcode = "000938";
@@ -54,12 +53,11 @@ public class testBPNetImpl {
 		
 	    BPNetSupportImpl m = new BPNetSupportImpl();
 	    double[][] dataset = m.bpTrain( closePrice, highPrice, lowPrice, openPrice, vol );
-	    double[][] target = new double[dataset.length][];
+	    double[][] target = new double[dataset.length][1];
 	    for( int i=0; i<dataset.length; i++ ){
-	        target[i] = new double[1];
 	        target[i][0] = closePrice.get( closePrice.size() - dataset.length + i );
+//	    	target[i][0] = closePrice.get( i + 1 );
 	    }
-	    
 	    
 	    
 	    //创建序列
@@ -89,10 +87,10 @@ public class testBPNetImpl {
         
         BPNetSupportImpl m2 = new BPNetSupportImpl();
         double[][] dataset2 = m2.bpTrain( closePrice2, highPrice2, lowPrice2, openPrice2, vol2 );
-        double[][] target2 = new double[dataset2.length][];
+        double[][] target2 = new double[dataset2.length][1];
         for(int i = 0;i<dataset2.length;i++){
-            target2[i] = new double[1];
-            target2[i][0] = closePrice2.get( closePrice2.size() - dataset2.length + i );
+        	target2[i][0] = closePrice2.get( closePrice2.size() - dataset2.length + i );
+//          target2[i][0] = closePrice2.get( i + 1 );
         }
         
         BPNetImpl bp = new BPNetImpl( new int[]{6,13,13,1}, 0.15, 0.8 );
@@ -112,9 +110,13 @@ public class testBPNetImpl {
             list.add(result[i]);
             list.add(target2[i][0]);
             resultList.add(list);
-            System.out.println( Arrays.toString(dataset2[i])
-            		+ ":" + df.format(result[i])
-            		+ " real:" + df.format(target2[i][0]) );
+            
+            System.out.print(" [ ");
+            for( int j=0; j<dataset2[i].length; j++ )
+            	System.out.print( df.format(dataset2[i][j]) + " " );
+            System.out.print(" ] : ");
+            System.out.println( df.format(result[i]) + "  :  " + df.format(target2[i][0]) );
+            System.out.println();
         }
 		
 	}

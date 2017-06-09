@@ -39,7 +39,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		// TODO Auto-generated method stub
 		StockRODVO srod = new StockRODVO();
 
-/* save qian numOfDay-day stock's close
+/* save Q numOfDay-day stock's close
  **************************************************************************************************************** */
 		if( numOfDay<100 )
 			numOfDay = 100;

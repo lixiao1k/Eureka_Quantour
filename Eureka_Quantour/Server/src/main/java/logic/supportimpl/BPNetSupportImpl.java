@@ -1,5 +1,6 @@
 package logic.supportimpl;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +8,8 @@ import logic.supportservice.BPNetSupportInterface;
 
 public class BPNetSupportImpl implements BPNetSupportInterface{
 
+	private DecimalFormat df = new DecimalFormat("#0.000"); 
+	
 	/* 
      * A = ( JHigh + JLow ) / 2;
      * B = ( QHigh + QLow ) / 2;
@@ -18,21 +21,29 @@ public class BPNetSupportImpl implements BPNetSupportInterface{
      * N=14 , M=9
      */
 	@Override
-	public List<Double> EMV(List<Double> highPrice, List<Double> lowPrice, List<Double> vol) {
+	public List<Double> EMV( List<Double> highPrice, List<Double> lowPrice, List<Double> vol ) {
 		List<Double> EM = new ArrayList<Double>();
         for( int i=2; i<highPrice.size(); i++ ){
-            double A = ( highPrice.get(i) + lowPrice.get(i) ) / 2;
-            double B = ( highPrice.get(i-2) + lowPrice.get(i-2) ) / 2;
-            double C = highPrice.get(i) - lowPrice.get(i);
+        	double JHigh = highPrice.get(i);
+        	double JLow = lowPrice.get(i);
+        	double QHigh = highPrice.get(i-2);
+        	double QLow = lowPrice.get(i-2);
+        	
+            double A = ( JHigh + JLow ) / 2;
+            double B = ( QHigh + QLow ) / 2;
+            double C = JHigh - JLow;
+            
             double temp = ( A - B ) * C;
             EM.add( temp / vol.get(i) );
         }
 
-        // 取N为14，即14日的EM值之和；M为9，即9日的移动平均
+        /* 
+         * 取N为14，即14日的EM值之和；M为9，即9日的移动平均
+         */
         int N = 14;
         int M = 9;
 
-        List<Double>EMV = new ArrayList<Double>();
+        List<Double> EMV = new ArrayList<Double>();
         for( int i=N; i<EM.size()+1; i++ ){
             // 14日累和
             double sum = 0;
@@ -42,7 +53,7 @@ public class BPNetSupportImpl implements BPNetSupportInterface{
             EMV.add(sum);
         }
 
-        List<Double>MAEMV = new ArrayList<Double>();
+        List<Double> MAEMV = new ArrayList<Double>();
         for( int i=M; i<EMV.size()+1; i++){
             // 9日移动平均
             double sum = 0;
@@ -70,7 +81,6 @@ public class BPNetSupportImpl implements BPNetSupportInterface{
         for( int i=5; i<overPrice.size(); i++ ){
             double temp = ( overPrice.get(i) - EMA5.get(i-5) ) / 5;
             EMA5.add( temp + EMA5.get(i-5) );
-
         }
         return EMA5;
 	}
@@ -246,16 +256,16 @@ public class BPNetSupportImpl implements BPNetSupportInterface{
 
 	
 	@Override
-	public double[][] bpTrain( List<Double>overPrice, List<Double>highPrice, List<Double>lowPrice,
-			List<Double>openPrice, List<Double>vol ){
+	public double[][] bpTrain( List<Double> closePrice, List<Double> highPrice, List<Double> lowPrice,
+			List<Double> openPrice, List<Double> vol ){
 //		List<Double> EMV = EMV(highPrice, lowPrice, vol);
-		List<Double> EMA5 = EMA5(overPrice);
-		List<Double> EMA60 = EMA60(overPrice);
-		List<Double> MA5 = MA5(overPrice);
-		List<Double> MA60 = MA60(overPrice);
-		List<Double> MTM = MTM(overPrice);
+		List<Double> EMA5 = EMA5( closePrice );
+		List<Double> EMA60 = EMA60( closePrice );
+		List<Double> MA5 = MA5( closePrice );
+		List<Double> MA60 = MA60( closePrice );
+		List<Double> MTM = MTM( closePrice );
 //		List<Double> MACD = MACD(vol);
-		List<Double> CR5 = CR5(overPrice, highPrice, lowPrice, openPrice);
+		List<Double> CR5 = CR5( closePrice, highPrice, lowPrice, openPrice );
 		
 		int length = 0;
 		if( EMA60.size() > MA60.size() )
@@ -277,13 +287,13 @@ public class BPNetSupportImpl implements BPNetSupportInterface{
 			datalist.add( list );
 		}
 		double[][] data = new double[datalist.size()][6];
-		for( int i=0; i<datalist.size(); i++ ){
-			for( int j=0; j<6; j++ ){
-				data[i][j] = datalist.get(i).get(j);
-				System.out.print(data[i][j]+"  ");
-			}
-			System.out.println();
-		}
+//		for( int i=0; i<datalist.size(); i++ ){
+//			for( int j=0; j<6; j++ ){
+//				data[i][j] = datalist.get(i).get(j);
+//				System.out.print( df.format(data[i][j])+"  " );
+//			}
+//			System.out.println();
+//		}
 		return data;
 	}	
 }
