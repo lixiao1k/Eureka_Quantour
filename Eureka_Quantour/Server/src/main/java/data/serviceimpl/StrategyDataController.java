@@ -5,13 +5,15 @@ import java.util.List;
 
 import data.datahelperimpl_ByDataBase.StrategyDataHelperImpl_DBO;
 import data.datahelperservice.IStrategyDataHelper;
+import data.service.ICompanyDataInterface;
+import data.service.IStrategyDataInterface;
 import exception.StrategyRepeatException;
 import po.CommentPO;
 import po.StrategyInfoPO;
 import po.StrategyShowPO;
 import vo.StrategyShowVO;
 
-public class StrategyDataController {
+public class StrategyDataController implements IStrategyDataInterface{
 	private static StrategyDataController strategydata;
 	private IStrategyDataHelper strategydatahelper;
 	private StrategyDataController(){

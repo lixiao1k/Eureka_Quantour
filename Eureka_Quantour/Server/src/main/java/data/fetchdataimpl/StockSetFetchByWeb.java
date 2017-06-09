@@ -297,6 +297,9 @@ public class StockSetFetchByWeb{
 			pstmt1.addBatch();
 			pstmt1.setString(1, "zs399108");
 			pstmt1.setString(2, "SZB");
+			
+			pstmt1.setString(1, "zs399300");
+			pstmt1.setString(2, "HS300");
 			pstmt1.addBatch();
 			pstmt1.executeBatch();
 			pstmt1.close();

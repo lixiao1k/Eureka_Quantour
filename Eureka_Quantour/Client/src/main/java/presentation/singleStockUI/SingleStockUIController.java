@@ -151,7 +151,7 @@ public class SingleStockUIController implements Initializable{
 				} catch (TimeShraingLackException e1) {
 					e1.printStackTrace();
 				} catch (NullStockIDException e1) {
-					e1.printStackTrace();
+					Notifications.create().title("异常").text(e1.toString()).showWarning();
 				}
 			} catch (RemoteException e1) {
 				e1.printStackTrace();
@@ -159,9 +159,9 @@ public class SingleStockUIController implements Initializable{
 			try {
 				companyInfoVO = stockLogicInterface.getLatestCommpanyInfo((LocalDate)dataController.get("SystemTime"),code);
 			} catch (NullStockIDException e1) {
-				e1.printStackTrace();
+				Notifications.create().title("异常").text(e1.toString()).showWarning();
 			} catch (NullDateException e1) {
-				e1.printStackTrace();
+				Notifications.create().title("异常").text(e1.toString()).showWarning();
 			}
 		}
 		if(predictVO!=null&&companyInfoVO!=null){
@@ -204,6 +204,9 @@ public class SingleStockUIController implements Initializable{
 	@FXML
 	protected void search(ActionEvent e){
 		String name = searchTextField.getText();
+		if(name.length()==0){
+			Notifications.create().title("异常").text("没有输入股票").showWarning();
+		}
 		dataController.upDate("SingleStockNow", name);
 		initialAllPane();
 	}
@@ -255,10 +258,7 @@ public class SingleStockUIController implements Initializable{
 
 	}
 
-	private void setCompanyInfoPane(CompanyInfoVO vo){
-		System.out.println(vo.toString());
-	}
-	
+
 	public void setBasicInfoPane(SingleStockInfoVO vo,ComparedInfoVO vo1){
 		setStockInfoPane(vo.getCode(), vo.getName(), vo.getClose(), vo.getFudu(), vo.getHigh(),
 			    vo.getLow(), vo.getOpen(), vo.getVolume());
@@ -450,7 +450,7 @@ public class SingleStockUIController implements Initializable{
 
 	@FXML
 	protected void go200(ActionEvent e){
-		
+
 	}
 
 	

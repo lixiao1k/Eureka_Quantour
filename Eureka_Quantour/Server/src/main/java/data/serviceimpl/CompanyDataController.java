@@ -9,12 +9,13 @@ import data.datahelperservice.ICompanyDataHelper;
 import data.datahelperservice.IStrategyDataHelper;
 import data.parse.Parse;
 import data.parse.Translate;
+import data.service.ICompanyDataInterface;
 import exception.NullStockIDException;
 import exception.StrategyRepeatException;
 import po.CompanyInfoPO;
 import po.StrategyInfoPO;
 
-public class CompanyDataController {
+public class CompanyDataController implements ICompanyDataInterface{
 	private static CompanyDataController strategydata;
 	private ICompanyDataHelper datahelper;
 	private CompanyDataController(){

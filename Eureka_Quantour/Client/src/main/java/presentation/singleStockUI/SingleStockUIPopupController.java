@@ -58,7 +58,6 @@ public class SingleStockUIPopupController implements Initializable{
 			} catch (StockNameRepeatException e1) {
 				// TODO Auto-generated catch block
 				Notifications.create().title("添加错误").text(e1.toString()).showError();
-				e1.printStackTrace();
 			}
 		}
 	}

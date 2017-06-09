@@ -5,11 +5,13 @@ import java.util.List;
 import data.datahelperimpl.StockSetDataHelperImpl;
 import data.datahelperimpl_ByDataBase.StockSetDataHelperImpl_DBO;
 import data.datahelperservice.IStockSetDataHelper;
+import data.service.ICompanyDataInterface;
+import data.service.IStockSetInterface;
 import exception.NullSetException;
 import exception.StockNameRepeatException;
 import exception.StockSetNameRepeatException;
 
-public class StockSetDataController {
+public class StockSetDataController implements IStockSetInterface{
 	private static StockSetDataController stocksetdata;
 	private IStockSetDataHelper stocksetdatahelper_FILE;
 	private IStockSetDataHelper stocksetdatahelper_DBO;
@@ -67,7 +69,7 @@ public class StockSetDataController {
 	 * @param username	用户名
 	 */
 	public void deleteStockFromStockSet(String stockName, String stockSetName, String username){
-		System.out.println(stockName);
+		//System.out.println(stockName);
 		stocksetdatahelper_DBO.deleteStockFromStockSet(stockName, stockSetName, username);
 		//stocksetdatahelper_FILE.deleteStockFromStockSet(stockName, stockSetName, username);
 	}
@@ -79,6 +81,10 @@ public class StockSetDataController {
 	 */
 	public List<String>  getStockSetInfo(String stockSetName,String userName){
 		try {
+			if(userName==null)
+			{
+				return getStockSetInfo(stockSetName);
+			}
 			return stocksetdatahelper_DBO.getStockSetInfo(stockSetName, userName);
 		} catch (NullSetException e) {
 			e.printStackTrace();
