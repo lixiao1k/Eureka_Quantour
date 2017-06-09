@@ -9,12 +9,7 @@ public class StockDataFetchImpl implements IStockDataFetch{
 	private StockInfoCalculate infocalculate;
 	private static StockDataFetchImpl impl;
 	public static void main(String[] args){
-		try {
-			new StockDataFetchImpl().fetchInit();
-		} catch (InternetdisconnectException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		};
+		new StockInfoFetchByWeb().fetchExponent();;
 	}
 	private StockDataFetchImpl(){
 		setByweb=new StockSetFetchByWeb();

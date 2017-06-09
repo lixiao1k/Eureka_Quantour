@@ -11,6 +11,8 @@ import data.datahelperservice.IExponentDataHelper;
 import data.datahelperservice.IStockDataHelper_2;
 import data.parse.Parse;
 import data.parse.Translate;
+import data.service.ICompanyDataInterface;
+import data.service.IStockDataInterface;
 import exception.DateOverException;
 import exception.NullDateException;
 import exception.NullStockIDException;
@@ -23,7 +25,7 @@ import po.TimeSharingPO;
  * @author 刘宇翔
  *
  */
-public class StockDataController_2 {
+public class StockDataController_2 implements IStockDataInterface{
 	private static StockDataController_2 stockdatacontroller;
 	private IStockDataHelper_2 datahelper;
 	private IExponentDataHelper exphelper;
@@ -95,10 +97,22 @@ public class StockDataController_2 {
 	public List<SingleStockInfoPO> getPeriodExponent(String name,LocalDate start,LocalDate end){
 		return exphelper.getPeriodExponent(name, start, end);
 	}
-	public List<Double> getTimeSharingData(String code,LocalDate date)throws TimeShraingLackException,NullStockIDException{
+	public TimeSharingPO getTimeSharingData(String code,LocalDate date)throws TimeShraingLackException,NullStockIDException{
 		int c=transStockCode(code);
 		int day=Parse.getInstance().getIntDate(date);
-		return datahelper.getTimeSharingData(code, day);
+		List<Double> list=datahelper.getTimeSharingData(code, day);
+		double last_close=0;
+		try {
+			SingleStockInfoPO po=getSingleStockInfo(code, date);
+			last_close=po.getLclose();
+			if(last_close==0)
+			{
+				last_close=po.getClose();
+			}
+			return new TimeSharingPO(list,last_close);
+		} catch (NullDateException e) {
+			throw new TimeShraingLackException();
+		}
 	}
 	public void addBrowseTimes(String stockCode) throws NullStockIDException{
 		int i=transStockCode(stockCode);
@@ -233,6 +247,42 @@ public class StockDataController_2 {
 	public LocalDate getExponentMinDay(String name)
 	{
 		return exphelper.getExponentMinDay(name);
+	}
+	/**
+	 * 编号转名字
+	 * @param code 股票编号
+	 * @return 股票名字
+	 */
+	public String codeToname(String code){
+		return Translate.getInstance().trans_codeToname(code);
+	}
+	/**
+	 * 编号转名字
+	 * @param code 股票编号
+	 * @return 股票名字
+	 */
+	public String nameTocode(String name){
+		try{
+			Integer.parseInt(name);
+			return Parse.getInstance().supCode(name);
+		}catch(NumberFormatException e){
+			return Translate.getInstance().trans_nameTocode(name);
+		}
+	}
+	@Override
+	public LocalDate addDays(LocalDate date, int last) throws DateOverException {
+		if(last>0){
+			LocalDate temp=LocalDate.of(date.getYear(), date.getMonth(), date.getDayOfMonth());
+			temp=temp.plusDays(1);
+			last--;
+			return addDays(temp, last,true);
+		}
+		else{
+			LocalDate temp=LocalDate.of(date.getYear(), date.getMonth(), date.getDayOfMonth());
+			temp=temp.minusDays(1);
+			last--;
+			return addDays(temp, last,false);
+		}
 	}
 //	
 //	/**
@@ -599,4 +649,6 @@ public class StockDataController_2 {
 //		}
 //		return result;
 //	}
+	
+
 }
