@@ -39,7 +39,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		// TODO Auto-generated method stub
 		StockRODVO srod = new StockRODVO();
 
-/* save qian numOfDay-day stock's close
+/* save Q numOfDay-day stock's close
  **************************************************************************************************************** */
 		if( numOfDay<100 )
 			numOfDay = 100;
@@ -189,6 +189,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		return srod;
 	}
 	
+
 	@Override
 	public PredictVO predict(String stockcode, LocalDate date) throws RemoteException {
 		// TODO Auto-generated method stub
@@ -203,7 +204,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		int index = vLen-1;
 		while( index>-1 && dateT.compareTo(zuizao)>0 ){
 			try{
-				dateT = getValidBeforeDate( date );
+				dateT = getValidBeforeDate( dateT );
 				ssi = new SingleStockInfoVO( idata.getSingleStockInfo(stockcode, dateT) );
 				closes[index] = ssi.getClose();
 				dates[index] = ssi.getDate();
@@ -248,6 +249,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		return predictVO;
 	}
 	
+
 
 	/**
 	 * @author H2P
@@ -339,6 +341,8 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		return result;
 	}
 
+
+
 	/**
 	 * @Description:
 	 * @author: 	 hzp
@@ -352,6 +356,8 @@ public class ForecastRODImpl implements ForecastRODInterface{
 			return 0;
 		return result;
 	}
+
+
 
 	/**
 	 * @Description: 根据日期返回 星期 的代号，如果是-1表示不是交易日

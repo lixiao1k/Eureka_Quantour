@@ -7,6 +7,9 @@ package logic.supportservice;
  */
 public interface CalculateValueInterface{
 	
+	/**
+	 * @Description: get number of 随机抽样
+	 */
 	int getNumOfSample();
 
 	/**
@@ -56,5 +59,9 @@ public interface CalculateValueInterface{
 	 * @param Len
 	 */
 	double calEMA( double[] closes, int len );
+
+	double calDIF( double[] closesShort, double[] closesLong );
+
+	double calDEA( double[] DIFs, int len );
 	
 }
