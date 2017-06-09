@@ -5,6 +5,8 @@ import java.security.NoSuchAlgorithmException;
 import data.datahelperimpl.UserDataHelperImpl;
 import data.datahelperimpl_ByDataBase.UserDataHelperImpl_DBO;
 import data.datahelperservice.IUserDataHelper;
+import data.service.ICompanyDataInterface;
+import data.service.IUserDataInterface;
 import exception.LogErrorException;
 import exception.UserNameRepeatException;
 
@@ -13,7 +15,7 @@ import exception.UserNameRepeatException;
  * @author 刘宇翔
  *
  */
-public class UserDataController 
+public class UserDataController implements IUserDataInterface
 {
 	private IUserDataHelper userdatahelper_DBO;
 	private IUserDataHelper userdatahelper_FILE;

@@ -349,6 +349,15 @@ public class StockInfoFetchByWeb {
 		String endday=pro.getProperty("lastday");
 		String startday=pro.getProperty("updateExponentday","2005-02-01");
 		File file=new File("config/resources/date/totalCalendar");
+		try {
+			OutputStream out=new FileOutputStream("config/stock/dataconfig.properties");
+			pro.setProperty("updateExponentday", endday);
+			pro.store(out, "update exponent");
+			out.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		List<Integer> date=new ArrayList<Integer>();
 		try {
 			BufferedReader br=new BufferedReader(new FileReader(file));
@@ -421,9 +430,9 @@ public class StockInfoFetchByWeb {
 						pstmt.setString(9, result[7]);
 						pstmt.executeUpdate();
 					}catch (SQLException e) {
-						System.out.println(result[7]);
-						e.printStackTrace();
-						System.exit(0);
+						//System.out.println(result[7]);
+						//e.printStackTrace();
+						//System.exit(0);
 					}
 				}
 				br.close();

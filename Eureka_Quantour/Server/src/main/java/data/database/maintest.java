@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 import com.mysql.cj.jdbc.PreparedStatement;
@@ -13,6 +15,7 @@ import data.datahelperimpl.StockDataHelperImpl_2;
 import data.parse.Parse;
 import exception.NullDateException;
 import exception.StockHaltingException;
+import po.SingleStockInfoPO;
 
 public class maintest {
 	Connection conn;
@@ -21,39 +24,29 @@ public class maintest {
 		new maintest();
 	}
 	private maintest(){
-		sdhi=new StockDataHelperImpl_2();
-		conn=getConn();
-		File file=new File("config/stock/info");
-		String[] list=file.list();
-		long total=0;
-		String str=null;
-		long t1=System.currentTimeMillis();
-	
-			int i=20050201;
-			for(;i<20170420;i++){
-				try {
-				
-				sdhi.getSingleInfo(i, "000001");
-			} catch (StockHaltingException | NullDateException e) {
+		Connection conn=ConnectionPoolManager.getInstance().getConnection("quantour");
+		String sql="select * from stockdata";
+		PreparedStatement pstmt=null;
+
+		try {
+			long t1=System.currentTimeMillis();
+			pstmt = (PreparedStatement)conn.prepareStatement(sql);
+			ResultSet rs=pstmt.executeQuery();
+			long t2=System.currentTimeMillis();
+			System.out.println(t2-t1);
+			while(rs.next()){
+				for(int i=0;i<15;i++)
+				{
+					rs.getString(i);
+				}				
 			}
-			}
-	
-//		find(20160315,1);
-		long t2=System.currentTimeMillis();
-		System.out.println(t2-t1);
-		Scanner sc=new Scanner(System.in);
-		sc.nextLine();
-//		for(String i:list){
-//			int code=Parse.getInstance().strToint(i);
-//			long t1=System.currentTimeMillis();
-//			try {
-//				str=sdhi.getSingleInfo(20170315,i);
-//			} catch (StockHaltingException | NullDateException e) {
-//			}
-//			long t2=System.currentTimeMillis();
-//			total=total+t2-t1;
-//		}
-//		System.out.println(total+"\n"+str);
+			rs.close();
+			pstmt.close();
+			ConnectionPoolManager.getInstance().close("quantour", conn);
+		}catch (SQLException e) {
+			ConnectionPoolManager.getInstance().close("quantour", conn);
+			
+		}
 	}
 	public Connection getConn(){
 		String driver = "com.mysql.jdbc.Driver";

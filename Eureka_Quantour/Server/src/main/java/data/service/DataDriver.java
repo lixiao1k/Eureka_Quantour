@@ -1,5 +1,6 @@
 package data.service;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -98,16 +99,29 @@ public class DataDriver {
 				long t1=System.currentTimeMillis();
 				//data.getPeriodExponent("SHA", LocalDate.of(2005, 5, 20), LocalDate.of(2017, 3, 15));
 				LocalDate i=LocalDate.of(2005, 5, 20);
-				try
-				{
-					for(;i.isBefore( LocalDate.of(2017, 3, 15));i=data.addDays(i, 1))
-					{
-						
+				
+					File file=new File("config/stock/info");
+					String[] list=file.list();
+					try {
+						for(;i.isBefore( LocalDate.of(2017, 3, 15));i=data.addDays(i, 1))
+						{
+							try
+							{
+							for(String code:list)
+							{
+								
+								data.getSingleStockInfo(code, i).toString();
+							}
+							}catch(Exception e)
+							{
+								
+							}
+						}
+					} catch (DateOverException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
-				}catch(Exception e)
-				{
-					
-				}
+				
 				long t2=System.currentTimeMillis();
 				System.out.println(t2-t1);
 //				for(SingleStockInfoPO po:data.getPeriodExponent("SHA", LocalDate.of(2016, 5, 20), LocalDate.of(2017, 3, 15)))

@@ -166,19 +166,7 @@ public class DataInterfaceImpl implements IDataInterface
 		strategy.clearStrategyShow();
 	}
 	public TimeSharingPO getTimeSharingData(String code,LocalDate date)throws TimeShraingLackException,NullStockIDException{
-		List<Double> list=stock2.getTimeSharingData(code, date);
-		double last_close=0;
-		try {
-			SingleStockInfoPO po=stock2.getSingleStockInfo(code, date);
-			last_close=po.getLclose();
-			if(last_close==0)
-			{
-				last_close=po.getClose();
-			}
-			return new TimeSharingPO(list,last_close);
-		} catch (NullDateException e) {
-			throw new TimeShraingLackException();
-		}
+		return stock2.getTimeSharingData(code, date);
 	}
 	public List<CommentPO> getStrategyComments(String createrName,String strategyName){
 		return strategy.getStrategyComments(createrName, strategyName);
