@@ -18,8 +18,8 @@
             <Button layoutX="148.0" layoutY="293.0" mnemonicParsing="false" onAction="#goBrowseMinute" styleClass="main-button1" text="分" AnchorPane.rightAnchor="0.0" />
             <Button layoutX="141.0" layoutY="182.0" mnemonicParsing="false" onAction="#go125" styleClass="main-button1" text="125" AnchorPane.rightAnchor="0.0" />
             <Button layoutX="112.0" layoutY="198.0" mnemonicParsing="false" onAction="#go150" styleClass="main-button1" text="150" AnchorPane.rightAnchor="0.0" />
-            <Button layoutX="112.0" layoutY="214.0" mnemonicParsing="false" styleClass="main-button1" text="175" AnchorPane.rightAnchor="0.0" />
-            <Button layoutX="112.0" layoutY="230.0" mnemonicParsing="false" styleClass="main-button1" text="200" AnchorPane.rightAnchor="0.0">
+            <Button layoutX="112.0" layoutY="214.0" mnemonicParsing="false" onAction="#go175" styleClass="main-button1" text="175" AnchorPane.rightAnchor="0.0" />
+            <Button layoutX="112.0" layoutY="230.0" mnemonicParsing="false" onAction="#go200" styleClass="main-button1" text="200" AnchorPane.rightAnchor="0.0">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
