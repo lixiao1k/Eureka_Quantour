@@ -4,13 +4,10 @@ import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import presentation.chart.chartService;
-import presentation.chart.function.CatchMouseMove;
-import presentation.chart.function.CatchMouseMoveService;
 import presentation.chart.function.CommonSet;
 import presentation.chart.function.CommonSetService;
 import presentation.chart.function.ListToArray;
@@ -28,7 +25,6 @@ import java.util.Map;
  */
 public class AreaLineChart implements chartService {
 
-	private CatchMouseMoveService catchMouseMove = new CatchMouseMove();
 	private ListToArrayService listToArray = new ListToArray();
 	private CommonSetService commonSet = new CommonSet();
 	
