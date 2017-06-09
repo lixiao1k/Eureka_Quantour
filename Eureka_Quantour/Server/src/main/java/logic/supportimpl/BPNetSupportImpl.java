@@ -9,6 +9,33 @@ import logic.supportservice.BPNetSupportInterface;
 public class BPNetSupportImpl implements BPNetSupportInterface{
 
 	private DecimalFormat df = new DecimalFormat("#0.000"); 
+	private final int maxNum = 61;
+	
+	private final int openIndex = 0;
+	private final int highIndex = 1;
+	private final int closeIndex = 2;
+	private final int lowIndex = 3;
+	private final int volumeIndex = 4;
+	
+	public int getMaxNUm(){
+		return maxNum;
+	}
+	
+	public int getOpenIndex(){
+		return openIndex;
+	}
+	public int getHighIndex(){
+		return highIndex;
+	}
+	public int getCloseIndex(){
+		return closeIndex;
+	}
+	public int getLowIndex(){
+		return lowIndex;
+	}
+	public int getVolumeIndex(){
+		return volumeIndex;
+	}
 	
 	/* 
      * A = ( JHigh + JLow ) / 2;
@@ -21,47 +48,68 @@ public class BPNetSupportImpl implements BPNetSupportInterface{
      * N=14 , M=9
      */
 	@Override
-	public List<Double> EMV( List<Double> highPrice, List<Double> lowPrice, List<Double> vol ) {
-		List<Double> EM = new ArrayList<Double>();
-        for( int i=2; i<highPrice.size(); i++ ){
-        	double JHigh = highPrice.get(i);
-        	double JLow = lowPrice.get(i);
-        	double QHigh = highPrice.get(i-2);
-        	double QLow = lowPrice.get(i-2);
+	public double[] EMV( double[] highPrice, double[] lowPrice, double[] volume, 
+			double[][] QMaxNumDayData ) {
+		
+        int QLen = QMaxNumDayData.length;
+		/* 
+         * 取N为14，即14日的EM值之和；M为9，即9日的移动平均
+         */
+        int N = 14;
+        int M = 9;
+        int NAddM = N + M;
+        
+		double[] EM = new double[highPrice.length+NAddM-1];
+        for( int i=0; i<EM.length; i++ ){
+        	double JHigh = 0;
+        	double JLow = 0;
+        	double QHigh = 0;
+        	double QLow = 0;
+        	if( i<NAddM ){
+        		JHigh = QMaxNumDayData[QLen+i-NAddM][highIndex];
+        		JLow = QMaxNumDayData[QLen+i-NAddM][lowIndex];
+        	}
+        	else{
+        		JHigh = highPrice[i-NAddM];
+        		JLow = lowPrice[i-NAddM];
+        	}
+        	if( i-2<NAddM ){
+        		QHigh = QMaxNumDayData[QLen+(i-2)-NAddM][highIndex];
+        		QLow = QMaxNumDayData[QLen+(i-2)-NAddM][lowIndex];
+        	}
+        	else{
+        		QHigh = highPrice[i-2-NAddM];
+        		QLow = lowPrice[i-2-NAddM];
+        	}
         	
             double A = ( JHigh + JLow ) / 2;
             double B = ( QHigh + QLow ) / 2;
             double C = JHigh - JLow;
             
             double temp = ( A - B ) * C;
-            EM.add( temp / vol.get(i) );
+            EM[i] = temp / volume[i];
         }
 
-        /* 
-         * 取N为14，即14日的EM值之和；M为9，即9日的移动平均
-         */
-        int N = 14;
-        int M = 9;
-
-        List<Double> EMV = new ArrayList<Double>();
-        for( int i=N; i<EM.size()+1; i++ ){
+        
+        double[] EMV = new double[highPrice.length+M-1];
+        for( int i=EMV.length-1; i>-1; i-- ){
             // 14日累和
             double sum = 0;
-            for( int j=i-N; j<i; j++ ){
-                sum += EM.get(j);
+            for( int j=0; j<N; j++ ){
+                sum += EM[i+N-j-1];
             }
-            EMV.add(sum);
+            EMV[i] = sum;
         }
 
-        List<Double> MAEMV = new ArrayList<Double>();
-        for( int i=M; i<EMV.size()+1; i++){
+        double[] MAEMV = new double[highPrice.length];
+        for( int i=MAEMV.length-1; i>-1; i-- ){
             // 9日移动平均
             double sum = 0;
-            for( int j=i-M; j<i; j++ ){
-                sum += EMV.get(j);
+            for( int j=0; j<M; j++ ){
+                sum += EMV[i+M-j-1];
             }
             sum = sum / M;
-            MAEMV.add(sum);
+            MAEMV[i] = sum;
         }
         return MAEMV;
 	}
@@ -72,61 +120,91 @@ public class BPNetSupportImpl implements BPNetSupportInterface{
      * 首次上期EXPMA值为上一期收盘价，Ｎ为天数。 
      */ 
 	@Override
-	public List<Double> EMA5(List<Double> overPrice) {
+	public double[] EMA5( double[] closePrice, double[][] QMaxNumDayData ) {
+		int cha = 5; 
+        int QLen = QMaxNumDayData.length;
 
-        List<Double> EMA5 = new ArrayList<Double>();
-        for( int i=0; i<5; i++){
-            EMA5.add(overPrice.get(i));
-        }
-        for( int i=5; i<overPrice.size(); i++ ){
-            double temp = ( overPrice.get(i) - EMA5.get(i-5) ) / 5;
-            EMA5.add( temp + EMA5.get(i-5) );
+        double[] EMA5 = new double[closePrice.length];
+        for( int i=0; i<closePrice.length; i++ ){
+        	double temp = 0;
+        	if( i<cha ){
+        		temp = ( closePrice[i] - QMaxNumDayData[QLen-1+i-cha][closeIndex] ) / cha;
+        		EMA5[i] = temp + QMaxNumDayData[QLen-1+i-cha][closeIndex];
+        	}
+        	else{
+        		temp = ( closePrice[i] - EMA5[i-cha] ) / cha;
+        		EMA5[i] = temp + EMA5[i-cha];
+        	}
         }
         return EMA5;
 	}
 
 	
 	@Override
-	public List<Double> EMA60(List<Double> overPrice) {
+	public double[] EMA60( double[] closePrice, double[][] QMaxNumDayData) {
+		int cha = 60;
+        int QLen = QMaxNumDayData.length;
 
-        List<Double> EMA60 = new ArrayList<Double>();
-        for( int i=0; i<60; i++ ){
-            EMA60.add(overPrice.get(i));
-        }
-        for( int i=60; i<overPrice.size(); i++ ){
-            double temp = ( overPrice.get(i) - EMA60.get(i-60) ) /60;
-            EMA60.add( temp + EMA60.get(i-60) );
+        double[] EMA60 = new double[closePrice.length];
+        for( int i=0; i<closePrice.length; i++ ){
+        	double temp = 0;
+        	if( i<cha ){
+        		temp = ( closePrice[i] - QMaxNumDayData[QLen-1+i-cha][closeIndex] ) / cha;
+        		EMA60[i] = temp + QMaxNumDayData[QLen-1+i-cha][closeIndex];
+        	}
+        	else{
+        		temp = ( closePrice[i] - EMA60[i-cha] ) / cha;
+        		EMA60[i] = temp + EMA60[i-cha];
+        	}
         }
         return EMA60;
 	}
 
 	
 	@Override
-	public List<Double> MA5(List<Double> overPrice) {
-		List<Double> MA5 = new ArrayList<Double>();
-        for( int i=5; i<overPrice.size()+1; i++ ){
+	public double[] MA5( double[] closePrice, double[][] QMaxNumDayData ) {
+		int cha = 5;
+        int QLen = QMaxNumDayData.length;
+		
+		double[] MA5 = new double[closePrice.length];
+		for( int i=0; i<closePrice.length; i++ ){
             double sum = 0;
-            for( int j=i-1; j>=i-5; j-- ){
-                sum += overPrice.get(j);
+            if( i<cha ){
+                for( int j=0; j<cha-i; j++ )
+                    sum += QMaxNumDayData[QLen-1-j][closeIndex];
+                for( int j=0; j<i; j++ )
+                    sum += closePrice[j];
             }
-            sum = sum / 5;
-            MA5.add(sum);
-        }
+            else
+                for( int j=0; j<cha; j++ )
+                    sum += closePrice[i+j-cha];
+			MA5[i] = sum / cha;
+		}
+		
         return MA5;
 	}
 
 	
 	@Override
-	public List<Double> MA60(List<Double> overPrice) {
-		List<Double> MA60 = new ArrayList<Double>();
-        for( int i=60; i<overPrice.size()+1; i++ ){
+	public double[] MA60( double[] closePrice, double[][] QMaxNumDayData) {
+		int cha = 60;
+        int QLen = QMaxNumDayData.length;
+		
+		double[] MA60 = new double[closePrice.length];
+		for( int i=0; i<closePrice.length; i++ ){
             double sum = 0;
-            for( int j=i-1; j>=i-60; j-- ){
-                sum += overPrice.get(j);
+            if( i<cha ){
+                for( int j=0; j<cha-i; j++ )
+                    sum += QMaxNumDayData[QLen-1-j][closeIndex];
+                for( int j=0; j<i; j++ )
+                    sum += closePrice[j];
             }
-            sum = sum / 60;
-            MA60.add(sum);
-        }
+            else
+                for( int j=0; j<cha; j++ )
+                    sum += closePrice[i+j-cha];
+			MA60[i] = sum / cha;
+		}
+		
         return MA60;
 	}
 
@@ -140,24 +218,30 @@ public class BPNetSupportImpl implements BPNetSupportInterface{
      *    表中当动量值减低或反转增加时，应为买进或卖出时机
      */
 	@Override
-	public List<Double> MTM(List<Double> overPrice) {
-		
-		List<Double> MTM = new ArrayList<Double>();
-        List<Double> MTMlist = new ArrayList<Double>();
-        int N = 12;
+	public double[] MTM( double[] closePrice, double[][] QMaxNumDayData ) {
+		int N = 12;
         int M = 6;
-        for( int i=N; i<overPrice.size(); i++ ){
-            MTM.add( overPrice.get(i) - overPrice.get(i-N) );
+        int QLen = QMaxNumDayData.length;
+		
+		double[] MTM = new double[closePrice.length+M-1];
+        for( int i=0; i<MTM.length; i++ ){
+        	if( i<(M-1) )
+                MTM[i] = QMaxNumDayData[QLen-(M-1)+i][closeIndex] - QMaxNumDayData[QLen-(M-1)+i-N][closeIndex];
+            else if( i<N+(M-1) )
+                MTM[i] = closePrice[i-(M-1)] - QMaxNumDayData[QLen-(M-1)+i-N][closeIndex];
+            else
+                MTM[i] = closePrice[i-(M-1)] - closePrice[i-(M-1)-N];
         }
         
+        double[] MTMlist = new double[closePrice.length];
         //移动平均参数为6
-        for( int i=M; i<MTM.size()+1; i++ ){
+        for( int i=0; i<MTMlist.length; i++ ){
             double sum = 0;
-            for( int j=i-1; j>=i-M; j-- ){
-                sum += MTM.get(j);
+            for( int j=0; j<M; j++ ){
+                sum += MTM[i+j];
             }
             sum = sum / M;
-            MTMlist.add(sum);
+            MTMlist[i] = sum;
         }
         return MTMlist;
 	}
@@ -165,135 +249,141 @@ public class BPNetSupportImpl implements BPNetSupportInterface{
 	
 	// 量能指标就是通过动态分析成交量的变化
 	@Override
-	public List<Double> MACD(List<Double> vol) {
+	public double[] MACD( double[] volume, double[][] QMaxNumDayData ) {
+        int QLen = QMaxNumDayData.length;
+        int length = volume.length+1;
 		
 		int shortN = 12;
-        List<Double> Short = new ArrayList<Double>();
-        for( int i=shortN; i<vol.size()+1; i++ ){
-            Short.add( 2*vol.get(i-1) + (shortN-1)*vol.get(i-shortN) );
+        double[] Short = new double[length];
+        Short[0] = 2 * QMaxNumDayData[QLen-1][volumeIndex] + (shortN-1) * QMaxNumDayData[QLen-1-shortN][volumeIndex];
+        for( int i=1; i<length; i++ ){
+            if( i<shortN+1 )
+                Short[i] = 2 * volume[i] + (shortN-1) * QMaxNumDayData[QLen-shortN+i-1][volumeIndex];
+            else
+                Short[i] = 2 * volume[i] + (shortN-1) * volume[i-shortN];
         }
+
         int longN = 26;
-        List<Double> Long = new ArrayList<Double>();
-        for( int i=longN; i<vol.size()+1; i++ ){
-            Long.add( 2*vol.get(i-1) + (longN-1)*vol.get(i-longN) );
-        }
-        
-        // 取两个序列中较短序列的长度
-        int length = 0;
-        if( Short.size()>Long.size() ){
-            length = Long.size();
-        }
-        else{
-            length = Short.size();
-        }
-        
-        List<Double> DIFF1 = new ArrayList<Double>();
-        for( int i=length-1; i>=0; i-- ){
-            DIFF1.add( Short.get(i) - Long.get(i) );
+        double[] Long = new double[length];
+        Long[0] = 2 * QMaxNumDayData[QLen-1][volumeIndex] + (longN-1) * QMaxNumDayData[QLen-1-longN][volumeIndex];
+        for( int i=0; i<length; i++ ){
+            if( i<longN+1 )
+                Long[i] = 2 * volume[i] + (longN-1) * QMaxNumDayData[QLen-longN+i-1][volumeIndex];
+            else
+                Long[i] = 2 * volume[i] + (longN-1) * volume[i-longN];
         }
 
-        List<Double> DIFF = new ArrayList<Double>();
-        for( int i=0; i<DIFF1.size(); i++ ){
-            DIFF.add( DIFF1.get( DIFF1.size()-i-1 ) );
-        }
+        double[] DIFF = new double[length];
+        for( int i=0; i<length; i++ )
+            DIFF[i] = Short[i] - Long[i];
 
-        List<Double> DEA = new ArrayList<Double>();
-        for( int i=0; i<DIFF.size()-1; i++ ){
-            DEA.add( 2*DIFF.get(i+1) + (9-1)*DIFF.get(i) );
-        }
+        double[] DEA = new double[length-1];
+        for( int i=0; i<length-1; i++ )
+            DEA[i] = 2*DIFF[i+1] + (9-1)*DIFF[i];
         
-        List<Double> MACD = new ArrayList<Double>();
-        for( int i=1; i<DIFF.size(); i++ ){
-            MACD.add( DIFF.get(i)-DEA.get(i-1) );
-        }
+        double[] MACD = new double[length-1];
+        for( int i=1; i<length-1; i++ )
+            MACD[i] = DIFF[i]-DEA[i-1];
+
         return MACD;
 	}
 
 	
 	// 能量指标：CR
 	@Override
-	public List<Double> CR5(List<Double> overPrice, List<Double> highPrice, List<Double> lowPrice,
-			List<Double> openPrice) {
+	public double[] CR5( double[] closePrice, double[] highPrice, double[] lowPrice,
+			double[] openPrice, double[][] QMaxNumDayData ) {
+        int QLen = QMaxNumDayData.length;
+        int length = closePrice.length;
 		
-		List<Double> YM = new ArrayList<Double>();
-        for( int i=0; i<overPrice.size(); i++ ){
-            YM.add( (highPrice.get(i) + overPrice.get(i) + lowPrice.get(i) + openPrice.get(i)) / 4 );
+        int addNum = 5;
+		double[] YM = new double[length+addNum];
+        for( int i=0; i<length; i++ ){
+            if( i<addNum )
+                YM[i] = ( QMaxNumDayData[QLen-addNum+i][highIndex] + QMaxNumDayData[QLen-addNum+i][lowIndex]
+                    + QMaxNumDayData[QLen-addNum+i][openIndex] + QMaxNumDayData[QLen-addNum+i][closeIndex] ) / 4;
+            else
+                YM[i] = ( highPrice[i-addNum] + lowPrice[i-addNum]
+                 + openPrice[i-addNum] + closePrice[i-addNum] ) / 4;
         }
-        
+
         // p1表示5日以来多方力量总和
-        List<Double> HYM = new ArrayList<Double>();
-        for( int i=6; i<highPrice.size()+1; i++ ){
+        double[] HYM = new double[length];
+        for( int i=0; i<length; i++ ){
             double sum = 0;
-            for( int j=i-1; j>=i-5; j-- ){
-                sum += highPrice.get(j) - YM.get(j-1);
+            for( int j=0; j<5; j++ ){
+            	if( i+j<5 )
+            		sum += QMaxNumDayData[QLen-5+i+j][highIndex] - YM[i+j];
+            	else
+                    sum += highPrice[i+j-5] - YM[i+j];
             }
-            HYM.add(sum);
+            HYM[i] = sum;
         }
         
         // p2表示5日以来空方力量总和
-        List<Double> YML = new ArrayList<Double>();
-        for( int i=6; i<lowPrice.size()+1; i++ ){
+        double[] YML = new double[length];
+        for( int i=0; i<length; i++ ){
             double sum = 0;
-            for( int j=i-1; j>=i-5; j-- ){
-                sum += YM.get(j-1) - lowPrice.get(j);
+            for( int j=0; j<5; j++ ){
+                if( i+j<5 )
+                    sum += YM[i+j] - QMaxNumDayData[QLen-5+i+j][lowIndex];
+                else
+                    sum += YM[i+j] - lowPrice[i+j-5];
             }
-            YML.add(sum);
+            YML[i] = sum;
         }
 
-        List<Double> CR = new ArrayList<Double>();
-        for( int i=0; i<YML.size(); i++ ){
-            double temp = -1;
-            if( YML.get(i)!=0 )
-                temp = HYM.get(i) / YML.get(i);
+        double[] CR = new double[length];
+        for( int i=0; i<length; i++ ){
+            double temp = -1.0;
+            if( YML[i]!=0 )
+                temp = HYM[i] / YML[i];
             
             if( temp<0 )
-                CR.add( 0.0 );
+                CR[i] = 0.0;
             else
-                CR.add( temp );
+                CR[i] = temp;
+
         }
         return CR;
 	}
 
 	
 	@Override
-	public double[][] bpTrain( List<Double> closePrice, List<Double> highPrice, List<Double> lowPrice,
-			List<Double> openPrice, List<Double> vol ){
+	public double[][] bpTrain( double[] closePrice, double[] highPrice, double[] lowPrice,
+			double[] openPrice, double[] vol, double[][] QMaxNumDayData ){
 //		List<Double> EMV = EMV(highPrice, lowPrice, vol);
-		List<Double> EMA5 = EMA5( closePrice );
-		List<Double> EMA60 = EMA60( closePrice );
-		List<Double> MA5 = MA5( closePrice );
-		List<Double> MA60 = MA60( closePrice );
-		List<Double> MTM = MTM( closePrice );
+		double[] EMA5 = EMA5( closePrice, QMaxNumDayData );
+		double[] EMA60 = EMA60( closePrice, QMaxNumDayData );
+		double[] MA5 = MA5( closePrice, QMaxNumDayData );
+		double[] MA60 = MA60( closePrice, QMaxNumDayData );
+		double[] MTM = MTM( closePrice, QMaxNumDayData );
 //		List<Double> MACD = MACD(vol);
-		List<Double> CR5 = CR5( closePrice, highPrice, lowPrice, openPrice );
+		double[] CR5 = CR5( closePrice, highPrice, lowPrice, openPrice, QMaxNumDayData );
 		
-		int length = 0;
-		if( EMA60.size() > MA60.size() )
-			length = MA60.size();
-	    else
-	    	length = EMA60.size();
+		int length = EMA60.length;
 		
 		List<ArrayList<Double>> datalist = new ArrayList<ArrayList<Double>>();
 		for( int i=0; i<length; i++ ){
 			ArrayList<Double> list = new ArrayList<Double>();
-//			list.add(EMV.get(EMV.size()-length+i));
-			list.add( EMA5.get(EMA5.size()-length+i) );
-			list.add( EMA60.get(EMA60.size()-length+i) );
-			list.add( MA5.get(MA5.size()-length+i) );
-			list.add( MA60.get(MA60.size()-length+i) );
-			list.add( MTM.get(MTM.size()-length+i) );
-//			list.add(MACD.get(MACD.size()-length+i));
-			list.add( CR5.get(CR5.size()-length+i) );
+//			list.add( EMV[i] );
+			list.add( EMA5[i] );
+			list.add( EMA60[i] );
+			list.add( MA5[i] );
+			list.add( MA60[i] );
+			list.add( MTM[i] );
+//			list.add( MACD[i] );
+			list.add( CR5[i] );
 			datalist.add( list );
 		}
 		double[][] data = new double[datalist.size()][6];
-//		for( int i=0; i<datalist.size(); i++ ){
-//			for( int j=0; j<6; j++ ){
-//				data[i][j] = datalist.get(i).get(j);
-//				System.out.print( df.format(data[i][j])+"  " );
-//			}
-//			System.out.println();
-//		}
+		for( int i=0; i<datalist.size(); i++ ){
+			for( int j=0; j<6; j++ ){
+				data[i][j] = datalist.get(i).get(j);
+				// System.out.print( df.format(data[i][j])+"  " );
+			}
+			// System.out.println();
+		}
 		return data;
 	}	
 }

@@ -1,26 +1,25 @@
 package logic.supportservice;
 
-import java.util.List;
-
 public interface BPNetSupportInterface {
 
-	List<Double> EMV( List<Double>highPrice, List<Double>lowPrice, List<Double>vol );
+	double[] EMV( double[] highPrice, double[] lowPrice, double[] volume, 
+			double[][] QMaxNumDayData );
 	
-	List<Double> EMA5( List<Double>overPrice );
+	double[] EMA5( double[] closePrice, double[][] QMaxNumDayData );
 	
-	List<Double> EMA60( List<Double>overPrice );
+	double[] EMA60( double[] closePrice, double[][] QMaxNumDayData );
 	
-	List<Double> MA5( List<Double>overPrice );
+	double[] MA5( double[] closePrice, double[][] QMaxNumDayData );
 	
-	List<Double> MA60( List<Double>overPrice );
+	double[] MA60( double[] closePrice, double[][] QMaxNumDayData );
 	
-	List<Double> MTM( List<Double>overPrice );
+	double[] MTM( double[] closePrice, double[][] QMaxNumDayData );
 	
-	List<Double> MACD( List<Double>vol );
+	double[] MACD( double[] volume, double[][] QMaxNumDayData );
 	
-	List<Double> CR5( List<Double>overPrice, List<Double>highPrice, List<Double>lowPrice, 
-			List<Double>openPrice );
+	double[] CR5( double[] closePrice, double[] highPrice, double[] lowPrice, 
+			double[] openPrice, double[][] QMaxNumDayData );
 	
-	double[][] bpTrain( List<Double>overPrice, List<Double>highPrice, List<Double>lowPrice,
-			List<Double>openPrice, List<Double>vol );
+	double[][] bpTrain( double[] overPrice, double[] highPrice, double[] lowPrice,
+			double[] openPrice, double[] vol, double[][] QMaxNumDayData );
 }

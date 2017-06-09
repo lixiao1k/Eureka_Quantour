@@ -66,52 +66,48 @@ public class BPNetImpl implements BPNetInterface{
                 for( int k=0; k<layer[i-1].length; k++ ){
                     layer[i-1][k]=i==1 ? in[k] : layer[i-1][k];
                     z += layer_weight[i-1][k][j]*layer[i-1][k];
-                }
-            //    System.out.println(z+"####");
-                
-                layer[i][j]=1/(1+Math.exp(-0.01*z));
-            //    System.out.println("&&**"+layer[l][j]);
+                }                
+                layer[i][j] = 1 / ( 1 + Math.exp(-0.01*z) );
             }
         }
-      //System.out.println("&&^^**"+layer[layer.length-1][0]);
         return layer[layer.length-1];
     }
 
     
     //逐层反向计算误差并修改权重
     @Override
-    public void updateWeight( double[] tar ){
-        int l=layer.length-1;
-        for( int j=0; j<layerErr[l].length; j++ )
-            layerErr[l][j] = layer[l][j] * (1-layer[l][j]) * ( 1/(1+Math.exp(-0.01*tar[j])) - layer[l][j] );
+    public void updateWeight( double tar[] ){
+        int i=layer.length-1;
+        for( int j=0; j<layerErr[i].length; j++ )
+            layerErr[i][j] = layer[i][j] * (1-layer[i][j]) * ( 1/(1+Math.exp(-0.01*tar[j])) - layer[i][j] );
 
-        while( l-->0 ){
-            for( int j=0; j<layerErr[l].length; j++ ){
+        while( i-->0 ){
+            for( int j=0; j<layerErr[i].length; j++ ){
                 double z = 0.0;
-                for( int i=0; i<layerErr[l+1].length; i++ ){
-                    z = z+l>0 ? layerErr[l+1][i]*layer_weight[l][j][i] : 0;
+                for( int k=0; k<layerErr[i+1].length; k++ ){
+                    z = z+i>0 ? layerErr[i+1][k]*layer_weight[i][j][k] : 0;
                     
                     //隐含层动量调整
-                    layer_weight_delta[l][j][i] = mobp*layer_weight_delta[l][j][i]+rate*layerErr[l+1][i]*layer[l][j];
+                    layer_weight_delta[i][j][k] = mobp*layer_weight_delta[i][j][k]+rate*layerErr[i+1][k]*layer[i][j];
                     
                     //隐含层权重调整
-                    layer_weight[l][j][i] += layer_weight_delta[l][j][i];
+                    layer_weight[i][j][k] += layer_weight_delta[i][j][k];
                     
-                    if( j==layerErr[l].length-1 ){
+                    if( j==layerErr[i].length-1 ){
                         //截距动量调整
-                        layer_weight_delta[l][j+1][i] = mobp*layer_weight_delta[l][j+1][i]+rate*layerErr[l+1][i];
+                        layer_weight_delta[i][j+1][k] = mobp*layer_weight_delta[i][j+1][k]+rate*layerErr[i+1][k];
                         //截距权重调整
-                        layer_weight[l][j+1][i] += layer_weight_delta[l][j+1][i];
+                        layer_weight[i][j+1][k] += layer_weight_delta[i][j+1][k];
                     }
                 }
                 //记录误差
-                layerErr[l][j]=z*layer[l][j]*(1-layer[l][j]);
+                layerErr[i][j]=z*layer[i][j]*(1-layer[i][j]);
             }
         }
     }
 
     @Override
-    public void train( double[] in, double[] tar ){
+    public void train( double[] in, double tar[] ){
         double[] out = computeOut( in );
         updateWeight( tar );
     }
