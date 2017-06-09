@@ -5,7 +5,6 @@ import java.util.Map;
 import en_um.ChartKind;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
-import javafx.scene.text.Text;
 
 /**
  * @Description: catch mouse movement and calculate corresponding data according to mouse's location

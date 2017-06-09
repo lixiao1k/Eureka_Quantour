@@ -13,10 +13,7 @@ import logic.service.StockLogicInterface;
 import logic.serviceimpl.ClientLogicImpl;
 import logic.serviceimpl.ForecastRODImpl;
 import logic.serviceimpl.StockLogicImpl;
-import po.CompanyInfoPO;
 import vo.*;
-
-import javax.swing.plaf.synth.SynthEditorPaneUI;
 
 /**
  * 
@@ -181,12 +178,6 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 	@Override
 	public List<String> getIndustryList() throws RemoteException {
 		return sli.getIndustryList();
-	}
-
-	@Override
-	public StockRODVO getStockROD( String stockcode, LocalDate begindate, LocalDate enddate, int numOfDay, double alpha, int m, int k )
-			throws RemoteException{
-		return frodi.getStockROD( stockcode, begindate, enddate, numOfDay, alpha, m, k);
 	}
 
 	@Override
