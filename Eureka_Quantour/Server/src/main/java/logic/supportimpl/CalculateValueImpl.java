@@ -103,5 +103,22 @@ public class CalculateValueImpl implements CalculateValueInterface{
 		}
 		return numerator / denominator;
 	}
-	
+
+	@Override
+	public double calDIF( double[] closesShort, double[] closesLong ){
+		double DIFShort = calEMA( closesShort, closesShort.length );
+		double DIFLong = calEMA( closesLong, closesLong.length );
+		if( closesShort.length < closesLong.length )	
+			return DIFShort - DIFLong;
+		else
+			return DIFLong - DIFShort;
+	}
+
+	@Override
+	public double calDEA( double[] DIFs, int len ){
+		if( DIFs.length!=len )
+			return 0.0;
+		return calEMA( DIFs, len );
+	}
+    
 }
