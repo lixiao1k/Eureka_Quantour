@@ -16,7 +16,21 @@ import vo.*;
  */
 public interface StockLogicInterface extends Remote {
 	
-	
+	/**
+	 * 获取市场的均线图
+	 * @param name 市场名
+	 * @param begin 开始日期
+	 * @param end 结束日期
+	 * @param days 均线时间
+	 * @return
+	 * @throws RemoteException
+	 * @throws DateInvalidException
+	 * @throws BeginInvalidException
+	 * @throws EndInvalidException
+	 * @throws NullStockIDException
+	 */
+	public EMAInfoVO getExponentEMAInfo( String name, LocalDate begin, LocalDate end ,int days)
+			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException;
 	/**
 	 * 获得公司详情
 	 * @param time 时间
