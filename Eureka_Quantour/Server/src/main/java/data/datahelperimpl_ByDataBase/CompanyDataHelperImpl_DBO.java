@@ -30,15 +30,24 @@ public class CompanyDataHelperImpl_DBO implements ICompanyDataHelper{
 		long totalcapital=0;
 		long flucapital=0;
 		Connection conn=ConnectionPoolManager.getInstance().getConnection("quantour");
-		String sql="SELECT * FROM companyquota where code ='"+code+"'and date <= '"+time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))+"' order by date desc limit 1";
+		String sql="SELECT * FROM companyquota where code ='"+code+"'and date <= '"+time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))+"' order by date desc";
 		PreparedStatement pstmt=null;
 		try {
 			System.out.println(sql);
 			pstmt = (PreparedStatement)conn.prepareStatement(sql);
 			ResultSet rs=pstmt.executeQuery();
-			if(rs.next()){
+			int flag=1;
+			while(rs.next()){
 				basicincome=rs.getDouble(3);
-				netasset=rs.getDouble(4);
+				if(flag==1)
+				{
+					netasset=rs.getDouble(4);
+					flag=0;
+				}
+				if(basicincome!=0.0)
+				{
+					break;
+				}
 			}
 			rs.close();
 			pstmt.close();
