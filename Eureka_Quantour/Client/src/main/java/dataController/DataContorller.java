@@ -3,6 +3,9 @@ package dataController;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 界面之间传值
+ */
 public class DataContorller {
     private Map<String,Object> map = new HashMap<>();
     private static DataContorller instance;

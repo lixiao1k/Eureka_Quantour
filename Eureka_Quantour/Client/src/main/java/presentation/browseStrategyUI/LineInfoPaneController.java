@@ -10,6 +10,9 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import vo.StrategyShowVO;
 
+/**
+ * 线图主要参数数据的界面
+ */
 public class LineInfoPaneController implements Initializable{
 	@FXML
 	Label strYear1;

@@ -11,6 +11,7 @@ import java.util.ResourceBundle;
 
 import com.sun.org.apache.regexp.internal.RE;
 import exception.*;
+import javafx.geometry.Pos;
 import logic.service.ForecastRODInterface;
 import org.controlsfx.control.Notifications;
 
@@ -193,12 +194,14 @@ public class StatisticsUIController implements Initializable {
 		KLineAnchorPane.getChildren().clear();
 		KLineAnchorPane.getChildren().add(pane);
 	}
+	//初始化均线图
 	private void intiEMAPane(List<EMAInfoVO> list){
 		chartService service = new EMAChart(list);
 		Pane pane = service.getchart(463,154,true);
 		emaAnchorPane.getChildren().clear();
 		emaAnchorPane.getChildren().add(pane);
 	}
+	//卡方数据，判断是不是正态分布
 	private void initKaFangPane(KaFangVO vo){
 		ideaValue2.setText(Double.toString(vo.getIdealValue()));
 		realValue2.setText(Double.toString(vo.getRealValue()));
@@ -245,7 +248,24 @@ public class StatisticsUIController implements Initializable {
 		dietingValue.setStyle("-fx-font-size:18;"
 				+ "-fx-text-fill: #C0FF3E;"
 				+ "-fx-font-weight:bold");
-
+		ideaValue1.setStyle("-fx-font-size:13;"
+				+ "-fx-text-fill: #C0FF3E;"
+				+ "-fx-font-weight:bold");
+		realValue1.setStyle("-fx-font-size:13;"
+				+ "-fx-text-fill: #C0FF3E;"
+				+ "-fx-font-weight:bold");
+		isNormalDistribution1.setStyle("-fx-font-size:13;"
+				+ "-fx-text-fill: #C0FF3E;"
+				+ "-fx-font-weight:bold");
+		ideaValue2.setStyle("-fx-font-size:13;"
+				+ "-fx-font-weight:bold");
+		realValue2.setStyle("-fx-font-size:13;"
+				+ "-fx-font-weight:bold");
+		isNormalDistribution2.setStyle("-fx-font-size:13;"
+				+ "-fx-font-weight:bold");
+		ideaValue2.setAlignment(Pos.CENTER_LEFT);
+		realValue2.setAlignment(Pos.CENTER_LEFT);
+		isNormalDistribution2.setAlignment(Pos.CENTER_LEFT);
 		ObservableList<String> marketList = FXCollections.observableArrayList();
 		marketList.addAll("SHA","SHB","SZA","SZB","CYB","ZXB","HS300");
 		marketComboBox.getItems().addAll(marketList);

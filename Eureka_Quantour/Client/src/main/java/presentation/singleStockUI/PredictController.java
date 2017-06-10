@@ -87,7 +87,7 @@ public class PredictController implements Initializable {
 
     @FXML
     Label huanshoulv2;
-
+//设置预测信息和公司财况
     public void set(PredictVO vo, CompanyInfoVO vo1){
         DecimalFormat decimalFormat = new DecimalFormat("#0.00");
         price2.setText(decimalFormat.format(vo.getPredictPrice()));

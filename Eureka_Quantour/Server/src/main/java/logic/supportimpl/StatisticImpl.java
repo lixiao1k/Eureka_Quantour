@@ -58,7 +58,7 @@ public class StatisticImpl implements StatisticInterface{
 				double x = (-0.1 - average) / biaozhuncha; 
 				idealProb[i] = calNormalDistribution( x );
 			}
-			if( i==RODFenBu.length-1 ){
+			else if( i==RODFenBu.length-1 ){
 				double x = (0.1 - average) / biaozhuncha; 
 				idealProb[i] = 1 - calNormalDistribution( x );
 				idealProb[i] += idealProb[i-1];
@@ -109,7 +109,7 @@ public class StatisticImpl implements StatisticInterface{
 		int row = (int)Math.abs(x / 0.1);
 		int col = (int)( (Math.abs(x)-row*0.1) / 0.01 )+1;
 			
-		if( col>=NormalDistribution[0].length )
+		if( col>=NormalDistribution[0].length || col<0 )
 			col = 0;
 		
 		double result = 0;

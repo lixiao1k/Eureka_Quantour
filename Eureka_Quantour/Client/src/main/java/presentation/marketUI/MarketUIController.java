@@ -791,6 +791,7 @@ public class MarketUIController implements Initializable {
 				+ "-fx-font-weight:bold");
 		return label;
 	}
+	//设置k线图界面
 	private void setKlinePane(String code){
 		kChartAnchorPane.getChildren().clear();
 		RemoteHelper remote = RemoteHelper.getInstance();
@@ -821,7 +822,7 @@ public class MarketUIController implements Initializable {
 			Notifications.create().title("搜索异常").text(e.toString()).showError();
 		}
 	}
-	
+	//设置均线图界面
 	private void setEMAChartPane(String code){
 		RemoteHelper remote = RemoteHelper.getInstance();
 		StockLogicInterface stockLogicInterface = remote.getStockLogic();

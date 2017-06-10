@@ -77,7 +77,11 @@ public class MainScreenController implements Initializable{
 	public void browseStockSet(ActionEvent e) throws IOException{
 		setStockSet();
 	}
-	
+
+	/**
+	 * 展示股池界面
+	 * @throws IOException
+	 */
 	public void setStockSet() throws IOException{
 		ObservableList<Node> nodeList = mainAnchorPane.getChildren();
 		nodeList.clear();
@@ -93,7 +97,11 @@ public class MainScreenController implements Initializable{
 	protected void browseMarket(ActionEvent e) throws IOException{
 		setMarketUI();
 	}
-	
+
+	/**
+	 * 展示市场界面
+	 * @throws IOException
+	 */
 	public void setMarketUI() throws IOException{
 		ObservableList<Node> nodeList = mainAnchorPane.getChildren();
 		nodeList.clear();
@@ -110,6 +118,11 @@ public class MainScreenController implements Initializable{
 	protected void browseSingleStock(ActionEvent e) throws IOException{
 		setSingleStockUI();
 	}
+
+	/**
+	 * 设置个股界面
+	 * @throws IOException
+	 */
 	public void setSingleStockUI() throws IOException{
 		ObservableList<Node> nodeList = mainAnchorPane.getChildren();
 		nodeList.clear();
@@ -149,7 +162,11 @@ public class MainScreenController implements Initializable{
 	protected void browseStatistics(ActionEvent e) throws IOException{
 		setBrowseStatisticsUI();
 	}
-	
+
+	/**
+	 * 设置统计界面
+	 * @throws IOException
+	 */
 	public void setBrowseStatisticsUI() throws IOException{
 		ObservableList<Node> nodeList = mainAnchorPane.getChildren();
 		nodeList.clear();
@@ -176,6 +193,10 @@ public class MainScreenController implements Initializable{
 		mainAnchorPane.getChildren().add(strategyPane);
 	}
 
+	/**
+	 * 修改系统时间
+	 * @param e
+	 */
 	@FXML
 	protected void saveTime(ActionEvent e){
 		LocalDate date = nowDatePicker.getValue();
@@ -201,10 +222,12 @@ public class MainScreenController implements Initializable{
 		root.close();
 	}
 
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
 		dataController = DataContorller.getInstance();
+//		dataController.upDate("MainController",this);
 		String username = (String)dataController.get("UserName");
 		nameLabel.setText(username);
 		Image exitImage = new Image(getClass().getResourceAsStream("exit.png"));
