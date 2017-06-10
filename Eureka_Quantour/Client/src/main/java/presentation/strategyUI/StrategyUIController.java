@@ -45,7 +45,6 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import logic.service.StockLogicInterface;
-import presentation.chart.areaChart.DanTengChart;
 import presentation.chart.chartService;
 import presentation.chart.barChart.YieldDistributeChart;
 import presentation.chart.lineChart.YieldComparedChart;

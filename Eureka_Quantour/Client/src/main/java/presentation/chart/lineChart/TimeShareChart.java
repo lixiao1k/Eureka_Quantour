@@ -24,6 +24,12 @@ import presentation.chart.function.CatchMouseMoveService;
 import presentation.chart.function.ListToArray;
 import presentation.chart.function.ListToArrayService;
 
+/**
+ * @Description: 对于9:30-11:30；13:00-15:00股票信息的显示图
+ * 				   对于股票价格震荡幅度会有不同的y轴区间
+ * 				   可以设置多少秒为一个点
+ * @author: hzp
+ */
 public class TimeShareChart implements chartService{
 
 	private CatchMouseMoveService catchMouseMove = new CatchMouseMove();

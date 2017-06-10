@@ -12,6 +12,10 @@ import java.util.List;
 /**
  * Created by huihantao on 2017/3/9.
  */
+/**
+ * @Description: 根据传入的股票信息绘制交易量柱状图
+ * @author:      hzp
+ */
 public class VolumeChart{
 	
     protected NumberAxis yAxis;

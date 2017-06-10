@@ -9,7 +9,7 @@ import presentation.chart.chartService;
 
 /**
  * 
- * @Description: TODO
+ * @Description: 涨跌图的分布点图，可以根据需要绘制单点图、半点图、全点图
  * @author: hzp 
  * @date: Apr 19, 2017
  */

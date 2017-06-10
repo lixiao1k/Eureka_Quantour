@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * 
- * @Description: TODO
+ * @Description: save stock's prediction
  * @author: hzp 
  * @date: May 14, 2017
  */

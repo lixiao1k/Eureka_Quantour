@@ -29,7 +29,7 @@ import java.util.Map;
 import en_um.ChartKind;
 
 /**
- * @Description: TODO
+ * @Description: 多只股票对比图的总方法
  * @author: hzp
  * @time: 2017年3月31日
  */

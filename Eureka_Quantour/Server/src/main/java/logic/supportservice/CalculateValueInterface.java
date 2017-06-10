@@ -60,8 +60,24 @@ public interface CalculateValueInterface{
 	 */
 	double calEMA( double[] closes, int len );
 
+	/**
+	 * 
+	 * @Description: calculate 差离值
+	 * @author: hzp
+	 * @date: 2017年6月8日
+	 * @param closesShort
+	 * @param closesLong
+	 */
 	double calDIF( double[] closesShort, double[] closesLong );
 
+	/**
+	 * 
+	 * @Description: calculate DEA
+	 * @author: hzp
+	 * @date: 2017年6月8日
+	 * @param DIFs
+	 * @param len
+	 */
 	double calDEA( double[] DIFs, int len );
 	
 }

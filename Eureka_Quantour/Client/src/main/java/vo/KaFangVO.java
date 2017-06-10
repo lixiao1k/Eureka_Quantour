@@ -2,6 +2,10 @@ package vo;
 
 import java.io.Serializable;
 
+/**
+ * @Description: 判断一个市场涨跌幅是否符合正态分布
+ * @author: hzp
+ */
 public class KaFangVO implements Serializable{
 
 	private static final long serialVersionUID = -4072788349127134725L;

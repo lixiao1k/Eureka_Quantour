@@ -28,6 +28,11 @@ import presentation.chart.function.CommonSet;
 import presentation.chart.function.CommonSetService;
 import vo.YieldDistributionHistogramDataVO;
 
+/**
+ * @Description: 收益分布图
+ * @author: hzp
+ * @version
+ */
 public class YieldDistributeChart implements chartService{
 	
 	private CatchMouseMoveService catchMouseMove = new CatchMouseMove();

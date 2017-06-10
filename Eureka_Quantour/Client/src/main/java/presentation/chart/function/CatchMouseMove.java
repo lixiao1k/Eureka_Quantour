@@ -14,9 +14,16 @@ import javafx.scene.layout.StackPane;
 
 public class CatchMouseMove implements CatchMouseMoveService{
 	
+	/**
+	 * @Description: according to AnchorPane's feature and mouse's location, 
+	 * 				 set label's layoutX and layoutY
+	 * @author: hzp
+	 * @time: 2017年4月12日
+	 * @return: Label
+	 */
 	@Override
-	public Label catchMouseReturnInfoForAnchorPaneSN(XYChart<String, Number> chart, Map<String, String> dataMap,
-			String[] dates, String name, int index) {
+	public Label catchMouseReturnInfoForAnchorPaneSN(XYChart<String, Number> chart, 
+			Map<String, String> dataMap, String[] dates, String name, int index) {
 		// TODO Auto-generated method stub
 
 		Axis<String> xAxis = chart.getXAxis();
@@ -93,9 +100,16 @@ public class CatchMouseMove implements CatchMouseMoveService{
 		return cursorCoords;
 	}
 
+	/**
+	 * @Description: according to StackPane's feature and mouse's location, 
+	 * 				 set label's layoutX as StackPane.LEFT or StackPane.RIGHT
+	 * @author: hzp
+	 * @time: 2017年4月12日
+	 * @return: Label
+	 */
 	@Override
-	public Label catchMouseReturnInfoForStackPaneSN(XYChart<String, Number> chart, Map<String, String> dataMap,
-			String[] dates, String name, int index) {
+	public Label catchMouseReturnInfoForStackPaneSN(XYChart<String, Number> chart, 
+			Map<String, String> dataMap, String[] dates, String name, int index) {
 		// TODO Auto-generated method stub
 		
 		Axis<String> xAxis = chart.getXAxis();
@@ -172,9 +186,17 @@ public class CatchMouseMove implements CatchMouseMoveService{
 		return cursorCoords;
 	}
 
+	/**
+	 * @Description: according to StackPane's feature and mouse's location, 
+	 * 				 set label's layoutX as StackPane.LEFT or StackPane.RIGHT
+	 * 				 kind 对于散点图监测会有微调
+	 * @author: hzp
+	 * @time: 2017年4月12日
+	 * @return: Label
+	 */
 	@Override
-	public Label catchMouseReturnInfoForStackPaneNN(XYChart<Number, Number> chart, Map<String, String> dataMap,
-			String[] dates, String name, int index, ChartKind kind) {
+	public Label catchMouseReturnInfoForStackPaneNN(XYChart<Number, Number> chart, 
+			Map<String, String> dataMap, String[] dates, String name, int index, ChartKind kind) {
 		// TODO Auto-generated method stub
 		
 		Axis<Number> xAxis = chart.getXAxis();
@@ -255,9 +277,17 @@ public class CatchMouseMove implements CatchMouseMoveService{
 		return cursorCoords;
 	}
 
+	/**
+	 * @Description: according to StackPane's feature and mouse's location, 
+	 * 				 set label's layoutX as StackPane.LEFT or StackPane.RIGHT
+	 * 				 kind 对于散点图监测会有微调
+	 * @author: hzp
+	 * @time: 2017年4月12日
+	 * @return: Label
+	 */
 	@Override
-	public Label catchMouseReturnInfoForStackPaneNS(XYChart<Number, String> chart, Map<String, String> dataMap,
-			String[] dates, String name, int index, ChartKind kind) {
+	public Label catchMouseReturnInfoForStackPaneNS(XYChart<Number, String> chart, 
+			Map<String, String> dataMap, String[] dates, String name, int index, ChartKind kind) {
 		// TODO Auto-generated method stub
 		Axis<Number> xAxis = chart.getXAxis();
 	    Axis<String> yAxis = chart.getYAxis();
@@ -335,12 +365,5 @@ public class CatchMouseMove implements CatchMouseMoveService{
 		    });
 			
 		return cursorCoords;
-	}
-
-	@Override
-	public Label catchMouseReturnInfoForYieldDistributeChart(XYChart<String, Number> chart, Map<String, String> dataMap,
-			String[] dates, String name, int index) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

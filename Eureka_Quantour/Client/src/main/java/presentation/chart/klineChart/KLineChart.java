@@ -16,6 +16,11 @@ import presentation.chart.function.CommonSet;
 import presentation.chart.function.CommonSetService;
 import vo.SingleStockInfoVO;
 
+/**
+ * 
+ * @Description: 绘制K线图，并在CandleStickChart下面添加交易量的柱状图
+ * @author: hzp
+ */
 public class KLineChart implements chartService {
 
 	private CatchMouseMoveService catchMouseMove = new CatchMouseMove();

@@ -13,6 +13,10 @@ import javafx.scene.layout.Pane;
 
 public class SaveAs implements SaveAsService{
 	
+	/**
+	 * @Description: save scene as image( .png )
+	 * @author: hzp
+	 */
 	public void saveAsPng( Scene scene, String path ){
 		 WritableImage image = scene.snapshot( null );
         File file = new File(path);
@@ -24,6 +28,10 @@ public class SaveAs implements SaveAsService{
 		
 	}
 	
+	/**
+	 * @Description: save pane as image( .png )
+	 * @author: hzp
+	 */
 	public void saveAsPng( Pane pane, String path ){
 		WritableImage image = pane.snapshot(new SnapshotParameters(), null);
 

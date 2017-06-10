@@ -5,6 +5,10 @@ import java.util.List;
 import javafx.scene.layout.Pane;
 import presentation.chart.chartService;
 
+/**
+ * @Description: 针对收益分布绘制扇形图，对于区间硬编码
+ * @author: hzp
+ */
 public class YieldFanChart implements chartService{
 
 	private FanChart fanChart;

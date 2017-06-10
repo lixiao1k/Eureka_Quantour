@@ -16,7 +16,7 @@ import presentation.chart.function.ListToArrayService;
 import vo.YieldChartDataVO;
 
 /**
- * @Description: TODO
+ * @Description: 收益对比图，基准收益和策略收益比较
  * @author: hzp 
  * @date: Apr 17, 2017
  */

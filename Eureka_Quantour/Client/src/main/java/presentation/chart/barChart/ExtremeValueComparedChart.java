@@ -12,6 +12,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import presentation.chart.chartService;
 
+/**
+ * 两支股票最高值和最低值绘制柱状图进行比较
+ */
 public class ExtremeValueComparedChart implements chartService {
 
 	private AnchorPane pane = new AnchorPane();

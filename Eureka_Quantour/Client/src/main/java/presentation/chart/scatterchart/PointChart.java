@@ -7,11 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import en_um.ChartKind;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.ScatterChart;
 import javafx.scene.chart.XYChart;
@@ -27,7 +23,7 @@ import presentation.chart.function.CommonSetService;
 
 /**
  * 
- * @Description: TODO
+ * @Description: 点图
  * @author: hzp 
  * @date: Apr 19, 2017
  */
