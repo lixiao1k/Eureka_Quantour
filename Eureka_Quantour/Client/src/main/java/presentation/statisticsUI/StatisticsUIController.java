@@ -1,22 +1,8 @@
 package presentation.statisticsUI;
 
-import java.net.URL;
-import java.rmi.RemoteException;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.ResourceBundle;
-
-import com.sun.org.apache.regexp.internal.RE;
-import exception.*;
-import javafx.geometry.Pos;
-import logic.service.ForecastRODInterface;
-import org.controlsfx.control.Notifications;
-
 import dataController.DataContorller;
 import en_um.ChartKind;
+import exception.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -25,17 +11,27 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import logic.service.ForecastRODInterface;
 import logic.service.StockLogicInterface;
+import org.controlsfx.control.Notifications;
 import presentation.chart.chartService;
 import presentation.chart.klineChart.KLineChart;
 import presentation.chart.lineChart.EMAChart;
 import presentation.chart.piechart.YieldFanChart;
 import presentation.chart.scatterchart.YieldPointChart;
 import rmi.RemoteHelper;
-import sun.jvm.hotspot.oops.Klass;
-import vo.*;
+import vo.EMAInfoVO;
+import vo.ExponentChartVO;
+import vo.MarketInfoVO;
+import vo.SingleStockInfoVO;
+
+import java.net.URL;
+import java.rmi.RemoteException;
+import java.text.NumberFormat;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.ResourceBundle;
 
 public class StatisticsUIController implements Initializable {
 	@FXML

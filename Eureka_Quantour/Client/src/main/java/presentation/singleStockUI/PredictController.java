@@ -2,14 +2,12 @@ package presentation.singleStockUI;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
-import javafx.scene.text.Text;
+import javafx.scene.control.Label;
 import vo.CompanyInfoVO;
 import vo.PredictVO;
 
 import java.net.URL;
 import java.text.DecimalFormat;
-import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 /**

@@ -1,29 +1,10 @@
 package presentation.singleStockUI;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.rmi.RemoteException;
-import java.text.DecimalFormat;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.ResourceBundle;
-
-import com.sun.org.apache.regexp.internal.RE;
-import exception.*;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.event.EventHandler;
-import javafx.scene.image.WritableImage;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
-import javafx.stage.FileChooser;
-import logic.service.ForecastRODInterface;
-import org.controlsfx.control.Notifications;
-
 import dataController.DataContorller;
 import en_um.ChartKind;
+import exception.*;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -36,12 +17,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import logic.service.ForecastRODInterface;
 import logic.service.StockLogicInterface;
-import logic.service.Stub;
+import org.controlsfx.control.Notifications;
 import presentation.chart.chartService;
-import presentation.chart.function.SaveAs;
 import presentation.chart.klineChart.KLineChart;
 import presentation.chart.lineChart.EMAChart;
 import presentation.chart.lineChart.SingleLineChart;
@@ -51,7 +33,12 @@ import presentation.saveAsPNG.SaveAsPNG;
 import rmi.RemoteHelper;
 import vo.*;
 
-import javax.imageio.ImageIO;
+import java.io.IOException;
+import java.net.URL;
+import java.rmi.RemoteException;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.ResourceBundle;
 
 public class SingleStockUIController implements Initializable{
 	@FXML

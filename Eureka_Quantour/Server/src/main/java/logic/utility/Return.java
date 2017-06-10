@@ -439,6 +439,7 @@ public class Return {
         if (mingcheng.equals("动量策略")) return new dongliangcelue(strategyConditionVO.getExtra());
         if (mingcheng.equals("均值策略")) return new junzhicelue(strategyConditionVO.getExtra());
         if (mingcheng.equals("平均收盘价")) return new pingjunshoupanjia(strategyConditionVO.getExtra());
+        if (mingcheng.equals("最大差别")) return new maxdiff();
         return new maxdiff();
     }
 
