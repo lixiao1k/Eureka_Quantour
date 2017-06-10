@@ -49,11 +49,32 @@ public class StockLogicImpl implements StockLogicInterface{
 		SingleStockInfoPO po2=stock.getSingleStockInfo(code, time);
 		double shijing=po2.getClose()/po1.getNetAsset();
 		double shiying=po2.getClose()/(po1.getBasicIncome()*4);
+		if(po1.getBasicIncome()==0.0)
+		{
+			shiying=0.0;
+		}
 		double huanshou=(double)po2.getVolume()/po1.getFluCapitalization()*100;
 		CompanyInfoVO vo=new CompanyInfoVO(po1.getCode(),po1.getDate(),po1.getBasicIncome(),po1.getNetAsset(),
 				po1.getTotalCapitalization(),po1.getFluCapitalization()
 				,shiying,shijing,huanshou);
 		return vo;
+	}
+	
+	
+	public List<EMAInfoVO> getExponentEMAInfo( String stockCode, LocalDate begin, LocalDate end )
+			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException {
+
+		// methods用于存储日均线计算的方式
+		int methods[] = { 5, 10, 20, 30, 60 };
+			
+		List<EMAInfoVO> llemai = new ArrayList<>();
+
+		for (int i=0;i<methods.length;i++){
+			EMAInfoVO vo=getExponentEMAInfo(stockCode, begin, end,methods[i]);
+			llemai.add(vo);
+		}
+		return  llemai;
+
 	}
 	
 	public EMAInfoVO getExponentEMAInfo( String name, LocalDate begin, LocalDate end ,int days)
