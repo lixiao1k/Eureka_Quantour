@@ -50,8 +50,9 @@ public class Return {
         this.timelist=new ArrayList<>();
         String type=strategyConditionVO.getName();
         System.out.println(strategyConditionVO.getExtra());
-        if (strategyConditionVO.getName().equals("动量策略")) comparator= new dongliangcelue(strategyConditionVO.getExtra());
-        if (strategyConditionVO.getName().equals("均值策略")) comparator= new junzhicelue(strategyConditionVO.getExtra());
+        comparator=getcelue(strategyConditionVO.getName());
+
+
 
     }
 
@@ -210,7 +211,7 @@ public class Return {
                     int j=0;
                     while (j<Math.min(strategyConditionVO.getNums(),polist.size())&&i<Math.min(strategyConditionVO.getNums(),polist.size())){
 //                        System.out.print(getjiage(polist.get(i)));
-                        
+
                         SingleStockInfoPO pozheci=polist.get(i);
                         i++;
                         SingleStockInfoPO poshangci = null;
@@ -223,11 +224,11 @@ public class Return {
                         }
                         zheci=zheci+getjiage(pozheci);
                         shangci+=getjiage(poshangci);
-                        
+
                         j++;
                     }
 
-                    
+
                     if(zheci==0) System.exit(0);
                     celuefudu.add(shangci/zheci);
                     init=init*(shangci/zheci);
@@ -376,36 +377,69 @@ public class Return {
         }
     }
 
-    private class pingjuechengjiaoe implements Comparator<SingleStockInfoPO>{
+    private class pingjunshoupanjia implements Comparator<SingleStockInfoPO>{
 
         private int days;
-        private pingjuechengjiaoe(List<Integer> objects){
+        private pingjunshoupanjia(List<Integer> objects){
             this.days=objects.get(0);
         }
 
         @Override
         public int compare(SingleStockInfoPO o1, SingleStockInfoPO o2) {
-            LocalDate time=o1.getDate();
-            String code1=o1.getCode();
-            String code2=o1.getCode();
+            double avergae1=0;
+            double avergae2=0;
             int j=0;
-            long chengjiaoliang1=1;
-            long chengjiaoliang2=1;
-            for (int i=0;i<days;i++) {
+            int k=0;
+            LocalDate now=o1.getDate();
+            String code1=o1.getCode();
+            String code2=o2.getCode();
+            for (int i=0;i<days;i++){
                 try {
-                    SingleStockInfoPO po1=stock.getSingleStockInfo(code1,time.minusDays(i));
-                    SingleStockInfoPO po2=stock.getSingleStockInfo(code2,time.minusDays(i));
+                    SingleStockInfoPO po1=stock.getSingleStockInfo(code1,now.minusDays(i));
                     j++;
-                    chengjiaoliang1+=po1.getVolume();
-                    chengjiaoliang2+=po2.getVolume();
+                    avergae1+=po1.getClose();
+                } catch (NullStockIDException e) {
+                    continue;
+                } catch (NullDateException e) {
+                    continue;
+                }
+
+                try {
+                    SingleStockInfoPO po2=stock.getSingleStockInfo(code2,now.minusDays(i));
+                    k++;
+                    avergae2+=po2.getClose();
                 } catch (NullStockIDException e) {
                     e.printStackTrace();
                 } catch (NullDateException e) {
                     e.printStackTrace();
                 }
             }
-            return 0;
+            avergae1=avergae1/j;
+            avergae2=avergae2/k;
+
+
+            return (int) (  10000*avergae1-10000*avergae2);
+
         }
+    }
+
+    private class maxdiff implements Comparator<SingleStockInfoPO>{
+
+        @Override
+        public int compare(SingleStockInfoPO o1, SingleStockInfoPO o2) {
+            double diff1=o1.getClose()-o1.getOpen();
+            double diff2=o2.getClose()-o2.getOpen();
+
+            return (int) (  10000*diff1-10000*diff2);
+        }
+    }
+
+    private Comparator<SingleStockInfoPO> getcelue(String mingcheng){
+
+        if (mingcheng.equals("动量策略")) return new dongliangcelue(strategyConditionVO.getExtra());
+        if (mingcheng.equals("均值策略")) return new junzhicelue(strategyConditionVO.getExtra());
+        if (mingcheng.equals("平均收盘价")) return new pingjunshoupanjia(strategyConditionVO.getExtra());
+        return new maxdiff();
     }
 
 
