@@ -63,10 +63,19 @@ public class StockLogicImpl implements StockLogicInterface{
 	public ExponentChartVO getExponentChart(String name,LocalDate begin,LocalDate end)
 			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException{
 
-		utility.ifExpDateValid(begin, end,name);
+		utility.ifExpDateValid(begin.minusDays(90), end,name);
 		List<SingleStockInfoVO> lssi = new ArrayList<>();
-		List<SingleStockInfoPO> ls = stock.getPeriodExponent(name, begin, end);
+		List<SingleStockInfoPO> ls;
+		try {
+			ls = stock.getPeriodExponent(name, stock.addDays(begin, -60), end);
+		} catch (DateOverException e) {
+			throw new BeginInvalidException();
+		}
 		for (SingleStockInfoPO temp:ls){
+			if(temp.getDate().isBefore(begin))
+			{
+				continue;
+			}
 			SingleStockInfoVO vo=new SingleStockInfoVO(temp);
 			lssi.add(vo);
 		}
@@ -102,30 +111,28 @@ public class StockLogicImpl implements StockLogicInterface{
 	private EMAInfoVO getExponentEMAInfo( String name, LocalDate begin, LocalDate end ,int days,List<SingleStockInfoPO> l)
 			throws DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException {
 
-		utility.ifExpDateValid(begin.plusDays(-days),end,name);
-
-		LocalDate start=begin.plusDays(-days);
-		
-		List<SingleStockInfoPO> list=stock.getPeriodExponent(name, start, begin.minusDays(1));
-		
-		list.addAll(l);
 		
 		ArrayList<LocalDate> timelist=new ArrayList<>();
 		ArrayList<Double> shujulist=new ArrayList<>();
 
-			for (int i=0;i<list.size();i++){
-				if(i<days)
+			for (int i=0;i<l.size();i++){
+				if(l.get(i).getDate().isBefore(begin))
 				{
 					continue;
 				}
 				double total=0;
 				for(int j=0;j<days;j++)
 				{
-					total+=list.get(i-j).getClose();
+					if(i-j<0)
+					{
+						total=0;
+						break;
+					}
+					total+=l.get(i-j).getClose();
 				}
 				total=total/days;
                 shujulist.add(total);
-                timelist.add(list.get(i).getDate());
+                timelist.add(l.get(i).getDate());
 
             }
 		EMAInfoVO vo = new EMAInfoVO(timelist,shujulist,days);
