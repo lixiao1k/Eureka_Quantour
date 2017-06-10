@@ -1,6 +1,7 @@
 package data.service;
 
 import exception.LogErrorException;
+import exception.SqlNotConnectedException;
 import exception.UserNameRepeatException;
 
 public interface IUserDataInterface {
@@ -22,6 +23,7 @@ public interface IUserDataInterface {
 	 * @param username String,用户的登录名
 	 * @param password String,用户的登录密码
 	 * @throws LogErrorException 如果用户名或密码错误则抛出该异常。
+	 * @throws SqlNotConnectedException 
 	 */
-	public void signInCheck(String username,String password) throws LogErrorException;
+	public void signInCheck(String username,String password) throws LogErrorException, SqlNotConnectedException;
 }

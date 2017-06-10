@@ -16,7 +16,7 @@ public class DBInitInfo {
         try {
 			BufferedReader br=new BufferedReader(new FileReader(file));
 			beanOracle.setDriverName("com.mysql.cj.jdbc.Driver");  
-			beanOracle.setUrl(br.readLine());  
+			beanOracle.setUrl(br.readLine()+"&maxReconnects=5");  
         	beanOracle.setUserName(br.readLine());  
         	beanOracle.setPassword(br.readLine()); 
         	br.close();

@@ -1,8 +1,19 @@
 package logic.serviceimpl;
 
+import data.service.ICompanyDataInterface;
 import data.service.IDataInterface;
+import data.service.IStockDataInterface;
+import data.service.IStockSetInterface;
+import data.service.IStrategyDataInterface;
+import data.service.IUserDataInterface;
+import data.serviceimpl.CompanyDataController;
 import data.serviceimpl.DataInterfaceImpl;
+import data.serviceimpl.StockDataController_2;
+import data.serviceimpl.StockSetDataController;
+import data.serviceimpl.StrategyDataController;
+import data.serviceimpl.UserDataController;
 import exception.LogErrorException;
+import exception.SqlNotConnectedException;
 import exception.UserNameRepeatException;
 import logic.service.ClientLogicInterface;
 
@@ -16,7 +27,7 @@ import java.rmi.RemoteException;
  */
 public class ClientLogicImpl implements ClientLogicInterface{
 
-	private IDataInterface cli = new DataInterfaceImpl();
+	private IUserDataInterface cli = UserDataController.getInstance();
 
 
 	@Override
@@ -25,7 +36,7 @@ public class ClientLogicImpl implements ClientLogicInterface{
 	}
 
 	@Override
-	public void signIn(String username, char[] password) throws RemoteException, LogErrorException {
+	public void signIn(String username, char[] password) throws RemoteException, LogErrorException, SqlNotConnectedException {
 		cli.signInCheck(username,String.valueOf(password));
 	}
 

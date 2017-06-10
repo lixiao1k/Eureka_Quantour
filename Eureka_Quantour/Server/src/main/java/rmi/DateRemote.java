@@ -166,7 +166,7 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 	}
 
 	@Override
-	public void signIn(String username, char[] password) throws RemoteException, LogErrorException {
+	public void signIn(String username, char[] password) throws RemoteException, LogErrorException , SqlNotConnectedException{
 		cli.signIn(username,password);
 	}
 

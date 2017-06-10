@@ -12,6 +12,7 @@ import org.controlsfx.control.Notifications;
 
 import dataController.DataContorller;
 import exception.LogErrorException;
+import exception.SqlNotConnectedException;
 import exception.UserNameRepeatException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -85,6 +86,9 @@ public class LoginController implements Initializable{
 		} catch (LogErrorException e1) {
 //			 TODO Auto-generated catch block
 			Notifications.create().title("登录异常").text(e1.toString()).showError();
+		} catch (SqlNotConnectedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 
 	}

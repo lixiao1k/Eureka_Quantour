@@ -13,7 +13,7 @@ public class DataBasePool {
       
     private int initConnections = 5;// 初始化连接数  
       
-    private long connTimeOut = 1000;// 重复获得连接的频率  
+    private long connTimeOut = 1;// 重复获得连接的频率  
       
     private int maxActiveConnections = 100;// 最大允许的连接数，和数据库对应  
       
