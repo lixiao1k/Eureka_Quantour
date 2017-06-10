@@ -28,6 +28,7 @@ public class Utility {
     }
 
 
+    //check the date is valid for a stock code
     public void ifExpDateValid(LocalDate begin, LocalDate end,String name) throws BeginInvalidException, DateInvalidException, EndInvalidException, NullStockIDException {
 
         LocalDate start= idi.getExponentMinDay(name);
@@ -37,6 +38,7 @@ public class Utility {
         if (begin.compareTo(end)>0)
             throw new DateInvalidException();
     }
+    //check the date is valid for a stock code
     public void ifDateValid(LocalDate begin, LocalDate end,String stockcode) throws BeginInvalidException, DateInvalidException, EndInvalidException, NullStockIDException {
 
         LocalDate start= idi.getMinDay(stockcode);
@@ -46,6 +48,8 @@ public class Utility {
         if (begin.compareTo(end)>0)
             throw new DateInvalidException();
     }
+
+    //calculate the ema of some days of a stocde code
     public double getEMA(String stockCode,LocalDate time,int days) throws DateOverException, NullStockIDException {
         double jieguo=0.0;
         int p=0;
@@ -61,11 +65,17 @@ public class Utility {
             }
 
         }
+
+        //in case of no history data
         if (p==days) {
             return Integer.MAX_VALUE;
         }
         return  jieguo/(days-p);
     }
+
+    //calculate the corvariance
+    //and variance 
+    //when A equals B
 
     public double getCorvariance(List<Double> A,List<Double> B){
         double avejizhun=0;
@@ -87,6 +97,8 @@ public class Utility {
         p=p/A.size();
         return p-avecelue*avejizhun;
     }
+
+    // get the average of a list
 
     public double getAverage(List<Double> A){
         double zonghe=0;

@@ -55,6 +55,8 @@ public class Return {
 
     }
 
+    //get alpha 
+
     public Double getAlpha(){
         double rp=gerYearReturn();
         double rm=gerBasicYearReturn();
@@ -63,19 +65,24 @@ public class Return {
 
 
     }
+    //get beta
 
     public Double getBeta(){
         return utility.getCorvariance(jizhunfudu,celuefudu)/utility.getCorvariance(jizhunfudu,jizhunfudu);
     }
 
+    // get strategy return when it uses for a year
     public Double gerYearReturn(){
         return getYear(celueshouyilv);
     }
+
+    // get the return without a strategy
 
     public Double gerBasicYearReturn(){
         return getYear(jizhunshouyilv);
     }
 
+    //abstract method for calculation
     private Double getYear(List<Double> list){
         double shuzi=list.get(list.size()-1);
         int i=0;
@@ -87,13 +94,15 @@ public class Return {
         double b=365.0/i;
         return Math.pow(a,b)-1;
     }
-
+    //get sharp
     public Double getSharpe(){
         double ri=gerYearReturn();
         double rf=0.04;
         double seta=utility.getCorvariance(celueshouyilv,celueshouyilv);
         return (ri-rf)/seta;
     }
+
+    //get zuidahuiche
 
     public Double getzuidaguiceh(){
         double max=0;
@@ -103,9 +112,13 @@ public class Return {
         return max;
     }
 
+    // get the time list of strategy
+
     public List<LocalDate> getTimelist() {
         return timelist;
     }
+
+    // calculate the return list without a strategy
 
     public List<Double> getBasicReturn ()
             throws PriceTypeException, NullStockIDException {
@@ -122,6 +135,8 @@ public class Return {
     	                double zheci=0;
     	                double shangci=0;
 
+
+                            //fetch the data before some days
     	                    for (String name : stockcode) {
     	                        try {
     	                        SingleStockInfoPO po1 = stock.getSingleStockInfo(name, iter);
@@ -156,6 +171,7 @@ public class Return {
     	}
     }
 
+    //get the return list of a strategy
     public List<Double> getStragetyReturn ( ) throws NullStockIDException, PriceTypeException {
         if(celueshouyilv==null){
         	double init=100.0;
@@ -232,6 +248,7 @@ public class Return {
         }
     }
 
+
     private double getjiage(SingleStockInfoPO po) throws PriceTypeException {
         String type=salevo.getTiaocangjiage();
         if (type.equals("收盘价")) return po.getAftClose();
@@ -239,6 +256,8 @@ public class Return {
         throw new PriceTypeException();
     }
 
+
+    //comparison method a kind of strategy
     private  class junzhicelue implements Comparator<SingleStockInfoPO> {
 
         private int days;
@@ -293,6 +312,7 @@ public class Return {
 
         }
     }
+    //comparison method a kind of strategy
 
     private class dongliangcelue implements Comparator<SingleStockInfoPO> {
 

@@ -9,12 +9,11 @@ import java.util.List;
 public class StrategyConditionVO implements Serializable{
     private static final long serialVersionUID = 3441219408241335848L;
 
-    private String name;
-    private List<Integer> parameter;
+    private String name;//type of a strategy
 
+    private List<Integer> parameter;// some extra parameter for the strategy
 
-    //弃用
-    private int nums;
+    private int nums;// the num of stocks for a sale
 
     public int getNums() {
         return nums;

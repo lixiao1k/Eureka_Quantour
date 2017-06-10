@@ -14,9 +14,9 @@ public class EMAInfoVO implements Serializable{
 
 	private static final long serialVersionUID = -3607793986868403023L;
 
-	private List<LocalDate> date;
-	private List<Double> EMA;
-	private int tianshu;
+	private List<LocalDate> date; // date list
+	private List<Double> EMA; //ema content of a list
+	private int tianshu; // num of days
 
 	public EMAInfoVO(List<LocalDate> date, List<Double> EMA, int tianshu) {
 		this.date = date;

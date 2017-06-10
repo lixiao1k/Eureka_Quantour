@@ -7,6 +7,10 @@ import java.time.LocalDateTime;
  * Created by huihantao on 2017/5/15.
  */
 public class CommentVO implements Serializable{
+
+    // Stirng comment  means the content of the comment
+    //commenttime means the time when comments
+    // commenterName means the name who commens
     private static final long serialVersionUID = 3095942003508433966L;
     private String comment;
     private LocalDateTime commentTime;

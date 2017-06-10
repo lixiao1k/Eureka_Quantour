@@ -26,6 +26,8 @@ public interface ClientLogicInterface extends Remote{
 	 */
 	public void signIn ( String username, char[] password ) throws RemoteException, LogErrorException, SqlNotConnectedException;
 
+	//用户退出
+
 	public void signOut(String username) throws RemoteException;
 
 }

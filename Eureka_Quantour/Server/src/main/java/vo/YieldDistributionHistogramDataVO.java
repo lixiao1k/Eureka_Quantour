@@ -14,7 +14,11 @@ public class YieldDistributionHistogramDataVO implements Serializable{
     private static final long serialVersionUID=5907793986868423023L;
 
 
+    // a map for the x Axix and y Axis
+    // the first num is red 
+    // the seconde num is green
     private Map<Double,List<Integer>> zuhe;
+
 
     public YieldDistributionHistogramDataVO(Map<Double, List<Integer>> zuhe) {
         this.zuhe = zuhe;

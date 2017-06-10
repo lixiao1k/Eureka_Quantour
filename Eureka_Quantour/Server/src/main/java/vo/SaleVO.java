@@ -8,11 +8,11 @@ import java.io.Serializable;
 public class SaleVO implements Serializable {
     private static final long serialVersionUID = -8022219757439228511L;
 
-    private int tiaocangqi=10;
+    private int tiaocangqi=10; // the days for another sale
 
-    private String tiaocangjiage="收盘价";
+    private String tiaocangjiage="收盘价";// the price type for sale
 
-    private int num;
+    private int num;// abandoned
 
     public int getTiaocangqi() {
         return tiaocangqi;

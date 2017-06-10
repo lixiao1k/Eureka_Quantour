@@ -45,9 +45,13 @@ public interface StockLogicInterface extends Remote {
 	 */
 	public List<EMAInfoVO> getExponentEMAInfo( String name, LocalDate begin, LocalDate end )
 			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException;
-	
+
+
+
 	public CompanyInfoVO getLatestCommpanyInfo(LocalDate time,String code) throws NullStockIDException, NullDateException, RemoteException;
 	
+
+
 	List<SingleStockInfoVO> getExponentInfoByTime (String name, LocalDate begin, LocalDate end )
 			 throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException;
 	
@@ -88,45 +92,68 @@ public interface StockLogicInterface extends Remote {
 	List<String> getIndustryList() throws RemoteException;
 
 
+
+	//get the stock set list name of a user
 	List<String> getStockSet(String username) throws  RemoteException;
 
+	//get the stock info of a stock set in a sorted way
 	List<SingleStockInfoVO> getStockSetSortedInfo(String stockSetName, LocalDate now,String username) throws RemoteException, NullMarketException;
 
+	//get single stock info of a day
 	SingleStockInfoVO getStockBasicInfo(String code, LocalDate now) throws NullStockIDException, NullDateException, RemoteException;
 
+	// input the parameters and set the strategy
 	void setStrategy(StrategyConditionVO strategyConditionVO, SaleVO s, LocalDate begin, LocalDate now, String stockSetName,String username)
 		throws  RemoteException;
 
+	//get the yield chart data
+	//two list of double meaning data
+	//one list of time
 	YieldChartDataVO getYieldChartData()throws  RemoteException;;
 
+	// get Yield Distribution data
 	YieldDistributionHistogramDataVO getYieldDistributionHistogramData() throws  RemoteException;;
 
+	//add a stock set of a user
 	void addStockSet(String stockSetName, String username) throws StockSetNameRepeatException,RemoteException;
 
+	// delete a stock set of a user
 	void deleteStockSet(String stockSetName, String username)throws  RemoteException;
 
+	//add a stock into a stockset
 	void addStockToStockSet(String stockName, String stockSetName, String username) throws StockNameRepeatException,RemoteException;
 
+	// delete a stock from a specific stockset
 	void deleteStockFromStockSet(String stockName, String stockSetName, String username)throws  RemoteException;
 
+	//convert a name to a stock code
 	String nameToCode(String name) throws RemoteException;
 
+	// user save a strategy
 	void saveStragety(StrategyVO strategyVO, String username) throws RemoteException, StrategyRepeatException;
 
+	// user delete a strategy
 	void deleteStrategy ( String createName, String strategyName) throws RemoteException;
 
+	// user comment a strategy
 	void comment(String Username, String strategyName, String commenterName, LocalDateTime time, String comment) throws RemoteException;
 
+	// get the entire image of a strategy
 	StrategyShowVO getStrategy ( String createrName, String StrategyName ) throws RemoteException;
 
+	// get the user strategy list
 	List<StrategyListVO> getStrategyList ( String createrName) throws RemoteException;
 
+	// get all the public strategy list
 	List<StrategyListVO> getStrategyList ( )throws RemoteException;
 
+	// conver a strategy to public or private
 	void setPublic(String creatroName, String straetgyName,boolean property) throws RemoteException;
 
+	// get the arealist name
 	List<String> getAreaList() throws RemoteException;
 
+	// get the getConceptList name
 	List<String> getConceptList() throws RemoteException;
 
 	/**
@@ -140,6 +167,7 @@ public interface StockLogicInterface extends Remote {
 	 */
 	TimeSharingVO getTimeSharingData(String code,LocalDate date)throws TimeShraingLackException,NullStockIDException, RemoteException;
 
+	//模糊搜索
 	List<String> fuzzySearch(String input) throws  RemoteException;
 
 

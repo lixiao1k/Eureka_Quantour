@@ -9,9 +9,14 @@ public class StrategyVO implements Serializable {
 
     private static final long serialVersionUID = -4028276186904973508L;
 
-    private String name;
-    private StrategyConditionVO strategyConditionVO;
+    private String name;// strategy name
+    private StrategyConditionVO strategyConditionVO;// condition of the strategy 
+    // for more details 
+    // see in the strategyConditionVO
     private SaleVO saleVO;
+    // the sale condition of the strategy
+
+    // whether public or not of the strategy
     private boolean publicorprivate;
 
     public StrategyVO(String name, StrategyConditionVO strategyConditionVO, SaleVO saleVO, boolean publicorprivate) {
