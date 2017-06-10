@@ -15,6 +15,7 @@ import exception.DateOverException;
 import exception.LogErrorException;
 import exception.NullDateException;
 import exception.NullStockIDException;
+import exception.SqlNotConnectedException;
 import exception.StockHaltingException;
 import exception.StockNameRepeatException;
 import exception.StockSetNameRepeatException;
@@ -57,7 +58,7 @@ public class DataDriver {
 				inputtime=System.currentTimeMillis();
 				try {
 					data.signInCheck(userName, passWord);
-				} catch (LogErrorException e) {
+				} catch (LogErrorException | SqlNotConnectedException e) {
 					System.out.println(e.toString());
 				}
 			}
