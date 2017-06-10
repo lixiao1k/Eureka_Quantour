@@ -254,8 +254,6 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		return calRealKaFang( stockCode, date );
 	}
 
-
-
 	@Override
 	public KaFangVO isNormalDistribution(String stockSetName, String userName, LocalDate date) throws RemoteException {
 		// TODO Auto-generated method stub
@@ -283,9 +281,9 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		double standardDeviation = Math.sqrt( calValue.calVariance(RODs) );
 		
 		KaFangVO kafang = new KaFangVO();
-		kafang.setIdealValue( new StatisticImpl().getIdealKaFang() );
+		kafang.setIdealValue( StatisticImpl.getIdealKaFang() );
 		kafang.setRealValue( statistic.calKaFang(RODFenBu, average, standardDeviation ));
-		if( kafang.getRealValue()>kafang.getIdealValue() )
+		if( kafang.getRealValue()>kafang.getIdealValue() && kafang.getRealValue()>0 )
 			kafang.setNormalDistribution(false);
 		else
 			kafang.setNormalDistribution(true);

@@ -9,9 +9,10 @@ import java.text.DecimalFormat;
 public class StrategyListVO implements Comparable<StrategyListVO>, Serializable{
     private static final long serialVersionUID = 2444861004516374102L;
     //查看策略列表时候所显示的简单信息
-    private String createrName;
-    private String strategyName;
-    private double strategyYearReturn;
+
+    private String createrName;// the name of the creator
+    private String strategyName; //the name of the strategy
+    private double strategyYearReturn; // the year return of the strategy
 
 
 
