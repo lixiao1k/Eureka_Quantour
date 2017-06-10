@@ -5,8 +5,16 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import data.service.ICompanyDataInterface;
 import data.service.IDataInterface;
+import data.service.IStockDataInterface;
+import data.service.IStockSetInterface;
+import data.service.IStrategyDataInterface;
+import data.serviceimpl.CompanyDataController;
 import data.serviceimpl.DataInterfaceImpl;
+import data.serviceimpl.StockDataController_2;
+import data.serviceimpl.StockSetDataController;
+import data.serviceimpl.StrategyDataController;
 import exception.*;
 import logic.service.StockLogicInterface;
 import logic.utility.Return;
@@ -28,14 +36,17 @@ import vo.*;
  */
 public class StockLogicImpl implements StockLogicInterface{
   
-	private IDataInterface idi = new DataInterfaceImpl();
+	private IStockDataInterface stock = StockDataController_2.getInstance();
+	private ICompanyDataInterface company = CompanyDataController.getInstance();
+	private IStockSetInterface set = StockSetDataController.getInstance();
+	private IStrategyDataInterface strategy = StrategyDataController.getInstance();
 	private Utility utility=Utility.getInstance();
 	private Return stragety;
 
 	public CompanyInfoVO getLatestCommpanyInfo(LocalDate time,String code) throws RemoteException,NullStockIDException, NullDateException
 	{
-		CompanyInfoPO po1=idi.getLatestCommpanyInfo(time, code);
-		SingleStockInfoPO po2=idi.getSingleStockInfo(code, time);
+		CompanyInfoPO po1=company.getLatestCommpanyInfo(time, code);
+		SingleStockInfoPO po2=stock.getSingleStockInfo(code, time);
 		double shijing=po2.getClose()/po1.getNetAsset();
 		double shiying=po2.getClose()/(po1.getBasicIncome()*4);
 		double huanshou=(double)po2.getVolume()/po1.getFluCapitalization()*100;
@@ -49,7 +60,7 @@ public class StockLogicImpl implements StockLogicInterface{
 		utility.ifExpDateValid(begin, end,name);
 		
 		List<SingleStockInfoVO> lssi = new ArrayList<>();
-		List<SingleStockInfoPO> ls = idi.getPeriodExponent(name, begin, end);
+		List<SingleStockInfoPO> ls = stock.getPeriodExponent(name, begin, end);
 		for (SingleStockInfoPO temp:ls){
 			SingleStockInfoVO vo=new SingleStockInfoVO(temp);
 			lssi.add(vo);
@@ -71,7 +82,7 @@ public class StockLogicImpl implements StockLogicInterface{
 			SingleStockInfoPO po= null;
 
 			try {
-				po = idi.getSingleStockInfo(stockCode,x);
+				po = stock.getSingleStockInfo(stockCode,x);
 			}catch (NullDateException e) {
 				continue;
 			}
@@ -110,7 +121,7 @@ public class StockLogicImpl implements StockLogicInterface{
 		ArrayList<Double> shujulist=new ArrayList<>();
 
 		try {
-			for (;start.compareTo(end)<=0;start=idi.addDays(start,1)){
+			for (;start.compareTo(end)<=0;start=stock.addDays(start,1)){
                 shujulist.add(utility.getEMA(stockCode,start,days));
                 timelist.add(LocalDate.of(start.getYear(),start.getMonth(),start.getDayOfMonth()));
 
@@ -138,9 +149,9 @@ public class StockLogicImpl implements StockLogicInterface{
 
 		try {
 			for (;itr.compareTo(end)<=0;
-                    itr=idi.addDays(itr,1)){
+                    itr=stock.addDays(itr,1)){
 				try {
-					SingleStockInfoPO po1=idi.getSingleStockInfo(stockCodeA,itr);
+					SingleStockInfoPO po1=stock.getSingleStockInfo(stockCodeA,itr);
 
 
 					duishushouyiilv.add(Math.log(po1.getAftClose()));
@@ -168,7 +179,7 @@ public class StockLogicImpl implements StockLogicInterface{
 
 	@Override
 	public MarketInfoVO getMarketInfo(LocalDate date,String marketname) throws RemoteException, NullMarketException {
-		List<String> namelist=idi.getStockSetInfo(marketname,null);
+		List<String> namelist=set.getStockSetInfo(marketname,null);
 		long volume=0;
 		int wushuju=0;
 		int chaoguo10=0;
@@ -185,7 +196,7 @@ public class StockLogicImpl implements StockLogicInterface{
 		for (String name:namelist){
 			SingleStockInfoPO po=null;
 			try {
-				po=idi.getSingleStockInfo(name,date);
+				po=stock.getSingleStockInfo(name,date);
 			} catch (NullStockIDException e) {
 				e.printStackTrace();
 			} catch (NullDateException e) {
@@ -241,23 +252,23 @@ public class StockLogicImpl implements StockLogicInterface{
 
 	@Override
 	public List<String> getStockSet(String username) {
-		return idi.getStockSet(username);
+		return set.getStockSet(username);
 	}
 
 	@Override
 	public List<SingleStockInfoVO> getStockSetSortedInfo(String stockSetName, LocalDate now,String username) throws NullMarketException {
-		List<String> namelist=idi.getStockSetInfo(stockSetName,username);
+		List<String> namelist=set.getStockSetInfo(stockSetName,username);
 		if (namelist==null )
 			return null;
 		List<SingleStockInfoVO> res=new ArrayList<>();
 		int p=0;
 		for (String s:namelist){
 			try {
-				res.add(new SingleStockInfoVO(idi.getSingleStockInfo(s,now)));
+				res.add(new SingleStockInfoVO(stock.getSingleStockInfo(s,now)));
 			} catch (NullStockIDException e) {
 				continue;
 			} catch (NullDateException e) {
-				String name =idi.codeToname(s);
+				String name =stock.codeToname(s);
 				res.add(new SingleStockInfoVO(s,name));
 				p++;
 				continue;
@@ -273,8 +284,8 @@ public class StockLogicImpl implements StockLogicInterface{
 
 	@Override
 	public SingleStockInfoVO getStockBasicInfo(String code, LocalDate now) throws NullStockIDException, NullDateException {
-		idi.addBrowseTimes(code);
-		return new SingleStockInfoVO(idi.getSingleStockInfo(code,now));
+		stock.addBrowseTimes(code);
+		return new SingleStockInfoVO(stock.getSingleStockInfo(code,now));
 	}
 
 	@Override
@@ -283,7 +294,7 @@ public class StockLogicImpl implements StockLogicInterface{
 		if (stockSetName.equals("SHA") ||stockSetName.equals("SZA") ||stockSetName.equals("SHB")|| stockSetName.equals("SZB")||stockSetName.equals("CYB")||stockSetName.equals("HS300")
 				||stockSetName.equals("ZXB") )
 			username=null;
-		List<String> stocklistname=idi.getStockSetInfo(stockSetName,username);
+		List<String> stocklistname=set.getStockSetInfo(stockSetName,username);
 		System.out.println(strategyConditionVO.getExtra());
 
 		stragety=new Return(stocklistname,begin,now,s,strategyConditionVO);
@@ -353,27 +364,27 @@ public class StockLogicImpl implements StockLogicInterface{
 
 	@Override
 	public void addStockSet(String stockSetName, String username) throws StockSetNameRepeatException {
-		idi.addStockSet(stockSetName, username);
+		set.addStockSet(stockSetName, username);
 	}
 
 	@Override
 	public void deleteStockSet(String stockSetName, String username) {
-		idi.deleteStockSet(stockSetName, username);
+		set.deleteStockSet(stockSetName, username);
 	}
 
 	@Override
 	public void addStockToStockSet(String stockName, String stockSetName, String username) throws StockNameRepeatException {
-		idi.addStockToStockSet(stockName, stockSetName, username);
+		set.addStockToStockSet(stockName, stockSetName, username);
 	}
 
 	@Override
 	public void deleteStockFromStockSet(String stockName, String stockSetName, String username) {
-		idi.deleteStockFromStockSet(stockName, stockSetName, username);
+		set.deleteStockFromStockSet(stockName, stockSetName, username);
 	}
 
 	@Override
 	public String nameToCode(String name) throws RemoteException {
-		return idi.nameTocode(name);
+		return stock.nameTocode(name);
 	}
 
 	@Override
@@ -388,26 +399,26 @@ public class StockLogicImpl implements StockLogicInterface{
 		int tiaocangqi=saleVO.getTiaocangqi();
 		String tiaocangjiage=saleVO.getTiaocangjiage();
 		StrategyInfoPO po=new StrategyInfoPO(strategytypename,publicorprivate,parameter,purchasenum,tiaocangqi,tiaocangjiage);
-		idi.saveStrategy(po,name,username);
+		strategy.saveStrategy(po,name,username);
 		new SaveThread(strategyConditionVO,saleVO,username,name).start();
 	}
 
 	@Override
 	public void deleteStrategy(String createName, String strategyName) throws RemoteException {
-		idi.deleteStrategy(createName, strategyName);
+		strategy.deleteStrategy(createName, strategyName);
 	}
 
 	@Override
 	public void comment(String Username, String strategyName, String commenterName, LocalDateTime time, String comment) throws RemoteException {
-		idi.comment(Username, strategyName, commenterName, time, comment);
+		strategy.comment(Username, strategyName, commenterName, time, comment);
 	}
 
 	@Override
 	public StrategyShowVO getStrategy(String createrName, String StrategyName) throws RemoteException {
 
-		StrategyInfoPO infoPO=idi.applyStrategy(createrName, StrategyName);
-		StrategyShowPO showPO=idi.getStrategy(createrName, StrategyName);
-		List<CommentPO> commentPOS=idi.getStrategyComments(createrName, StrategyName);
+		StrategyInfoPO infoPO=strategy.applyStrategy(createrName, StrategyName);
+		StrategyShowPO showPO=strategy.getStrategy(createrName, StrategyName);
+		List<CommentPO> commentPOS=strategy.getStrategyComments(createrName, StrategyName);
 
 		List<CommentVO> commentVOS=new ArrayList<>();
 		for (CommentPO po:commentPOS){
@@ -433,7 +444,7 @@ public class StockLogicImpl implements StockLogicInterface{
 
 	@Override
 	public List<StrategyListVO> getStrategyList(String createrName) {
-		List<StrategyShowPO> list=idi.getStrategyList(createrName);
+		List<StrategyShowPO> list=strategy.getStrategyList(createrName);
 		List<StrategyListVO> reslist=new ArrayList<>();
 		for(StrategyShowPO po:list){
 			System.out.println(po.getStrategyYearReturn());
@@ -446,7 +457,7 @@ public class StockLogicImpl implements StockLogicInterface{
 
 	@Override
 	public List<StrategyListVO> getStrategyList() throws RemoteException {
-		List<StrategyShowPO> list=idi.getStrategyList();
+		List<StrategyShowPO> list=strategy.getStrategyList();
 		List<StrategyListVO> reslist=new ArrayList<>();
 		for(StrategyShowPO po:list){
 			reslist.add(new StrategyListVO(po.getCreaterName(),po.getStrategyName(),po.getStrategyYearReturn()));
@@ -458,22 +469,22 @@ public class StockLogicImpl implements StockLogicInterface{
 
 	@Override
 	public void setPublic(String creatroName, String straetgyName, boolean property) throws RemoteException {
-		idi.setPublic(creatroName, straetgyName, property);
+		strategy.setPublic(creatroName, straetgyName, property);
 	}
 
 	@Override
 	public List<String> getAreaList() throws RemoteException {
-		return idi.getAreaList();
+		return set.getAreaList();
 	}
 
 	@Override
 	public List<String> getConceptList() throws RemoteException {
-		return idi.getConceptList();
+		return set.getConceptList();
 	}
 
 	@Override
 	public List<String> getIndustryList() throws RemoteException {
-		return idi.getIndustryList();
+		return set.getIndustryList();
 	}
 
 	/**
@@ -485,13 +496,13 @@ public class StockLogicImpl implements StockLogicInterface{
 	 * @throws NullStockIDException
 	 */
 	public TimeSharingVO getTimeSharingData(String code,LocalDate date)throws TimeShraingLackException,NullStockIDException,RemoteException{
-		TimeSharingPO po=idi.getTimeSharingData(code, date);
+		TimeSharingPO po=stock.getTimeSharingData(code, date);
 		return new TimeSharingVO(po.getMinute_data(),po.getLast_close());
 	}
 
 	@Override
 	public List<String> fuzzySearch(String input) throws RemoteException {
-		List<String> list=idi.fuzzySearch(input);
+		List<String> list=stock.fuzzySearch(input);
 		if (list.size()<10)
 			return list;
 		List<String> sublist=new ArrayList<>();

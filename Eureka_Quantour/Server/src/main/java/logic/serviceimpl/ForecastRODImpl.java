@@ -3,8 +3,16 @@ package logic.serviceimpl;
 import java.rmi.RemoteException;
 import java.time.LocalDate;
 
+import data.service.ICompanyDataInterface;
 import data.service.IDataInterface;
+import data.service.IStockDataInterface;
+import data.service.IStockSetInterface;
+import data.service.IStrategyDataInterface;
+import data.serviceimpl.CompanyDataController;
 import data.serviceimpl.DataInterfaceImpl;
+import data.serviceimpl.StockDataController_2;
+import data.serviceimpl.StockSetDataController;
+import data.serviceimpl.StrategyDataController;
 import exception.NullDateException;
 import exception.NullStockIDException;
 import logic.service.ForecastRODInterface;
@@ -29,7 +37,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 	private SortArrayInterface sortArray = new SortArrayImpl();
 	private StatisticInterface statistic = new StatisticImpl();
 	
-	private IDataInterface idata = new DataInterfaceImpl();
+	private IStockDataInterface stock = StockDataController_2.getInstance();
 
 	private LocalDate zuizao = LocalDate.of(2005,2,1);
 	
@@ -50,7 +58,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		SingleStockInfoVO ssi = new SingleStockInfoVO();
 		while( dataNum>-1 && date.compareTo(zuizao)>0 ){
 			try{
-				ssi = new SingleStockInfoVO( idata.getSingleStockInfo(stockcode, date) );
+				ssi = new SingleStockInfoVO( stock.getSingleStockInfo(stockcode, date) );
 				dates[dataNum] = date;
 				closes[dataNum] = ssi.getClose();
 				date = getValidBeforeDate( date );
@@ -84,7 +92,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		ssi.setClose(-1);
 		while( ssi.getClose()==-1 && date.compareTo(zuizao)>0 ){
 			try{
-				ssi = new SingleStockInfoVO( idata.getSingleStockInfo(stockcode, date) );
+				ssi = new SingleStockInfoVO( stock.getSingleStockInfo(stockcode, date) );
 				date = getValidBeforeDate( date );
 			}catch ( NullStockIDException e ){
 				e.printStackTrace();
@@ -128,7 +136,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 
 				// get next day's data
 				date = getValidLatterDate( date );
-				ssi = new SingleStockInfoVO( idata.getSingleStockInfo(stockcode, date) );
+				ssi = new SingleStockInfoVO( stock.getSingleStockInfo(stockcode, date) );
 				JPrice = ssi.getClose();
 
 				ROD = (JPrice - ZPrice) / ZPrice;		
@@ -204,7 +212,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		while( index>-1 && dateT.compareTo(zuizao)>0 ){
 			try{
 				dateT = getValidBeforeDate( date );
-				ssi = new SingleStockInfoVO( idata.getSingleStockInfo(stockcode, dateT) );
+				ssi = new SingleStockInfoVO( stock.getSingleStockInfo(stockcode, dateT) );
 				closes[index] = ssi.getClose();
 				dates[index] = ssi.getDate();
 				index--;

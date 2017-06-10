@@ -2,12 +2,16 @@ package data.serviceimpl;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+
+import data.database.DataBaseOperation;
 import data.datahelperimpl.UserDataHelperImpl;
 import data.datahelperimpl_ByDataBase.UserDataHelperImpl_DBO;
 import data.datahelperservice.IUserDataHelper;
 import data.service.ICompanyDataInterface;
 import data.service.IUserDataInterface;
 import exception.LogErrorException;
+import exception.SqlNotConnectedException;
 import exception.UserNameRepeatException;
 
 /**
@@ -46,8 +50,15 @@ public class UserDataController implements IUserDataInterface
 	 * @param username String,用户的登录名
 	 * @param password String,用户的登录密码
 	 * @throws LogErrorException 如果用户名或密码错误则抛出异常
+	 * @throws SqlNotConnectedException 
 	 */
-	public void signInCheck(String username,String password) throws LogErrorException {
+	public void signInCheck(String username,String password) throws LogErrorException, SqlNotConnectedException {
+		Connection conn=null;
+		conn=DataBaseOperation.getInstance().getConn(conn);
+		if(conn==null)
+		{
+			throw new SqlNotConnectedException();
+		}
 		password=EncoderByMd5(password);
 		userdatahelper_DBO.login(username, password);
 		System.out.println("---------------------登录成功-----------------------\n  username:" +username+"    password:"+password);

@@ -2,6 +2,7 @@ package logic.service;
 
 
 import exception.LogErrorException;
+import exception.SqlNotConnectedException;
 import exception.UserNameRepeatException;
 
 import java.rmi.Remote;
@@ -21,8 +22,9 @@ public interface ClientLogicInterface extends Remote{
 	/**
 	 * @Description: to sign in, invoke signIn() indata
 	 * @return: boolean
+	 * @throws SqlNotConnectedException 
 	 */
-	public void signIn ( String username, char[] password ) throws RemoteException, LogErrorException;
+	public void signIn ( String username, char[] password ) throws RemoteException, LogErrorException, SqlNotConnectedException;
 
 	public void signOut(String username) throws RemoteException;
 
