@@ -2,14 +2,12 @@ package presentation.singleStockUI;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
-import javafx.scene.text.Text;
+import javafx.scene.control.Label;
 import vo.CompanyInfoVO;
 import vo.PredictVO;
 
 import java.net.URL;
 import java.text.DecimalFormat;
-import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 /**
@@ -87,7 +85,7 @@ public class PredictController implements Initializable {
 
     @FXML
     Label huanshoulv2;
-
+//设置预测信息和公司财况
     public void set(PredictVO vo, CompanyInfoVO vo1){
         DecimalFormat decimalFormat = new DecimalFormat("#0.00");
         price2.setText(decimalFormat.format(vo.getPredictPrice()));

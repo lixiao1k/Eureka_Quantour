@@ -85,11 +85,19 @@ public class BrowseStrategyController implements Initializable{
 		setBrowseMine();
 	}
 
+	/**
+	 *使用策略，讲策略参数设置到策略制定界面
+	 * @throws IOException
+	 */
 	@FXML
 	protected void useStrategy(ActionEvent e) throws IOException {
 		setAndUseStrategy();
 	}
-
+	/**
+	 *
+	 * 如果是false，就不用初始化策略，是true，初始化策略，用于策略运用中
+	 * @throws IOException
+	 */
 	private void setAndUseStrategy() throws IOException {
 		controller.setBrowseStrategyUI(true);
 
@@ -100,6 +108,9 @@ public class BrowseStrategyController implements Initializable{
 		setBrowseMine();
 	}
 
+	/**
+	 * 设置个人策略界面
+	 */
 	private void setBrowseMine(){
 		RemoteHelper remoteHelper = RemoteHelper.getInstance();
 		StockLogicInterface stockLogicInterface = remoteHelper.getStockLogic();
@@ -118,6 +129,10 @@ public class BrowseStrategyController implements Initializable{
 		}
 	}
 
+	/**
+	 * 设置全部策略界面
+	 * @param e
+	 */
 	@FXML
 	protected void browseAll(ActionEvent e){
 		RemoteHelper remoteHelper = RemoteHelper.getInstance();
@@ -169,6 +184,11 @@ public class BrowseStrategyController implements Initializable{
 			judgeTextArea.clear();
 		}
 	}
+
+	/**
+	 * 设置策略列表的实现方法
+	 * @param list 策略列表
+	 */
 	private void setFlowPane(List<StrategyListVO> list){
 		strategyFlowPane.getChildren().clear();
 		if(list.size()!=0&&list!=null){
@@ -195,8 +215,8 @@ public class BrowseStrategyController implements Initializable{
 				// TODO Auto-generated method stub
 				dataController.upDate("CreaterName", vo.getCreaterName());
 				dataController.upDate("StrategyName", vo.getStrategyName());
-				setJudge(vo);
-				setLine(vo);
+				setJudge(vo);//浏览策略的评价
+				setLine(vo);//浏览策略的线图数据
 			}
 		});
 		DecimalFormat df = new DecimalFormat("0.00");	
@@ -230,6 +250,12 @@ public class BrowseStrategyController implements Initializable{
 
 		return hb;
 	}
+
+	/**
+	 *
+	 * @param isPrivate 公开或是私有
+	 * @param vo
+	 */
 	private void menuItemEvent(boolean isPrivate,StrategyListVO vo){
 		RemoteHelper remoteHelper = RemoteHelper.getInstance();
 		StockLogicInterface stockLogicInterface = remoteHelper.getStockLogic();
@@ -316,7 +342,11 @@ public class BrowseStrategyController implements Initializable{
 		vb.getStyleClass().add("hbox");
 		return vb;
 	}
-	
+
+	/**
+	 * 绘制线图
+	 * @param vo
+	 */
 	private void setLine(StrategyListVO vo){
 		String createrName = vo.getCreaterName();
 		String strategyName = vo.getStrategyName();

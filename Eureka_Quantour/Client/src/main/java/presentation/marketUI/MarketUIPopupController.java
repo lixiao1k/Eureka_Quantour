@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import exception.NullMarketException;
-import notificationThread.Notification;
 import org.controlsfx.control.Notifications;
 
 import dataController.DataContorller;
@@ -53,11 +52,11 @@ public class MarketUIPopupController implements Initializable{
 			setflag=temp;
 		}
 		List<SingleStockInfoVO> stocklist = null;
-		if(setflag.equals(name)){
+		if(setflag.equals(name)){//如果相等则为将板块加入股池
 			try {
 				stocklist = stockLogicInterface.getStockSetSortedInfo(name, (LocalDate)dataController.get("SystemTime"),null);
 				if(stocklist.size()!=0){
-					for(SingleStockInfoVO vo:stocklist){
+					for(SingleStockInfoVO vo:stocklist){//将板块中的所有股票都加入相应股池
 						try {
 							stockLogicInterface.addStockToStockSet(vo.getCode()
                                     , stockset, (String)dataController.get("UserName"));
@@ -69,9 +68,6 @@ public class MarketUIPopupController implements Initializable{
 //					notification.start();
 
 					Notifications.create().title("成功").text("成功将添加至"+stockset).showInformation();
-					for(int i=0;i<10000;i++){
-
-					}
 					Stage stage = (Stage) nameLabel.getScene().getWindow();
 					stage.close();
 				}
@@ -91,9 +87,6 @@ public class MarketUIPopupController implements Initializable{
 
 				Notifications.create().title("成功").text("成功将"+(String)dataController.
 						get("Market_StockNow")+"添加至"+stockset).showInformation();
-				for(int i=0;i<10000;i++){
-
-				}
 				Stage stage = (Stage) nameLabel.getScene().getWindow();
 				stage.close();
 			} catch (RemoteException e1) {

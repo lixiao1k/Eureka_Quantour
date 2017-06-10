@@ -2,7 +2,6 @@ package vo;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -15,11 +14,11 @@ public class ComparedInfoVO implements Serializable{
 	
 	private static final long serialVersionUID = -2038667932682090329L;
 
-	private List<Double> logYieldA ;
+	private List<Double> logYieldA ; //dui shu shou yi lv lie biao
 
 
-	private List<LocalDate> date ;
-	private List<Integer> diantu;
+	private List<LocalDate> date ; // ri qi lie biao
+	private List<Integer> diantu; // dian tu shu zhi
 
 	public List<Double> getLogYieldA() {
 		return logYieldA;

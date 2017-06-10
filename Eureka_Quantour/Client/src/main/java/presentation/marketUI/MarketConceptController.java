@@ -93,8 +93,8 @@ public class MarketConceptController implements Initializable{
 					@Override
 					public void handle(ActionEvent event) {
 //
-						dataContorller.upDate("Market_StockNow",str);
-						dataContorller.upDate("SetFlag",str);
+						dataContorller.upDate("Market_StockNow",str);//用以判断添加至股池的是板块还是单只股票，如果Market_stockNow
+						dataContorller.upDate("SetFlag",str);//       =setFlag,则说明加入的是板块，否则是单只股票
 						FXMLLoader loader = new FXMLLoader();
 						loader.setLocation(getClass().getResource("MarketUIPopup.fxml"));
 						Parent popUp = null;

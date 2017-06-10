@@ -50,10 +50,13 @@ public class Return {
         this.timelist=new ArrayList<>();
         String type=strategyConditionVO.getName();
         System.out.println(strategyConditionVO.getExtra());
-        if (strategyConditionVO.getName().equals("动量策略")) comparator= new dongliangcelue(strategyConditionVO.getExtra());
-        if (strategyConditionVO.getName().equals("均值策略")) comparator= new junzhicelue(strategyConditionVO.getExtra());
+        comparator=getcelue(strategyConditionVO.getName());
+
+
 
     }
+
+    //get alpha 
 
     public Double getAlpha(){
         double rp=gerYearReturn();
@@ -63,19 +66,24 @@ public class Return {
 
 
     }
+    //get beta
 
     public Double getBeta(){
         return utility.getCorvariance(jizhunfudu,celuefudu)/utility.getCorvariance(jizhunfudu,jizhunfudu);
     }
 
+    // get strategy return when it uses for a year
     public Double gerYearReturn(){
         return getYear(celueshouyilv);
     }
+
+    // get the return without a strategy
 
     public Double gerBasicYearReturn(){
         return getYear(jizhunshouyilv);
     }
 
+    //abstract method for calculation
     private Double getYear(List<Double> list){
         double shuzi=list.get(list.size()-1);
         int i=0;
@@ -87,13 +95,15 @@ public class Return {
         double b=365.0/i;
         return Math.pow(a,b)-1;
     }
-
+    //get sharp
     public Double getSharpe(){
         double ri=gerYearReturn();
         double rf=0.04;
         double seta=utility.getCorvariance(celueshouyilv,celueshouyilv);
         return (ri-rf)/seta;
     }
+
+    //get zuidahuiche
 
     public Double getzuidaguiceh(){
         double max=0;
@@ -103,9 +113,13 @@ public class Return {
         return max;
     }
 
+    // get the time list of strategy
+
     public List<LocalDate> getTimelist() {
         return timelist;
     }
+
+    // calculate the return list without a strategy
 
     public List<Double> getBasicReturn ()
             throws PriceTypeException, NullStockIDException {
@@ -122,6 +136,8 @@ public class Return {
     	                double zheci=0;
     	                double shangci=0;
 
+
+                            //fetch the data before some days
     	                    for (String name : stockcode) {
     	                        try {
     	                        SingleStockInfoPO po1 = stock.getSingleStockInfo(name, iter);
@@ -156,6 +172,7 @@ public class Return {
     	}
     }
 
+    //get the return list of a strategy
     public List<Double> getStragetyReturn ( ) throws NullStockIDException, PriceTypeException {
         if(celueshouyilv==null){
         	double init=100.0;
@@ -194,7 +211,7 @@ public class Return {
                     int j=0;
                     while (j<Math.min(strategyConditionVO.getNums(),polist.size())&&i<Math.min(strategyConditionVO.getNums(),polist.size())){
 //                        System.out.print(getjiage(polist.get(i)));
-                        
+
                         SingleStockInfoPO pozheci=polist.get(i);
                         i++;
                         SingleStockInfoPO poshangci = null;
@@ -207,11 +224,11 @@ public class Return {
                         }
                         zheci=zheci+getjiage(pozheci);
                         shangci+=getjiage(poshangci);
-                        
+
                         j++;
                     }
 
-                    
+
                     if(zheci==0) System.exit(0);
                     celuefudu.add(shangci/zheci);
                     init=init*(shangci/zheci);
@@ -232,6 +249,7 @@ public class Return {
         }
     }
 
+
     private double getjiage(SingleStockInfoPO po) throws PriceTypeException {
         String type=salevo.getTiaocangjiage();
         if (type.equals("收盘价")) return po.getAftClose();
@@ -239,6 +257,8 @@ public class Return {
         throw new PriceTypeException();
     }
 
+
+    //comparison method a kind of strategy
     private  class junzhicelue implements Comparator<SingleStockInfoPO> {
 
         private int days;
@@ -293,6 +313,7 @@ public class Return {
 
         }
     }
+    //comparison method a kind of strategy
 
     private class dongliangcelue implements Comparator<SingleStockInfoPO> {
 
@@ -356,36 +377,70 @@ public class Return {
         }
     }
 
-    private class pingjuechengjiaoe implements Comparator<SingleStockInfoPO>{
+    private class pingjunshoupanjia implements Comparator<SingleStockInfoPO>{
 
         private int days;
-        private pingjuechengjiaoe(List<Integer> objects){
+        private pingjunshoupanjia(List<Integer> objects){
             this.days=objects.get(0);
         }
 
         @Override
         public int compare(SingleStockInfoPO o1, SingleStockInfoPO o2) {
-            LocalDate time=o1.getDate();
-            String code1=o1.getCode();
-            String code2=o1.getCode();
+            double avergae1=0;
+            double avergae2=0;
             int j=0;
-            long chengjiaoliang1=1;
-            long chengjiaoliang2=1;
-            for (int i=0;i<days;i++) {
+            int k=0;
+            LocalDate now=o1.getDate();
+            String code1=o1.getCode();
+            String code2=o2.getCode();
+            for (int i=0;i<days;i++){
                 try {
-                    SingleStockInfoPO po1=stock.getSingleStockInfo(code1,time.minusDays(i));
-                    SingleStockInfoPO po2=stock.getSingleStockInfo(code2,time.minusDays(i));
+                    SingleStockInfoPO po1=stock.getSingleStockInfo(code1,now.minusDays(i));
                     j++;
-                    chengjiaoliang1+=po1.getVolume();
-                    chengjiaoliang2+=po2.getVolume();
+                    avergae1+=po1.getClose();
+                } catch (NullStockIDException e) {
+                    continue;
+                } catch (NullDateException e) {
+                    continue;
+                }
+
+                try {
+                    SingleStockInfoPO po2=stock.getSingleStockInfo(code2,now.minusDays(i));
+                    k++;
+                    avergae2+=po2.getClose();
                 } catch (NullStockIDException e) {
                     e.printStackTrace();
                 } catch (NullDateException e) {
                     e.printStackTrace();
                 }
             }
-            return 0;
+            avergae1=avergae1/j;
+            avergae2=avergae2/k;
+
+
+            return (int) (  10000*avergae1-10000*avergae2);
+
         }
+    }
+
+    private class maxdiff implements Comparator<SingleStockInfoPO>{
+
+        @Override
+        public int compare(SingleStockInfoPO o1, SingleStockInfoPO o2) {
+            double diff1=o1.getClose()-o1.getOpen();
+            double diff2=o2.getClose()-o2.getOpen();
+
+            return (int) (  10000*diff1-10000*diff2);
+        }
+    }
+
+    private Comparator<SingleStockInfoPO> getcelue(String mingcheng){
+
+        if (mingcheng.equals("动量策略")) return new dongliangcelue(strategyConditionVO.getExtra());
+        if (mingcheng.equals("均值策略")) return new junzhicelue(strategyConditionVO.getExtra());
+        if (mingcheng.equals("平均收盘价")) return new pingjunshoupanjia(strategyConditionVO.getExtra());
+        if (mingcheng.equals("最大差别")) return new maxdiff();
+        return new maxdiff();
     }
 
 

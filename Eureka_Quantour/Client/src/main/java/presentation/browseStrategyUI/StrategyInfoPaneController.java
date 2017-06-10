@@ -9,6 +9,10 @@ import javafx.scene.control.Label;
 import vo.SaleVO;
 import vo.StrategyConditionVO;
 
+/**
+ * 设置策略信息的界面
+ */
+
 public class StrategyInfoPaneController implements Initializable{
 	@FXML
 	Label strategyName1;

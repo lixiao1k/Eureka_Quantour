@@ -45,5 +45,13 @@ public interface CommonSetService {
 	 */
 	Label endDateForStackPane(String content, int height);
 	
+	/**
+	 * @Description: 对于日期直接返回StackPane，日期label已排版好
+	 * @author: hzp
+	 * @date: 2017年6月10日
+	 * @param bdate : begin date
+	 * @param mdate : middle date
+	 * @param edate : end date
+	 */
 	Pane dateForStackPane(String bdate, String mdate, String edate);
 }

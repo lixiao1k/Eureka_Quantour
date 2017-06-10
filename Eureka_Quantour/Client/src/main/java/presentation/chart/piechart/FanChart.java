@@ -18,6 +18,11 @@ import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import presentation.chart.chartService;
 
+/**
+ * 
+ * @Description: 绘制扇形图的总方法
+ * @author: hzp
+ */
 public class FanChart implements chartService{
 	
 	private NumberFormat nf = NumberFormat.getPercentInstance();

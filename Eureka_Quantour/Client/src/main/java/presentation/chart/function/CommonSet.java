@@ -8,6 +8,12 @@ import javafx.scene.paint.Color;
 
 public class CommonSet implements CommonSetService{
 
+	/**
+	 * @Description: according to AnchorPane's feature and chart's size, set label's layoutX and layoutY
+	 * @author: hzp
+	 * @time: 2017年4月12日
+	 * @return: Label
+	 */
 	@Override
 	public Label beignDateForAnchorPane(String content, int height) {
 		// TODO Auto-generated method stub
@@ -19,6 +25,12 @@ public class CommonSet implements CommonSetService{
 		return begin;
 	}
 
+	/**
+	 * @Description: according to AnchorPane's feature and chart's size, set label's layoutX and layoutY
+	 * @author: hzp
+	 * @time: 2017年4月12日
+	 * @return: Label
+	 */
 	@Override
 	public Label endDateForAnchorPane(String content, int width, int height) {
 		// TODO Auto-generated method stub
@@ -30,6 +42,12 @@ public class CommonSet implements CommonSetService{
 		return end;
 	}
 
+	/**
+	 * @Description: according to StackPane's feature, set label's layoutX as Pos.BOTTOM_LEFT
+	 * @author: hzp
+	 * @time: 2017年4月12日
+	 * @return: Label
+	 */
 	@Override
 	public Label beignDateForStackPane(String content, int height) {
 		// TODO Auto-generated method stub
@@ -40,6 +58,12 @@ public class CommonSet implements CommonSetService{
 		return begin;
 	}
 	
+	/**
+	 * @Description: according to StackPane's feature, set label's layoutX as Pos.BOTTOM_LEFT
+	 * @author: hzp
+	 * @time: 2017年4月12日
+	 * @return: Label
+	 */
 	@Override
 	public Label middleDateForStackPane(String content, int height) {
 		// TODO Auto-generated method stub
@@ -50,6 +74,12 @@ public class CommonSet implements CommonSetService{
 		return middle;
 	}
 
+	/**
+	 * @Description: according to StackPane's feature, set label's layoutX as Pos.BOTTOM_LEFT
+	 * @author: hzp
+	 * @time: 2017年4月12日
+	 * @return: Label
+	 */
 	@Override
 	public Label endDateForStackPane(String content, int height) {
 		// TODO Auto-generated method stub
@@ -60,6 +90,14 @@ public class CommonSet implements CommonSetService{
 		return end;
 	}
 
+	/**
+	 * @Description: 对于日期直接返回StackPane，日期label已排版好
+	 * @author: hzp
+	 * @date: 2017年6月10日
+	 * @param bdate : begin date
+	 * @param mdate : middle date
+	 * @param edate : end date
+	 */
 	@Override
 	public Pane dateForStackPane(String bdate, String mdate, String edate) {
 		// TODO Auto-generated method stub

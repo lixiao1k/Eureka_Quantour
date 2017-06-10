@@ -57,9 +57,9 @@ public class BPNetSupportImpl implements BPNetSupportInterface{
          */
         int N = 14;
         int M = 9;
-        int NAddM = N + M;
+        int NAddM = N + M -2;
         
-		double[] EM = new double[highPrice.length+NAddM-1];
+		double[] EM = new double[highPrice.length+NAddM];
         for( int i=0; i<EM.length; i++ ){
         	double JHigh = 0;
         	double JLow = 0;

@@ -11,9 +11,7 @@ import logic.supportservice.BPNetInterface;
  * 之后利用计算得出的输出层数据与真实值进行比较，并逐层调节权重；
  * 反复上述过程直至精度达到要求或是达到迭代次数的要求；
  * 这里设置迭代次数为5000次；
- * 利用的测试数据集为Data2012to2015
- * 
- * 下图为训练之后的模型对Data2012to2015自身进行拟合的效果：
+ *
  * (这里由于自变量大概是10左右的数据，所以在利用激活函数1/(1+e^-ax))时，a取了0.01
  */
 public class BPNetImpl implements BPNetInterface{

@@ -45,7 +45,6 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import logic.service.StockLogicInterface;
-import presentation.chart.areaChart.DanTengChart;
 import presentation.chart.chartService;
 import presentation.chart.barChart.YieldDistributeChart;
 import presentation.chart.lineChart.YieldComparedChart;
@@ -122,6 +121,10 @@ public class StrategyUIController implements Initializable{
 	
 	private ObservableList<String> stocksetlist = FXCollections.observableArrayList();
 
+	/**
+	 * 制定策略
+	 * @param e
+	 */
 	@FXML
 	protected void makeStrategy(ActionEvent e){
 		anchorPane4.getChildren().clear();
@@ -366,7 +369,7 @@ public class StrategyUIController implements Initializable{
 		stage.initStyle(StageStyle.TRANSPARENT);
 		stage.show();
 	}
-	
+	//获取策略状态信息
 	public StrategyConditionVO getStrategyConditionVO(){
 		List<Integer> list = new ArrayList<>();
 		int num=0,stocknums;
@@ -384,7 +387,7 @@ public class StrategyUIController implements Initializable{
 		StrategyConditionVO strategyConditionVO = new StrategyConditionVO(name,list,stocknums);
 		return strategyConditionVO;
 	}
-	
+	//获取策略交易数据
 	public SaleVO getSaleVO(){
 		int holddays=0;
 		try{
@@ -415,7 +418,7 @@ public class StrategyUIController implements Initializable{
 			Notifications.create().title("时间异常").text("开始时间需在系统时间之前").showWarning();
 		}
 	}
-
+//保存界面
 	@FXML
 	protected void print1(ActionEvent e){
 		Pane pane = (Pane) dataController.get("DistributeChart");
@@ -432,7 +435,7 @@ public class StrategyUIController implements Initializable{
 		SaveAsPNG saveAsPNG = new SaveAsPNG();
 		saveAsPNG.print(pane);
 	}
-
+//将策略的部分参数设定好，运用策略时用到
 	public void setStrategy(StrategyShowVO vo){
 		StrategyConditionVO conditionVO = vo.getStrategyConditionVO();
 		SaleVO saleVO = vo.getSaleVO();

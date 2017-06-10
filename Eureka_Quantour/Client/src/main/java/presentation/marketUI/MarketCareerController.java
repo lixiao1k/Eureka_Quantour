@@ -29,6 +29,9 @@ import logic.service.StockLogicInterface;
 import rmi.RemoteHelper;
 import vo.SingleStockInfoVO;
 
+/**
+ * 设置行业板块信息
+ */
 public class MarketCareerController implements Initializable{
 	@FXML
 	FlowPane buttonsPane;
@@ -67,7 +70,7 @@ public class MarketCareerController implements Initializable{
 					@Override
 					public void handle(ActionEvent event) {
 						// TODO Auto-generated method stub
-						controller.setIndustryLabel(str);
+						controller.setIndustryLabel(str);//设置板块标签信息
 						List<SingleStockInfoVO> stocklist = null;
 						RemoteHelper remote = RemoteHelper.getInstance();
 						StockLogicInterface stockLogicInterface = remote.getStockLogic();
@@ -99,8 +102,8 @@ public class MarketCareerController implements Initializable{
 					@Override
 					public void handle(ActionEvent event) {
 //
-						dataContorller.upDate("Market_StockNow",str);
-						dataContorller.upDate("SetFlag",str);
+						dataContorller.upDate("Market_StockNow",str);//用以判断添加至股池的是板块还是单只股票，如果Market_stockNow
+						dataContorller.upDate("SetFlag",str);//       =setFlag,则说明加入的是板块，否则是单只股票
 						FXMLLoader loader = new FXMLLoader();
 						loader.setLocation(getClass().getResource("MarketUIPopup.fxml"));
 						Parent popUp = null;

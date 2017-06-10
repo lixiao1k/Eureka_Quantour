@@ -1,20 +1,8 @@
 package presentation.statisticsUI;
 
-import java.net.URL;
-import java.rmi.RemoteException;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.ResourceBundle;
-
-import com.sun.org.apache.regexp.internal.RE;
-import exception.*;
-import org.controlsfx.control.Notifications;
-
 import dataController.DataContorller;
 import en_um.ChartKind;
+import exception.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,19 +11,27 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import logic.service.ForecastRODInterface;
 import logic.service.StockLogicInterface;
+import org.controlsfx.control.Notifications;
 import presentation.chart.chartService;
 import presentation.chart.klineChart.KLineChart;
 import presentation.chart.lineChart.EMAChart;
 import presentation.chart.piechart.YieldFanChart;
 import presentation.chart.scatterchart.YieldPointChart;
 import rmi.RemoteHelper;
-import sun.jvm.hotspot.oops.Klass;
 import vo.EMAInfoVO;
+import vo.ExponentChartVO;
 import vo.MarketInfoVO;
 import vo.SingleStockInfoVO;
+
+import java.net.URL;
+import java.rmi.RemoteException;
+import java.text.NumberFormat;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.ResourceBundle;
 
 public class StatisticsUIController implements Initializable {
 	@FXML
@@ -105,21 +101,36 @@ public class StatisticsUIController implements Initializable {
 		nameLabel.setText(marketComboBox.getValue());
 		RemoteHelper remote = RemoteHelper.getInstance();
 		StockLogicInterface stockLogicInterface = remote.getStockLogic();
+		ForecastRODInterface forecastRODInterface = remote.getForecastROD();
 		try {
 			MarketInfoVO marketInfoVO = stockLogicInterface.getMarketInfo((LocalDate)dataController.get("SystemTime"),
 					marketComboBox.getValue());
 			initialAllPane(marketInfoVO);
+
 			if(marketComboBox.getValue().equals("HS300")){
 				Notifications.create().title("异常").text("暂时无沪深300大盘指数").showWarning();
 			}else{
-				initKLinePane(marketComboBox.getValue());
-				intiEMAPane(marketComboBox.getValue());
+				LocalDate end = (LocalDate)dataController.get("SystemTime");
+				LocalDate begin = end.minusDays(200);
+				try {
+					ExponentChartVO vo = stockLogicInterface.getExponentChart(marketComboBox.getValue(),begin,end);
+					System.out.println(vo);
+					List<SingleStockInfoVO> klinelist = vo.getList();
+					List<EMAInfoVO> emalist = vo.getEma();
+					initKLinePane(klinelist);
+					intiEMAPane(emalist);
+
+				} catch (NullStockIDException e1) {
+					e1.printStackTrace();
+				}
+
 			}
 
 
 		} catch (RemoteException e1) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("网络连接异常").text(e1.toString()).showWarning();
+			e1.printStackTrace();
 		} catch (DateInvalidException e1) {
 			// TODO Auto-generated catch block
 			Notifications.create().title("日期异常").text(e1.toString()).showWarning();
@@ -153,54 +164,18 @@ public class StatisticsUIController implements Initializable {
 		RAFContributionPane.getChildren().clear();
 		RAFContributionPane.getChildren().add(dianPane);
 	}
-	private void initKLinePane(String code){
-		RemoteHelper remoteHelper = RemoteHelper.getInstance();
-		StockLogicInterface stockLogicInterface = remoteHelper.getStockLogic();
-		LocalDate end = (LocalDate)dataController.get("SystemTime");
-		LocalDate begin = end.minusDays(200);
-		List<SingleStockInfoVO> list = null;
-		try {
-			list = stockLogicInterface.getExponentInfoByTime(code,begin,end);
-			System.out.println(list);
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		} catch (DateInvalidException e) {
-			Notifications.create().title("异常").text(e.toString()).showWarning();
-		} catch (BeginInvalidException e) {
-			Notifications.create().title("异常").text(e.toString()).showWarning();
-		} catch (EndInvalidException e) {
-			Notifications.create().title("异常").text(e.toString()).showWarning();
-		} catch (NullStockIDException e) {
-			Notifications.create().title("异常").text(e.toString()).showWarning();
-		}
+	private void initKLinePane(List<SingleStockInfoVO> list){
 		chartService service = new KLineChart(list);
 		Pane pane = service.getchart(463,300,true);
 		KLineAnchorPane.getChildren().clear();
 		KLineAnchorPane.getChildren().add(pane);
 	}
-	private  void intiEMAPane(String code){
-		LocalDate end = (LocalDate)dataController.get("SystemTime");
-		LocalDate begin = end.minusDays(200);
-		RemoteHelper remoteHelper = RemoteHelper.getInstance();
-		StockLogicInterface stockLogicInterface = remoteHelper.getStockLogic();
-		try {
-			List<EMAInfoVO> list = stockLogicInterface.getExponentEMAInfo(code,begin,end);
-			chartService service = new EMAChart(list);
-			Pane pane = service.getchart(463,154,true);
-			emaAnchorPane.getChildren().clear();
-			emaAnchorPane.getChildren().add(pane);
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		} catch (DateInvalidException e) {
-			Notifications.create().title("异常").text(e.toString()).showWarning();
-		} catch (BeginInvalidException e) {
-			Notifications.create().title("异常").text(e.toString()).showWarning();
-		} catch (EndInvalidException e) {
-			Notifications.create().title("异常").text(e.toString()).showWarning();
-		} catch (NullStockIDException e) {
-			Notifications.create().title("异常").text(e.toString()).showWarning();
-		}
-
+	//初始化均线图
+	private void intiEMAPane(List<EMAInfoVO> list){
+		chartService service = new EMAChart(list);
+		Pane pane = service.getchart(463,154,true);
+		emaAnchorPane.getChildren().clear();
+		emaAnchorPane.getChildren().add(pane);
 	}
 
 
@@ -239,7 +214,6 @@ public class StatisticsUIController implements Initializable {
 		dietingValue.setStyle("-fx-font-size:18;"
 				+ "-fx-text-fill: #C0FF3E;"
 				+ "-fx-font-weight:bold");
-
 		ObservableList<String> marketList = FXCollections.observableArrayList();
 		marketList.addAll("SHA","SHB","SZA","SZB","CYB","ZXB","HS300");
 		marketComboBox.getItems().addAll(marketList);

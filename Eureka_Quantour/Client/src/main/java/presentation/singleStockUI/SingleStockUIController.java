@@ -1,29 +1,10 @@
 package presentation.singleStockUI;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.rmi.RemoteException;
-import java.text.DecimalFormat;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.ResourceBundle;
-
-import com.sun.org.apache.regexp.internal.RE;
-import exception.*;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.event.EventHandler;
-import javafx.scene.image.WritableImage;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
-import javafx.stage.FileChooser;
-import logic.service.ForecastRODInterface;
-import org.controlsfx.control.Notifications;
-
 import dataController.DataContorller;
 import en_um.ChartKind;
+import exception.*;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -36,12 +17,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import logic.service.ForecastRODInterface;
 import logic.service.StockLogicInterface;
-import logic.service.Stub;
+import org.controlsfx.control.Notifications;
 import presentation.chart.chartService;
-import presentation.chart.function.SaveAs;
 import presentation.chart.klineChart.KLineChart;
 import presentation.chart.lineChart.EMAChart;
 import presentation.chart.lineChart.SingleLineChart;
@@ -51,7 +33,12 @@ import presentation.saveAsPNG.SaveAsPNG;
 import rmi.RemoteHelper;
 import vo.*;
 
-import javax.imageio.ImageIO;
+import java.io.IOException;
+import java.net.URL;
+import java.rmi.RemoteException;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.ResourceBundle;
 
 public class SingleStockUIController implements Initializable{
 	@FXML
@@ -266,7 +253,11 @@ public class SingleStockUIController implements Initializable{
 		setDotPane(vo1.getDiantu());
 		setLogPane(vo1);
 	}
-	
+
+	/**
+	 * 设置对数收益率图
+	 * @param vo
+	 */
 	private void setLogPane(ComparedInfoVO vo){
 		chartService chartservice = new SingleLineChart(vo.getDate(),vo.getLogYieldA(), "对数收益率", ChartKind.YIELDDISTRIBUTE);
 		Pane pane = chartservice.getchart(271, 212, true);
@@ -378,7 +369,7 @@ public class SingleStockUIController implements Initializable{
 			Notifications.create().title("搜索异常").text(e.toString()).showError();
 		}
 	}
-	
+	//均线图
 	private void setEMAChartPane(String code,int range){
 		RemoteHelper remote = RemoteHelper.getInstance();
 		StockLogicInterface stockLogicInterface = remote.getStockLogic();
@@ -416,13 +407,13 @@ public class SingleStockUIController implements Initializable{
 			Notifications.create().title("日期错误").text(e.toString()).showError();
 		}	
 	}
-
+//打印点图
 	@FXML
 	protected void printRAF(ActionEvent e){
 		Pane pane = (Pane) dataController.get("DotPane");
 		print(pane);
 	}
-
+//打印对数收益率图
 	@FXML
 	protected void printLog(ActionEvent e){
 		Pane pane = (Pane) dataController.get("LogPane");
@@ -432,6 +423,14 @@ public class SingleStockUIController implements Initializable{
 		SaveAsPNG saveAsPNG = new SaveAsPNG();
 		saveAsPNG.print(pane);
 	}
+//查看100天k线图
+	@FXML
+	protected void go100(ActionEvent e){
+		System.out.println("here");
+		setKlinePane(getcode(),100);
+		setEMAChartPane(getcode(),100);
+	}
+
 	@FXML
 	protected void go125(ActionEvent e){
 		setKlinePane(getcode(),125);
@@ -455,6 +454,7 @@ public class SingleStockUIController implements Initializable{
 		setKlinePane(getcode(),200);
 		setEMAChartPane(getcode(),200);
 	}
+	//获取股票代码,将名字转化为代码
 	private String getcode(){
 		String name = (String)dataController.get("SingleStockNow");
 		RemoteHelper remoteHelper = RemoteHelper.getInstance();
@@ -504,6 +504,7 @@ public class SingleStockUIController implements Initializable{
 			}
 
 		});
+		//模糊搜索
 		fuzzySearch.setVisible(true);
 		searchTextField.focusedProperty().addListener(( observable,  oldValue,  newValue) -> {
 			if (newValue){

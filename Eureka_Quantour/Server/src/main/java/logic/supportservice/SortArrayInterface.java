@@ -3,7 +3,7 @@ package logic.supportservice;
 public interface SortArrayInterface{
 
 	/**
-	 * @Description:
+	 * @Description: 从小到大排序，并根据nums每一个index的值，返回该值在排序后的index
 	 * @author: 	 hzp
 	 * @date:        2017-06-01
 	 * @param        nums       sort nums and return every num's order

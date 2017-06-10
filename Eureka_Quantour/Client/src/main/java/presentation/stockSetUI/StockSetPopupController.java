@@ -18,6 +18,9 @@ import javafx.stage.Stage;
 import logic.service.StockLogicInterface;
 import rmi.RemoteHelper;
 
+/**
+ * 新建股池的弹窗
+ */
 public class StockSetPopupController implements Initializable{
 	private StockSetUIController Upcontroller;
 

@@ -19,8 +19,8 @@ public interface CatchMouseMoveService {
 	 * @time: 2017年4月12日
 	 * @return: Label
 	 */
-	Label catchMouseReturnInfoForAnchorPaneSN( 
-			XYChart<String, Number> chart, Map<String, String> dataMap, String[] dates, String name, int index);
+	Label catchMouseReturnInfoForAnchorPaneSN( XYChart<String, Number> chart, 
+			Map<String, String> dataMap, String[] dates, String name, int index);
 
 	/**
 	 * @Description: according to StackPane's feature and mouse's location, 
@@ -29,22 +29,29 @@ public interface CatchMouseMoveService {
 	 * @time: 2017年4月12日
 	 * @return: Label
 	 */
-	Label catchMouseReturnInfoForStackPaneSN( 
-			XYChart<String, Number> chart, Map<String, String> dataMap, String[] dates, String name, int index);
-	
-	Label catchMouseReturnInfoForStackPaneNN( XYChart<Number, Number> chart, 
-			Map<String, String> dataMap, String[] dates, String name, int index, ChartKind kind);
-
-	Label catchMouseReturnInfoForStackPaneNS( XYChart<Number, String> chart, 
-			Map<String, String> dataMap, String[] dates, String name, int index, ChartKind kind);
+	Label catchMouseReturnInfoForStackPaneSN( XYChart<String, Number> chart, 
+			Map<String, String> dataMap, String[] dates, String name, int index);
 	
 	/**
-	 * @Description: according to AnchorPane's feature and mouse's location, 
-	 * 				 set label's layoutX and layoutY
+	 * @Description: according to StackPane's feature and mouse's location, 
+	 * 				 set label's layoutX as StackPane.LEFT or StackPane.RIGHT
+	 * 				 kind 对于散点图监测会有微调
 	 * @author: hzp
 	 * @time: 2017年4月12日
 	 * @return: Label
 	 */
-	Label catchMouseReturnInfoForYieldDistributeChart( 
-			XYChart<String, Number> chart, Map<String, String> dataMap, String[] dates, String name, int index);
+	Label catchMouseReturnInfoForStackPaneNN( XYChart<Number, Number> chart, 
+			Map<String, String> dataMap, String[] dates, String name, int index, ChartKind kind);
+
+	/**
+	 * @Description: according to StackPane's feature and mouse's location, 
+	 * 				 set label's layoutX as StackPane.LEFT or StackPane.RIGHT
+	 * 				 kind 对于散点图监测会有微调
+	 * @author: hzp
+	 * @time: 2017年4月12日
+	 * @return: Label
+	 */
+	Label catchMouseReturnInfoForStackPaneNS( XYChart<Number, String> chart, 
+			Map<String, String> dataMap, String[] dates, String name, int index, ChartKind kind);
+	
 }
