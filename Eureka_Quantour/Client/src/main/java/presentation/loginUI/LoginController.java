@@ -8,6 +8,9 @@ import java.util.ResourceBundle;
 
 import javax.management.Notification;
 
+import javafx.event.EventHandler;
+import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 import org.controlsfx.control.Notifications;
 
 import dataController.DataContorller;
@@ -79,7 +82,20 @@ public class LoginController implements Initializable{
 			Scene scene = new Scene(root);
 			Stage stage = new Stage();
 			stage.setScene(scene);
+//			stage.initStyle(StageStyle.TRANSPARENT);
 			stage.show();
+			stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+				@Override
+				public void handle(WindowEvent event) {
+					RemoteHelper remoteHelper = RemoteHelper.getInstance();
+					ClientLogicInterface clientLogicInterface1 = remoteHelper.getClientLogic();
+					try {
+						clientLogicInterface.signOut((String)dataController.get("UserName"));
+					} catch (RemoteException e1) {
+						e1.printStackTrace();
+					}
+				}
+			});
 			Stage stagenow = (Stage) usernameTextField.getScene().getWindow();
 			stagenow.close();
 
