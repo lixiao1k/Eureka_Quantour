@@ -27,4 +27,12 @@ public interface StatisticInterface {
 	 * @param: @param i : index of factor
 	 */
 	double getWeight( int k, int i );
+	
+	/**
+	 * @Description: 判断股票市场涨跌幅是否符合正态分布
+	 * @author: hzp
+	 * @date: 2017年6月10日
+	 * @param RODs
+	 */
+	double calKaFang( int[] RODFenBu, double average, double standardDeviation );
 }

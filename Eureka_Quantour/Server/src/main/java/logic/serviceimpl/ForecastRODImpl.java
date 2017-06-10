@@ -2,17 +2,12 @@ package logic.serviceimpl;
 
 import java.rmi.RemoteException;
 import java.time.LocalDate;
+import java.util.List;
 
-import data.service.ICompanyDataInterface;
-import data.service.IDataInterface;
 import data.service.IStockDataInterface;
 import data.service.IStockSetInterface;
-import data.service.IStrategyDataInterface;
-import data.serviceimpl.CompanyDataController;
-import data.serviceimpl.DataInterfaceImpl;
 import data.serviceimpl.StockDataController_2;
 import data.serviceimpl.StockSetDataController;
-import data.serviceimpl.StrategyDataController;
 import exception.NullDateException;
 import exception.NullStockIDException;
 import logic.service.ForecastRODInterface;
@@ -22,6 +17,8 @@ import logic.supportimpl.StatisticImpl;
 import logic.supportservice.CalculateValueInterface;
 import logic.supportservice.SortArrayInterface;
 import logic.supportservice.StatisticInterface;
+import po.SingleStockInfoPO;
+import vo.KaFangVO;
 import vo.PredictVO;
 import vo.SingleStockInfoVO;
 
@@ -37,6 +34,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 	private StatisticInterface statistic = new StatisticImpl();
 	
 	private IStockDataInterface stock = StockDataController_2.getInstance();
+	private IStockSetInterface stockSet = StockSetDataController.getInstance();
 
 	private LocalDate zuizao = LocalDate.of(2005,2,1);
 
@@ -80,7 +78,11 @@ public class ForecastRODImpl implements ForecastRODInterface{
 
 		double ZPrice = closes[vLen-1];
 		double QPrice = closes[vLen-2];
-		double predictPrice = KNNPredictPrice( closes, dates, 5, 15 );
+		// length of vector
+		int m = 5;
+		// 取前 k vectors
+		int k = 15;
+		double predictPrice = KNNPredictPrice( closes, dates, m, k );
 		double predictROD = (predictPrice - ZPrice) / ZPrice;
 
 		if( predictROD>0.1 || predictROD<-0.1 ){
@@ -108,7 +110,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 	 * @param  m          length of vector
 	 * @param  k          number of relevant character
 	 */
-	public double KNNPredictPrice( double[] closes, LocalDate[] dates, int m, int k ){
+	private double KNNPredictPrice( double[] closes, LocalDate[] dates, int m, int k ){
 		// KNN algorithm
 		int n = closes.length;
 	
@@ -243,6 +245,61 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		while( getDayOfWeek(date)==-1 )
 			date = date.minusDays(1);
 		return date;
+	}
+	
+	@Override
+	public KaFangVO isNormalDistribution(String stockSetName, LocalDate date) throws RemoteException {
+		// TODO Auto-generated method stub
+		List<String> stockCode = stockSet.getStockSetInfo(stockSetName);
+		return calRealKaFang( stockCode, date );
+	}
+
+
+
+	@Override
+	public KaFangVO isNormalDistribution(String stockSetName, String userName, LocalDate date) throws RemoteException {
+		// TODO Auto-generated method stub
+		List<String> stockCode = stockSet.getStockSetInfo(stockSetName, userName);
+		return calRealKaFang( stockCode, date );
+	}
+	
+	private KaFangVO calRealKaFang( List<String> stockCode, LocalDate date ){
+		SingleStockInfoPO ssi = new SingleStockInfoPO();
+		int[] RODFenBu = new int[22];
+		double[] RODs = new double[stockCode.size()];
+		for( int i=0; i<stockCode.size(); i++ ){
+			try{
+				ssi = stock.getSingleStockInfo(stockCode.get(i), date);
+				double ROD = (ssi.getClose() - ssi.getLclose()) / ssi.getLclose();
+				RODs[i] = ROD;
+				int iROD = doubleToIndex(ROD);
+				RODFenBu[iROD]++;
+			}catch ( NullStockIDException e ){
+				e.printStackTrace();
+			}catch ( NullDateException e){
+			}
+		}
+		double average = calValue.calAverage(RODs);
+		double standardDeviation = Math.sqrt( calValue.calVariance(RODs) );
+		
+		KaFangVO kafang = new KaFangVO();
+		kafang.setIdealValue( new StatisticImpl().getIdealKaFang() );
+		kafang.setRealValue( statistic.calKaFang(RODFenBu, average, standardDeviation ));
+		if( kafang.getRealValue()>kafang.getIdealValue() )
+			kafang.setNormalDistribution(false);
+		else
+			kafang.setNormalDistribution(true);
+		
+		return kafang;
+	}
+	
+	private int doubleToIndex( double value ){
+		if( value<-0.1 )
+			return 0;
+		else if( value>0.1 )
+			return 21;
+		else
+			return (int)((value+0.1)/0.01)+1;
 	}
 	
 }
