@@ -103,11 +103,15 @@ public class StatisticImpl implements StatisticInterface{
 	private double calNormalDistribution( double x ){
 		if( x>2.49 )
 			return 1;
-		if( x<-2.49 )
+		else if( x<-2.49 )
 			return 0;
 		
 		int row = (int)Math.abs(x / 0.1);
-		int col = (int)( (Math.abs(x)-row*0.1) / 0.01 ) + 1;
+		int col = (int)( (Math.abs(x)-row*0.1) / 0.01 )+1;
+			
+		if( col>=NormalDistribution[0].length )
+			col = 0;
+		
 		double result = 0;
 		if( x>0 )
 			result = NormalDistribution[row][col];
