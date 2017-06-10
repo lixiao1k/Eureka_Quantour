@@ -4,7 +4,6 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.time.LocalDate;
 
-import vo.KaFangVO;
 import vo.PredictVO;
 
 public interface ForecastRODInterface extends Remote {
