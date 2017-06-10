@@ -77,8 +77,8 @@ public class StockLogicImpl implements StockLogicInterface{
 
 	}
 	
-	public EMAInfoVO getExponentEMAInfo( String name, LocalDate begin, LocalDate end ,int days)
-			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException {
+	private EMAInfoVO getExponentEMAInfo( String name, LocalDate begin, LocalDate end ,int days)
+			throws DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException {
 
 		utility.ifExpDateValid(begin.plusDays(-days),end,name);
 

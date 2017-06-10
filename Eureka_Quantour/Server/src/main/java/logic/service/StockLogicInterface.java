@@ -29,7 +29,7 @@ public interface StockLogicInterface extends Remote {
 	 * @throws EndInvalidException
 	 * @throws NullStockIDException
 	 */
-	public List<EMAInfoVO> getExponentEMAInfo( String stockCode, LocalDate begin, LocalDate end )
+	public List<EMAInfoVO> getExponentEMAInfo( String name, LocalDate begin, LocalDate end )
 			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException;
 	
 	public CompanyInfoVO getLatestCommpanyInfo(LocalDate time,String code) throws NullStockIDException, NullDateException, RemoteException;
