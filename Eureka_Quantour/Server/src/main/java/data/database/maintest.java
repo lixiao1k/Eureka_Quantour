@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Scanner;
 
 import com.mysql.cj.jdbc.PreparedStatement;
@@ -20,10 +21,22 @@ import po.SingleStockInfoPO;
 public class maintest {
 	Connection conn;
 	StockDataHelperImpl_2 sdhi;
+	long total;
 	public static void main(String[] args){
 		new maintest();
 	}
 	private maintest(){
+		total=0;
+		sdhi=new StockDataHelperImpl_2();
+		List<Integer> date=sdhi.datesort;
+		for(int i:date)
+		{
+			getDate(Parse.getInstance().getlocalDate(i).format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+		}
+		System.out.println(total);
+	}
+	private void getAll()
+	{
 		Connection conn=ConnectionPoolManager.getInstance().getConnection("quantour");
 		String sql="select * from stockdata";
 		PreparedStatement pstmt=null;
@@ -33,13 +46,39 @@ public class maintest {
 			pstmt = (PreparedStatement)conn.prepareStatement(sql);
 			ResultSet rs=pstmt.executeQuery();
 			long t2=System.currentTimeMillis();
-			System.out.println(t2-t1);
-			while(rs.next()){
-				for(int i=0;i<15;i++)
-				{
-					rs.getString(i);
-				}				
-			}
+			total=total+(t2-t1);
+//			while(rs.next()){
+//				for(int i=0;i<15;i++)
+//				{
+//					rs.getString(i);
+//				}				
+//			}
+			rs.close();
+			pstmt.close();
+			ConnectionPoolManager.getInstance().close("quantour", conn);
+		}catch (SQLException e) {
+			ConnectionPoolManager.getInstance().close("quantour", conn);
+			
+		}
+	}
+	private void getDate(String date)
+	{
+		Connection conn=ConnectionPoolManager.getInstance().getConnection("quantour");
+		String sql="select * from stockdata where date = '"+date+"'";
+		PreparedStatement pstmt=null;
+
+		try {
+			long t1=System.currentTimeMillis();
+			pstmt = (PreparedStatement)conn.prepareStatement(sql);
+			ResultSet rs=pstmt.executeQuery();
+			long t2=System.currentTimeMillis();
+			total=total+(t2-t1);
+//			while(rs.next()){
+//				for(int i=0;i<15;i++)
+//				{
+//					rs.getString(i);
+//				}				
+//			}
 			rs.close();
 			pstmt.close();
 			ConnectionPoolManager.getInstance().close("quantour", conn);
