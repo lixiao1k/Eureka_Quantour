@@ -44,22 +44,24 @@ public class LoginController implements Initializable{
 	
 	@FXML
 	protected void logUp(ActionEvent e){
-		String username = usernameTextField.getText();
-		char[] password = passwordTextField.getText().toCharArray();
-		RemoteHelper remote = RemoteHelper.getInstance();
-		ClientLogicInterface clientLogicInterface = remote.getClientLogic();
-		try {
-			clientLogicInterface.signUp(username, password);
-			Notifications.create().title("注册提示").text("注册成功！").showInformation();
-		} catch (RemoteException e1) {
-			// TODO Auto-generated catch block
-			Notifications.create().title("注册异常").text(e1.toString()).showError();
-		} catch (UserNameRepeatException e1) {
-			// TODO Auto-generated catch block
-			Notifications.create().title("注册异常").text(e1.toString()).showError();
+		if(usernameTextField.getText().length()==0||passwordTextField.getText().length()==0){
+			Notifications.create().title("一场").text("用户名或密码不能为空").showWarning();
+		}else{
+			String username = usernameTextField.getText();
+			char[] password = passwordTextField.getText().toCharArray();
+			RemoteHelper remote = RemoteHelper.getInstance();
+			ClientLogicInterface clientLogicInterface = remote.getClientLogic();
+			try {
+				clientLogicInterface.signUp(username, password);
+				Notifications.create().title("注册提示").text("注册成功！").showInformation();
+			} catch (RemoteException e1) {
+				// TODO Auto-generated catch block
+				Notifications.create().title("注册异常").text(e1.toString()).showError();
+			} catch (UserNameRepeatException e1) {
+				// TODO Auto-generated catch block
+				Notifications.create().title("注册异常").text(e1.toString()).showError();
+			}
 		}
-		
-		
 	}
 	
 	@FXML
