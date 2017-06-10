@@ -49,12 +49,127 @@ public class StockLogicImpl implements StockLogicInterface{
 		SingleStockInfoPO po2=stock.getSingleStockInfo(code, time);
 		double shijing=po2.getClose()/po1.getNetAsset();
 		double shiying=po2.getClose()/(po1.getBasicIncome()*4);
+		if(po1.getBasicIncome()==0.0)
+		{
+			shiying=0.0;
+		}
 		double huanshou=(double)po2.getVolume()/po1.getFluCapitalization()*100;
 		CompanyInfoVO vo=new CompanyInfoVO(po1.getCode(),po1.getDate(),po1.getBasicIncome(),po1.getNetAsset(),
 				po1.getTotalCapitalization(),po1.getFluCapitalization()
 				,shiying,shijing,huanshou);
 		return vo;
 	}
+	
+	public ExponentChartVO getExponentChart(String name,LocalDate begin,LocalDate end)
+			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException{
+
+		utility.ifExpDateValid(begin.minusDays(90), end,name);
+		List<SingleStockInfoVO> lssi = new ArrayList<>();
+		List<SingleStockInfoPO> ls;
+		try {
+			ls = stock.getPeriodExponent(name, stock.addDays(begin, -60), end);
+		} catch (DateOverException e) {
+			throw new BeginInvalidException();
+		}
+		for (SingleStockInfoPO temp:ls){
+			if(temp.getDate().isBefore(begin))
+			{
+				continue;
+			}
+			SingleStockInfoVO vo=new SingleStockInfoVO(temp);
+			lssi.add(vo);
+		}
+		
+		int methods[] = { 5, 10, 20, 30, 60 };
+		
+		List<EMAInfoVO> llemai = new ArrayList<>();
+
+		for (int i=0;i<methods.length;i++){
+			EMAInfoVO vo=getExponentEMAInfo(name, begin, end,methods[i],ls);
+			llemai.add(vo);
+		}
+		
+		return new ExponentChartVO(llemai,lssi);
+	}
+	
+	public List<EMAInfoVO> getExponentEMAInfo( String stockCode, LocalDate begin, LocalDate end )
+			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException {
+
+		// methods用于存储日均线计算的方式
+		int methods[] = { 5, 10, 20, 30, 60 };
+			
+		List<EMAInfoVO> llemai = new ArrayList<>();
+
+		for (int i=0;i<methods.length;i++){
+			EMAInfoVO vo=getExponentEMAInfo(stockCode, begin, end,methods[i]);
+			llemai.add(vo);
+		}
+		return  llemai;
+
+	}
+	
+	private EMAInfoVO getExponentEMAInfo( String name, LocalDate begin, LocalDate end ,int days,List<SingleStockInfoPO> l)
+			throws DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException {
+
+		
+		ArrayList<LocalDate> timelist=new ArrayList<>();
+		ArrayList<Double> shujulist=new ArrayList<>();
+
+			for (int i=0;i<l.size();i++){
+				if(l.get(i).getDate().isBefore(begin))
+				{
+					continue;
+				}
+				double total=0;
+				for(int j=0;j<days;j++)
+				{
+					if(i-j<0)
+					{
+						total=0;
+						break;
+					}
+					total+=l.get(i-j).getClose();
+				}
+				total=total/days;
+                shujulist.add(total);
+                timelist.add(l.get(i).getDate());
+
+            }
+		EMAInfoVO vo = new EMAInfoVO(timelist,shujulist,days);
+		return vo;
+	}
+	
+	private EMAInfoVO getExponentEMAInfo( String name, LocalDate begin, LocalDate end ,int days)
+			throws DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException {
+
+		utility.ifExpDateValid(begin.plusDays(-days),end,name);
+
+		LocalDate start=begin.plusDays(-days);
+		
+		List<SingleStockInfoPO> list=stock.getPeriodExponent(name, start, end);
+
+		ArrayList<LocalDate> timelist=new ArrayList<>();
+		ArrayList<Double> shujulist=new ArrayList<>();
+
+			for (int i=0;i<list.size();i++){
+				if(i<days)
+				{
+					continue;
+				}
+				double total=0;
+				for(int j=0;j<days;j++)
+				{
+					total+=list.get(i-j).getClose();
+				}
+				total=total/days;
+                shujulist.add(total);
+                timelist.add(list.get(i).getDate());
+
+            }
+		EMAInfoVO vo = new EMAInfoVO(timelist,shujulist,days);
+		return vo;
+	}
+	
 	public List<SingleStockInfoVO> getExponentInfoByTime (String name, LocalDate begin, LocalDate end )
 			 throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException{
 		utility.ifExpDateValid(begin, end,name);

@@ -17,6 +17,35 @@ import vo.*;
  */
 public interface StockLogicInterface extends Remote {
 	
+	/**
+	 * 获取市场指数的两个图
+	 * @param name 市场名字
+	 * @param begin 开始日期
+	 * @param end 结束日期
+	 * @return
+	 * @throws RemoteException
+	 * @throws DateInvalidException
+	 * @throws BeginInvalidException
+	 * @throws EndInvalidException
+	 * @throws NullStockIDException
+	 */
+	public ExponentChartVO getExponentChart(String name,LocalDate begin,LocalDate end)
+			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException;
+	/**
+	 * 获取市场的均线图
+	 * @param name 市场名
+	 * @param begin 开始日期
+	 * @param end 结束日期
+	 * @return
+	 * @throws RemoteException
+	 * @throws DateInvalidException
+	 * @throws BeginInvalidException
+	 * @throws EndInvalidException
+	 * @throws NullStockIDException
+	 */
+	public List<EMAInfoVO> getExponentEMAInfo( String name, LocalDate begin, LocalDate end )
+			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException;
+	
 	public CompanyInfoVO getLatestCommpanyInfo(LocalDate time,String code) throws NullStockIDException, NullDateException, RemoteException;
 	
 	List<SingleStockInfoVO> getExponentInfoByTime (String name, LocalDate begin, LocalDate end )

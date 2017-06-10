@@ -89,7 +89,7 @@ public class PredictController implements Initializable {
     Label huanshoulv2;
 
     public void set(PredictVO vo, CompanyInfoVO vo1){
-        DecimalFormat decimalFormat = new DecimalFormat(".##");
+        DecimalFormat decimalFormat = new DecimalFormat("#0.00");
         price2.setText(decimalFormat.format(vo.getPredictPrice()));
         dof2.setText(decimalFormat.format(vo.getPredictROD()*100)+"%");
         if(vo.getPredictPrice()>0){
@@ -112,7 +112,7 @@ public class PredictController implements Initializable {
         liutong2.setText(Long.toString(vo1.getFluCapitalization()));
         shiyinglv2.setText(decimalFormat.format(vo1.getShiYing()));
         shijinlv2.setText(decimalFormat.format(vo1.getShiJing()));
-        huanshoulv2.setText(decimalFormat.format(vo1.getHuanShou()));
+        huanshoulv2.setText(decimalFormat.format(vo1.getHuanShou())+"%");
     }
     //为标签设样式
     private void setStyle(Label label){
@@ -142,15 +142,15 @@ public class PredictController implements Initializable {
         setStyle(shiyinglv1);
         setStyle(shijinlv1);
         setStyle(huanshoulv1);
-        setStyle1(stockcode2,"FF0000");
-        setStyle1(date2,"FF0000");
-        setStyle1(shouyi2,"FF0000");
-        setStyle1(jingzichan2,"FF0000");
-        setStyle1(guben2,"FF0000");
-        setStyle1(liutong2,"FF0000");
-        setStyle1(shiyinglv2,"FF0000");
-        setStyle1(shijinlv2,"FF0000");
-        setStyle1(huanshoulv2,"FF0000");
+        setStyle1(stockcode2,"98F5FF");
+        setStyle1(date2,"98F5FF");
+        setStyle1(shouyi2,"98F5FF");
+        setStyle1(jingzichan2,"98F5FF");
+        setStyle1(guben2,"98F5FF");
+        setStyle1(liutong2,"98F5FF");
+        setStyle1(shiyinglv2,"98F5FF");
+        setStyle1(shijinlv2,"98F5FF");
+        setStyle1(huanshoulv2,"98F5FF");
 
     }
 }

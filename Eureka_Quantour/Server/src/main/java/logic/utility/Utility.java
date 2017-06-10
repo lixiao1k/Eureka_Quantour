@@ -1,7 +1,10 @@
 package logic.utility;
 
 import data.service.IDataInterface;
+import data.service.IStockDataInterface;
 import data.serviceimpl.DataInterfaceImpl;
+import data.serviceimpl.StockDataController;
+import data.serviceimpl.StockDataController_2;
 import exception.*;
 import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 import po.SingleStockInfoPO;
@@ -15,7 +18,7 @@ import java.util.List;
  * Created by huihantao on 2017/4/4.
  */
 public class Utility {
-    private IDataInterface idi=new DataInterfaceImpl();
+    private IStockDataInterface idi=StockDataController_2.getInstance();
     private static Utility utility=new Utility();
     private Utility(){
 
@@ -43,7 +46,6 @@ public class Utility {
         if (begin.compareTo(end)>0)
             throw new DateInvalidException();
     }
-
     public double getEMA(String stockCode,LocalDate time,int days) throws DateOverException, NullStockIDException {
         double jieguo=0.0;
         int p=0;

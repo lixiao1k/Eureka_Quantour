@@ -119,8 +119,8 @@ public class SingleStockUIController implements Initializable{
 		StockLogicInterface stockLogicInterface = remoteHelper.getStockLogic();
 		try {
 			String code = stockLogicInterface.nameToCode(name);
-			setKlinePane(code);
-			setEMAChartPane(code);
+			setKlinePane(code,200);
+			setEMAChartPane(code,200);
 		} catch (RemoteException e1) {
 			e1.printStackTrace();
 		}
@@ -171,7 +171,6 @@ public class SingleStockUIController implements Initializable{
 			PredictController controller = loader.getController();
 			controller.set(predictVO,companyInfoVO);
 			emaChartAnchorPane.getChildren().add(pane);
-
 		}
 		if(timeSharingVO!=null){
 			chartService service = new TimeShareChart(timeSharingVO.getMinute_data(),timeSharingVO.getLast_close(),3);
@@ -262,8 +261,8 @@ public class SingleStockUIController implements Initializable{
 	public void setBasicInfoPane(SingleStockInfoVO vo,ComparedInfoVO vo1){
 		setStockInfoPane(vo.getCode(), vo.getName(), vo.getClose(), vo.getFudu(), vo.getHigh(),
 			    vo.getLow(), vo.getOpen(), vo.getVolume());
-		setKlinePane(vo.getCode());
-		setEMAChartPane(vo.getCode());
+		setKlinePane(vo.getCode(),200);
+		setEMAChartPane(vo.getCode(),200);
 		setDotPane(vo1.getDiantu());
 		setLogPane(vo1);
 	}
@@ -342,12 +341,12 @@ public class SingleStockUIController implements Initializable{
 		}
 
 	}
-	private void setKlinePane(String code){
+	private void setKlinePane(String code,int range){
 		kChartAnchorPane.getChildren().clear();
 		RemoteHelper remote = RemoteHelper.getInstance();
 		StockLogicInterface stockLogicInterface = remote.getStockLogic();
 		LocalDate systime = (LocalDate)dataController.get("SystemTime");
-		LocalDate beginTime = systime.minusDays(200);
+		LocalDate beginTime = systime.minusDays(range);
 		List<SingleStockInfoVO> vo;
 		List<SingleStockInfoVO> vo1;
 		chartService chartservice;
@@ -380,11 +379,11 @@ public class SingleStockUIController implements Initializable{
 		}
 	}
 	
-	private void setEMAChartPane(String code){
+	private void setEMAChartPane(String code,int range){
 		RemoteHelper remote = RemoteHelper.getInstance();
 		StockLogicInterface stockLogicInterface = remote.getStockLogic();
 		LocalDate systime =(LocalDate)dataController.get("SystemTime");
-		LocalDate begintime = systime.minusDays(200);
+		LocalDate begintime = systime.minusDays(range);
 		List<EMAInfoVO> vo;
 		List<EMAInfoVO> vo1;
 		chartService chartservice;
@@ -435,24 +434,39 @@ public class SingleStockUIController implements Initializable{
 	}
 	@FXML
 	protected void go125(ActionEvent e){
-
+		setKlinePane(getcode(),125);
+		setEMAChartPane(getcode(),125);
 	}
 
 	@FXML
 	protected void go150(ActionEvent e){
-
+		setKlinePane(getcode(),150);
+		setEMAChartPane(getcode(),150);
 	}
 
 	@FXML
 	protected void go175(ActionEvent e){
-
+		setKlinePane(getcode(),175);
+		setEMAChartPane(getcode(),175);
 	}
 
 	@FXML
 	protected void go200(ActionEvent e){
-
+		setKlinePane(getcode(),200);
+		setEMAChartPane(getcode(),200);
 	}
-
+	private String getcode(){
+		String name = (String)dataController.get("SingleStockNow");
+		RemoteHelper remoteHelper = RemoteHelper.getInstance();
+		StockLogicInterface stockLogicInterface = remoteHelper.getStockLogic();
+		String code = "";
+		try {
+			code = stockLogicInterface.nameToCode(name);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		return code;
+	}
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

@@ -1,7 +1,15 @@
 package logic.utility;
 
+import data.service.ICompanyDataInterface;
 import data.service.IDataInterface;
+import data.service.IStockDataInterface;
+import data.service.IStockSetInterface;
+import data.service.IStrategyDataInterface;
+import data.serviceimpl.CompanyDataController;
 import data.serviceimpl.DataInterfaceImpl;
+import data.serviceimpl.StockDataController_2;
+import data.serviceimpl.StockSetDataController;
+import data.serviceimpl.StrategyDataController;
 import exception.*;
 import po.SingleStockInfoPO;
 import vo.SaleVO;
@@ -15,7 +23,7 @@ import java.util.*;
  */
 public class Return {
     private Utility utility=Utility.getInstance();
-    private IDataInterface idi = new DataInterfaceImpl();
+    private IStockDataInterface stock = StockDataController_2.getInstance();
 
     private List<String> stockcode;
     private LocalDate begin;
@@ -109,15 +117,15 @@ public class Return {
     	        try {
     	            for (;
     	                 iter.compareTo(end)<=0;
-    	                 iter=idi.addDays(iter,days))
+    	                 iter=stock.addDays(iter,days))
     	            {
     	                double zheci=0;
     	                double shangci=0;
 
     	                    for (String name : stockcode) {
     	                        try {
-    	                        SingleStockInfoPO po1 = idi.getSingleStockInfo(name, iter);
-    	                        SingleStockInfoPO po2 = idi.getSingleStockInfo(name, idi.addDays(iter, days));
+    	                        SingleStockInfoPO po1 = stock.getSingleStockInfo(name, iter);
+    	                        SingleStockInfoPO po2 = stock.getSingleStockInfo(name, stock.addDays(iter, days));
     	                        zheci = zheci + getjiage(po1);
     	                        shangci = shangci + getjiage(po2);
     	                        }
@@ -156,7 +164,7 @@ public class Return {
             try {
                 for (;
                      iter.compareTo(end)<=0;
-                     iter=idi.addDays(iter,days))
+                     iter=stock.addDays(iter,days))
                 {
                     double zheci=0;
                     double shangci=0;
@@ -165,7 +173,7 @@ public class Return {
                     for(String name:stockcode){
                         try {
 
-                            polist.add(idi.getSingleStockInfo(name,iter));
+                            polist.add(stock.getSingleStockInfo(name,iter));
                         } catch (NullDateException e) {
                             continue;
                         }
@@ -192,7 +200,7 @@ public class Return {
                         SingleStockInfoPO poshangci = null;
 
                         try {
-                            poshangci = idi.getSingleStockInfo(pozheci.getCode(),idi.addDays(iter,days));
+                            poshangci = stock.getSingleStockInfo(pozheci.getCode(),stock.addDays(iter,days));
                         } catch (NullDateException e) {
 //                            System.out.println("as");
                             continue;
@@ -303,7 +311,7 @@ public class Return {
             LocalDate now=o1.getDate();
             LocalDate before=now.minusDays(days);
             try {
-                before = idi.addDays(now,-days);
+                before = stock.addDays(now,-days);
             } catch (DateOverException e) {
             }
 
@@ -313,7 +321,7 @@ public class Return {
             double rate1=0;
             double rate2=0;
             try {
-                o3 = idi.getSingleStockInfo(name1,before);
+                o3 = stock.getSingleStockInfo(name1,before);
 
 
             } catch (NullStockIDException e) {
@@ -323,7 +331,7 @@ public class Return {
             }
 
             try {
-                o4 = idi.getSingleStockInfo(name2,before);
+                o4 = stock.getSingleStockInfo(name2,before);
             } catch (NullStockIDException e) {
                 e.printStackTrace();
             } catch (NullDateException e) {
@@ -365,8 +373,8 @@ public class Return {
             long chengjiaoliang2=1;
             for (int i=0;i<days;i++) {
                 try {
-                    SingleStockInfoPO po1=idi.getSingleStockInfo(code1,time.minusDays(i));
-                    SingleStockInfoPO po2=idi.getSingleStockInfo(code2,time.minusDays(i));
+                    SingleStockInfoPO po1=stock.getSingleStockInfo(code1,time.minusDays(i));
+                    SingleStockInfoPO po2=stock.getSingleStockInfo(code2,time.minusDays(i));
                     j++;
                     chengjiaoliang1+=po1.getVolume();
                     chengjiaoliang2+=po2.getVolume();

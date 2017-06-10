@@ -33,7 +33,39 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 		sli = new StockLogicImpl();
 		frodi = new ForecastRODImpl();
 	}
-
+	/**
+	 * 获取市场指数的两个图
+	 * @param name 市场名字
+	 * @param begin 开始日期
+	 * @param end 结束日期
+	 * @return
+	 * @throws RemoteException
+	 * @throws DateInvalidException
+	 * @throws BeginInvalidException
+	 * @throws EndInvalidException
+	 * @throws NullStockIDException
+	 */
+	public ExponentChartVO getExponentChart(String name,LocalDate begin,LocalDate end)
+			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException{
+		return sli.getExponentChart(name, begin, end);
+	}
+	/**
+	 * 获取市场的均线图
+	 * @param name 市场名
+	 * @param begin 开始日期
+	 * @param end 结束日期
+	 * @return
+	 * @throws RemoteException
+	 * @throws DateInvalidException
+	 * @throws BeginInvalidException
+	 * @throws EndInvalidException
+	 * @throws NullStockIDException
+	 */
+	public List<EMAInfoVO> getExponentEMAInfo( String name, LocalDate begin, LocalDate end )
+			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException
+	{
+		return sli.getExponentEMAInfo(name, begin, end);
+	}
 	public List<SingleStockInfoVO> getExponentInfoByTime (String stockCode, LocalDate begin, LocalDate end )
 			 throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException{
 		return sli.getExponentInfoByTime(stockCode, begin, end);

@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import com.sun.org.apache.regexp.internal.RE;
 import exception.*;
 import org.controlsfx.control.Notifications;
 
@@ -31,6 +32,7 @@ import presentation.chart.piechart.YieldFanChart;
 import presentation.chart.scatterchart.YieldPointChart;
 import rmi.RemoteHelper;
 import sun.jvm.hotspot.oops.Klass;
+import vo.EMAInfoVO;
 import vo.MarketInfoVO;
 import vo.SingleStockInfoVO;
 
@@ -85,6 +87,9 @@ public class StatisticsUIController implements Initializable {
 	
 	@FXML
 	Label varianLabel;
+
+	@FXML
+	AnchorPane emaAnchorPane;
 
 	@FXML
 	AnchorPane KLineAnchorPane;
@@ -171,6 +176,16 @@ public class StatisticsUIController implements Initializable {
 		KLineAnchorPane.getChildren().clear();
 		KLineAnchorPane.getChildren().add(pane);
 	}
+	private  void intiEMAPane(String code){
+		LocalDate end = (LocalDate)dataController.get("SystemTime");
+		LocalDate begin = end.minusDays(200);
+		RemoteHelper remoteHelper = RemoteHelper.getInstance();
+		StockLogicInterface stockLogicInterface = remoteHelper.getStockLogic();
+//		EMAInfoVO vo = stockLogicInterface.getExponentEMAInfo(code,begin,end);
+
+
+	}
+
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

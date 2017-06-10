@@ -1,7 +1,15 @@
 package logic.utility;
 
+import data.service.ICompanyDataInterface;
 import data.service.IDataInterface;
+import data.service.IStockDataInterface;
+import data.service.IStockSetInterface;
+import data.service.IStrategyDataInterface;
+import data.serviceimpl.CompanyDataController;
 import data.serviceimpl.DataInterfaceImpl;
+import data.serviceimpl.StockDataController_2;
+import data.serviceimpl.StockSetDataController;
+import data.serviceimpl.StrategyDataController;
 import exception.NullStockIDException;
 import exception.PriceTypeException;
 import po.StrategyShowPO;
@@ -16,13 +24,14 @@ import java.util.List;
  */
 public class SaveThread extends Thread{
     private Return stragety;
-    private IDataInterface idi = new DataInterfaceImpl();
+	private IStockSetInterface set = StockSetDataController.getInstance();
+	private IStrategyDataInterface strategy = StrategyDataController.getInstance();
     private String username;
     private String name;
     public SaveThread(StrategyConditionVO strategyConditionVO, SaleVO saleVO,String username,String name){
         this.username=username;
         this.name=name;
-        List<String> stocklistname=idi.getStockSetInfo("HS300",null);
+        List<String> stocklistname=set.getStockSetInfo("HS300",null);
         LocalDate now=LocalDate.of(2016,1,1);
         LocalDate start=now.minusDays(100);
         stragety=new Return(stocklistname,start,now,saleVO,strategyConditionVO);
@@ -55,7 +64,7 @@ public class SaveThread extends Thread{
         double zuidahuiche=stragety.getzuidaguiceh();
 
         StrategyShowPO po=new StrategyShowPO(timelist,basicreturn,strategylist,alpha,beta,sharp,zuidahuiche,yearreturn,jizhunyearreturn);
-        idi.addStrategyShow(username,name,po);
+        strategy.addStrategyShow(username,name,po);
     }
 
 }
