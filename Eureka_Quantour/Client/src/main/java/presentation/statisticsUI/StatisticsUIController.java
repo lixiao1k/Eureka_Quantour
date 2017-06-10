@@ -28,6 +28,7 @@ import javafx.scene.layout.Pane;
 import logic.service.StockLogicInterface;
 import presentation.chart.chartService;
 import presentation.chart.klineChart.KLineChart;
+import presentation.chart.lineChart.EMAChart;
 import presentation.chart.piechart.YieldFanChart;
 import presentation.chart.scatterchart.YieldPointChart;
 import rmi.RemoteHelper;
@@ -112,6 +113,7 @@ public class StatisticsUIController implements Initializable {
 				Notifications.create().title("异常").text("暂时无沪深300大盘指数").showWarning();
 			}else{
 				initKLinePane(marketComboBox.getValue());
+				intiEMAPane(marketComboBox.getValue());
 			}
 
 
@@ -181,8 +183,23 @@ public class StatisticsUIController implements Initializable {
 		LocalDate begin = end.minusDays(200);
 		RemoteHelper remoteHelper = RemoteHelper.getInstance();
 		StockLogicInterface stockLogicInterface = remoteHelper.getStockLogic();
-//		EMAInfoVO vo = stockLogicInterface.getExponentEMAInfo(code,begin,end);
-
+		try {
+			List<EMAInfoVO> list = stockLogicInterface.getExponentEMAInfo(code,begin,end);
+			chartService service = new EMAChart(list);
+			Pane pane = service.getchart(463,154,true);
+			emaAnchorPane.getChildren().clear();
+			emaAnchorPane.getChildren().add(pane);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		} catch (DateInvalidException e) {
+			Notifications.create().title("异常").text(e.toString()).showWarning();
+		} catch (BeginInvalidException e) {
+			Notifications.create().title("异常").text(e.toString()).showWarning();
+		} catch (EndInvalidException e) {
+			Notifications.create().title("异常").text(e.toString()).showWarning();
+		} catch (NullStockIDException e) {
+			Notifications.create().title("异常").text(e.toString()).showWarning();
+		}
 
 	}
 
@@ -227,6 +244,8 @@ public class StatisticsUIController implements Initializable {
 		marketList.addAll("SHA","SHB","SZA","SZB","CYB","ZXB","HS300");
 		marketComboBox.getItems().addAll(marketList);
 		marketComboBox.setPromptText("选择股市");
+		marketComboBox.setValue("SHA");
+		setMarket(new ActionEvent());
 	}
 
 }
