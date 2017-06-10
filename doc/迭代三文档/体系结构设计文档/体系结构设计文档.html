@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+	<title>软件架构设计文档</title>
+	<style>
+		.tdl {width:100px;}
+		.tdr {width:150px;}
+		.tdh {width:100px;text-align: center}
+		.kfont {font-family:"楷体";}
+		body{
+			background-color:rgb(199,237,204);
+			margin-left: 20%;
+			margin-right: 20%;
+			border:2px dotted black;
+			padding:10px 10px 10px 10px;
+			font-family: sans-serif;
+		}
+	</style>
+</head>
+<body>
+<div style="margin: 0 auto;">
+	<h3 class="kfont">更新历史</h3>
+	<table style="font-family: 楷体;" border="2" width="600px" cellpadding="0">
+		<tr>
+			<th>修改人员</th>
+			<th>日期</th>
+			<th>变更原因</th>
+			<th>版本号</th>
+		</tr>
+		<tr>
+			<td>黄泽鹏</td>
+			<td>2017/5/28</td>
+			<td>构建基本框架</td>
+			<td>V1.0</td>
+		</tr>
+		<tr>
+			<td>刘宇翔</td>
+			<td>2017/5/30</td>
+			<td>数据层供接口</td>
+			<td>V1.1</td>
+		</tr>
+		<tr>
+			<td>黄泽鹏</td>
+			<td>2017/6/2</td>
+			<td>VO、PO、Exception定义</td>
+			<td>V1.2</td>
+		</tr>
+	</table>
+
+	<br>
+
+	<h1>目录</h1>
+	<ol>
+		<li>
+<div>引言
+<br>1.1、目的
+<br>1.2、范围
+<br>1.3、参考文献
+<br>1.4、名词与术语
+</div>
+		</li>
+		<li>
+<div>逻辑视图
+<br>2.1、分层架构图
+<br>2.2、逻辑包图
+</div>
+		</li>
+		<li>
+<div>物理视图
+<br>3.1、物理包的划分
+<br>3.2、物理包图
+</div>
+		</li>
+		<li>
+<div>接口视图
+<br>4.1、模块的职责
+<br>4.2、模块的接口规范
+</div>
+		</li>
+		<li>
+<div>信息视角
+</div>
+		</li>
+	</ol>
+
+	<br>
+
+	<h2>1、引言</h2>
+	<table style="font-family: 楷体;" border="1" width="600px" cellpadding="0">
+		<tr>
+			<th class="tdl">编写目的</th>
+			<td>
+				本文档提供股票信息分析系统的软件架构概览，采用若干架构视图描述系统的不同方面，以便表示构造系统所需要的重要架构决策。
+			</td>
+		</tr>
+		<tr>
+			<th>对象和范围</th>
+			<td>
+				本文档的读者是 Eureka 团队内部的开发和管理人员,参考了《软件工程与计算（三）》中的《Sharing Team软件架构设计文档片段》，用于指导下一循环的代码开发和测试工作。
+			</td>
+		</tr>
+		<tr>
+			<th>参考文献</th>
+			<td>
+				《项目启动文档》<br>
+				《软件需求规格说明书》<br>
+				《软件架构文档模板》<br>
+				《软件工程与计算（卷三）》
+			</td>
+		</tr>
+		<tr>
+			<th>名词和术语</th>
+			<td></td>
+		</tr>
+	</table>
+
+	<br>
+
+	<h2>2、逻辑视角</h2>
+	<h3>2.1、分层架构图</h3>
+	<img src="分层架构图.png">
+
+	<br>
+
+	<h3>2.2、逻辑包图</h3>
+	<img src="">
+
+	<br>
+	<br>
+
+	<h2>3、组合视图</h2>
+	<h3>3.1、物理包的划分</h3>
+	<table  style="font-family: 楷体;" border="1" width="600px" cellpadding="0">
+		<tr>
+			<th>开发（物理包）</th>
+			<th>依赖的其他开发包</th>
+		</tr>
+		<tr>
+			<td>&nbsp;dataController</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>&nbsp;browseStrategyUI</td>
+			<td>
+				&nbsp;dataController, logic, chart, mainScreen<br>
+				&nbsp;marketUI, rmi, vo
+			</td>
+		</tr>
+		<tr>
+			<td>&nbsp;chart</td>
+			<td>&nbsp;vo, en_um</td>
+		</tr>
+		<tr>
+			<td>&nbsp;loginUI</td>
+			<td>&nbsp;dataController, exception, logic, rmi</td>
+		</tr>
+		<tr>
+			<td>&nbsp;mainScreen</td>
+			<td>
+				&nbsp;dataController, browseStrategyUI, marketUI<br>
+				&nbsp;stockSetUI, strategyUI, rmi, vo
+			</td>
+		</tr>
+		<tr>
+			<td>&nbsp;marketUI</td>
+			<td>
+				&nbsp;dataController, exception, logic, rmi<br>
+				&nbsp;vo, chart, mainScreen, singleStockUI
+			</td>
+		</tr>
+		<tr>
+			<td>&nbsp;saveAsPNG</td>
+			<td></td>
+		</tr>
+		
+		<tr>
+			<td>&nbsp;singleStockUI</td>
+			<td>
+				&nbsp;dataController, exception, logic, en_um<br>
+				&nbsp;chart, saveAsPNG, rmi, vo
+			</td>
+		</tr>
+		<tr>
+			<td>&nbsp;statisticsUI</td>
+			<td>
+				&nbsp;dataController, exception, logic, en_um<br>
+				&nbsp;chart, rmi, vo
+			</td>
+		</tr>
+		<tr>
+			<td>&nbsp;stockSetUI</td>
+			<td>
+				&nbsp;dataController, exception, logic, en_um<br>
+				&nbsp;chart, rmi, vo
+			</td>
+		</tr>
+		<tr>
+			<td>&nbsp;strategyUI</td>
+			<td>
+				&nbsp;dataController, exception, logic, chart<br>
+				&nbsp;marketUI, saveAsPNG, rmi, vo
+			</td>
+		</tr>
+		<tr>
+			<td>&nbsp;rmi</td>
+			<td>&nbsp;exception, logic, vo, po, data</td>
+		</tr>
+		<tr>
+			<td>&nbsp;logic</td>
+			<td>&nbsp;data, exception, vo, po</td>
+		</tr>
+		<tr>
+			<td>&nbsp;data</td>
+			<td>&nbsp;exception, po</td>
+		</tr>
+		<tr>
+			<td>&nbsp;vo</td>
+			<td>&nbsp;po</td>
+		</tr>
+		<tr>
+			<td>&nbsp;po</td>
+			<td></td>
+		</tr>
+	</table>
+
+	<br>
+
+	<h3>3.2、物理包图</h3>
+	<img src="">	
+
+	<br>
+	<br>
+
+	<h2>4、接口视图</h2>
+	<h3>4.1、模块的职责</h3>
+	<p>客户端模块如图所示。客户端各层职责由表2所示。</p>
+	<img src="模块视图.png" width="333" height="270">
+
+	<br>
+
+	<table style="font-family: 楷体;" border="1" width="600px" cellpadding="0">
+	<caption>表 2 客户端各层职责</caption>
+	<tr>
+		<th align="center">层</th>
+		<th align="center">职责</th>
+	</tr>
+	<tr>
+		<td>&nbsp;启动模块</td>
+		<td>&nbsp;负责初始化网络通信机制，启动用户界面</td>
+	</tr>
+	<tr>
+		<td>&nbsp;界面层</td>
+		<td>&nbsp;基于窗口的股票信息分析系统客户端用户界面</td>
+	</tr>
+	<tr>
+		<td>&nbsp;逻辑层</td>
+		<td>&nbsp;对于用户界面的输入进行响应并进行业务处理</td>
+	</tr>
+	<tr>
+		<td>&nbsp;数据层</td>
+		<td>&nbsp;接受逻辑层请求并调用数据库获取数据</td>
+	</tr>
+	</table>
+
+	<br>
+
+	<table style="font-family: 楷体;" border="1" width="600px" cellpadding="0">
+	<caption>层之间调用的接口</caption>
+	<tr>
+		<th>接口</th>
+		<th>服务调用方</th>
+		<th>服务提供方</th>
+	</tr>
+	<tr>
+		<td>
+			&nbsp;ClientLogicInterface<br>
+			&nbsp;ForecastRODInterface<br>
+			&nbsp;StockLogicInterface
+		</td>
+		<td>&nbsp;界面层</td>
+		<td>&nbsp;逻辑层</td>
+	</tr>
+	<tr>
+		<td>
+			&nbsp;IDataInterface
+		</td>
+		<td>&nbsp;逻辑层</td>
+		<td>&nbsp;数据层</td>
+	</tr>
+	</table>
+
+	<br>
+
+	<h3>4.2、用户界面模块的接口规范</h3>
+	<h4>4.2.1、用户界面模块的分解</h4>
+	<table  style="font-family: 楷体;" border="1" width="600px" cellpadding="0">
+	<tr>
+		<th>模块</th>
+		<th>职责</th>
+	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+	</tr>
+	</table>
+
+	<br>
+
+	<table style="font-family: 楷体;" border="1" width="600px" cellpadding="0">
+	<tr>
+		<th colspan="3">需要的服务（需接口）</th>
+	</tr>
+	<tr>
+		<th class="tdr">服务名</th>
+		<th>服务</th>
+	</tr>
+	<tr>
+		<td>&nbsp;ClientLogicInterface</td>
+		<td>&nbsp;用户登录和退出</td>
+	</tr>
+	<tr>
+		<td>&nbsp;ForecastRODInterface</td>
+		<td>&nbsp;对股票明天价格的预测</td>
+	</tr>
+	<tr>
+		<td>&nbsp;StockLogicInterface</td>
+		<td>&nbsp;对于股票和市场信息的获取</td>
+	</tr>
+	</table>
+
+	<br>
+
+	<h4>4.2.2、业务逻辑模块的分解</h4>
+	<h5>4.2.2.1、业务逻辑层模块的职责</h5>
+	<table style="font-family: 楷体;" border="1" width="600px" cellpadding="0">
+		<tr>
+			<th>模块</th>
+			<th>职责</th>
+		</tr>
+	</table>
+
+	<h5>4.2.2.2、业务逻辑层模块接口规范</h5>
+	<table style="font-family: 楷体;" border="1" width="600px" cellpadding="0">
+	<caption> BL 层接口规范</caption>
+	<tr>
+		<th colspan="3">提供的服务（供接口）</th>
+	</tr>
+
+	<tr>
+		<td rowspan="3" class="tdr"></td>
+		<td class="tdh">语法</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td class="tdh">前置条件</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td class="tdh">后置条件</td>
+		<td></td>
+	</tr>
+
+	<tr>
+		<td rowspan="3" class="tdr"></td>
+		<td class="tdh">语法</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td class="tdh">前置条件</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td class="tdh">后置条件</td>
+		<td></td>
+	</tr>
+	</table>
+
+	<table style="font-family: 楷体;" border="1" width="600px" cellpadding="0">
+	<tr>
+		<th colspan="3">需要的服务（需接口）</th>
+	</tr>
+	<tr>
+		<th class="tdr">服务名</th>
+		<th>服务</th>
+	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+	</tr>
+	</table>
+
+	<br>
+
+	<h4>4.2.3、数据层的分解</h4>
+	<h5>4.2.3.1、数据层模块的职责</h5>
+	<table style="font-family: 楷体;" border="1" width="600px" cellpadding="0">
+
+		<tr>
+			<th>模块</th>
+			<th>职责</th>
+		</tr>
+	</table>
+
+	<h5>4.2.3.2、数据层模块的接口规范</h5>
+	<table style="font-family: 楷体;" border="1" width="600px" cellpadding="0">
+	<caption>stockdata层接口规范</caption>
+	<tr>
+		<th colspan="3">提供的服务（供接口）</th>
+	</tr>
+
+	<tr>
+		<td rowspan="3" class="tdr">StockDataService.<br>getTimeSharingData</td>
+		<td class="tdh">语法</td>
+		<td>public List<Double> getTimeSharingData(String code,LocalDate date)throws TimeShraingLackException,NullStockIDException</td>
+	</tr>
+	<tr>
+		<td class="tdh">前置条件</td>
+		<td>存在的交易日和股票编号</td>
+	</tr>
+	<tr>
+		<td class="tdh">后置条件</td>
+		<td>获得股票的分时图</td>
+	</tr>
+
+	<tr>
+		<td rowspan="3" class="tdr">StockDataService.<br>addBrowseTimes</td>
+		<td class="tdh">语法</td>
+		<td>public void addBrowseTimes(String stockCode) throws NullStockIDException</td>
+	</tr>
+	<tr>
+		<td class="tdh">前置条件</td>
+		<td>股票编号</td>
+	</tr>
+	<tr>
+		<td class="tdh">后置条件</td>
+		<td>无</td>
+	</tr>
+	
+		<tr>
+		<td rowspan="3" class="tdr">StockDataService.<br>fuzzySearch</td>
+		<td class="tdh">语法</td>
+		<td>public List<String> fuzzySearch(String code)</td>
+	</tr>
+	<tr>
+		<td class="tdh">前置条件</td>
+		<td>用户输入</td>
+	</tr>
+	<tr>
+		<td class="tdh">后置条件</td>
+		<td>存在该字段的搜索结果</td>
+	</tr>
+	
+			<tr>
+		<td rowspan="3" class="tdr">StockDataService.<br>getMinDay</td>
+		<td class="tdh">语法</td>
+		<td>public LocalDate getMinDay(String stockCode) throws NullStockIDException</td>
+	</tr>
+	<tr>
+		<td class="tdh">前置条件</td>
+		<td>存在的股票编号</td>
+	</tr>
+	<tr>
+		<td class="tdh">后置条件</td>
+		<td>该股票最早一日交易日</td>
+	</tr>
+	
+			<td rowspan="3" class="tdr">StockDataService.<br>getMaxDay</td>
+		<td class="tdh">语法</td>
+		<td>public LocalDate getMaxDay(String stockCode) throws NullStockIDException</td>
+	</tr>
+	<tr>
+		<td class="tdh">前置条件</td>
+		<td>存在的股票编号</td>
+	</tr>
+	<tr>
+		<td class="tdh">后置条件</td>
+		<td>该股票最晚一日交易日</td>
+	</tr>
+	
+				<td rowspan="3" class="tdr">StockDataService.<br>getSingleStockInfo</td>
+		<td class="tdh">语法</td>
+		<td>	public SingleStockInfoPO getSingleStockInfo(String stockcode, LocalDate date) 
+			throws NullStockIDException, NullDateException</td>
+	</tr>
+	<tr>
+		<td class="tdh">前置条件</td>
+		<td>存在的股票编号和交易日</td>
+	</tr>
+	<tr>
+		<td class="tdh">后置条件</td>
+		<td>该日该股票情况</td>
+	</tr>
+	
+					<td rowspan="3" class="tdr">StockDataService.<br>addDays</td>
+		<td class="tdh">语法</td>
+		<td>	public LocalDate addDays(LocalDate date,int last,boolean zheng) throws DateOverException</td>
+	</tr>
+	<tr>
+		<td class="tdh">前置条件</td>
+		<td>正确的时间</td>
+	</tr>
+	<tr>
+		<td class="tdh">后置条件</td>
+		<td>从该日起向前后推x天的日期</td>
+	</tr>
+	</table>
+	
+	
+	<br><br>
+	<table style="font-family: 楷体;" border="1" width="600px" cellpadding="0">
+	<caption>stocksetdata层接口规范</caption>
+	<tr>
+		<th colspan="3">提供的服务（供接口）</th>
+	</tr>
+
+	<tr>
+		<td rowspan="3" class="tdr">StockSet.<br>getStockSet</td>
+		<td class="tdh">语法</td>
+		<td>public List<String> getStockSet(String username)</td>
+	</tr>
+	<tr>
+		<td class="tdh">前置条件</td>
+		<td>存在的用户名</td>
+	</tr>
+	<tr>
+		<td class="tdh">后置条件</td>
+		<td>该用户所有股票池</td>
+	</tr>
+	
+		<tr>
+		<td rowspan="3" class="tdr">StockSet.<br>addStockSet</td>
+		<td class="tdh">语法</td>
+		<td>public void addStockSet(String stockSetName, String username) throws StockSetNameRepeatException</td>
+	</tr>
+	<tr>
+		<td class="tdh">前置条件</td>
+		<td>存在的用户名，不重复的股票池名字</td>
+	</tr>
+	<tr>
+		<td class="tdh">后置条件</td>
+		<td>添加一个新的股票池</td>
+	</tr>
+	
+			<tr>
+		<td rowspan="3" class="tdr">StockSet.<br>deleteStockSet</td>
+		<td class="tdh">语法</td>
+		<td>public void deleteStockSet(String stockSetName, String username)</td>
+	</tr>
+	<tr>
+		<td class="tdh">前置条件</td>
+		<td>存在的用户名，股票池名字</td>
+	</tr>
+	<tr>
+		<td class="tdh">后置条件</td>
+		<td>删除一个股票池</td>
+	</tr>
+	
+			<tr>
+		<td rowspan="3" class="tdr">StockSet.<br>addStockToStockSet</td>
+		<td class="tdh">语法</td>
+		<td>public void addStockToStockSet(String stockName, String stockSetName, String username) throws
+	StockNameRepeatException</td>
+	</tr>
+	<tr>
+		<td class="tdh">前置条件</td>
+		<td>存在的用户名，股票池名字，不重复的股票编号</td>
+	</tr>
+	<tr>
+		<td class="tdh">后置条件</td>
+		<td>添加一个新的股票到股票池</td>
+	</tr>
+	
+			<tr>
+		<td rowspan="3" class="tdr">StockSet.<br>deleteStockFromStockSet</td>
+		<td class="tdh">语法</td>
+		<td>public void deleteStockFromStockSet(String stockName, String stockSetName, String username)</td>
+	</tr>
+	<tr>
+		<td class="tdh">前置条件</td>
+		<td>存在的用户名，股票池名字，股票编号</td>
+	</tr>
+	<tr>
+		<td class="tdh">后置条件</td>
+		<td>删除一个股票从股票池</td>
+	</tr>
+	
+				<tr>
+		<td rowspan="3" class="tdr">StockSet.<br>getStockSetInfo</td>
+		<td class="tdh">语法</td>
+		<td>public List<String>  getStockSetInfo(String stockSetName,String userName)</td>
+	</tr>
+	<tr>
+		<td class="tdh">前置条件</td>
+		<td>存在的用户名，股票池名字</td>
+	</tr>
+	<tr>
+		<td class="tdh">后置条件</td>
+		<td>股票池中所有股票编号</td>
+	</tr>
+	
+					<tr>
+		<td rowspan="3" class="tdr">StockSet.<br>getStockSetInfo</td>
+		<td class="tdh">语法</td>
+		<td>public List<String>  getStockSetInfo(String stockSetName)</td>
+	</tr>
+	<tr>
+		<td class="tdh">前置条件</td>
+		<td>存在的股票池名字</td>
+	</tr>
+	<tr>
+		<td class="tdh">后置条件</td>
+		<td>股票池中所有股票编号</td>
+	</tr>
+	
+						<tr>
+		<td rowspan="3" class="tdr">StockSet.<br> getIndustryList</td>
+		<td class="tdh">语法</td>
+		<td>public List<String> getIndustryList()</td>
+	</tr>
+	<tr>
+		<td class="tdh">前置条件</td>
+		<td>无</td>
+	</tr>
+	<tr>
+		<td class="tdh">后置条件</td>
+		<td>所有行业板块名字</td>
+	</tr>
+	
+							<tr>
+		<td rowspan="3" class="tdr">StockSet.<br> getConceptList</td>
+		<td class="tdh">语法</td>
+		<td>public List<String> getConceptList()</td>
+	</tr>
+	<tr>
+		<td class="tdh">前置条件</td>
+		<td>无</td>
+	</tr>
+	<tr>
+		<td class="tdh">后置条件</td>
+		<td>所有概念板块名字</td>
+	</tr>
+	
+							<tr>
+		<td rowspan="3" class="tdr">StockSet.<br> getAreaList</td>
+		<td class="tdh">语法</td>
+		<td>public List<String> getAreaList()</td>
+	</tr>
+	<tr>
+		<td class="tdh">前置条件</td>
+		<td>无</td>
+	</tr>
+	<tr>
+		<td class="tdh">后置条件</td>
+		<td>所有地域板块名字</td>
+	</tr>
+	</table>
+	</table>
+	
+	
+	
+	
+	<br><br>
+		<table style="font-family: 楷体;" border="1" width="600px" cellpadding="0">
+	<caption>strategydata层接口规范</caption>
+	<tr>
+		<th colspan="3">提供的服务（供接口）</th>
+	</tr>
+
+	<tr>
+		<td rowspan="3" class="tdr">strategy.<br>saveStrategy</td>
+		<td class="tdh">语法</td>
+		<td>public void saveStrategy(StrategyInfoPO po,String strategyName,String username) throws StrategyRepeatException</td>
+	</tr>
+	<tr>
+		<td class="tdh">前置条件</td>
+		<td>存在的用户名，配置信息，策略名字</td>
+	</tr>
+	<tr>
+		<td class="tdh">后置条件</td>
+		<td>存储一个策略</td>
+	</tr>
+	
+		<tr>
+		<td rowspan="3" class="tdr">strategy.<br>deleteStrategy</td>
+		<td class="tdh">语法</td>
+		<td>	public void deleteStrategy ( String createName, String strategyName)</td>
+	</tr>
+	<tr>
+		<td class="tdh">前置条件</td>
+		<td>存在的用户名，策略名字</td>
+	</tr>
+	<tr>
+		<td class="tdh">后置条件</td>
+		<td>删除一个策略</td>
+	</tr>
+	
+	
+			<tr>
+		<td rowspan="3" class="tdr">strategy.<br>comment</td>
+		<td class="tdh">语法</td>
+		<td>public void comment(String Username, String strategyName, String commenterName, LocalDateTime time, String comment)</td>
+	</tr>
+	<tr>
+		<td class="tdh">前置条件</td>
+		<td>创建者名字，策略名字，评论者名字，评论，时间</td>
+	</tr>
+	<tr>
+		<td class="tdh">后置条件</td>
+		<td>评论一个策略</td>
+	</tr>
+	
+				<tr>
+		<td rowspan="3" class="tdr">strategy.<br>getStrategy</td>
+		<td class="tdh">语法</td>
+		<td>public StrategyShowPO getStrategy ( String createrName, String StrategyName )</td>
+	</tr>
+	<tr>
+		<td class="tdh">前置条件</td>
+		<td>创建者名字，策略名字</td>
+	</tr>
+	<tr>
+		<td class="tdh">后置条件</td>
+		<td>获得一个策略的详细信息</td>
+	</tr>
+	
+	
+					<tr>
+		<td rowspan="3" class="tdr">strategy.<br>applyStrategy</td>
+		<td class="tdh">语法</td>
+		<td>public StrategyInfoPO applyStrategy(String createrName,String strategyName)</td>
+	</tr>
+	<tr>
+		<td class="tdh">前置条件</td>
+		<td>创建者名字，策略名字</td>
+	</tr>
+	<tr>
+		<td class="tdh">后置条件</td>
+		<td>应用一个策略的方案</td>
+	</tr>
+	
+	
+						<tr>
+		<td rowspan="3" class="tdr">strategy.<br>addStrategyShow</td>
+		<td class="tdh">语法</td>
+		<td>public void addStrategyShow ( String createrName, String StrategyName ,StrategyShowPO vo)</td>
+	</tr>
+	<tr>
+		<td class="tdh">前置条件</td>
+		<td>创建者名字，策略名字，策略详细信息</td>
+	</tr>
+	<tr>
+		<td class="tdh">后置条件</td>
+		<td>存储一个策略的详细信息</td>
+	</tr>
+	
+							<tr>
+		<td rowspan="3" class="tdr">strategy.<br>getStrategyComments</td>
+		<td class="tdh">语法</td>
+		<td>public List<CommentPO> getStrategyComments(String createrName,String strategyName)</td>
+	</tr>
+	<tr>
+		<td class="tdh">前置条件</td>
+		<td>创建者名字，策略名字</td>
+	</tr>
+	<tr>
+		<td class="tdh">后置条件</td>
+		<td>这个策略的所有评价</td>
+	</tr>
+	
+		
+							<tr>
+		<td rowspan="3" class="tdr">strategy.<br> clearStrategyShow </td>
+		<td class="tdh">语法</td>
+		<td>	public void clearStrategyShow ()</td>
+	</tr>
+	<tr>
+		<td class="tdh">前置条件</td>
+		<td>无</td>
+	</tr>
+	<tr>
+		<td class="tdh">后置条件</td>
+		<td>清空所有策略详细信息</td>
+	</tr>
+	
+		
+							<tr>
+		<td rowspan="3" class="tdr">strategy.<br>getStrategyList</td>
+		<td class="tdh">语法</td>
+		<td>public List<StrategyShowPO> getStrategyList ( String createrName)</td>
+	</tr>
+	<tr>
+		<td class="tdh">前置条件</td>
+		<td>创建者名字</td>
+	</tr>
+	<tr>
+		<td class="tdh">后置条件</td>
+		<td>获得该用户所有策略</td>
+	</tr>
+	
+		
+							<tr>
+		<td rowspan="3" class="tdr">strategy.<br>getStrategyList</td>
+		<td class="tdh">语法</td>
+		<td>public List<StrategyShowPO> getStrategyList ( )</td>
+	</tr>
+	<tr>
+		<td class="tdh">前置条件</td>
+		<td>无</td>
+	</tr>
+	<tr>
+		<td class="tdh">后置条件</td>
+		<td>获得所有公开策略</td>
+	</tr>
+	
+	
+		
+							<tr>
+		<td rowspan="3" class="tdr">strategy.<br>setPublic</td>
+		<td class="tdh">语法</td>
+		<td>public void setPublic(String creatroName, String straetgyName,boolean property)</td>
+	</tr>
+	<tr>
+		<td class="tdh">前置条件</td>
+		<td>创建者名字，策略名字，是否公开</td>
+	</tr>
+	<tr>
+		<td class="tdh">后置条件</td>
+		<td>修改一个策略的公开属性</td>
+	</tr>
+	</table>
+	</table>
+	
+	
+	
+		<br><br>
+		<table style="font-family: 楷体;" border="1" width="600px" cellpadding="0">
+	<caption>userdata层接口规范</caption>
+	<tr>
+		<th colspan="3">提供的服务（供接口）</th>
+	</tr>
+
+	<tr>
+		<td rowspan="3" class="tdr">user.<br>signUpCheck</td>
+		<td class="tdh">语法</td>
+		<td>public void signUpCheck(String username, String password) throws UserNameRepeatException</td>
+	</tr>
+	<tr>
+		<td class="tdh">前置条件</td>
+		<td>不重复的用户名与密码</td>
+	</tr>
+	<tr>
+		<td class="tdh">后置条件</td>
+		<td>注册一个新账号</td>
+	</tr>
+	
+		<tr>
+		<td rowspan="3" class="tdr">user.<br>signInCheck</td>
+		<td class="tdh">语法</td>
+		<td>public void signInCheck(String username,String password) throws LogErrorException</td>
+	</tr>
+	<tr>
+		<td class="tdh">前置条件</td>
+		<td>用户名与密码</td>
+	</tr>
+	<tr>
+		<td class="tdh">后置条件</td>
+		<td>登录该用户</td>
+	</tr>
+	
+	
+			<tr>
+		<td rowspan="3" class="tdr">user.<br>logout</td>
+		<td class="tdh">语法</td>
+		<td>public void logout(String username)</td>
+	</tr>
+	<tr>
+		<td class="tdh">前置条件</td>
+		<td>用户名</td>
+	</tr>
+	<tr>
+		<td class="tdh">后置条件</td>
+		<td>登出该用户</td>
+	</tr>
+	</table>
+	</table>
+
+	<br>
+
+	<h2>5、信息视角</h2>
+
+	<h4><big>VO定义</big></h3>
+	<ul type="disc">
+		<li>
+			<strong>CommentVO:</strong><br>
+			&nbsp;&nbsp;comment: 评论内容<br>
+			&nbsp;&nbsp;commentTime: 评论时间<br>
+			&nbsp;&nbsp;commenterName: 评论者姓名
+		</li>
+		<li>
+			<strong>ComparedInfoVO:</strong><br>
+			&nbsp;&nbsp;List&lt;Double&gt;logYieldA: 每个日期的对数收益率<br>
+			&nbsp;&nbsp;List&lt;LocalDate&gt; date: 对应日期<br>
+			&nbsp;&nbsp;List&lt;Integer&gt; diantu: 每个收益率的个数
+		</li>
+		<li>
+			<strong>EMAInfoVO:</strong><br>
+			&nbsp;&nbsp;List&lt;LocalDate&gt; date: 日期<br>
+			&nbsp;&nbsp;List&lt;Double&gt; EMA: 每个日期对应均值<br>
+			&nbsp;&nbsp;tianshu: 均值按几日计算
+		</li>
+		<li>
+			<strong>MarketInfoVO:</strong><br>
+			&nbsp;&nbsp;volume: 每日交易量<br>
+			&nbsp;&nbsp;zhangting: 涨停股票数<br>
+			&nbsp;&nbsp;dieting: 跌停股票数<br>
+			&nbsp;&nbsp;tingpai: 停牌股票数<br>
+			&nbsp;&nbsp;junzhi: 市场股票价格均值<br>
+			&nbsp;&nbsp;fangcha: 市场股票价格方差<br>
+			&nbsp;&nbsp;List&lt;Integer&gt; shanxingtu: 各涨跌幅度股票数（range:5%）<br>
+			&nbsp;&nbsp;List&lt;Integer&gt; diantu:各涨跌幅股票数（range:1%） <br>
+		</li>
+		<li>
+			<strong>PredictVO:</strong><br>
+			&nbsp;&nbsp;predictPrice: 预测股票价格<br>
+			&nbsp;&nbsp;predictROD: 预测股票涨跌幅
+		</li>
+		<li>
+			<strong>SaleVO:</strong><br>
+			&nbsp;&nbsp;tiaocangqi: 调仓期（default:10）<br>
+			&nbsp;&nbsp;tiaocangjiage: 调仓价格（default:收盘价）<br>
+			&nbsp;&nbsp;num: 持有股票数
+		</li>
+		<li>
+			<strong>SingleStockInfoVO:</strong><br>
+			&nbsp;&nbsp;name: 股票名称<br>
+			&nbsp;&nbsp;date: 日期<br>
+			&nbsp;&nbsp;code: 股票代码<br>
+			&nbsp;&nbsp;open: 开盘价<br>
+			&nbsp;&nbsp;close: 收盘价<br>
+			&nbsp;&nbsp;high: 当日最高价<br>
+			&nbsp;&nbsp;low: 当日最低价<br>
+			&nbsp;&nbsp;volume: 当日交易量<br>
+			&nbsp;&nbsp;adjclose: 复权收盘价<br>
+			&nbsp;&nbsp;market: 股票所属市场<br>
+			&nbsp;&nbsp;fudu: 股票涨跌幅<br>
+			&nbsp;&nbsp;ave: 股票价格均值<br>
+		</li>
+		<li>
+			<strong>StockRODVO:</strong><br>
+			&nbsp;&nbsp;int[][] wROD: 每周的涨跌幅分布（range:1%）<br>
+			&nbsp;&nbsp;int[][] RODw: 涨跌幅的星期分布<br>
+			&nbsp;&nbsp;int[][] nodata: 每周是否有数据统计<br>
+			&nbsp;&nbsp;int[][] YesterdayAvgROD: 前一天收盘价相对于均值涨跌幅<br>
+			&nbsp;&nbsp;int[] zhixin: 收否在置信区间统计<br>
+			&nbsp;&nbsp;int[] Pos: 预测涨次数+正确次数<br>
+			&nbsp;&nbsp;int[] Neg: 预测跌次数+正确次数<br>
+		</li>
+		<li>
+			<strong>StrategyConditionVO:</strong><br>
+			&nbsp;&nbsp;name: <br>
+			&nbsp;&nbsp;List&lt;Integer&gt; parameter:
+		</li>
+		<li>
+			<strong>StrategyListVO:</strong><br>
+			&nbsp;&nbsp;createrName: 策略创建者名字<br>
+			&nbsp;&nbsp;strategyName: 策略名称<br>
+			&nbsp;&nbsp;strategyYearReturn: 策略年化收益率
+		</li>
+		<li>
+			<strong>StrategyShowVO:</strong><br>
+			&nbsp;&nbsp;List&lt;LocalDate&gt; TimeList: 日期<br>
+			&nbsp;&nbsp;List&lt;Double&gt; BasicReturn: 基准收益率<br>
+			&nbsp;&nbsp;List&lt;Double&gt; StrategyReturn: 策略收益率<br>
+			&nbsp;&nbsp;Alpha: α<br>
+			&nbsp;&nbsp;Beta: β<br>
+			&nbsp;&nbsp;Sharp: 夏普比率<br>
+			&nbsp;&nbsp;zuidahuiche: 最大回撤<br>
+			&nbsp;&nbsp;StrategyYearReturn: 策略年化收益率<br>
+			&nbsp;&nbsp;jizhunYearReturn: 基准年化收益率<br>
+			&nbsp;&nbsp;List&lt;CommentVO&gt; comments: 策略评论<br>
+			&nbsp;&nbsp;Strategyname: 策略名称<br>
+			&nbsp;&nbsp;publicorPrivate: 公有（私有）<br>
+			&nbsp;&nbsp;strategyConditionVO: <br>
+			&nbsp;&nbsp;saleVO: 
+		</li>
+		<li>
+			<strong>StrategyVO:</strong><br>
+			&nbsp;&nbsp;name: 策略名称<br>
+			&nbsp;&nbsp;strategyConditionVO: <br>
+			&nbsp;&nbsp;saleVO: <br>
+			&nbsp;&nbsp;publicorprivate: 公有（私有）
+		</li>
+		<li>
+			<strong>YieldChartDataVO:</strong><br>
+			&nbsp;&nbsp;List&lt;LocalDate&gt; datelist: <br>
+			&nbsp;&nbsp;List&lt;Double&gt; jizhunlist: <br>
+			&nbsp;&nbsp;List&lt;Double&gt; celuelist: <br>
+			&nbsp;&nbsp;alpha: α<br>
+			&nbsp;&nbsp;beta: β<br>
+			&nbsp;&nbsp;sharp: 夏普比率<br>
+			&nbsp;&nbsp;jizhunyearreturn: 基准年化收益率<br>
+			&nbsp;&nbsp;yearreturn: 年化收益率<br>
+			&nbsp;&nbsp;zuidahuiche: 最大回撤
+		</li>
+		<li>
+			<strong>YieldDistributionHistogramDataVO:</strong><br>
+			&nbsp;&nbsp;Map<Double,List<Integer>> zuhe: 
+		</li>
+	</ul>
+
+	<br>
+
+	<h4><big>PO定义</big></h3>
+	<ul type="disc">
+		<li>
+			<strong>CommentPO:</strong><br>
+			&nbsp;&nbsp;createrName: 创建者名字<br>
+			&nbsp;&nbsp;strategyName: 策略名称<br>
+			&nbsp;&nbsp;time: 评论时间<br>
+			&nbsp;&nbsp;commentUserName: 评论者名字<br>
+			&nbsp;&nbsp;comments: 评论内容
+		</li>
+		<li>
+			<strong>CompanyInfoPO:</strong><br>
+			&nbsp;&nbsp;code: 股票代码<br>
+			&nbsp;&nbsp;date: 截止日期<br>
+			&nbsp;&nbsp;basicIncome: 基本每股收益<br>
+			&nbsp;&nbsp;netAsset: 每股净资产<br>
+			&nbsp;&nbsp;totalCapitalization: 总股本<br>
+			&nbsp;&nbsp;fluCapitalization: 流通股本
+		</li>
+		<li>
+			<strong>SingleStockInfoPO:</strong><br>
+			&nbsp;&nbsp;name: 股票名称<br>
+			&nbsp;&nbsp;code: 股票代码<br>
+			&nbsp;&nbsp;date: 股票信息时间<br>
+			&nbsp;&nbsp;open: 开盘价格<br>
+			&nbsp;&nbsp;high: 当天的最高价格<br>
+			&nbsp;&nbsp;low: 当天的最低价格<br>
+			&nbsp;&nbsp;volume: 当天的交易量<br>
+			&nbsp;&nbsp;close: 收盘指数<br>
+			&nbsp;&nbsp;subClose: 前复权收盘价格<br>
+			&nbsp;&nbsp;aftClose: 后复权收盘价格<br>
+			&nbsp;&nbsp;lclose: 昨日收盘价格<br>
+			&nbsp;&nbsp;lsubClose: 昨日前复权收盘价格<br>
+			&nbsp;&nbsp;laftClose: 昨日后复权收盘价格<br>
+			&nbsp;&nbsp;rate: 未复权涨跌幅<br>
+			&nbsp;&nbsp;subrate: 前复权涨跌幅<br>
+			&nbsp;&nbsp;aftrate: 后复权涨跌幅<br>
+			&nbsp;&nbsp;aftavg_5: 后复权5日均线
+		</li>
+		<li>
+			<strong>StockSetInfoPO:</strong><br>
+			&nbsp;&nbsp;date: 日期<br>
+			&nbsp;&nbsp;List&lt;String&gt; haltList: 停牌股票的股票代码列表<br>
+			&nbsp;&nbsp;List&lt;String&gt; haltNameList: 股票池中股票当天的信息<br>
+			&nbsp;&nbsp;List&lt;SingleStockInfoPO&gt; stockList: <br>
+			&nbsp;&nbsp;haltNumber: 停牌股票的数量<br>
+			&nbsp;&nbsp;allhalt: 股票是否全停牌，全停牌则为true，否则为false
+		</li>
+		<li>
+			<strong>StrategyInfoPO:</strong><br>
+			&nbsp;&nbsp;strategTypeNname: <br>
+			&nbsp;&nbsp;publicorprivate: 公有（私有）<br>
+			&nbsp;&nbsp;List&lt;Integer&gt; parameter: <br>
+			&nbsp;&nbsp;purchasenum: 购买数量<br>
+			&nbsp;&nbsp;tiaocangqi: 调仓期<br>
+			&nbsp;&nbsp;tiaocangjiage: 调仓价格
+		</li>
+		<li>
+			<strong>StrategyShowPO:</strong><br>
+			&nbsp;&nbsp;createrName: 创建者姓名<br>
+			&nbsp;&nbsp;strategyName: 策略名称<br>
+			&nbsp;&nbsp;List&lt;LocalDate&gt; TimeList: 日期<br>
+			&nbsp;&nbsp;List&lt;Double&gt; BasicReturn: 基础收益率<br>
+			&nbsp;&nbsp;List&lt;Double&gt; StrategyReturn: 策略收益率<br>
+			&nbsp;&nbsp;Alpha: α<br>
+			&nbsp;&nbsp;Beta: β<br>
+			&nbsp;&nbsp;Sharp: 夏普比率<br>
+			&nbsp;&nbsp;zuidahuiche: 最大回撤<br>
+			&nbsp;&nbsp;StrategyYearReturn: 策略年化收益率<br>
+			&nbsp;&nbsp;jizhunYearReturn: 基准年化收益率
+		</li>
+	</ul>
+
+	<br>
+
+	<h4><big>Exception定义</big></h3>
+	<ul type="disc">
+		<li>
+			<strong>BeginInvalidException:</strong>
+			&nbsp;用来表示起始日期大于最大有效日期
+		</li>
+		<li>
+			<strong>DateInvalidException:</strong>
+			&nbsp;用来表示该日期段内没有股票数据
+		</li>
+		<li>
+			<strong>DateOverException:</strong>
+			&nbsp;日期溢出时抛出该错误<br>
+			&nbsp;&nbsp;cal: <br>
+			&nbsp;&nbsp;last: 
+		</li>
+		<li>
+			<strong>EndInvalidException:</strong>
+			&nbsp;用来表示结束日期小于最小有效日期
+		</li>
+		<li>
+			<strong>InternetdisconnectException:</strong>
+			&nbsp;用来表示网络连接断开或不稳定
+		</li>
+		<li>
+			<strong>LogErrorException:</strong>
+			&nbsp;用来表示登录的用户名或密码有误
+		</li>
+		<li>
+			<strong>NoneMatchedMarketException:</strong>
+			&nbsp;没有匹配该股票编号的市场
+		</li>
+		<li>
+			<strong>NullDateException:</strong>
+			&nbsp;不存在该日期
+		</li>
+		<li>
+			<strong>NullMarketException:</strong>
+			&nbsp;今日市场无数据
+		</li>
+		<li>
+			<strong>StrageNullSetExceptiontyException:</strong>
+			&nbsp;不存在该股票池
+		</li>
+		<li>
+			<strong>NullSetInfoException:</strong>
+			&nbsp;股票池某日期没有数据<br>
+			&nbsp;&nbsp;set: <br>
+			&nbsp;&nbsp;cal: <br>
+			&nbsp;&nbsp;sdf: 日期格式（yyyy-MM-dd）
+		</li>
+		<li>
+			<strong>NullStockIDException:</strong>
+			&nbsp;不存在该股票时
+		</li>
+		<li>
+			<strong>PriceTypeException:</strong>
+			&nbsp;调仓价格种类错误
+		</li>
+		<li>
+			<strong>StockHaltingException:</strong>
+			&nbsp;股票停牌（数据层不判断是否是星期天）
+			&nbsp;&nbsp;calendar: 停牌日期,2017-03-28则为20170328<br>
+			&nbsp;&nbsp;stock: 停牌股票编号
+		</li>
+		<li>
+			<strong>StockNameRepeatException:</strong>
+			&nbsp;在股票池中重复添加某支已存在股票
+		</li>
+		<li>
+			<strong>StockSetNameRepeatException:</strong>
+			&nbsp;该股票池名字已存在
+		</li>
+		<li>
+			<strong>StragetyException:</strong>
+			&nbsp;
+		</li>
+		<li>
+			<strong>StrategyRepeatException:</strong>
+			&nbsp;策略名称已存在
+		</li>
+		<li>
+			<strong>TimeShraingLackException:</strong>
+			&nbsp;缺少该天分时信息
+		</li>
+		<li>
+			<strong>UserNameRepeatException:</strong>
+			&nbsp;用来表示注册的用户名已经存在
+		</li>
+	</ul>
+</div>
+</body>
+</html>

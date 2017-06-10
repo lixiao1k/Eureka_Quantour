@@ -19,7 +19,7 @@ public interface StatisticInterface {
 	boolean predictROE( double average, double variance, int num, double alpha, double preValue);
 	
 	/**
-	 * 进过测试，结果和为 1 
+	 * 经过测试，结果和为 1 
 	 * @Description: function : Wi = w0 + i * d; k Wi's values' sum = 1
 	 * @author: hzp
 	 * @date: May 24, 2017

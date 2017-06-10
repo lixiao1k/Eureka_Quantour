@@ -24,7 +24,6 @@ import logic.supportservice.SortArrayInterface;
 import logic.supportservice.StatisticInterface;
 import vo.PredictVO;
 import vo.SingleStockInfoVO;
-import vo.StockRODVO;
 
 /**
  * @Description: 
@@ -40,163 +39,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 	private IStockDataInterface stock = StockDataController_2.getInstance();
 
 	private LocalDate zuizao = LocalDate.of(2005,2,1);
-	
-	@Override
-	public StockRODVO getStockROD( String stockcode, LocalDate begindate, LocalDate enddate, int numOfDay, double alpha, int m, int k )
-			throws RemoteException{
-		// TODO Auto-generated method stub
-		StockRODVO srod = new StockRODVO();
 
-/* save qian numOfDay-day stock's close
- **************************************************************************************************************** */
-		if( numOfDay<100 )
-			numOfDay = 100;
-		double[] closes = new double[numOfDay];
-		LocalDate[] dates = new LocalDate[numOfDay];
-		int dataNum = numOfDay-1;
-		LocalDate date = begindate;
-		SingleStockInfoVO ssi = new SingleStockInfoVO();
-		while( dataNum>-1 && date.compareTo(zuizao)>0 ){
-			try{
-				ssi = new SingleStockInfoVO( stock.getSingleStockInfo(stockcode, date) );
-				dates[dataNum] = date;
-				closes[dataNum] = ssi.getClose();
-				date = getValidBeforeDate( date );
-				dataNum--;
-			}catch ( NullStockIDException e ){
-				e.printStackTrace();
-			}catch ( NullDateException e){
-				date = getValidBeforeDate( date );
-			}
-		}
-		if( dataNum>-1 ){
-			for( ; dataNum>-1; dataNum-- ){
-				int index = (int)( Math.random()*(numOfDay-dataNum) );
-				if( index<=dataNum )
-					index = dataNum+1;
-				else if( index>=numOfDay-1 )
-					index = numOfDay-1;
-				closes[dataNum] = closes[index];
-				dates[dataNum] = dates[index];
-			}
-		}
-/* **************************************************************************************************************** */
-
-
-/* calculate numOfDay-day's ROD
- **************************************************************************************************************** */		
-		double[] RODs = new double[numOfDay];
-
-		// get pro day's close price
-		ssi = new SingleStockInfoVO();
-		ssi.setClose(-1);
-		while( ssi.getClose()==-1 && date.compareTo(zuizao)>0 ){
-			try{
-				ssi = new SingleStockInfoVO( stock.getSingleStockInfo(stockcode, date) );
-				date = getValidBeforeDate( date );
-			}catch ( NullStockIDException e ){
-				e.printStackTrace();
-			}catch ( NullDateException e){
-				date = getValidBeforeDate( date );
-			}
-		}
-
-		double closeT = ssi.getClose();
-		if( closeT==-1 ){
-			int index = (int)(Math.random()*numOfDay);
-			if( index>numOfDay-1)
-				index = numOfDay-1;
-			closeT = closes[index];
-		}
-
-		// calculate every day's ROD
-		for( int i=0; i<numOfDay; i++ ){
-			double RODT = (closes[i]-closeT)/closeT;
-			closeT = closes[i];
-			RODs[i] = RODT;
-		}
-/* **************************************************************************************************************** */
-
-
-/* **************************************************************************************************************** */
-		// zuo tian price
-		double ZPrice = 0;
-		// jin tian price
-		double JPrice = closes[numOfDay-1];
-		double ROD = 0;
-		
-		ssi = new SingleStockInfoVO();
-		date = begindate;
-		
-		while( date.compareTo(enddate)<=0 ){
-			double PreROD = 0;
-			boolean ifROE = false;
-			try{
-				ZPrice = JPrice;
-
-				// get next day's data
-				date = getValidLatterDate( date );
-				ssi = new SingleStockInfoVO( stock.getSingleStockInfo(stockcode, date) );
-				JPrice = ssi.getClose();
-
-				ROD = (JPrice - ZPrice) / ZPrice;		
-
-				double todayKNN = KNNPredictPrice( closes, dates, m, k );
-				double todaySB = SBPredictPrice( ZPrice, closes[numOfDay-2] );
-				double RODKNN = (todayKNN - ZPrice) / ZPrice;
-				double RODSB = (todaySB - ZPrice) / ZPrice;
-				if( RODKNN<-0.1 || RODKNN>0.1 ){
-					if( (RODKNN<-0.1 && RODSB<RODKNN) ||
-						(RODKNN>0.1 && RODSB>RODKNN) )
-						PreROD = RODKNN;
-					else
-						PreROD = RODSB;
-				}
-				else
-					PreROD = RODKNN;
-				
-				double[] AveAndVar = new double[2];
-				AveAndVar = calValue.calTotalityAverageAndVariance( RODs );
-				
-				ifROE = statistic.predictROE( AveAndVar[0], AveAndVar[1], calValue.getNumOfSample(), alpha, PreROD );
-				if( ifROE )
-					srod.zhixin[0]++;
-				else
-					srod.zhixin[1]++;
-				
-				// update the numOfDay-day data in array
-				for( int i=0; i<numOfDay-1; i++ ){
-					RODs[i] = RODs[i+1];
-					closes[i] = closes[i+1];
-					dates[i] = dates[i+1];
-				}
-				RODs[numOfDay-1] = ROD;
-				closes[numOfDay-1] = JPrice;
-				dates[numOfDay-1] = date;
-
-				if( PreROD>0 ){
-					if( ROD>0 )
-						srod.Pos[0]++;
-					else
-						srod.Pos[1]++;
-				}
-				else if( PreROD<0 ){
-					if( ROD<0 )
-						srod.Neg[0]++;
-					else
-						srod.Neg[1]++;
-				}
-				
-				
-			}catch ( NullStockIDException e ){
-				e.printStackTrace();
-			}catch ( NullDateException e){}
-		}
-/* **************************************************************************************************************** */
-
-		return srod;
-	}
-	
 	@Override
 	public PredictVO predict(String stockcode, LocalDate date) throws RemoteException {
 		// TODO Auto-generated method stub
@@ -211,7 +54,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		int index = vLen-1;
 		while( index>-1 && dateT.compareTo(zuizao)>0 ){
 			try{
-				dateT = getValidBeforeDate( date );
+				dateT = getValidBeforeDate( dateT );
 				ssi = new SingleStockInfoVO( stock.getSingleStockInfo(stockcode, dateT) );
 				closes[index] = ssi.getClose();
 				dates[index] = ssi.getDate();
@@ -256,6 +99,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		return predictVO;
 	}
 	
+
 
 	/**
 	 * @author H2P
@@ -347,6 +191,8 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		return result;
 	}
 
+
+
 	/**
 	 * @Description:
 	 * @author: 	 hzp
@@ -360,6 +206,8 @@ public class ForecastRODImpl implements ForecastRODInterface{
 			return 0;
 		return result;
 	}
+
+
 
 	/**
 	 * @Description: 根据日期返回 星期 的代号，如果是-1表示不是交易日

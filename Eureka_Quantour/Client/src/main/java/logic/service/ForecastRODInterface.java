@@ -5,12 +5,9 @@ import java.rmi.RemoteException;
 import java.time.LocalDate;
 
 import vo.PredictVO;
-import vo.StockRODVO;
 
 public interface ForecastRODInterface extends Remote {
 	
-	public StockRODVO getStockROD( String stockcode, LocalDate begindate, LocalDate enddate, int numOfDay, double alpha, int m, int k )
-			throws RemoteException;	
 	/**
 	 * 
 	 * @Description: 预测明天股票价格

@@ -46,8 +46,11 @@ public class MarketUIPopupController implements Initializable{
 		StockLogicInterface stockLogicInterface = remote.getStockLogic();
 		String name =(String)dataController.get("Market_StockNow");
 		String code ="";
-		String setflag = "";
-		setflag =(String)dataController.get("SetFlag");
+		String setflag = "null";
+		String temp = (String)dataController.get("SetFlag");
+		if(temp!=null){
+			setflag=temp;
+		}
 		List<SingleStockInfoVO> stocklist = null;
 		if(setflag.equals(name)){
 			try {

@@ -17,7 +17,6 @@ import presentation.chart.function.CommonSet;
 import presentation.chart.function.CommonSetService;
 import presentation.chart.function.ListToArray;
 import presentation.chart.function.ListToArrayService;
-import vo.ComparedInfoVO;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
