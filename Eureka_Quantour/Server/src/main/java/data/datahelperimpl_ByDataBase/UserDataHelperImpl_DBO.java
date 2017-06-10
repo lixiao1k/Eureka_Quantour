@@ -44,7 +44,7 @@ public class UserDataHelperImpl_DBO implements IUserDataHelper{
 	@Override
 	public void login(String username, String password) throws LogErrorException {
 		Connection conn=ConnectionPoolManager.getInstance().getConnection("quantour");
-		String sql="select password from user where binary username='"+username+"'";
+		String sql="select * from user where binary username='"+username+"'";
 		PreparedStatement pstmt=null;
 		try {
 			pstmt = (PreparedStatement)conn.prepareStatement(sql);
@@ -52,11 +52,31 @@ public class UserDataHelperImpl_DBO implements IUserDataHelper{
 			if(!rs.next()){
 				throw new LogErrorException();
 			}
-			String pw=rs.getString(1);
+			int status=rs.getInt(3);
+			if(status==1)
+			{
+				throw new LogErrorException();
+			}
+			String pw=rs.getString(2);
 			if(!pw.equals(password)){
 				throw new LogErrorException();
 			}
 			rs.close();
+			pstmt.close();
+			change_status(username);
+			ConnectionPoolManager.getInstance().close("quantour", conn);
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	private void change_status(String username)
+	{
+		Connection conn=ConnectionPoolManager.getInstance().getConnection("quantour");
+		String sql="update user set status=1 WHERE binary username='"+username+"'";
+		PreparedStatement pstmt=null;
+		try {
+			pstmt = (PreparedStatement)conn.prepareStatement(sql);
+			pstmt.executeUpdate();
 			pstmt.close();
 			ConnectionPoolManager.getInstance().close("quantour", conn);
 		}catch (SQLException e) {
