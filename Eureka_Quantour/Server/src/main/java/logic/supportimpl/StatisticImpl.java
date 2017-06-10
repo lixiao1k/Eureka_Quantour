@@ -1,17 +1,8 @@
 package logic.supportimpl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import logic.supportservice.StatisticInterface;
 
 public class StatisticImpl implements StatisticInterface{
-	
-	private final double idealKaFang = 32.6706;
-	
-	public double getIdealKaFang(){
-		return idealKaFang;
-	}
 
 	@Override
 	public boolean predictROE(double average, double variance, int num, double alpha, double preValue) {
