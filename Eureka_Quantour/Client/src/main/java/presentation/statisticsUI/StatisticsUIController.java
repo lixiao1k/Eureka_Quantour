@@ -90,24 +90,6 @@ public class StatisticsUIController implements Initializable {
 	Label varianLabel;
 
 	@FXML
-	Label ideaValue1;
-
-	@FXML
-	Label ideaValue2;
-
-	@FXML
-	Label realValue1;
-
-	@FXML
-	Label realValue2;
-
-	@FXML
-	Label isNormalDistribution1;
-
-	@FXML
-	Label isNormalDistribution2;
-
-	@FXML
 	AnchorPane emaAnchorPane;
 
 	@FXML
@@ -127,8 +109,6 @@ public class StatisticsUIController implements Initializable {
 		try {
 			MarketInfoVO marketInfoVO = stockLogicInterface.getMarketInfo((LocalDate)dataController.get("SystemTime"),
 					marketComboBox.getValue());
-			KaFangVO kaFangVO = forecastRODInterface.isNormalDistribution(marketComboBox.getValue(),(LocalDate)dataController.get("SystemTime"));
-			initKaFangPane(kaFangVO);
 			initialAllPane(marketInfoVO);
 
 			if(marketComboBox.getValue().equals("HS300")){
@@ -201,16 +181,6 @@ public class StatisticsUIController implements Initializable {
 		emaAnchorPane.getChildren().clear();
 		emaAnchorPane.getChildren().add(pane);
 	}
-	//卡方数据，判断是不是正态分布
-	private void initKaFangPane(KaFangVO vo){
-		ideaValue2.setText(Double.toString(vo.getIdealValue()));
-		realValue2.setText(Double.toString(vo.getRealValue()));
-		if(vo.isNormalDistribution()){
-			isNormalDistribution2.setText("YES");
-		}else {
-			isNormalDistribution2.setText("NO");
-		}
-	}
 
 
 	@Override
@@ -248,24 +218,6 @@ public class StatisticsUIController implements Initializable {
 		dietingValue.setStyle("-fx-font-size:18;"
 				+ "-fx-text-fill: #C0FF3E;"
 				+ "-fx-font-weight:bold");
-		ideaValue1.setStyle("-fx-font-size:13;"
-				+ "-fx-text-fill: #C0FF3E;"
-				+ "-fx-font-weight:bold");
-		realValue1.setStyle("-fx-font-size:13;"
-				+ "-fx-text-fill: #C0FF3E;"
-				+ "-fx-font-weight:bold");
-		isNormalDistribution1.setStyle("-fx-font-size:13;"
-				+ "-fx-text-fill: #C0FF3E;"
-				+ "-fx-font-weight:bold");
-		ideaValue2.setStyle("-fx-font-size:13;"
-				+ "-fx-font-weight:bold");
-		realValue2.setStyle("-fx-font-size:13;"
-				+ "-fx-font-weight:bold");
-		isNormalDistribution2.setStyle("-fx-font-size:13;"
-				+ "-fx-font-weight:bold");
-		ideaValue2.setAlignment(Pos.CENTER_LEFT);
-		realValue2.setAlignment(Pos.CENTER_LEFT);
-		isNormalDistribution2.setAlignment(Pos.CENTER_LEFT);
 		ObservableList<String> marketList = FXCollections.observableArrayList();
 		marketList.addAll("SHA","SHB","SZA","SZB","CYB","ZXB","HS300");
 		marketComboBox.getItems().addAll(marketList);
