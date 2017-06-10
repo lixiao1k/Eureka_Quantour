@@ -27,5 +27,15 @@
       <AnchorPane fx:id="KLineAnchorPane" layoutX="739.0" layoutY="51.0" prefHeight="292.0" prefWidth="463.0" AnchorPane.bottomAnchor="415.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="51.0" />
       <Label layoutX="745.0" layoutY="28.0" text="市场指数：" />
       <AnchorPane fx:id="emaAnchorPane" layoutX="745.0" layoutY="354.0" prefHeight="154.0" prefWidth="463.0" />
+      <AnchorPane layoutX="159.0" layoutY="492.0" prefHeight="154.0" prefWidth="195.0">
+         <children>
+            <Label fx:id="ideaValue1" layoutX="6.0" layoutY="14.0" text="理想卡方临界值：" textFill="#863434" />
+            <Label fx:id="ideaValue2" layoutX="140.0" layoutY="16.0" prefHeight="20.0" prefWidth="55.0" />
+            <Label fx:id="realValue1" layoutX="6.0" layoutY="60.0" text="真实卡方临界值：" />
+            <Label fx:id="realValue2" layoutX="134.0" layoutY="62.0" prefHeight="20.0" prefWidth="55.0" />
+            <Label fx:id="isNormalDistribution1" layoutX="6.0" layoutY="104.0" text="是否符合正态分布：" />
+            <Label fx:id="isNormalDistribution2" layoutX="145.0" layoutY="106.0" prefHeight="20.0" prefWidth="48.0" />
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

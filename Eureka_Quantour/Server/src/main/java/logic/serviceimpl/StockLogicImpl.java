@@ -59,7 +59,18 @@ public class StockLogicImpl implements StockLogicInterface{
 				,shiying,shijing,huanshou);
 		return vo;
 	}
-	
+	/**
+	 * 获取市场指数的两个图
+	 * @param name 市场名字
+	 * @param begin 开始日期
+	 * @param end 结束日期
+	 * @return
+	 * @throws RemoteException
+	 * @throws DateInvalidException
+	 * @throws BeginInvalidException
+	 * @throws EndInvalidException
+	 * @throws NullStockIDException
+	 */
 	public ExponentChartVO getExponentChart(String name,LocalDate begin,LocalDate end)
 			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException{
 

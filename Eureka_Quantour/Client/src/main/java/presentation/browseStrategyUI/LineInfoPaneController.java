@@ -48,9 +48,9 @@ public class LineInfoPaneController implements Initializable{
 	Label huice2;
 	
 	public void setInfo(StrategyShowVO vo){
-		DecimalFormat df = new DecimalFormat("0.00");
+		DecimalFormat df = new DecimalFormat("#0.00");
 		strYear2.setText(df.format(vo.getStrategyYearReturn()*100)+"%");
-//        baseYear2.setText(vo.ge);
+        baseYear2.setText(df.format(vo.getJizhunYearReturn()));
 		alpha2.setText(df.format(vo.getAlpha()));
 		beta2.setText(df.format(vo.getBeta()));
 		xiapu2.setText(df.format(vo.getSharp()));
