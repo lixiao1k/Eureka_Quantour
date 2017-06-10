@@ -89,7 +89,7 @@ public class PredictController implements Initializable {
     Label huanshoulv2;
 
     public void set(PredictVO vo, CompanyInfoVO vo1){
-        DecimalFormat decimalFormat = new DecimalFormat(".##");
+        DecimalFormat decimalFormat = new DecimalFormat("#0.00");
         price2.setText(decimalFormat.format(vo.getPredictPrice()));
         dof2.setText(decimalFormat.format(vo.getPredictROD()*100)+"%");
         if(vo.getPredictPrice()>0){
@@ -112,7 +112,7 @@ public class PredictController implements Initializable {
         liutong2.setText(Long.toString(vo1.getFluCapitalization()));
         shiyinglv2.setText(decimalFormat.format(vo1.getShiYing()));
         shijinlv2.setText(decimalFormat.format(vo1.getShiJing()));
-        huanshoulv2.setText(decimalFormat.format(vo1.getHuanShou()));
+        huanshoulv2.setText(decimalFormat.format(vo1.getHuanShou())+"%");
     }
     //为标签设样式
     private void setStyle(Label label){

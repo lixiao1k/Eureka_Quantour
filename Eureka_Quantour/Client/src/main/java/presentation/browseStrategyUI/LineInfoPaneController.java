@@ -50,7 +50,7 @@ public class LineInfoPaneController implements Initializable{
 	public void setInfo(StrategyShowVO vo){
 		DecimalFormat df = new DecimalFormat("0.00");
 		strYear2.setText(df.format(vo.getStrategyYearReturn()*100)+"%");
-//		baseYear2.setText(Double.toString(vo.get));
+//        baseYear2.setText(vo.ge);
 		alpha2.setText(df.format(vo.getAlpha()));
 		beta2.setText(df.format(vo.getBeta()));
 		xiapu2.setText(df.format(vo.getSharp()));

@@ -171,7 +171,6 @@ public class SingleStockUIController implements Initializable{
 			PredictController controller = loader.getController();
 			controller.set(predictVO,companyInfoVO);
 			emaChartAnchorPane.getChildren().add(pane);
-
 		}
 		if(timeSharingVO!=null){
 			chartService service = new TimeShareChart(timeSharingVO.getMinute_data(),timeSharingVO.getLast_close(),3);
