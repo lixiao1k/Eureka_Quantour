@@ -26,7 +26,7 @@ public class DataBaseOperation {
         try {
 			BufferedReader br=new BufferedReader(new FileReader(file));
 			driver="com.mysql.cj.jdbc.Driver";  
-			url=br.readLine()+"&maxReconnects=0";  
+			url=br.readLine()+"&maxReconnects=1";  
         	username=br.readLine();  
         	password=br.readLine(); 
         	br.close();
@@ -37,7 +37,7 @@ public class DataBaseOperation {
     	    } catch (ClassNotFoundException e) {
     	        e.printStackTrace();
     	    } catch (SQLException e) {
-    	        //e.printStackTrace();
+    	        e.printStackTrace();
     	    }
     	    return conn;
     	} catch (IOException e) {
