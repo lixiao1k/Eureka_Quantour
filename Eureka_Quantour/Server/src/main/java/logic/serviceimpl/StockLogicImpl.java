@@ -55,6 +55,38 @@ public class StockLogicImpl implements StockLogicInterface{
 				,shiying,shijing,huanshou);
 		return vo;
 	}
+	
+	public EMAInfoVO getExponentEMAInfo( String name, LocalDate begin, LocalDate end ,int days)
+			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException {
+
+		utility.ifExpDateValid(begin.plusDays(-days),end,name);
+
+		LocalDate start=begin.plusDays(-days);
+		
+		List<SingleStockInfoPO> list=stock.getPeriodExponent(name, start, end);
+
+		ArrayList<LocalDate> timelist=new ArrayList<>();
+		ArrayList<Double> shujulist=new ArrayList<>();
+
+			for (int i=0;i<list.size();i++){
+				if(i<days)
+				{
+					continue;
+				}
+				double total=0;
+				for(int j=0;j<days;j++)
+				{
+					total+=list.get(i-j).getClose();
+				}
+				total=total/days;
+                shujulist.add(total);
+                timelist.add(list.get(i).getDate());
+
+            }
+		EMAInfoVO vo = new EMAInfoVO(timelist,shujulist,days);
+		return vo;
+	}
+	
 	public List<SingleStockInfoVO> getExponentInfoByTime (String name, LocalDate begin, LocalDate end )
 			 throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException{
 		utility.ifExpDateValid(begin, end,name);

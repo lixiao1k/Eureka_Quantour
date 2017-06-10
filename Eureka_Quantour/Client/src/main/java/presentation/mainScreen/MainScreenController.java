@@ -179,12 +179,14 @@ public class MainScreenController implements Initializable{
 	@FXML
 	protected void saveTime(ActionEvent e){
 		LocalDate date = nowDatePicker.getValue();
-		if(date!=null){
+		if(date!=null&&!date.isAfter(LocalDate.now())){
 			dataController.upDate("SystemTime", date);
 			timeLabel.setText(date.toString());
 			Notifications.create().title("成功").text("系统时间修改成功").showInformation();
-		}else{
-			System.out.println("NoTime");
+		}else if(date==null){
+			Notifications.create().title("异常").text("没有时间").showWarning();
+		}else if(date.isAfter(LocalDate.now())){
+			Notifications.create().title("异常").text("系统时间设置为今日之后").showWarning();
 		}
 	}
 	
