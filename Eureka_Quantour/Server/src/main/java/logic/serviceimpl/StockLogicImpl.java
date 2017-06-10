@@ -60,6 +60,28 @@ public class StockLogicImpl implements StockLogicInterface{
 		return vo;
 	}
 	
+	public ExponentChartVO getExponentChart(String name,LocalDate begin,LocalDate end)
+			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException{
+
+		utility.ifExpDateValid(begin, end,name);
+		List<SingleStockInfoVO> lssi = new ArrayList<>();
+		List<SingleStockInfoPO> ls = stock.getPeriodExponent(name, begin, end);
+		for (SingleStockInfoPO temp:ls){
+			SingleStockInfoVO vo=new SingleStockInfoVO(temp);
+			lssi.add(vo);
+		}
+		
+		int methods[] = { 5, 10, 20, 30, 60 };
+		
+		List<EMAInfoVO> llemai = new ArrayList<>();
+
+		for (int i=0;i<methods.length;i++){
+			EMAInfoVO vo=getExponentEMAInfo(name, begin, end,methods[i],ls);
+			llemai.add(vo);
+		}
+		
+		return new ExponentChartVO(llemai,lssi);
+	}
 	
 	public List<EMAInfoVO> getExponentEMAInfo( String stockCode, LocalDate begin, LocalDate end )
 			throws RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException {
@@ -75,6 +97,39 @@ public class StockLogicImpl implements StockLogicInterface{
 		}
 		return  llemai;
 
+	}
+	
+	private EMAInfoVO getExponentEMAInfo( String name, LocalDate begin, LocalDate end ,int days,List<SingleStockInfoPO> l)
+			throws DateInvalidException, BeginInvalidException, EndInvalidException, NullStockIDException {
+
+		utility.ifExpDateValid(begin.plusDays(-days),end,name);
+
+		LocalDate start=begin.plusDays(-days);
+		
+		List<SingleStockInfoPO> list=stock.getPeriodExponent(name, start, begin.minusDays(1));
+		
+		list.addAll(l);
+		
+		ArrayList<LocalDate> timelist=new ArrayList<>();
+		ArrayList<Double> shujulist=new ArrayList<>();
+
+			for (int i=0;i<list.size();i++){
+				if(i<days)
+				{
+					continue;
+				}
+				double total=0;
+				for(int j=0;j<days;j++)
+				{
+					total+=list.get(i-j).getClose();
+				}
+				total=total/days;
+                shujulist.add(total);
+                timelist.add(list.get(i).getDate());
+
+            }
+		EMAInfoVO vo = new EMAInfoVO(timelist,shujulist,days);
+		return vo;
 	}
 	
 	private EMAInfoVO getExponentEMAInfo( String name, LocalDate begin, LocalDate end ,int days)
