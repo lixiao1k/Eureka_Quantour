@@ -11,10 +11,16 @@ import java.util.List;
 public class YieldChartDataVO implements Serializable{
 
     private static final long serialVersionUID=3607793986865623023L;
+
+    // the date list of the strategy from the begein date to the end date
+    // the basic return list 
+    // the strategy return list
     private List<LocalDate> datelist;
     private List<Double> jizhunlist;
     private List<Double> celuelist;
 
+
+// some parameters
     private double alpha;
     private double beta;
     private double sharpe;

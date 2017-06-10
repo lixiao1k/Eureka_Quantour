@@ -14,14 +14,14 @@ public class MarketInfoVO implements Serializable{
 	private static final long serialVersionUID = -8022819757439228511L;
 
 
-	private long volume = 0;
-	private int zhangting=0;
-	private int dieting=0;
-	private int tingpai;
-	private double junzhi=0;
-	private double fangcha=0;
-	private List<Integer> shanxingtu;
-	private List<Integer> diantu;
+	private long volume = 0; // cheng jiao liang
+	private int zhangting=0; // zhang ting shu mu
+	private int dieting= 0; //die ting shu mu
+	private int tingpai; //ting pai shu mu
+	private double junzhi=0; // the average of a stock for some days
+	private double fangcha=0; // the variance of a stock for some days
+	private List<Integer> shanxingtu; //pie chat info data
+	private List<Integer> diantu; //discrete chart info data
 
 	public long getVolume() {
 		return volume;

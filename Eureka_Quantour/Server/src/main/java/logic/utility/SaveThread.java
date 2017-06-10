@@ -22,12 +22,18 @@ import java.util.List;
 /**
  * Created by huihantao on 2017/5/13.
  */
+
+//同步线程用来保存用户策略
+// 防止前台卡死
 public class SaveThread extends Thread{
     private Return stragety;
 	private IStockSetInterface set = StockSetDataController.getInstance();
 	private IStrategyDataInterface strategy = StrategyDataController.getInstance();
     private String username;
     private String name;
+
+
+    // initial the strategy
     public SaveThread(StrategyConditionVO strategyConditionVO, SaleVO saleVO,String username,String name){
         this.username=username;
         this.name=name;
@@ -37,6 +43,8 @@ public class SaveThread extends Thread{
         stragety=new Return(stocklistname,start,now,saleVO,strategyConditionVO);
 
     }
+    //calculate the strategy 
+    //and save the strategy
 
     public void run(){
         try {
@@ -55,6 +63,8 @@ public class SaveThread extends Thread{
         } catch (PriceTypeException e) {
 //            e.printStackTrace();
         }
+
+        //对应参数 
         List<LocalDate> timelist=stragety.getTimelist();
         double alpha=stragety.getAlpha();
         double beta=stragety.getBeta();

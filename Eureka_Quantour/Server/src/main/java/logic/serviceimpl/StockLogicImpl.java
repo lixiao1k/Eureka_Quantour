@@ -334,6 +334,8 @@ public class StockLogicImpl implements StockLogicInterface{
 			volume+=po.getVolume();
 			rate.add(po.getRate());
 
+			//select the specific value
+
 			if (po.getRate()<10 && po.getRate()>=5){
 				zheng5dao10++;
 			}
@@ -401,6 +403,8 @@ public class StockLogicImpl implements StockLogicInterface{
 			}
 		}
 
+		//sort the objects
+
 		Collections.sort(res);
 		Collections.reverse(res);
 		if (p==namelist.size())
@@ -455,6 +459,7 @@ public class StockLogicImpl implements StockLogicInterface{
 					zuhe.put(hengzhou, Arrays.asList(0, 0));
 				}
 				boolean judge;
+				// fen bie tong  ji bu tong shou lv de pin lv
 				if(i==0){
 					judge=celuelist.get(i)>=jizhunlist.get(i);
 				}
