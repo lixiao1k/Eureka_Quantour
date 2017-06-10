@@ -142,15 +142,15 @@ public class PredictController implements Initializable {
         setStyle(shiyinglv1);
         setStyle(shijinlv1);
         setStyle(huanshoulv1);
-        setStyle1(stockcode2,"FF0000");
-        setStyle1(date2,"FF0000");
-        setStyle1(shouyi2,"FF0000");
-        setStyle1(jingzichan2,"FF0000");
-        setStyle1(guben2,"FF0000");
-        setStyle1(liutong2,"FF0000");
-        setStyle1(shiyinglv2,"FF0000");
-        setStyle1(shijinlv2,"FF0000");
-        setStyle1(huanshoulv2,"FF0000");
+        setStyle1(stockcode2,"98F5FF");
+        setStyle1(date2,"98F5FF");
+        setStyle1(shouyi2,"98F5FF");
+        setStyle1(jingzichan2,"98F5FF");
+        setStyle1(guben2,"98F5FF");
+        setStyle1(liutong2,"98F5FF");
+        setStyle1(shiyinglv2,"98F5FF");
+        setStyle1(shijinlv2,"98F5FF");
+        setStyle1(huanshoulv2,"98F5FF");
 
     }
 }
