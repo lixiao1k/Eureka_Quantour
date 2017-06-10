@@ -232,16 +232,4 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 	{
 		return sli.getLatestCommpanyInfo(time, code);
 	}
-
-	@Override
-	public KaFangVO isNormalDistribution(String stockSetName, LocalDate date) throws RemoteException {
-		// TODO Auto-generated method stub
-		return frodi.isNormalDistribution(stockSetName, date);
-	}
-
-	@Override
-	public KaFangVO isNormalDistribution(String stockSetName, String userName, LocalDate date) throws RemoteException {
-		// TODO Auto-generated method stub
-		return frodi.isNormalDistribution(stockSetName, userName, date);
-	}
 }
