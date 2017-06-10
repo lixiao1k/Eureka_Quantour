@@ -75,13 +75,15 @@ public class CatchMouseMove implements CatchMouseMoveService{
 	    		}
 	    		if( index>-1 && index<dates.length){
 		    		String dataInfo = dataMap.get(dates[index]);
-		    		String infos[] = dataInfo.split("/");
-		    		String info = name+" : "+dates[index]+"\n";
-		    		for(int i=0; i<infos.length; i++){
-		    			info += infos[i]+"\n";
+		    		if( !dataInfo.isEmpty() ){
+		    			String infos[] = dataInfo.split("/");
+		    			String info = name+" : "+dates[index]+"\n";
+		    			for(int i=0; i<infos.length; i++){
+		    				info += infos[i]+"\n";
+		    			}
+		    			cursorCoords.setVisible(true);
+		    			cursorCoords.setText(info);
 		    		}
-		    		cursorCoords.setVisible(true);
-		    		cursorCoords.setText(info);
 	    		}
 	    		else{
 	    			cursorCoords.setVisible(false);
@@ -161,13 +163,15 @@ public class CatchMouseMove implements CatchMouseMoveService{
 	    		}
 	    		if( index>-1 && index<dates.length){
 		    		String dataInfo = dataMap.get(dates[index]);
-		    		String infos[] = dataInfo.split("/");
-		    		String info = name+" : "+dates[index]+"\n";
-		    		for(int i=0; i<infos.length; i++){
-		    			info += infos[i]+"\n";
+		    		if( !dataInfo.isEmpty() ){
+		    			String infos[] = dataInfo.split("/");
+		    			String info = name+" : "+dates[index]+"\n";
+		    			for(int i=0; i<infos.length; i++){
+		    				info += infos[i]+"\n";
+		    			}
+		    			cursorCoords.setVisible(true);
+		    			cursorCoords.setText(info);
 		    		}
-		    		cursorCoords.setVisible(true);
-		    		cursorCoords.setText(info);
 	    		}
 	    		else{
 	    			cursorCoords.setVisible(false);
@@ -252,13 +256,15 @@ public class CatchMouseMove implements CatchMouseMoveService{
 	    		}
 	    		if( index>-1 && index<dates.length){
 		    		String dataInfo = dataMap.get(dates[index]);
-		    		String infos[] = dataInfo.split("/");
-		    		String info = name+" : "+dates[index]+"\n";
-		    		for(int i=0; i<infos.length; i++){
-		    			info += infos[i]+"\n";
+		    		if( !dataInfo.isEmpty() ){
+		    			String infos[] = dataInfo.split("/");
+		    			String info = name+" : "+dates[index]+"\n";
+		    			for(int i=0; i<infos.length; i++){
+		    				info += infos[i]+"\n";
+		    			}
+		    			cursorCoords.setVisible(true);
+		    			cursorCoords.setText(info);
 		    		}
-		    		cursorCoords.setVisible(true);
-		    		cursorCoords.setText(info);
 	    		}
 	    		else{
 	    			cursorCoords.setVisible(false);
@@ -342,13 +348,15 @@ public class CatchMouseMove implements CatchMouseMoveService{
 	    		}
 	    		if( index>-1 && index<dates.length){
 		    		String dataInfo = dataMap.get(dates[index]);
-		    		String infos[] = dataInfo.split("/");
-		    		String info = name+" : "+dates[index]+"\n";
-		    		for(int i=0; i<infos.length; i++){
-		    			info += infos[i]+"\n";
+		    		if( !dataInfo.isEmpty() ){
+			    		String infos[] = dataInfo.split("/");
+			    		String info = name+" : "+dates[index]+"\n";
+			    		for(int i=0; i<infos.length; i++){
+			    			info += infos[i]+"\n";
+			    		}
+			    		cursorCoords.setVisible(true);
+			    		cursorCoords.setText(info);
 		    		}
-		    		cursorCoords.setVisible(true);
-		    		cursorCoords.setText(info);
 	    		}
 	    		else{
 	    			cursorCoords.setVisible(false);

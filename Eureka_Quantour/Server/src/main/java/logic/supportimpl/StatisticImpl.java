@@ -3,14 +3,26 @@ package logic.supportimpl;
 import java.util.ArrayList;
 import java.util.List;
 
+import logic.supportservice.CalculateValueInterface;
 import logic.supportservice.StatisticInterface;
+import vo.KaFangVO;
 
 public class StatisticImpl implements StatisticInterface{
 	
-	private final double idealKaFang = 32.6706;
+	private static CalculateValueInterface calValue = new CalculateValueImpl();
+	private static StatisticInterface statistic = new StatisticImpl();
 	
-	public double getIdealKaFang(){
-		return idealKaFang;
+	private final double[] KaFangs = {
+			3.8415, 5.9915, 7.8147, 9.4877, 11.0705, 
+			12.5916, 14.0671, 15.5073, 16.9190, 18.3037,
+			19.6751, 21.0261, 22.3620, 23.6848, 24.9958,
+			26.2962, 27.5871, 28.8693, 30.1435, 31.4104,
+			32.6706, 33.9244
+			};	
+	private static double IdealKaFang = 0;
+	
+	public static double getIdealKaFang(){
+		return IdealKaFang;
 	}
 
 	@Override
@@ -50,26 +62,32 @@ public class StatisticImpl implements StatisticInterface{
 		int length = RODFenBu.length;
 		if( length!=22 )
 			return 0;
+		
 		double[] idealProb = new double[length];
-		double numOfROD = 0;
+		int numOfROD = 0;
+		double sum = 0;
+		double kaishi = -0.11;
 		for( int i=0; i<length; i++ ){
 			numOfROD += RODFenBu[i];
-			if( i==0 ){
-				double x = (-0.1 - average) / biaozhuncha; 
-				idealProb[i] = calNormalDistribution( x );
-			}
 			if( i==RODFenBu.length-1 ){
-				double x = (0.1 - average) / biaozhuncha; 
-				idealProb[i] = 1 - calNormalDistribution( x );
-				idealProb[i] += idealProb[i-1];
+				idealProb[i] = 1.0 - sum;
 			}
 			else{
-				double Qx = RODIndexToDoubleLower( i );
-				double Hx = Qx + 0.01;
-				idealProb[i] = calNormalDistribution( Hx ) - calNormalDistribution( Qx );
-				idealProb[i] += idealProb[i-1];
+				kaishi += 0.01;
+				double x = (kaishi - average) / biaozhuncha; 
+				idealProb[i] = calNormalDistribution( x ) - sum;
+				sum += idealProb[i];
 			}
 		}
+		
+		sum = 0;
+		for( int i=0; i<length; i++ ){
+			sum += idealProb[i];
+			System.out.println( idealProb[i] );
+		}
+		System.out.println(  );
+		System.out.println( sum );
+		System.out.println(  );
 		
 		if( numOfROD==0 )
 			return 0;
@@ -88,6 +106,10 @@ public class StatisticImpl implements StatisticInterface{
 				gailv = 0;
 			}
 		}
+		
+		if( RODFenBu2.size()<2 || RODFenBu2.size()>22 )
+			return 0;
+		IdealKaFang = KaFangs[RODFenBu2.size()-2];
 		
 		double x2 = 0;
 		for( int i=0; i<RODFenBu2.size(); i++ ){
@@ -120,11 +142,52 @@ public class StatisticImpl implements StatisticInterface{
 		return result;
 	}
 	
-	private double RODIndexToDoubleLower( int index ){
-		double result = -0.1;
-		if( index<22 )
-			result = -0.1+(index-1)*0.01;
-		return result;
+	public static void main(String args[]){
+		double[] closes = new double[100];
+		double[] RODs = new double[100];
+		int[] RODFenBu = new int[22]; 
+		double price = 10.78;
+		double random = 0;
+		for( int i=0; i<100; i++ ){
+			random = Math.random();
+			double ROD = 0;
+			int iROD = 0;
+			if( random>0.5 )
+				closes[i] = price +random*3;
+			else
+				closes[i] = price - random*6;
+			if( i==0 )
+				ROD = (closes[i]-price) / price;
+			else
+				ROD = (closes[i]-closes[i-1]) / closes[i-1];
+			RODs[i] = ROD;
+			iROD = doubleToIndex( ROD );
+			RODFenBu[iROD]++;
+		}
+		
+		double average = calValue.calAverage(RODs);
+		double standardDeviation = Math.sqrt( calValue.calVariance(RODs) );
+		
+		KaFangVO kafang = new KaFangVO();
+		kafang.setIdealValue( StatisticImpl.getIdealKaFang() );
+		kafang.setRealValue( statistic.calKaFang(RODFenBu, average, standardDeviation ));
+		if( kafang.getRealValue()>kafang.getIdealValue() && kafang.getRealValue()!=0 )
+			kafang.setNormalDistribution(false);
+		else
+			kafang.setNormalDistribution(true);
+		
+		System.out.println( StatisticImpl.getIdealKaFang() );
+		System.out.println(average + " *** " + standardDeviation);
+		System.out.println( kafang.getRealValue() );
+	}
+	
+	private static int doubleToIndex( double value ){
+		if( value<-0.1 )
+			return 0;
+		else if( value>0.1 )
+			return 21;
+		else
+			return (int)((value+0.1)/0.01)+1;
 	}
 	
 	private double[][] NormalDistribution = {
