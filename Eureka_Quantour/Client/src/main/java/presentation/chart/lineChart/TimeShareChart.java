@@ -146,9 +146,9 @@ public class TimeShareChart implements chartService{
 		int topjuli = 10;
 		int timeHeight = 20;
 		int rightjuli = 5;
-		int leftjuli = 42;
+		int leftjuli = 45;
 		if( MaxROD==0.025 )
-			leftjuli = 48;
+			leftjuli = 50;
 		height = height-timeHeight-topjuli;
 		width = width-leftjuli-rightjuli;
 		lineChart.setPrefSize(width, height);
