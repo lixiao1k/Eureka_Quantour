@@ -19,6 +19,6 @@
       <Label fx:id="holddays2" layoutX="74.0" layoutY="77.0" prefHeight="15.0" prefWidth="48.0" AnchorPane.bottomAnchor="29.0" AnchorPane.topAnchor="77.0" />
       <Label fx:id="price1" layoutX="175.0" layoutY="77.0" text="价格：" AnchorPane.bottomAnchor="29.0" AnchorPane.topAnchor="77.0" />
       <Label fx:id="price2" layoutX="230.0" layoutY="77.0" prefHeight="15.0" prefWidth="36.0" AnchorPane.bottomAnchor="29.0" AnchorPane.topAnchor="77.0" />
-      <Label fx:id="changeable" layoutX="298.0" layoutY="77.0" prefHeight="15.0" prefWidth="118.0" />
+      <Label fx:id="changeable" layoutX="298.0" layoutY="69.0" prefHeight="15.0" prefWidth="118.0" />
    </children>
 </AnchorPane>

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import exception.NullMarketException;
+import notificationThread.Notification;
 import org.controlsfx.control.Notifications;
 
 import dataController.DataContorller;
@@ -64,8 +65,13 @@ public class MarketUIPopupController implements Initializable{
 							Notifications.create().title("异常").text(e.toString()).showWarning();
 						}
 					}
+//					Thread notification = new Notification("成功","成功将添加至"+stockset);
+//					notification.start();
+
 					Notifications.create().title("成功").text("成功将添加至"+stockset).showInformation();
-					System.out.println("here");
+					for(int i=0;i<10000;i++){
+
+					}
 					Stage stage = (Stage) nameLabel.getScene().getWindow();
 					stage.close();
 				}
@@ -80,8 +86,14 @@ public class MarketUIPopupController implements Initializable{
 				code = stockLogicInterface.nameToCode(name);
 				stockLogicInterface.addStockToStockSet(code
 						, stockset, (String)dataController.get("UserName"));
+//				Thread notification = new Notification("成功","成功将"+(String)dataController.
+//						get("Market_StockNow")+"添加至"+stockset);
+
 				Notifications.create().title("成功").text("成功将"+(String)dataController.
 						get("Market_StockNow")+"添加至"+stockset).showInformation();
+				for(int i=0;i<10000;i++){
+
+				}
 				Stage stage = (Stage) nameLabel.getScene().getWindow();
 				stage.close();
 			} catch (RemoteException e1) {
@@ -91,7 +103,6 @@ public class MarketUIPopupController implements Initializable{
 			} catch (StockNameRepeatException e1) {
 				// TODO Auto-generated catch block
 				Notifications.create().title("添加错误").text(e1.toString()).showError();
-				e1.printStackTrace();
 			}
 		}
 
