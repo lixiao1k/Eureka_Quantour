@@ -37,7 +37,8 @@ public class SingleLineChart implements chartService{
 	private CommonSetService commonSet = new CommonSet();
 
     private NumberFormat nf = NumberFormat.getPercentInstance();
-    private DecimalFormat df = new DecimalFormat("0.000"); 
+    private DecimalFormat df = new DecimalFormat("0.000");
+	private DecimalFormat df2 = new DecimalFormat("0.00");
 
 	private AnchorPane pane = new AnchorPane();
 	private StackPane chartpane = new StackPane();
@@ -86,8 +87,12 @@ public class SingleLineChart implements chartService{
 	        	serie.getData().add( new XYChart.Data<>(dates[j], datas[j]) );
 	        	
 	        	String dataFormat = "";
-                if( kind==ChartKind.YIELDDISTRIBUTE )
-	        	    dataFormat = nf.format( datas[j] );
+                if( kind==ChartKind.YIELDDISTRIBUTE ) {
+					if ( datas[j]<0 )
+						dataFormat = nf.format( datas[j] );
+					else
+						dataFormat = df2.format( datas[j] ) + "%";
+				}
                 else
                     dataFormat = df.format( datas[j] );
 	        	if( dataStrings[j]!=null )

@@ -334,7 +334,7 @@ public class BrowseStrategyController implements Initializable{
 		commentstr.setWrappingWidth(300);
 		commentstr.setStyle(
 				"-fx-font-size: 14px;"
-				+ "-fx-fill: rgb(25,25,112);"
+				+ "-fx-fill:#E0FFFF;"
 						+ "-fx-font-smoothing-type: lcd;");
 		hb.getChildren().addAll(name,date);
 		vb.getChildren().addAll(hb,commentstr);
