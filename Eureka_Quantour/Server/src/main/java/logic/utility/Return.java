@@ -409,9 +409,9 @@ public class Return {
                     k++;
                     avergae2+=po2.getClose();
                 } catch (NullStockIDException e) {
-                    e.printStackTrace();
+                    continue;
                 } catch (NullDateException e) {
-                    e.printStackTrace();
+                    continue;
                 }
             }
             avergae1=avergae1/j;

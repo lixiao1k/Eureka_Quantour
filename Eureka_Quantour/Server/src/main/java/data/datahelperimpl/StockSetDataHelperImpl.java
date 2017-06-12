@@ -170,4 +170,14 @@ public class StockSetDataHelperImpl implements IStockSetDataHelper {
 			return null;
 		}	
 	}
+	/**
+	 * 添加一系列股票到股票池
+	 * @param stockSetName 股票池名字
+	 * @param userName 用户名
+	 * @param codelist 股票编号的列表
+	 */
+	public void addStockList_to_StockSet(String userName,String stockSetName,List<String> codelist)
+	{
+		
+	}
 }

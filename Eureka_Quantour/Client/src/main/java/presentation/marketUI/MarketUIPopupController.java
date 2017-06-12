@@ -3,6 +3,7 @@ package presentation.marketUI;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -52,18 +53,15 @@ public class MarketUIPopupController implements Initializable{
 			setflag=temp;
 		}
 		List<SingleStockInfoVO> stocklist = null;
+		List<String> stockcodelist = new ArrayList<String>();
 		if(setflag.equals(name)){//如果相等则为将板块加入股池
 			try {
 				stocklist = stockLogicInterface.getStockSetSortedInfo(name, (LocalDate)dataController.get("SystemTime"),null);
 				if(stocklist.size()!=0){
 					for(SingleStockInfoVO vo:stocklist){//将板块中的所有股票都加入相应股池
-						try {
-							stockLogicInterface.addStockToStockSet(vo.getCode()
-                                    , stockset, (String)dataController.get("UserName"));
-						} catch (StockNameRepeatException e1) {
-							Notifications.create().title("异常").text(e.toString()).showWarning();
-						}
+						stockcodelist.add(vo.getCode());
 					}
+					stockLogicInterface.addStockList_to_StockSet((String)dataController.get("UserName"),stockset,stockcodelist);
 //					Thread notification = new Notification("成功","成功将添加至"+stockset);
 //					notification.start();
 

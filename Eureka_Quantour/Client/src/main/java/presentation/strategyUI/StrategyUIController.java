@@ -77,6 +77,9 @@ public class StrategyUIController implements Initializable{
 	
 	@FXML
 	RadioButton openRadioButton;
+
+	@FXML
+	RadioButton averageCloseRadioButton;
 	
 	@FXML
 	TextField numOfStockTextField;
@@ -243,7 +246,7 @@ public class StrategyUIController implements Initializable{
 					e1.printStackTrace();
 				}	
 			}
-		}else{
+		}else if(meanRadioButton.isSelected()){
 			if(stockSetComboBox.getValue()!=null){
 				stockSet = stockSetComboBox.getValue();
 			}else{
@@ -346,6 +349,109 @@ public class StrategyUIController implements Initializable{
 			}
 
 			
+		}else{
+			if(stockSetComboBox.getValue()!=null){
+				stockSet = stockSetComboBox.getValue();
+			}else{
+				flag = false;
+				Notifications.create().title("输入异常").text("请正确选择股票池").showWarning();
+			}
+			if(holdPeriodTextField.getText().length()!=0){
+				int num = 0;
+				try{
+					num = Integer.parseInt(holdPeriodTextField.getText());
+					if(num<=0){
+						Notifications.create().title("输入异常").text("持有期请输入正数").showWarning();
+						flag = false;
+					}
+				}catch(NumberFormatException e1){
+					flag = false;
+					Notifications.create().title("输入异常").text("持有期请输入整数").showWarning();
+				}
+				holddays = num;
+			}else{
+				flag = false;
+				Notifications.create().title("输入异常").text("请输入持有期").showWarning();
+			}
+			if(closeRadioButton.isSelected()){
+				price = "收盘价";
+			}else{
+				price = "开盘价";
+			}
+
+			if(numOfStockTextField.getText().length()!=0){
+				int num =0;
+				try{
+					num = Integer.parseInt(numOfStockTextField.getText());
+					if(num<=0){
+						Notifications.create().title("输入异常").text("股票数请输入正数").showWarning();
+						flag = false;
+					}
+				}catch(NumberFormatException e1){
+					flag = false;
+					Notifications.create().title("输入异常").text("股票数请输入整数").showWarning();
+				}
+				nums = num;
+			}else{
+				flag = false;
+				Notifications.create().title("输入异常").text("请输入股票数").showWarning();
+			}
+
+			if(changableTextField.getText().length()!=0){
+				int num =0;
+				try{
+					num = Integer.parseInt(changableTextField.getText());
+					if(num<=0){
+						Notifications.create().title("输入异常").text("几日平均请输入正数").showWarning();
+						flag = false;
+					}
+				}catch(NumberFormatException e1){
+					flag = false;
+					Notifications.create().title("输入异常").text("几日平均请输入整数").showWarning();
+				}
+				meandays = num;
+			}else{
+				flag = false;
+				Notifications.create().title("输入异常").text("请输入几日平均数").showWarning();
+			}
+			if(flag){
+
+				List<Integer> meandaylist =new ArrayList<>();
+
+				meandaylist.add(meandays);
+				StrategyConditionVO strategyConditionVO2 = new StrategyConditionVO("平均收盘价",meandaylist,nums);
+				SaleVO saleVO2 = new SaleVO(holddays,price);
+				RemoteHelper remote = RemoteHelper.getInstance();
+				StockLogicInterface stockLogicInterface = remote.getStockLogic();
+				try {
+					stockLogicInterface.setStrategy(strategyConditionVO2, saleVO2,(LocalDate)dataController.get("BeginTime"),
+							(LocalDate)dataController.get("SystemTime"), stockSet, (String)dataController.get("UserName"));
+
+					YieldDistributionHistogramDataVO yieldDistributionHistogramDataVO1 = stockLogicInterface.getYieldDistributionHistogramData();
+					YieldChartDataVO yieldChartDataVO1 = stockLogicInterface.getYieldChartData();
+
+					chartService chartservice = new YieldComparedChart(yieldChartDataVO1);
+					Pane pane = chartservice.getchart(900,250,true);
+					chartservice = new YieldDistributeChart(yieldDistributionHistogramDataVO1);
+					Pane pane1 = chartservice.getchart(900, 250, true);
+					chart2AnchorPane.getChildren().clear();
+					chart2AnchorPane.getChildren().add(pane);
+					chart1AnchorPane.getChildren().clear();
+					chart1AnchorPane.getChildren().add(pane1);
+					chartservice = new YieldComparedChart(yieldChartDataVO1);
+					Pane pane2 = chartservice.getchart(900,250,true);
+					chartservice = new YieldDistributeChart(yieldDistributionHistogramDataVO1);
+					Pane pane3 = chartservice.getchart(900, 250, true);
+					dataController.upDate("ComparedChart",pane2);
+					dataController.upDate("DistributeChart",pane3);
+				} catch (RemoteException e1) {
+					// TODO Auto-generated catch block
+					Notifications.create().title("网络连接异常").text(e1.toString()).show();
+					e1.printStackTrace();
+				}
+			}
+
+
 		}
 
 	}
@@ -446,8 +552,10 @@ public class StrategyUIController implements Initializable{
 		String price = saleVO.getTiaocangjiage();
 		if(name.equals("动量策略")){
 			momentumRadioButton.setSelected(true);
-		}else{
+		}else if(name.equals("均值策略")){
 			meanRadioButton.setSelected(true);
+		}else if(name.equals("平均收盘价")){
+			averageCloseRadioButton.setSelected(true);
 		}
 		changableTextField.setText(Integer.toString(changeableStr));
 		numOfStockTextField.setText(Integer.toString(nums));
@@ -468,17 +576,16 @@ public class StrategyUIController implements Initializable{
 		meanRadioButton.setUserData("均值策略");
 		closeRadioButton.setUserData("收盘价");
 		openRadioButton.setUserData("开盘价");
+		averageCloseRadioButton.setUserData("平均收盘价");
 		strategy.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-
 			@Override
 			public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-				// TODO Auto-generated method stub
-				if(strategy.getSelectedToggle()!=null){
-				  if(strategy.getSelectedToggle().getUserData().equals("均值")){
-					  changableLabel.setText("几日均值");
-				  }else if(strategy.getSelectedToggle().getUserData().equals("动量")){
-					  changableLabel.setText("持有期");
-				  }
+				if(newValue.getUserData().equals("均值策略")){
+					changableLabel.setText("几日均值");
+				}else if(newValue.getUserData().equals("动量策略")){
+					changableLabel.setText("持有期");
+				}else if(newValue.getUserData().equals("平均收盘价")){
+					changableLabel.setText("几日平均");
 				}
 			}
 		});

@@ -115,7 +115,6 @@ public class StockSetDataHelperImpl_DBO implements IStockSetDataHelper {
 		if(isStockExist(setid,stockName)){
 			throw new StockNameRepeatException();
 		}
-		System.out.println(stockName+":"+stockSetName);
 		String sql="insert into stockset values(?,?)";
 		Connection conn=ConnectionPoolManager.getInstance().getConnection("quantour");
 		PreparedStatement pstmt=null;
@@ -302,6 +301,45 @@ public class StockSetDataHelperImpl_DBO implements IStockSetDataHelper {
 			e.printStackTrace();
 			ConnectionPoolManager.getInstance().close("quantour", conn);
 			return false;
+		}
+	}
+	/**
+	 * 添加一系列股票到股票池
+	 * @param stockSetName 股票池名字
+	 * @param userName 用户名
+	 * @param codelist 股票编号的列表
+	 */
+	public void addStockList_to_StockSet(String userName,String stockSetName,List<String> codelist)
+	{
+		String userid=getuserid(userName);
+		String setid=getsetid(userid,stockSetName);
+		String sql="insert into stockset values(?,?)";
+		Connection conn=ConnectionPoolManager.getInstance().getConnection("quantour");
+		PreparedStatement pstmt=null;
+		try {
+			pstmt = (PreparedStatement)conn.prepareStatement(sql);
+			for(int i=0;i<codelist.size();i++)
+			{	
+				try{
+					pstmt.setString(1, setid);
+					pstmt.setString(2, codelist.get(i));
+					pstmt.addBatch();
+				}catch(SQLException e)
+				{
+					continue;
+				}
+				
+			}
+			pstmt.executeBatch();
+			pstmt.close();
+			ConnectionPoolManager.getInstance().close("quantour", conn);
+		}catch (SQLException e) {
+			try {
+				conn.close();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
 		}
 	}
 }
