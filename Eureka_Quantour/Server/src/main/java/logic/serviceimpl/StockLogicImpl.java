@@ -43,6 +43,16 @@ public class StockLogicImpl implements StockLogicInterface{
 	private Utility utility=Utility.getInstance();
 	private Return stragety;
 
+	/**
+	 * 添加一系列股票到股票池
+	 * @param stockSetName 股票池名字
+	 * @param userName 用户名
+	 * @param codelist 股票编号的列表
+	 */
+	public void addStockList_to_StockSet(String userName,String stockSetName,List<String> codelist) throws RemoteException
+	{
+		set.addStockList_to_StockSet(userName, stockSetName, codelist);
+	}
 	public CompanyInfoVO getLatestCommpanyInfo(LocalDate time,String code) throws RemoteException,NullStockIDException, NullDateException
 	{
 		CompanyInfoPO po1=company.getLatestCommpanyInfo(time, code);

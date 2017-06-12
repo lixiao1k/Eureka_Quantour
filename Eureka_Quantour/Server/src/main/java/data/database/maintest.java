@@ -64,7 +64,7 @@ public class maintest {
 	private void getDate(String date)
 	{
 		Connection conn=ConnectionPoolManager.getInstance().getConnection("quantour");
-		String sql="select * from stockdata where date = '"+date+"'";
+		String sql="select close from stockdata where date = '"+date+"'";
 		PreparedStatement pstmt=null;
 
 		try {
