@@ -19,6 +19,7 @@ import exception.*;
 import logic.service.StockLogicInterface;
 import logic.utility.Return;
 import logic.utility.SaveThread;
+import logic.utility.StrategyCalculate;
 import logic.utility.Utility;
 import po.CommentPO;
 import po.CompanyInfoPO;
@@ -41,7 +42,8 @@ public class StockLogicImpl implements StockLogicInterface{
 	private IStockSetInterface set = StockSetDataController.getInstance();
 	private IStrategyDataInterface strategy = StrategyDataController.getInstance();
 	private Utility utility=Utility.getInstance();
-	private Return stragety;
+	//private Return stragety;
+	private StrategyCalculate stragety;
 
 	/**
 	 * 添加一系列股票到股票池
@@ -437,7 +439,8 @@ public class StockLogicImpl implements StockLogicInterface{
 		List<String> stocklistname=set.getStockSetInfo(stockSetName,username);
 		System.out.println(strategyConditionVO.getExtra());
 
-		stragety=new Return(stocklistname,begin,now,s,strategyConditionVO);
+		//stragety=new Return(stocklistname,begin,now,s,strategyConditionVO);
+		stragety=new StrategyCalculate(stocklistname,begin,now,s,strategyConditionVO);
 	}
 
 	@Override

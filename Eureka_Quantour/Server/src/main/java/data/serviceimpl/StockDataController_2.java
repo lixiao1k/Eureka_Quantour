@@ -280,7 +280,7 @@ public class StockDataController_2 implements IStockDataInterface{
 		else{
 			LocalDate temp=LocalDate.of(date.getYear(), date.getMonth(), date.getDayOfMonth());
 			temp=temp.minusDays(1);
-			last--;
+			last++;
 			return addDays(temp, last,false);
 		}
 	}

@@ -248,7 +248,8 @@ public class Return {
         	return celueshouyilv;
         }
     }
-
+    
+    
 
     private double getjiage(SingleStockInfoPO po) throws PriceTypeException {
         String type=salevo.getTiaocangjiage();

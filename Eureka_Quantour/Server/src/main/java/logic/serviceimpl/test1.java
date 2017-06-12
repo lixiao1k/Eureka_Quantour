@@ -2,6 +2,7 @@ package logic.serviceimpl;
 
 import java.rmi.RemoteException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import exception.NullDateException;
@@ -9,7 +10,10 @@ import exception.NullStockIDException;
 import vo.CompanyInfoVO;
 import vo.EMAInfoVO;
 import vo.ExponentChartVO;
+import vo.SaleVO;
 import vo.SingleStockInfoVO;
+import vo.StrategyConditionVO;
+import vo.YieldChartDataVO;
 
 public class test1 {
 	public static void main(String[] args)
@@ -21,21 +25,16 @@ public class test1 {
 		StockLogicImpl s =new StockLogicImpl();
 		
 		try {
-			s.getLatestCommpanyInfo(LocalDate.of(2017, 4, 18), "000001");
-			System.out.println("start");
+			List<Integer> list=new ArrayList<Integer>();
+			list.add(10);
+			StrategyConditionVO scv=new StrategyConditionVO("均值策略",list,10);
+			SaleVO sale=new SaleVO();
+			sale.setNum(10);
+			s.setStrategy(scv, sale, LocalDate.of(2014, 6, 15),  LocalDate.of(2017, 6, 13), "SHA", "Lyx123");
 			long t1=System.currentTimeMillis();
-			List<SingleStockInfoVO> list1=s.getExponentInfoByTime("SHA", LocalDate.of(2007, 1, 1), LocalDate.of(2010, 1, 1));
-			List<EMAInfoVO> list2=s.getExponentEMAInfo("SHA", LocalDate.of(2007, 1, 1), LocalDate.of(2010, 1, 1));
+			YieldChartDataVO temp=s.getYieldChartData();
 			long t2=System.currentTimeMillis();
 			System.out.println(t2-t1);
-			t1=System.currentTimeMillis();
-			
-			ExponentChartVO vo=s.getExponentChart("SHA", LocalDate.of(2007, 1, 1), LocalDate.of(2010, 1, 1));
-			
-			t2=System.currentTimeMillis();
-			System.out.println(t2-t1);
-			System.out.println(list2.get(3).getEMA().size());
-			System.out.println(vo.getEma().get(3).getEMA().size());
 //			for(int i=0;i<5;i++)
 //			{
 //				List<Double> l1=vo.getEma().get(i).getEMA();
