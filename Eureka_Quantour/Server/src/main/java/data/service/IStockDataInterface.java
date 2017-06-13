@@ -1,6 +1,7 @@
 package data.service;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 
 import exception.DateOverException;
@@ -97,4 +98,6 @@ public interface IStockDataInterface {
 	 * @throws DateOverException
 	 */
 	public LocalDate addDays(LocalDate date,int last) throws DateOverException;
+	
+	public HashMap<String,String> getOneDay_Date(LocalDate day,HashMap<String,String> map) throws NullDateException;
 }

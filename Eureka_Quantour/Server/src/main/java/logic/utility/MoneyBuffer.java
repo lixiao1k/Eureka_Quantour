@@ -10,9 +10,10 @@ public class MoneyBuffer {
 		this.stock_number = stock_number;
 		this.init = init;
 		Node p=null;
+		Node q=null;
 		for(int i=0;i<stock_number;i++)
 		{
-			Node node=new Node(100.0,0.0,0.0,0.0,null);
+			Node node=new Node(100.0,0.0,0.0,0.0,null,null);
 			if(i==0)
 			{
 				head=node;
@@ -21,6 +22,7 @@ public class MoneyBuffer {
 			else
 			{
 				p.next=node;
+				node.previous=p;
 				p=node;
 			}
 		}
@@ -28,10 +30,8 @@ public class MoneyBuffer {
 	}
 	public void add(double before,double now,double buy_now,double after)
 	{
-			double temp_before=tail.before;
-			double temp_now=tail.now;
 			double rate=now/before*10000;
-			double temprate=temp_now/temp_before*10000;
+			double temprate=tail.rate_compare;
 			if(rate>temprate)
 			{
 				changebuf(before,now,buy_now,after);
@@ -39,58 +39,42 @@ public class MoneyBuffer {
 	}
 	private void changebuf(double before,double now,double buy_now,double after)
 	{
-		double rate=now/before*10000;
+		Node temp=new Node(before,now,buy_now,after,null,null);
+		double rate=temp.rate_compare;
 		Node p=head;
-		boolean trans=false;
-		double trans_before=0.0;
-		double trans_now=0.0;
-		double trans_buynow=0.0;
-		double trans_after=0.0;
+		Node q=head;
 		for(int i=0;i<stock_number;i++)
 		{
-
-			if(trans)
+			if(p.rate_compare<rate)
 			{
-				double temp_now=p.now;
-				double temp_before=p.before;
-				double temp_buynow=p.buy_now;
-				double temp_after=p.after;
-				p.now=trans_now;
-				p.before=trans_before;
-				p.buy_now=trans_buynow;
-				p.after=trans_after;
-				if(temp_after==0.0)
+				if(i==0)
 				{
-					break;
-				}
-				trans_before=temp_before;
-				trans_now=temp_now;
-				trans_after=temp_after;
-				trans_buynow=temp_buynow;
-				p=p.next;
-			}
-			else
-			{
-				double temp_rate=p.now/p.before*10000;
-				if(rate>temp_rate)
-				{
-					trans=true;
-					trans_before=p.before;
-					trans_now=p.now;
-					trans_after=p.after;
-					trans_buynow=p.buy_now;
-					p.now=now;
-					p.before=before;
-					p.after=after;
-					p.buy_now=buy_now;
-					p=p.next;
+					temp.next=head;
+					head.previous=temp;
+					head=temp;
 				}
 				else
 				{
-					p=p.next;
+					q.next=temp;
+					temp.next=p;
+					p.previous=temp;
+					temp.previous=q;
 				}
+				break;
+			}
+			else
+			{
+				q=p;
+				p=p.next;
 			}
 		}
+		tail=tail.previous;
+		if(tail==null)
+		{
+			System.out.println("wrong");
+			System.exit(0);
+		}
+		tail.next=null;
 	}
 	public void clear()
 	{
@@ -100,7 +84,9 @@ public class MoneyBuffer {
 				p.before=100.0;
 				p.now=0.0;
 				p.after=0.0;
-				p=p.next;
+				p.rate_buy=0.0;
+				p.rate_compare=0.0;
+				p=p.next;				
 			}
 	}
 	public int getStock_number() {
@@ -120,10 +106,12 @@ public class MoneyBuffer {
 		Node p=head;
 		double temp1=0.0;
 		double temp2=0.0;
-		//System.out.println("**********************************************");
+//		double temp=0.0;
+//		int count=0;
+//		System.out.println("**********************************************");
 		for(int i=0;i<stock_number;i++)
 		{
-			if(p.buy_now==0)
+			if(p.buy_now==0||p.after==0)
 			{
 				break;
 			}
@@ -131,32 +119,50 @@ public class MoneyBuffer {
 			{
 //				System.out.println("----------------------");
 //				System.out.println(p.now);
-//				System.out.println(p.before);
-//				System.out.println((p.now-p.before)/p.before);
+//				System.out.println(p.after);
+//				System.out.println((p.after-p.now)/p.now);
 //				System.out.println("-----------------------");
 				temp1=temp1+p.buy_now;
 				temp2=temp2+p.after;
+//				temp=temp+p.rate_buy;
+//				count++;
 			}
 			p=p.next;
 		}
-		//System.out.println("**********************************************");
+//		System.out.println(temp2/temp1);
+//		System.out.println("**********************************************");
 		double rate=temp2/temp1;
-		return rate;
+		if(temp1==0)
+		{
+			return 1;
+		}
+		else
+		{
+			return rate;
+		}
+//		double rate=temp/count/10000;
 	}
 }
 class Node
 {
+	double rate_compare;
+	double rate_buy;
 	double before;
 	double now;
 	double buy_now;
 	double after;
-	public Node(double before, double now,double buy_now, double after, Node next) {
+	Node next;
+	Node previous;
+	public Node(double before, double now,double buy_now, double after, Node next,Node previous) {
 		super();
 		this.before = before;
 		this.now = now;
 		this.buy_now=buy_now;
 		this.after = after;
 		this.next = next;
+		this.previous=previous;
+		rate_compare=this.now/this.before*10000;
+		rate_buy=this.after/this.buy_now*10000;
 	}
-	Node next;
+
 }

@@ -229,7 +229,7 @@ public class Return {
                     }
 
 
-                    if(zheci==0) System.exit(0);
+                    if(zheci==0) continue;
                     celuefudu.add(shangci/zheci);
                     init=init*(shangci/zheci);
 

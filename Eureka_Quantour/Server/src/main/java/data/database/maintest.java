@@ -7,13 +7,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Scanner;
 
 import com.mysql.cj.jdbc.PreparedStatement;
 
 import data.datahelperimpl.StockDataHelperImpl_2;
 import data.parse.Parse;
+import data.service.IStockDataInterface;
+import data.service.IStockSetInterface;
+import data.serviceimpl.StockDataController_2;
+import data.serviceimpl.StockSetDataController;
 import exception.NullDateException;
 import exception.StockHaltingException;
 import po.SingleStockInfoPO;
@@ -28,11 +35,71 @@ public class maintest {
 	private maintest(){
 		total=0;
 		sdhi=new StockDataHelperImpl_2();
-		List<Integer> date=sdhi.datesort;
-		for(int i:date)
+		IStockDataInterface isd=StockDataController_2.getInstance();
+		IStockSetInterface iss=StockSetDataController.getInstance();
+		long t1=System.currentTimeMillis();
+		List<String> list1=iss.getStockSetInfo("SZA");
+		
+		HashMap<String,String> temp=new HashMap<String,String>();
+		for(int i=0;i<list1.size();i++)
 		{
-			getDate(Parse.getInstance().getlocalDate(i).format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+			temp.put(list1.get(i), "");
 		}
+		List<Integer> date=sdhi.datesort;
+		File file=new File("config/stock/info");
+		
+		for(int i:sdhi.datesort)
+		{
+			//System.out.println(i);
+			HashMap<String,String> map1=new HashMap<String,String>();
+			HashMap<String,String> map2=new HashMap<String,String>();
+				try {
+					map1=isd.getOneDay_Date(Parse.getInstance().getlocalDate(i),temp);
+				} catch (NullDateException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				int count1=0;
+				int count2=0;
+				for(String name:list1)
+				{
+					try {
+						map2.put(name, sdhi.getSingleInfo(i, name));
+					} catch (StockHaltingException e) {
+						continue;
+					}
+					catch(NullDateException e)
+					{
+						continue;
+					}
+					count1++;
+				}
+					
+				Iterator<Entry<String, String>> it=map1.entrySet().iterator();
+				while(it.hasNext())
+				{
+					Entry<String, String> code=it.next();
+					if(!map2.containsKey(code.getKey()))
+					{
+						System.out.println("error1:"+i);
+						System.exit(0);
+					}
+					if(!map1.get(code.getKey()).equals(code.getValue()))
+					{
+						System.out.println("error2:"+i);
+						System.exit(0);
+					}
+					count2++;
+				}
+				if(count1!=count2)
+				{
+					System.out.println("error3:"+i+":"+count1+"-"+count2);
+					System.exit(0);
+				}
+			
+		}
+		long t2=System.currentTimeMillis();
+		total=t2-t1;
 		System.out.println(total);
 	}
 	private void getAll()
@@ -45,14 +112,15 @@ public class maintest {
 			long t1=System.currentTimeMillis();
 			pstmt = (PreparedStatement)conn.prepareStatement(sql);
 			ResultSet rs=pstmt.executeQuery();
+			while(rs.next()){
+				for(int i=0;i<15;i++)
+				{
+				
+					rs.getString(i);
+				}				
+			}
 			long t2=System.currentTimeMillis();
 			total=total+(t2-t1);
-//			while(rs.next()){
-//				for(int i=0;i<15;i++)
-//				{
-//					rs.getString(i);
-//				}				
-//			}
 			rs.close();
 			pstmt.close();
 			ConnectionPoolManager.getInstance().close("quantour", conn);
@@ -61,30 +129,33 @@ public class maintest {
 			
 		}
 	}
-	private void getDate(String date)
+	private HashMap<String,Double> getDate(String date)
 	{
 		Connection conn=ConnectionPoolManager.getInstance().getConnection("quantour");
-		String sql="select close from stockdata where date = '"+date+"'";
+		String sql="select code,aftclose,close from stockdata where date = '"+date+"'";
 		PreparedStatement pstmt=null;
-
+		HashMap<String,Double> map=new HashMap<String,Double>();
 		try {
 			long t1=System.currentTimeMillis();
 			pstmt = (PreparedStatement)conn.prepareStatement(sql);
 			ResultSet rs=pstmt.executeQuery();
+
+			while(rs.next()){
+				for(int i=0;i<1;i++)
+				{
+					//System.out.println(map);
+					map.put(rs.getString(1), rs.getDouble(2));
+				}				
+			}
 			long t2=System.currentTimeMillis();
 			total=total+(t2-t1);
-//			while(rs.next()){
-//				for(int i=0;i<15;i++)
-//				{
-//					rs.getString(i);
-//				}				
-//			}
 			rs.close();
 			pstmt.close();
 			ConnectionPoolManager.getInstance().close("quantour", conn);
+			return map;
 		}catch (SQLException e) {
 			ConnectionPoolManager.getInstance().close("quantour", conn);
-			
+			return null;
 		}
 	}
 	public Connection getConn(){
