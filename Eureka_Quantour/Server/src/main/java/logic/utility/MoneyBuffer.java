@@ -118,9 +118,13 @@ public class MoneyBuffer {
 			else
 			{
 //				System.out.println("----------------------");
-//				System.out.println(p.now);
+//				System.out.println(p.buy_now);
 //				System.out.println(p.after);
-//				System.out.println((p.after-p.now)/p.now);
+//				if(p.after/p.buy_now>2.60)
+//				{
+//					System.out.println("error");
+//					System.exit(0);
+//				}
 //				System.out.println("-----------------------");
 				temp1=temp1+p.buy_now;
 				temp2=temp2+p.after;
@@ -130,7 +134,7 @@ public class MoneyBuffer {
 			p=p.next;
 		}
 //		System.out.println(temp2/temp1);
-//		System.out.println("**********************************************");
+	//	System.out.println("**********************************************");
 		double rate=temp2/temp1;
 		if(temp1==0)
 		{
@@ -142,27 +146,27 @@ public class MoneyBuffer {
 		}
 //		double rate=temp/count/10000;
 	}
-}
-class Node
-{
-	double rate_compare;
-	double rate_buy;
-	double before;
-	double now;
-	double buy_now;
-	double after;
-	Node next;
-	Node previous;
-	public Node(double before, double now,double buy_now, double after, Node next,Node previous) {
-		super();
-		this.before = before;
-		this.now = now;
-		this.buy_now=buy_now;
-		this.after = after;
-		this.next = next;
-		this.previous=previous;
-		rate_compare=this.now/this.before*10000;
-		rate_buy=this.after/this.buy_now*10000;
+	private class Node
+	{
+		double rate_compare;
+		double rate_buy;
+		double before;
+		double now;
+		double buy_now;
+		double after;
+		Node next;
+		Node previous;
+		public Node(double before, double now,double buy_now, double after, Node next,Node previous) {
+			super();
+			this.before = before;
+			this.now = now;
+			this.buy_now=buy_now;
+			this.after = after;
+			this.next = next;
+			this.previous=previous;
+			this.rate_compare=this.now/this.before*10000;
+			this.rate_buy=this.after/this.buy_now*10000;
+		}
+		
 	}
-
 }

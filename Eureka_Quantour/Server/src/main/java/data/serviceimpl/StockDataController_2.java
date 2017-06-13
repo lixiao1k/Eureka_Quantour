@@ -192,7 +192,12 @@ public class StockDataController_2 implements IStockDataInterface{
 		} catch (StockHaltingException e) {
 			throw new NullDateException(cal);
 		}
-		return new SingleStockInfoPO(result,name,strCode,date);
+		SingleStockInfoPO po=new SingleStockInfoPO(result,name,strCode,date);
+		if(po.getClose()==0.0||po.getOpen()==0.0||po.getHigh()==0.0||po.getLow()==0.0)
+		{
+			throw new NullDateException(cal);
+		}
+		return po;
 	}
 	/**
 	 * 获取某一天起之后last个交易日之后的天数
