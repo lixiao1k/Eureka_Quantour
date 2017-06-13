@@ -101,7 +101,7 @@ public class CalculateValueImpl implements CalculateValueInterface{
 		double denominator = 0;
 		for( int i=0; i<len; i++ ){
 			numerator += closes[len-1-i] * Math.pow( 1-a, i );
-			denominator = Math.pow( 1-a, i );
+			denominator += Math.pow( 1-a, i );
 		}
 		return numerator / denominator;
 	}
