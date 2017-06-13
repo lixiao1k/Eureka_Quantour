@@ -183,11 +183,12 @@ public class testBPNetImpl {
 /**********************************************************************************************************/        
         
         
-        BPNetImpl bp = new BPNetImpl( new int[]{6,13,1}, 0.15, 0.8 );
+        BPNetImpl bp = new BPNetImpl( 
+        		new int[]{ new BPNetSupportImpl().getNumOfInput(), 13, 1 }, 0.15, 0.8 );
         //迭代训练5000次
         for( int n=0; n<5000; n++ )
             for( int i=0; i<dataset.length; i++ )
-                bp.train( dataset[i], target );
+                bp.train( dataset[i], target[i] );
 
 
         //测试数据集

@@ -18,7 +18,7 @@ public interface BPNetInterface {
 	 * @date: 2017年6月8日
 	 * @param tar 
 	 */
-	void updateWeight( double tar[] );
+	void updateWeight( double tar );
 	
 	/**
 	 * 
@@ -28,5 +28,5 @@ public interface BPNetInterface {
 	 * @param in
 	 * @param tar 
 	 */
-	void train( double[] in, double tar[] );
+	void train( double[] in, double tar );
 }

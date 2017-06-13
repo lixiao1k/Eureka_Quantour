@@ -19,9 +19,15 @@ public class BPNetSupportImpl implements BPNetSupportInterface{
 	private final int closeIndex = 2;
 	private final int lowIndex = 3;
 	private final int volumeIndex = 4;
+
+    private final int numOfInput = 4;
 	
 	public int getMaxNum(){
 		return maxNum;
+	}
+	
+	public int getNumOfInput(){
+		return numOfInput;
 	}
 	
 	public int getOpenIndex(){
@@ -96,7 +102,7 @@ public class BPNetSupportImpl implements BPNetSupportInterface{
 		int cha = 5; 
         int QLen = QMaxNumDayData.length;
 
-        double[] EMA5 = new double[closePrice.length];
+        double[] MA5 = new double[closePrice.length];
         double sum = 0;
         for( int i=0; i<closePrice.length; i++ ){
             sum = 0;
@@ -111,9 +117,9 @@ public class BPNetSupportImpl implements BPNetSupportInterface{
                for( int k=0; k<cha; k++ )
                     sum += closePrice[i-k];
                 
-            EMA5[i] = sum / cha;
+            MA5[i] = sum / cha;
         }
-        return EMA5;
+        return MA5;
 	}
 
 	
@@ -122,7 +128,7 @@ public class BPNetSupportImpl implements BPNetSupportInterface{
 		int cha = 60; 
         int QLen = QMaxNumDayData.length;
 
-        double[] EMA60 = new double[closePrice.length];
+        double[] MA60 = new double[closePrice.length];
         double sum = 0;
         for( int i=0; i<closePrice.length; i++ ){
             sum = 0;
@@ -137,9 +143,9 @@ public class BPNetSupportImpl implements BPNetSupportInterface{
                for( int k=0; k<cha; k++ )
                     sum += closePrice[i-k];
                 
-            EMA60[i] = sum / cha;
+            MA60[i] = sum / cha;
         }
-        return EMA60;
+        return MA60;
 	}
 
 	
@@ -245,27 +251,32 @@ public class BPNetSupportImpl implements BPNetSupportInterface{
 			double[] openPrice, double[] vol, double[][] QMaxNumDayData ){
 		double[] EMA5 = EMA5( closePrice, QMaxNumDayData );
 		double[] EMA60 = EMA60( closePrice, QMaxNumDayData );
-		double[] MA5 = MA5( closePrice, QMaxNumDayData );
-		double[] MA60 = MA60( closePrice, QMaxNumDayData );
 		double[] MTM = MTM( closePrice, QMaxNumDayData );
 		double[] CR5 = CR5( closePrice, highPrice, lowPrice, openPrice, QMaxNumDayData );
 		
 		int length = EMA60.length;
+        
+        double[] closes = new double[length];
+        for( int i=0; i<length; i++ ){
+            if( i==0 )
+                closes[i] = QMaxNumDayData[QMaxNumDayData.length-1][closeIndex];
+            else
+                closes[i] = closePrice[i-1];
+        }
 		
 		List<ArrayList<Double>> datalist = new ArrayList<ArrayList<Double>>();
 		for( int i=0; i<length; i++ ){
 			ArrayList<Double> list = new ArrayList<Double>();
 			list.add( EMA5[i] );
 			list.add( EMA60[i] );
-			list.add( MA5[i] );
-			list.add( MA60[i] );
 			list.add( MTM[i] );
-			list.add( CR5[i] );
+			// list.add( CR5[i] );
+            list.add( closes[i] ); 
 			datalist.add( list );
 		}
-		double[][] data = new double[datalist.size()][6];
+		double[][] data = new double[datalist.size()][numOfInput];
 		for( int i=0; i<datalist.size(); i++ ){
-			for( int j=0; j<6; j++ ){
+			for( int j=0; j<numOfInput; j++ ){
 				data[i][j] = datalist.get(i).get(j);
 				// System.out.print( df.format(data[i][j])+"  " );
 			}

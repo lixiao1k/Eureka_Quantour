@@ -127,9 +127,12 @@ public class PredictImpl implements PredictInterface{
 		// TODO Auto-generated method stub
 		SingleStockInfoVO ssi = new SingleStockInfoVO();
 
+		if( len<=0 || m<=0 || k<=0 || m+k>len )
+			return 0;
+
 		// get before 100 days' data
 		int vLen = 115;
-		if( len>5 && len<1000 )
+		if( len>10 && len<1000 )
 			vLen = len;
 		double[] closes = new double[vLen];
 		LocalDate[] dates = new LocalDate[vLen];
@@ -172,6 +175,9 @@ public class PredictImpl implements PredictInterface{
 	public double KNNPredictRODForStrategy(String stockcode, LocalDate date, int len, int m, int k) {
 		// TODO Auto-generated method stub
 		SingleStockInfoVO ssi = new SingleStockInfoVO();
+
+		if( len<=0 || m<=0 || k<=0 || m+k>len )
+			return 0;
 		
 		double QPrice = 0;
 		LocalDate dateT = date.plusDays(1);
