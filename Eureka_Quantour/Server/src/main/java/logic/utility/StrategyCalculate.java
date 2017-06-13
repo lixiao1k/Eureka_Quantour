@@ -223,11 +223,11 @@ public class StrategyCalculate {
 						continue;
 					}
 				}
-				else if(type==2)
+				else if(type==2||type==3)
 				{
 					ema_list=new ArrayList<HashMap<String,String>>();
 					try {
-					for(int i=1;i<=format_day;i++)
+					for(int i=1;i<format_day;i++)
 					{				
 						ema_list.add(stock.getOneDay_Date(stock.addDays(iter, -i), code));
 					}
@@ -285,11 +285,11 @@ public class StrategyCalculate {
 						SingleStockInfoPO po3=new SingleStockInfoPO(before_info,name,name,iter);
 						mb.add(po3.getAftClose(), po2.getAftClose(), getjiage(po2), getjiage(po1));
 					}
-					else if(type==2)
+					else if(type==2||type==3)
 					{
-						double total=0;
-						int cc=0;
-						for(int i=0;i<format_day;i++)
+						double total=po2.getAftClose();
+						int cc=1;
+						for(int i=0;i<format_day-1;i++)
 						{
 							String t_info=ema_list.get(i).getOrDefault(name, "error");
 							double num=0.0;
@@ -304,15 +304,23 @@ public class StrategyCalculate {
 							}
 							total=total+num;
 						}
-						if(cc==0)
+						if(cc==1)
 						{
 							continue;
 						}
 						else
 						{
+
 							total=total/cc;
 							//System.out.println(iter+":"+name+":"+getjiage(po2)+":"+getjiage(po1));
-							mb.add(po2.getAftClose(), total, getjiage(po2), getjiage(po1));
+							if(type==2)
+							{
+								mb.add(po2.getAftClose(), total, getjiage(po2), getjiage(po1));
+							}
+							else
+							{
+								mb.add(1, total-po2.getAftClose(), getjiage(po2), getjiage(po1));
+							}
 						}
 					}
 				}

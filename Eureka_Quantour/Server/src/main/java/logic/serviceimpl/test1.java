@@ -27,11 +27,11 @@ public class test1 {
 		try {
 			List<Integer> list=new ArrayList<Integer>();
 			list.add(10);
-			StrategyConditionVO scv=new StrategyConditionVO("动量策略",list,100);
+			StrategyConditionVO scv=new StrategyConditionVO("动量策略",list,10);
 			SaleVO sale=new SaleVO();
 			sale.setNum(100);
-			sale.setTiaocangqi(1);
-			s.setStrategy(scv, sale, LocalDate.of(2005, 6, 15),  LocalDate.of(2010, 6, 13), "ZXB", "Lyx123");
+			sale.setTiaocangqi(10);
+			s.setStrategy(scv, sale, LocalDate.of(2010, 6, 15),  LocalDate.of(2017, 6, 13), "SHA", "Lyx123");
 			long t1=System.currentTimeMillis();
 			YieldChartDataVO temp=s.getYieldChartData();
 			long t2=System.currentTimeMillis();
