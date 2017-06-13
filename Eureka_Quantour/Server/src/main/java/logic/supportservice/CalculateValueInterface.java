@@ -1,5 +1,7 @@
 package logic.supportservice;
 
+import java.time.LocalDate;
+
 /**
  *
  * @author hzp
@@ -79,5 +81,19 @@ public interface CalculateValueInterface{
 	 * @param len
 	 */
 	double calDEA( double[] DIFs, int len );
+	
+	/**
+	 * 
+	 * @Description: 获得改日期后面一个工作日
+	 * @author: hzp
+	 */
+	LocalDate getValidLatterDate( LocalDate date );
+	
+	/**
+	 * 
+	 * @Description: 获得改日期前面一个工作日
+	 * @author: hzp
+	 */
+	LocalDate getValidBeforeDate( LocalDate date );
 	
 }
