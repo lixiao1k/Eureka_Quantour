@@ -4,7 +4,9 @@ import java.io.Serializable;
 
 /**
  * 
- * @Description: save stock's prediction
+ * @Description: save stock's prediction and min price
+ * 				 firstMinPrice : 根据90%置信区间计算的价格下限
+ * 				 secondMinPrice : 根据99%置信区间计算的价格下限
  * @author: hzp 
  * @date: May 14, 2017
  */
