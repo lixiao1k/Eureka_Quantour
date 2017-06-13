@@ -25,9 +25,9 @@ public class test1 {
 		ForecastRODImpl s=new ForecastRODImpl();
 		try {
 			long t1=System.currentTimeMillis();
-			for(int i=0;i<10000;i++)
+			for(int i=0;i<100000;i++)
 			{
-				s.predict("000001", LocalDate.of(2017, 2, 1));
+				s.predict("000001", LocalDate.of(2017, 5, 17));
 			}
 			long t2=System.currentTimeMillis();
 			System.out.println(t2-t1);

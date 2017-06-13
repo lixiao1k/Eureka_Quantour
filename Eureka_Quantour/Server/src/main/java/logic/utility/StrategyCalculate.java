@@ -187,6 +187,10 @@ public class StrategyCalculate {
 			type=3;
 			mb=new MoneyBuffer(stock_number,3);
 		}
+		else if(strategyConditionVO.getName().equals("KNN"))
+		{
+			
+		}
 		List<Double> basic_list=new ArrayList<>();
 		List<Double> strategy_list=new ArrayList<>();
 	    LocalDate iter=LocalDate.of(begin.getYear(),begin.getMonth(),begin.getDayOfMonth());
