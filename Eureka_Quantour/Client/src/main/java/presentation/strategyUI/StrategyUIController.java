@@ -172,7 +172,12 @@ public class StrategyUIController implements Initializable{
 			
 			if(changableTextField.getText().length()!=0){
 				int num =0;
-			    num = Integer.parseInt(changableTextField.getText());
+				try {
+					num = Integer.parseInt(changableTextField.getText());
+				}catch (NumberFormatException e1){
+					Notifications.create().title("输入异常").text("形成期请输入正数").showWarning();
+				}
+
 				try{
 				    num = Integer.parseInt(changableTextField.getText());
 				    if(num<=0){
@@ -541,6 +546,7 @@ public class StrategyUIController implements Initializable{
 		else if(begin.isBefore((LocalDate)dataController.get("SystemTime"))){
 			timeLabel.setText(begin.toString());
 			dataController.upDate("BeginTime", begin);
+			Notifications.create().title("成功").text("时间修改成功").showInformation();
 		}else{
 			Notifications.create().title("时间异常").text("开始时间需在系统时间之前").showWarning();
 		}
