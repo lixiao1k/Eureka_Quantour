@@ -153,6 +153,7 @@ public class StockSetUIController implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
+				stocksFlowPane.getChildren().clear();
 				String stockSetName = (String) button.getProperties().get("NAME");
 				dataController.upDate("StockSetNow",stockSetName);
 				RemoteHelper remote = RemoteHelper.getInstance();
