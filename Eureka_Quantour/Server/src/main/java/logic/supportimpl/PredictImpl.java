@@ -10,6 +10,7 @@ import logic.supportservice.CalculateValueInterface;
 import logic.supportservice.PredictInterface;
 import logic.supportservice.SortArrayInterface;
 import logic.supportservice.StatisticInterface;
+import po.SingleStockInfoPO;
 import vo.SingleStockInfoVO;
 
 public class PredictImpl implements PredictInterface{
@@ -125,7 +126,7 @@ public class PredictImpl implements PredictInterface{
 	@Override
 	public double KNNPredictPriceForStrategy(String stockcode, LocalDate date, int len, int m, int k) {
 		// TODO Auto-generated method stub
-		SingleStockInfoVO ssi = new SingleStockInfoVO();
+		SingleStockInfoPO ssi = new SingleStockInfoPO();
 
 		// get before 100 days' data
 		int vLen = 115;
@@ -138,8 +139,8 @@ public class PredictImpl implements PredictInterface{
 		while( index>-1 && dateT.compareTo(zuizao)>0 ){
 			try{
 				dateT = calValue.getValidBeforeDate( dateT );
-				ssi = new SingleStockInfoVO( stock.getSingleStockInfo(stockcode, dateT) );
-				closes[index] = ssi.getClose();
+				ssi = stock.getSingleStockInfo(stockcode, dateT);
+				closes[index] = ssi.getAftClose();
 				dates[index] = ssi.getDate();
 				index--;
 			}catch ( NullStockIDException e ){
@@ -171,15 +172,15 @@ public class PredictImpl implements PredictInterface{
 	@Override
 	public double KNNPredictRODForStrategy(String stockcode, LocalDate date, int len, int m, int k) {
 		// TODO Auto-generated method stub
-		SingleStockInfoVO ssi = new SingleStockInfoVO();
+		SingleStockInfoPO ssi = new SingleStockInfoPO();
 		
 		double QPrice = 0;
 		LocalDate dateT = date.plusDays(1);
 		while( QPrice==0 && dateT.compareTo(zuizao)>0 ){
 			try{
 				dateT = calValue.getValidBeforeDate( dateT );
-				ssi = new SingleStockInfoVO( stock.getSingleStockInfo(stockcode, dateT) );
-				QPrice = ssi.getClose();
+				ssi = stock.getSingleStockInfo(stockcode, dateT);
+				QPrice = ssi.getAftClose();
 			}catch ( NullStockIDException e ){
 				e.printStackTrace();
 			}catch ( NullDateException e){

@@ -242,6 +242,10 @@ public class StockDataController_2 implements IStockDataInterface{
 			}
 		}catch(NumberFormatException e1){
 			try{
+				if(stockCode==null)
+				{
+					throw new NullStockIDException(stockCode);
+				}
 				strCode=translate.trans_nameTocode(stockCode);
 				code=Integer.parseInt(strCode);
 				return code;

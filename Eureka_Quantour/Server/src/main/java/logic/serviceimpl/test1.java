@@ -43,7 +43,7 @@ public class test1 {
 		try {
 			List<Integer> list=new ArrayList<Integer>();
 			list.add(10);
-			StrategyConditionVO scv=new StrategyConditionVO("平均收盘价",list,10);
+			StrategyConditionVO scv=new StrategyConditionVO("动量策略",list,10);
 			SaleVO sale=new SaleVO();
 			sale.setNum(100);
 			sale.setTiaocangqi(10);
