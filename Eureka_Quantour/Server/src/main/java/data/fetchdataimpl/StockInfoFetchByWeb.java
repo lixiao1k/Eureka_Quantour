@@ -337,6 +337,7 @@ public class StockInfoFetchByWeb {
 	}
 	public void fetchExponent(){
 		FileMethod.getInstance().makepath("config/exponent");
+		FileMethod.getInstance().dealdir(new File("config/exponent"));
 		Properties pro=new Properties();
 		try {
 			InputStream is=new FileInputStream("config/stock/dataconfig.properties");
@@ -348,6 +349,7 @@ public class StockInfoFetchByWeb {
 		}
 		String endday=pro.getProperty("lastday");
 		String startday=pro.getProperty("updateExponentday","2005-02-01");
+		startday="2005-02-01";
 		File file=new File("config/resources/date/totalCalendar");
 		try {
 			OutputStream out=new FileOutputStream("config/stock/dataconfig.properties");
@@ -476,9 +478,10 @@ public class StockInfoFetchByWeb {
 				}
 				if(flag){
 					System.out.println("正在处理第"+count+"个，总共"+i+"个"+"剩余"+(i-count)+"个。");
-					//dealSingleInfo_Minutes(code,lt,date);
+					dealSingleInfo_Minutes(code,lt,date);
 					//check_Minutes(code,date);
 					//check_Minutes(code,date);
+					check_Minutes(code,date);
 					getMinInterval(code,date);
 				}
 			}
@@ -604,7 +607,7 @@ public class StockInfoFetchByWeb {
 			OutputStream out=new FileOutputStream(path+"config.properties");
 			pro.store(out, "update lastUpdate_Minutes");
 			out.close();
-			for(int i=date.size()>=30?date.size()-5:0;i<date.size();i++){
+			for(int i=date.size()>=10?date.size()-10:0;i<date.size();i++){
 				String symbol="sh";
 				if(code.charAt(0)=='0'||code.charAt(0)=='2'||code.charAt(0)=='3'){
 					symbol="sz";
@@ -615,8 +618,9 @@ public class StockInfoFetchByWeb {
 						+ symbol
 						+ code;
 				System.out.println(decodeDate(date.get(i))+"---------"+code);
-				int in=FetchPoolManagement.getInstance().getConnection("web", url, path+"Minutes/"+String.format("%04d", sort.get(i)), "InputStream");
-				FetchPoolManagement.getInstance().startConn("web", in);
+				WebMethod.getInstance().saveToFile_ByInputStream(url, path+"Minutes/"+String.format("%04d", sort.get(i)));
+//				int in=FetchPoolManagement.getInstance().getConnection("web", url, path+"Minutes/"+String.format("%04d", sort.get(i)), "InputStream");
+//				FetchPoolManagement.getInstance().startConn("web", in);
 			}
 		}
 	}
@@ -890,7 +894,7 @@ public class StockInfoFetchByWeb {
 		int lastupdate=Integer.parseInt(encodeDate(last_update));
 		int end=Integer.parseInt(encodeDate(enddate));
 		String last_day=pro.getProperty("last_subscriptiondate");
-		if((lastupdate+300)<end){
+		if((lastupdate+1000)<end){
 			fetchrightsurl(stock);
 			fetchrights(stock,enddate);
 			Properties pro1=new Properties();

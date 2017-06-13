@@ -3,6 +3,7 @@ package data.serviceimpl;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.List;
 
 import data.datahelperimpl.StockDataHelperImpl_2;
@@ -44,6 +45,10 @@ public class StockDataController_2 implements IStockDataInterface{
 	public void reload(){
 		datahelper=null;
 		datahelper=new StockDataHelperImpl_2();
+	}
+	public HashMap<String,String> getOneDay_Date(LocalDate day,HashMap<String,String> map) throws NullDateException
+	{
+		return datahelper.getOneDay_Date(Parse.getInstance().getIntDate(day),map);
 	}
 //	/**
 //	 * 判断是否是交易日
@@ -280,7 +285,7 @@ public class StockDataController_2 implements IStockDataInterface{
 		else{
 			LocalDate temp=LocalDate.of(date.getYear(), date.getMonth(), date.getDayOfMonth());
 			temp=temp.minusDays(1);
-			last--;
+			last++;
 			return addDays(temp, last,false);
 		}
 	}

@@ -116,7 +116,7 @@ public interface StockLogicInterface extends Remote {
 
 	SingleStockInfoVO getStockBasicInfo(String code, LocalDate now) throws NullStockIDException, NullDateException,RemoteException;
 
-	void setStrategy(StrategyConditionVO strategyConditionVO, SaleVO s, LocalDate begin, LocalDate now, String stockSetName,String username)throws RemoteException;
+	void setStrategy(StrategyConditionVO strategyConditionVO, SaleVO s, LocalDate begin, LocalDate now, String stockSetName,String username)throws RemoteException,DateInvalidException, BeginInvalidException, EndInvalidException;
 
 	YieldChartDataVO getYieldChartData()throws RemoteException;
 

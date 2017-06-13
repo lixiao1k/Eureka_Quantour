@@ -9,7 +9,12 @@ public class StockDataFetchImpl implements IStockDataFetch{
 	private StockInfoCalculate infocalculate;
 	private static StockDataFetchImpl impl;
 	public static void main(String[] args){
-		new StockInfoFetchByWeb().fetchExponent();;
+		try {
+			new StockDataFetchImpl().fetchInit();
+		} catch (InternetdisconnectException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	private StockDataFetchImpl(){
 		setByweb=new StockSetFetchByWeb();
@@ -66,7 +71,7 @@ public class StockDataFetchImpl implements IStockDataFetch{
 	}
 	public void fetchInit() throws InternetdisconnectException{
 //		System.out.println("开始爬取股票信息");
-//		//infoByweb.fetchAllStockInfo();;
+//		infoByweb.fetchAllStockInfo();;
 //		System.out.println("爬取股票信息完成");
 //		System.out.println("开始爬取股票复权信息");
 //		infoByweb.fetchAllsubscription();
@@ -76,8 +81,13 @@ public class StockDataFetchImpl implements IStockDataFetch{
 //		System.out.println("计算均线完成");
 //		System.out.println("开始汇总股票信息");
 //		infoByweb.indexationStockDate(true);
+//		System.out.println("汇总股票信息完成");
+//		System.out.println("开始爬取指数信息");
 //		infoByweb.fetchExponent();
+//		System.out.println("爬取指数信息完成");
+		System.out.println("开始分时信息");
 		infoByweb.fetchStockInfo_Minutes();
-		System.out.println("汇总股票信息完成");
+		System.out.println("爬取分时完成");
+
 	}
 }

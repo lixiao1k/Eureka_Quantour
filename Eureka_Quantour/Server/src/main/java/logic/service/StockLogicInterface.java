@@ -110,7 +110,7 @@ public interface StockLogicInterface extends Remote {
 
 	// input the parameters and set the strategy
 	void setStrategy(StrategyConditionVO strategyConditionVO, SaleVO s, LocalDate begin, LocalDate now, String stockSetName,String username)
-		throws  RemoteException;
+		throws  RemoteException, DateInvalidException, BeginInvalidException, EndInvalidException;
 
 	//get the yield chart data
 	//two list of double meaning data
