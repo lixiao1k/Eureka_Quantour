@@ -431,8 +431,15 @@ public class StockLogicImpl implements StockLogicInterface{
 	}
 
 	@Override
-	public void setStrategy(StrategyConditionVO strategyConditionVO, SaleVO s, LocalDate begin, LocalDate now, String stockSetName,String username) {
+	public void setStrategy(StrategyConditionVO strategyConditionVO, SaleVO s, LocalDate begin, LocalDate now, String stockSetName,String username)
+	throws DateInvalidException, BeginInvalidException, EndInvalidException{
 		//TODO
+		try {
+			utility.ifExpDateValid(begin, now, "SZA");
+		} catch (NullStockIDException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if (stockSetName.equals("SHA") ||stockSetName.equals("SZA") ||stockSetName.equals("SHB")|| stockSetName.equals("SZB")||stockSetName.equals("CYB")||stockSetName.equals("HS300")
 				||stockSetName.equals("ZXB") )
 			username=null;

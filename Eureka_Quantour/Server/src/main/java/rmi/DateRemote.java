@@ -118,7 +118,7 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 	}
 
 	@Override
-	public void setStrategy(StrategyConditionVO strategyConditionVO, SaleVO s, LocalDate begin, LocalDate now, String stockSetName, String username) throws RemoteException {
+	public void setStrategy(StrategyConditionVO strategyConditionVO, SaleVO s, LocalDate begin, LocalDate now, String stockSetName, String username) throws RemoteException,DateInvalidException, BeginInvalidException, EndInvalidException{
 		sli.setStrategy(strategyConditionVO, s, begin, now, stockSetName, username);
 	}
 
