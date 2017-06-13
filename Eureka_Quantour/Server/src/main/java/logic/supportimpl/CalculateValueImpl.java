@@ -1,5 +1,7 @@
 package logic.supportimpl;
 
+import java.time.LocalDate;
+
 import logic.supportservice.CalculateValueInterface;
 
 public class CalculateValueImpl implements CalculateValueInterface{
@@ -119,6 +121,46 @@ public class CalculateValueImpl implements CalculateValueInterface{
 		if( DIFs.length!=len )
 			return 0.0;
 		return calEMA( DIFs, len );
+	}
+
+	@Override
+	public LocalDate getValidLatterDate(LocalDate date) {
+		// TODO Auto-generated method stub
+		date = date.plusDays(1);
+		while( getDayOfWeek(date)==-1 )
+			date = date.plusDays(1);
+		return date;
+	}
+
+	@Override
+	public LocalDate getValidBeforeDate(LocalDate date) {
+		// TODO Auto-generated method stub
+		date = date.minusDays(1);
+		while( getDayOfWeek(date)==-1 )
+			date = date.minusDays(1);
+		return date;
+	}
+	
+	/**
+	 * @Description: 根据日期返回 星期 的代号，如果是-1表示不是交易日
+	 * @author: hzp
+	 * @date: 2017年6月8日
+	 * @param date
+	 */
+	private int getDayOfWeek( LocalDate date){
+		String dow = date.getDayOfWeek().toString();
+		if( dow.equals("MONDAY"))
+			return 0;
+		else if( dow.equals("TUESDAY") )
+			return 1;
+		else if( dow.equals("WEDNESDAY") )
+			return 2;
+		else if( dow.equals("THURSDAY") )
+			return 3;
+		else if( dow.equals("FRIDAY"))
+			return 4;
+		else
+			return -1;
 	}
     
 }
