@@ -40,7 +40,7 @@ public class StockLogicImpl implements StockLogicInterface{
 	private IStockDataInterface stock = StockDataController_2.getInstance();
 	private ICompanyDataInterface company = CompanyDataController.getInstance();
 	private IStockSetInterface set = StockSetDataController.getInstance();
-	private IStrategyDataInterface strategy = StrategyDataController.getInstance();
+	private IStrategyDataInterface strategyService = StrategyDataController.getInstance();
 	private Utility utility=Utility.getInstance();
 	//private Return stragety;
 	private StrategyCalculate stragety;
@@ -543,26 +543,26 @@ public class StockLogicImpl implements StockLogicInterface{
 		int tiaocangqi=saleVO.getTiaocangqi();
 		String tiaocangjiage=saleVO.getTiaocangjiage();
 		StrategyInfoPO po=new StrategyInfoPO(strategytypename,publicorprivate,parameter,purchasenum,tiaocangqi,tiaocangjiage);
-		strategy.saveStrategy(po,name,username);
+		strategyService.saveStrategy(po,name,username);
 		new SaveThread(strategyConditionVO,saleVO,username,name).start();
 	}
 
 	@Override
 	public void deleteStrategy(String createName, String strategyName) throws RemoteException {
-		strategy.deleteStrategy(createName, strategyName);
+		strategyService.deleteStrategy(createName, strategyName);
 	}
 
 	@Override
 	public void comment(String Username, String strategyName, String commenterName, LocalDateTime time, String comment) throws RemoteException {
-		strategy.comment(Username, strategyName, commenterName, time, comment);
+		strategyService.comment(Username, strategyName, commenterName, time, comment);
 	}
 
 	@Override
 	public StrategyShowVO getStrategy(String createrName, String StrategyName) throws RemoteException {
 
-		StrategyInfoPO infoPO=strategy.applyStrategy(createrName, StrategyName);
-		StrategyShowPO showPO=strategy.getStrategy(createrName, StrategyName);
-		List<CommentPO> commentPOS=strategy.getStrategyComments(createrName, StrategyName);
+		StrategyInfoPO infoPO=strategyService.applyStrategy(createrName, StrategyName);
+		StrategyShowPO showPO=strategyService.getStrategy(createrName, StrategyName);
+		List<CommentPO> commentPOS=strategyService.getStrategyComments(createrName, StrategyName);
 
 		List<CommentVO> commentVOS=new ArrayList<>();
 		for (CommentPO po:commentPOS){
@@ -588,7 +588,7 @@ public class StockLogicImpl implements StockLogicInterface{
 
 	@Override
 	public List<StrategyListVO> getStrategyList(String createrName) {
-		List<StrategyShowPO> list=strategy.getStrategyList(createrName);
+		List<StrategyShowPO> list=strategyService.getStrategyList(createrName);
 		List<StrategyListVO> reslist=new ArrayList<>();
 		for(StrategyShowPO po:list){
 			System.out.println(po.getStrategyYearReturn());
@@ -601,7 +601,7 @@ public class StockLogicImpl implements StockLogicInterface{
 
 	@Override
 	public List<StrategyListVO> getStrategyList() throws RemoteException {
-		List<StrategyShowPO> list=strategy.getStrategyList();
+		List<StrategyShowPO> list=strategyService.getStrategyList();
 		List<StrategyListVO> reslist=new ArrayList<>();
 		for(StrategyShowPO po:list){
 			reslist.add(new StrategyListVO(po.getCreaterName(),po.getStrategyName(),po.getStrategyYearReturn()));
@@ -613,7 +613,7 @@ public class StockLogicImpl implements StockLogicInterface{
 
 	@Override
 	public void setPublic(String creatroName, String straetgyName, boolean property) throws RemoteException {
-		strategy.setPublic(creatroName, straetgyName, property);
+		strategyService.setPublic(creatroName, straetgyName, property);
 	}
 
 	@Override

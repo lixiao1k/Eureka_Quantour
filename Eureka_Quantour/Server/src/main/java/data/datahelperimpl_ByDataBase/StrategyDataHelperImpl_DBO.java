@@ -281,8 +281,8 @@ public class StrategyDataHelperImpl_DBO implements IStrategyDataHelper{
 			pstmt.setDouble(2, vo.getAlpha());
 			pstmt.setDouble(3, vo.getBeta());
 			pstmt.setDouble(4, vo.getSharp());
-			pstmt.setDouble(5, vo.getStrategyYearReturn());
-			pstmt.setDouble(6, vo.getZuidahuiche());
+			pstmt.setDouble(5, vo.getZuidahuiche());
+			pstmt.setDouble(6, vo.getStrategyYearReturn());
 			pstmt.setInt(7, vo.getBasicReturn().size());
 			pstmt.setDouble(8, vo.getJizhunYearReturn());
 			pstmt.executeUpdate();
