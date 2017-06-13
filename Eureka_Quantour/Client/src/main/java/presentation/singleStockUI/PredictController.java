@@ -90,17 +90,17 @@ public class PredictController implements Initializable {
         DecimalFormat decimalFormat = new DecimalFormat("#0.00");
         price2.setText(decimalFormat.format(vo.getPredictPrice()));
         dof2.setText(decimalFormat.format(vo.getPredictROD()*100)+"%");
-        if(vo.getPredictPrice()>0){
+        if(vo.getPredictROD()>0){
             price2.setStyle("-fx-text-fill:#FF0000;"
-                    +"-fx-font-size: 13px;");
+                    +"-fx-font-size: 18px;");
             dof2.setStyle("-fx-text-fill:#FF0000;"
-                    +"-fx-font-size: 13px;");
+                    +"-fx-font-size: 18px;");
 
         }else{
             price2.setStyle("-fx-text-fill:#00EE00;"
-                    +"-fx-font-size: 13px;");
+                    +"-fx-font-size: 18px;");
             dof2.setStyle("-fx-text-fill:#00EE00;"
-                    +"-fx-font-size: 13px;");
+                    +"-fx-font-size: 18px;");
         }
         stockcode2.setText(vo1.getCode());
         date2.setText(vo1.getDate().toString());
@@ -129,8 +129,10 @@ public class PredictController implements Initializable {
                 +"-fx-font-size: 18px;");
         caikuang.setStyle("-fx-text-fill:#E0FFFF;"
                 +"-fx-font-size: 18px;");
-        setStyle(price1);
-        setStyle(dof1);
+        price1.setStyle("-fx-text-fill:#E0FFFF;"
+                +"-fx-font-size: 18px;");
+        dof1.setStyle("-fx-text-fill:#E0FFFF;"
+                +"-fx-font-size: 18px;");
         setStyle(stockcode1);
         setStyle(date1);
         setStyle(jingzichan1);
@@ -140,15 +142,15 @@ public class PredictController implements Initializable {
         setStyle(shiyinglv1);
         setStyle(shijinlv1);
         setStyle(huanshoulv1);
-        setStyle1(stockcode2,"98F5FF");
-        setStyle1(date2,"98F5FF");
-        setStyle1(shouyi2,"98F5FF");
-        setStyle1(jingzichan2,"98F5FF");
-        setStyle1(guben2,"98F5FF");
-        setStyle1(liutong2,"98F5FF");
-        setStyle1(shiyinglv2,"98F5FF");
-        setStyle1(shijinlv2,"98F5FF");
-        setStyle1(huanshoulv2,"98F5FF");
+        setStyle1(stockcode2,"#98F5FF");
+        setStyle1(date2,"#98F5FF");
+        setStyle1(shouyi2,"#98F5FF");
+        setStyle1(jingzichan2,"#98F5FF");
+        setStyle1(guben2,"#98F5FF");
+        setStyle1(liutong2,"#98F5FF");
+        setStyle1(shiyinglv2,"#98F5FF");
+        setStyle1(shijinlv2,"#98F5FF");
+        setStyle1(huanshoulv2,"#98F5FF");
 
     }
 }

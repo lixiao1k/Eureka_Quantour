@@ -17,7 +17,7 @@ public class BPNetSupportImpl implements BPNetSupportInterface{
 	private final int lowIndex = 3;
 	private final int volumeIndex = 4;
 	
-	public int getMaxNUm(){
+	public int getMaxNum(){
 		return maxNum;
 	}
 	
@@ -36,85 +36,7 @@ public class BPNetSupportImpl implements BPNetSupportInterface{
 	public int getVolumeIndex(){
 		return volumeIndex;
 	}
-	
-	/* 
-     * A = ( JHigh + JLow ) / 2;
-     * B = ( QHigh + QLow ) / 2;
-     * C = ( JHigh - JLow );
-     * EM = ( A - B ) * C / JVolume;
-     * EMV = N日内EM的累和;
-     * MAEMV = EMV的M日简单移动平均.
-     * 
-     * N=14 , M=9
-     */
-	@Override
-	public double[] EMV( double[] highPrice, double[] lowPrice, double[] volume, 
-			double[][] QMaxNumDayData ) {
-		
-        int QLen = QMaxNumDayData.length;
-		/* 
-         * 取N为14，即14日的EM值之和；M为9，即9日的移动平均
-         */
-        int N = 14;
-        int M = 9;
-        int NAddM = N + M -2;
-        
-		double[] EM = new double[highPrice.length+NAddM];
-        for( int i=0; i<EM.length; i++ ){
-        	double JHigh = 0;
-        	double JLow = 0;
-        	double QHigh = 0;
-        	double QLow = 0;
-        	if( i<NAddM ){
-        		JHigh = QMaxNumDayData[QLen+i-NAddM][highIndex];
-        		JLow = QMaxNumDayData[QLen+i-NAddM][lowIndex];
-        	}
-        	else{
-        		JHigh = highPrice[i-NAddM];
-        		JLow = lowPrice[i-NAddM];
-        	}
-        	if( i-2<NAddM ){
-        		QHigh = QMaxNumDayData[QLen+(i-2)-NAddM][highIndex];
-        		QLow = QMaxNumDayData[QLen+(i-2)-NAddM][lowIndex];
-        	}
-        	else{
-        		QHigh = highPrice[i-2-NAddM];
-        		QLow = lowPrice[i-2-NAddM];
-        	}
-        	
-            double A = ( JHigh + JLow ) / 2;
-            double B = ( QHigh + QLow ) / 2;
-            double C = JHigh - JLow;
-            
-            double temp = ( A - B ) * C;
-            EM[i] = temp / volume[i];
-        }
 
-        
-        double[] EMV = new double[highPrice.length+M-1];
-        for( int i=EMV.length-1; i>-1; i-- ){
-            // 14日累和
-            double sum = 0;
-            for( int j=0; j<N; j++ ){
-                sum += EM[i+N-j-1];
-            }
-            EMV[i] = sum;
-        }
-
-        double[] MAEMV = new double[highPrice.length];
-        for( int i=MAEMV.length-1; i>-1; i-- ){
-            // 9日移动平均
-            double sum = 0;
-            for( int j=0; j<M; j++ ){
-                sum += EMV[i+M-j-1];
-            }
-            sum = sum / M;
-            MAEMV[i] = sum;
-        }
-        return MAEMV;
-	}
-
-	
 	 /* 
      * EMA = (当日或当期close - 上一日或上期EXPMA) / Ｎ + 上一日或上期EXPMA
      * 首次上期EXPMA值为上一期收盘价，Ｎ为天数。 
@@ -125,6 +47,7 @@ public class BPNetSupportImpl implements BPNetSupportInterface{
         int QLen = QMaxNumDayData.length;
 
         double[] EMA5 = new double[closePrice.length];
+        double[] closes = new double[5];
         for( int i=0; i<closePrice.length; i++ ){
         	double temp = 0;
         	if( i<cha ){
@@ -245,49 +168,6 @@ public class BPNetSupportImpl implements BPNetSupportInterface{
         }
         return MTMlist;
 	}
-
-	
-	// 量能指标就是通过动态分析成交量的变化
-	@Override
-	public double[] MACD( double[] volume, double[][] QMaxNumDayData ) {
-        int QLen = QMaxNumDayData.length;
-        int length = volume.length+1;
-		
-		int shortN = 12;
-        double[] Short = new double[length];
-        Short[0] = 2 * QMaxNumDayData[QLen-1][volumeIndex] + (shortN-1) * QMaxNumDayData[QLen-1-shortN][volumeIndex];
-        for( int i=1; i<length; i++ ){
-            if( i<shortN+1 )
-                Short[i] = 2 * volume[i] + (shortN-1) * QMaxNumDayData[QLen-shortN+i-1][volumeIndex];
-            else
-                Short[i] = 2 * volume[i] + (shortN-1) * volume[i-shortN];
-        }
-
-        int longN = 26;
-        double[] Long = new double[length];
-        Long[0] = 2 * QMaxNumDayData[QLen-1][volumeIndex] + (longN-1) * QMaxNumDayData[QLen-1-longN][volumeIndex];
-        for( int i=0; i<length; i++ ){
-            if( i<longN+1 )
-                Long[i] = 2 * volume[i] + (longN-1) * QMaxNumDayData[QLen-longN+i-1][volumeIndex];
-            else
-                Long[i] = 2 * volume[i] + (longN-1) * volume[i-longN];
-        }
-
-        double[] DIFF = new double[length];
-        for( int i=0; i<length; i++ )
-            DIFF[i] = Short[i] - Long[i];
-
-        double[] DEA = new double[length-1];
-        for( int i=0; i<length-1; i++ )
-            DEA[i] = 2*DIFF[i+1] + (9-1)*DIFF[i];
-        
-        double[] MACD = new double[length-1];
-        for( int i=1; i<length-1; i++ )
-            MACD[i] = DIFF[i]-DEA[i-1];
-
-        return MACD;
-	}
-
 	
 	// 能量指标：CR
 	@Override
@@ -352,13 +232,11 @@ public class BPNetSupportImpl implements BPNetSupportInterface{
 	@Override
 	public double[][] bpTrain( double[] closePrice, double[] highPrice, double[] lowPrice,
 			double[] openPrice, double[] vol, double[][] QMaxNumDayData ){
-//		List<Double> EMV = EMV(highPrice, lowPrice, vol);
 		double[] EMA5 = EMA5( closePrice, QMaxNumDayData );
 		double[] EMA60 = EMA60( closePrice, QMaxNumDayData );
 		double[] MA5 = MA5( closePrice, QMaxNumDayData );
 		double[] MA60 = MA60( closePrice, QMaxNumDayData );
 		double[] MTM = MTM( closePrice, QMaxNumDayData );
-//		List<Double> MACD = MACD(vol);
 		double[] CR5 = CR5( closePrice, highPrice, lowPrice, openPrice, QMaxNumDayData );
 		
 		int length = EMA60.length;
@@ -366,13 +244,11 @@ public class BPNetSupportImpl implements BPNetSupportInterface{
 		List<ArrayList<Double>> datalist = new ArrayList<ArrayList<Double>>();
 		for( int i=0; i<length; i++ ){
 			ArrayList<Double> list = new ArrayList<Double>();
-//			list.add( EMV[i] );
 			list.add( EMA5[i] );
 			list.add( EMA60[i] );
 			list.add( MA5[i] );
 			list.add( MA60[i] );
 			list.add( MTM[i] );
-//			list.add( MACD[i] );
 			list.add( CR5[i] );
 			datalist.add( list );
 		}

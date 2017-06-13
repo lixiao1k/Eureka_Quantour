@@ -9,10 +9,10 @@ import exception.NullDateException;
 import exception.NullStockIDException;
 import logic.service.ForecastRODInterface;
 import logic.supportimpl.CalculateValueImpl;
-import logic.supportimpl.SortArrayImpl;
+import logic.supportimpl.PredictImpl;
 import logic.supportimpl.StatisticImpl;
 import logic.supportservice.CalculateValueInterface;
-import logic.supportservice.SortArrayInterface;
+import logic.supportservice.PredictInterface;
 import logic.supportservice.StatisticInterface;
 import vo.PredictVO;
 import vo.SingleStockInfoVO;
@@ -25,7 +25,7 @@ import vo.SingleStockInfoVO;
 public class ForecastRODImpl implements ForecastRODInterface{
 	
 	private CalculateValueInterface calValue = new CalculateValueImpl();
-	private SortArrayInterface sortArray = new SortArrayImpl();
+	private PredictInterface predict = new PredictImpl();
 	private StatisticInterface statistic = new StatisticImpl();
 	
 	private IStockDataInterface stock = StockDataController_2.getInstance();
@@ -47,7 +47,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		double QPrice = 0.0;
 		while( index>-2 && dateT.compareTo(zuizao)>0 ){
 			try{
-				dateT = getValidBeforeDate( dateT );
+				dateT = calValue.getValidBeforeDate( dateT );
 				ssi = new SingleStockInfoVO( stock.getSingleStockInfo(stockcode, dateT) );
 				if( index>-1 ){
 					closes[index] = ssi.getClose();
@@ -109,11 +109,11 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		int m = 5;
 		// 取前 k vectors
 		int k = 15;
-		double predictPrice = KNNPredictPrice( closes, dates, m, k );
+		double predictPrice = predict.KNNPredictPrice( closes, dates, m, k );
 		double predictROD = (predictPrice - ZPrice) / ZPrice;
 
 		if( predictROD>0.1 || predictROD<-0.1 ){
-			double predictPriceT = SBPredictPrice( ZPrice, QPrice );
+			double predictPriceT = predict.SBPredictPrice( ZPrice, QPrice );
 			double predictRODT = (predictPriceT - ZPrice) / ZPrice;
 			if( (predictRODT<predictROD && predictROD<-0.1) ||
 				(predictRODT>predictROD && predictROD>0.1) );
@@ -126,152 +126,6 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		predictVO.setPredictROD( predictROD );
 
 		return predictVO;
-	}
-	
-
-
-	/**
-	 * @author H2P
-	 * @date   2017-06-01
-	 * @param  closes     datas of close price
-	 * @param  m          length of vector
-	 * @param  k          number of relevant character
-	 */
-	private double KNNPredictPrice( double[] closes, LocalDate[] dates, int m, int k ){
-		// KNN algorithm
-		int n = closes.length;
-	
-		if( n<m || closes.length!=dates.length )
-			return 0.0;
-
-		// length of vector
-		int vLen = m;
-		// number of vector
-		int vNum = n-m;
-
-		double[] baseVector = new double[vLen];
-		for( int i=0; i<vLen; i++ )
-			baseVector[i] = closes[i+vNum];
-	
-		double[][] vectors = new double[vNum][vLen];
-		for( int i=0; i<vNum; i++ )
-			for( int j=0; j<vLen; j++ )
-				vectors[i][j] = closes[i+j];
-	
-		// calcuate cos two vectors' include angle
-		double[] cos = new double[vNum];
-		double[] dateD = new double[vNum];
-		double[][] closeD = new double[vNum][2];
-		for( int i=0; i<vNum; i++ ){
-			cos[i] = calValue.calCosIncludeAngle( baseVector, vectors[i] );
-			LocalDate dateT = dates[i+vLen];
-			dateD[i] = dateT.getYear() + dateT.getMonthValue() + dateT.getDayOfMonth();
-			closeD[i][0] = closes[i+vLen-1];
-			closeD[i][1] = closes[i+vLen];
-		}
-
-		// sort value of cos from max to min
-		int[] cosSortIndex = sortArray.getSortIndexMaxToMin( cos );
-		// select k max value of cos
-		double[] KCos = new double[k];
-		double[] KDateSave = new double[k];
-		// save every vector's last close price and latter close price
-		double[][] KCloseSave = new double[k][2];
-		for( int i=0; i<k; i++ ){
-			for( int j=0; j<vNum; j++ ){
-				if( cosSortIndex[j]==i ){
-					KCos[i] = cos[j];
-					KDateSave[i] = dateD[j];
-					KCloseSave[i][0] = closeD[j][0];
-					KCloseSave[i][1] = closeD[j][1];
-				}
-			}
-		}
-
-		// sort date from 近 to 远
-		int[] dateSortIndex = sortArray.getSortIndexMinToMax( KDateSave );
-		for( int i=0; i<k; i++ )
-			dateSortIndex[i] += i;
-
-		// sort date and value of cos
-		int[] sortIndex = new int[k];
-		for( int i=0; i<k; i++ ){
-			int minValue = 9000000;
-			int index = 0;
-			for( int j=0; j<k; j++ ){
-				if( minValue>dateSortIndex[j] ){
-					minValue = dateSortIndex[j];
-					index = j;
-				}
-			}
-			sortIndex[index] = i;
-			dateSortIndex[index] = 10000000;
-		}
-
-		// calculate result
-		double result = 0;
-		for( int i=0; i<k; i++ )
-			for( int j=0; j<k; j++ )
-				if( sortIndex[j]==i ){
-					result += (KCloseSave[j][1] - KCloseSave[j][0]) / KCloseSave[j][0] * 100.0 * statistic.getWeight( k, k-1-i );
-				}
-		result = 1 + result / 100.0;
-		result = result * closes[n-1];
-		return result;
-	}
-
-
-
-	/**
-	 * @Description:
-	 * @author: 	 hzp
-	 * @date:        2017-06-03
-	 * @param        closes     [description]
-	 * @return                  [description]
-	 */
-	private double SBPredictPrice( double ZPrice, double QPrice ){
-		double result = ZPrice + (ZPrice - QPrice)/2;
-		if( result<0 )
-			return 0;
-		return result;
-	}
-
-
-
-	/**
-	 * @Description: 根据日期返回 星期 的代号，如果是-1表示不是交易日
-	 * @author: hzp
-	 * @date: 2017年6月8日
-	 * @param date
-	 */
-	private int getDayOfWeek( LocalDate date){
-		String dow = date.getDayOfWeek().toString();
-		if( dow.equals("MONDAY"))
-			return 0;
-		else if( dow.equals("TUESDAY") )
-			return 1;
-		else if( dow.equals("WEDNESDAY") )
-			return 2;
-		else if( dow.equals("THURSDAY") )
-			return 3;
-		else if( dow.equals("FRIDAY"))
-			return 4;
-		else
-			return -1;
-	}
-
-	private LocalDate getValidLatterDate( LocalDate date ){
-		date = date.plusDays(1);
-		while( getDayOfWeek(date)==-1 )
-			date = date.plusDays(1);
-		return date;
-	}
-
-	private LocalDate getValidBeforeDate( LocalDate date ){
-		date = date.minusDays(1);
-		while( getDayOfWeek(date)==-1 )
-			date = date.minusDays(1);
-		return date;
 	}
 	
 }
