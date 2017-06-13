@@ -62,7 +62,7 @@ public class Main {
 //        for (SingleStockInfoVO vo:p){
 //            System.out.println(vo.getClose()+"  "+vo.getFudu()+" "+vo.getOpen());
 //        }
-        s.setStrategy(stragetyConditionVo,saleVO,LocalDate.of(2015,04,15),LocalDate.of(2017,4,7),"SHA",null);
+        //s.setStrategy(stragetyConditionVo,saleVO,LocalDate.of(2015,04,15),LocalDate.of(2017,4,7),"SHA",null);
         YieldChartDataVO vo=s.getYieldChartData();
 //        System.out.print(s.getYieldChartData().getSharpe());
 //        System.out.println();

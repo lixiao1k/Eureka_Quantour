@@ -96,6 +96,7 @@ public class WebMethod {
 		  
 		 url = new URL(destUrl);
 		 httpUrl = (HttpURLConnection) url.openConnection();
+		 httpUrl.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
 		 httpUrl.connect();
 		 bis = new BufferedInputStream(httpUrl.getInputStream());
 		 File file=new File(fileName);

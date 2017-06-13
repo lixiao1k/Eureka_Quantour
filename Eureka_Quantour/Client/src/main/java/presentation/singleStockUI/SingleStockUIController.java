@@ -136,7 +136,7 @@ public class SingleStockUIController implements Initializable{
 				try {
                 	timeSharingVO = stockLogicInterface.getTimeSharingData(code,(LocalDate) dataController.get("SystemTime"));
 				} catch (TimeShraingLackException e1) {
-					e1.printStackTrace();
+					Notifications.create().title("异常").text(e1.toString()).showWarning();
 				} catch (NullStockIDException e1) {
 					Notifications.create().title("异常").text(e1.toString()).showWarning();
 				}

@@ -4,8 +4,10 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.BufferUnderflowException;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
@@ -69,6 +71,8 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 	private int datalength;
 	private int positionlength;
 	
+	private int index_length;
+	
 	private String stockInfo;
 	
 //	private DateBufferTrie datebuffer;
@@ -89,9 +93,20 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 		initContainer();
 		initFetchChannel();
 		
+		
 		long t1=System.currentTimeMillis();
 		loadData2();
 		long t2=System.currentTimeMillis();
+		try {
+			InputStream in=new FileInputStream("config/stock/dataconfig.properties");
+			Properties pro=new Properties();
+			pro.load(in);
+			index_length=Integer.valueOf(pro.getProperty("nowrow"));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		System.out.println("映射到内存的时间"+(t2-t1));
 //		check2();
 //		check();
@@ -969,5 +984,53 @@ public class StockDataHelperImpl_2 implements IStockDataHelper_2{
 			e.printStackTrace();
 			ConnectionPoolManager.getInstance().close("quantour", conn);
 		}
+	}
+	public HashMap<String,String> getOneDay_Date(int day,HashMap<String,String> map) throws NullDateException
+	{
+		HashMap<String,String> result=new HashMap<String,String>();
+		int index=dateIndex.getOrDefault(day, -1);
+		if(index<0){
+			throw new NullDateException(day);
+		}
+		else{
+			int pointer=pointerToposition.get(index);
+			int end=index_length;
+			try{
+				end=pointerToposition.get(index+1);
+			}catch(Exception e)
+			{
+			}
+			File file=new File("config/resources/date/calendarDate/"+day);
+			int length=(int) file.length();
+			MappedByteBuffer mbb_data=dataBuffer.getMbb(day, "config/resources/date/calendarDate/"+day);
+			byte[] data_dst=new byte [length];
+			mbb_data.position(0);
+			mbb_data.get(data_dst);
+			
+			byte[] index_dst=new byte[(end-pointer)*16];
+			int position=pointer*16;
+			mbb_position.position(position);
+			mbb_position.get(index_dst);
+			int count=0;
+			for(int i=0;i<end-pointer;i++)
+			{
+				if(count==map.size())
+				{
+					break;
+				}
+				int ptr=i*16;
+				String code=new String(index_dst,ptr,6);
+				if(!map.containsKey(code))
+				{
+					continue;
+				}
+				int b=Integer.parseInt(new String(index_dst,ptr+6,3));
+				int c=Integer.parseInt(new String(index_dst,ptr+9,6));
+				String t=new String(data_dst,c,b);
+				result.put(code, t);
+				count++;
+			}
+		}
+		return result;
 	}
 }

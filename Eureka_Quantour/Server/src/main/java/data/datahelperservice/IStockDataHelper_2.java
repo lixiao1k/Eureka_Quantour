@@ -2,6 +2,7 @@ package data.datahelperservice;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 
 import data.common.DateLeaf;
@@ -105,4 +106,5 @@ public interface IStockDataHelper_2 {
 	public List<Double> getTimeSharingData(String code,int date)throws TimeShraingLackException;
 	public List<String> fuzzySearch(String code);
 	public void addBrowseTimes(String stockCode);
+	public HashMap<String,String> getOneDay_Date(int day,HashMap<String,String> map) throws NullDateException;
 }
