@@ -19,6 +19,54 @@ public interface StatisticInterface {
 	boolean predictROE( double average, double variance, int num, double alpha, double preValue);
 	
 	/**
+	 * 
+	 * @Description: 根据90%置信区间的 下限 来预测最低价格
+	 * @author: hzp
+	 * @date: 2017年6月13日
+	 * @param average
+	 * @param variance
+	 * @param num
+	 * @param todayPrice
+	 */
+	double preMinPriceByRODOf90ZhiXin( double average, double variance, int num, double todayPrice );
+	
+	/**
+	 * 
+	 * @Description: 根据99%置信区间的 下限 来预测最低价格
+	 * @author: hzp
+	 * @date: 2017年6月13日
+	 * @param average
+	 * @param variance
+	 * @param num
+	 * @param todayPrice
+	 */
+	double preMinPriceByRODOf99ZhiXin( double average, double variance, int num, double todayPrice );
+	
+	/**
+	 * 
+	 * @Description: 根据90%置信区间的 上限 来预测最低价格
+	 * @author: hzp
+	 * @date: 2017年6月13日
+	 * @param average
+	 * @param variance
+	 * @param num
+	 * @param todayPrice
+	 */
+	double preMaxPriceByRODOf90ZhiXin( double average, double variance, int num, double todayPrice );
+	
+	/**
+	 * 
+	 * @Description: 根据99%置信区间的 上限 来预测最低价格
+	 * @author: hzp
+	 * @date: 2017年6月13日
+	 * @param average
+	 * @param variance
+	 * @param num
+	 * @param todayPrice
+	 */
+	double preMaxPriceByRODOf99ZhiXin( double average, double variance, int num, double todayPrice );
+	
+	/**
 	 * 经过测试，结果和为 1 
 	 * @Description: function : Wi = w0 + i * d; k Wi's values' sum = 1
 	 * @author: hzp
