@@ -15,6 +15,18 @@ public interface PredictInterface {
 	
 	double SBPredictPrice( double ZPrice, double QPrice );
 	
-	double KNNForStrategy( String stockcode, LocalDate date, int len, int m, int k );
+	/**
+	 * 
+	 * @Description: calculate predict price
+	 * @author: hzp
+	 * @date: 2017年6月13日
+	 * @param stockcode
+	 * @param date
+	 * @param len	容量池的大小
+	 * @param m		length of vector
+	 * @param k		number of relevant character
+	 */
+	double KNNPredictPriceForStrategy( String stockcode, LocalDate date, int len, int m, int k );
 	
+	double KNNPredictRODForStrategy( String stockcode, LocalDate date, int len, int m, int k );
 }

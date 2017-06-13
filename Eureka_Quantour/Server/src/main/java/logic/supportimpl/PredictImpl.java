@@ -123,7 +123,7 @@ public class PredictImpl implements PredictInterface{
 
 
 	@Override
-	public double KNNForStrategy(String stockcode, LocalDate date, int len, int m, int k) {
+	public double KNNPredictPriceForStrategy(String stockcode, LocalDate date, int len, int m, int k) {
 		// TODO Auto-generated method stub
 		SingleStockInfoVO ssi = new SingleStockInfoVO();
 
@@ -165,5 +165,31 @@ public class PredictImpl implements PredictInterface{
 		
 		return predictPrice;
 		
+	}
+
+
+	@Override
+	public double KNNPredictRODForStrategy(String stockcode, LocalDate date, int len, int m, int k) {
+		// TODO Auto-generated method stub
+		SingleStockInfoVO ssi = new SingleStockInfoVO();
+		
+		double QPrice = 0;
+		LocalDate dateT = date.plusDays(1);
+		while( QPrice==0 && dateT.compareTo(zuizao)>0 ){
+			try{
+				dateT = calValue.getValidBeforeDate( dateT );
+				ssi = new SingleStockInfoVO( stock.getSingleStockInfo(stockcode, dateT) );
+				QPrice = ssi.getClose();
+			}catch ( NullStockIDException e ){
+				e.printStackTrace();
+			}catch ( NullDateException e){
+			}
+		}
+		
+		double predictPrice = KNNPredictPriceForStrategy( stockcode, date, len, m, k);
+		
+		double ROD = ( predictPrice - QPrice ) / QPrice;
+		
+		return ROD;
 	}
 }
