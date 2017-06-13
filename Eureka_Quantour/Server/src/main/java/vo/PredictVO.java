@@ -16,9 +16,15 @@ public class PredictVO implements Serializable{
 	
 	private double predictROD;
 	
+	private double firstMinPrice = 0;
+	
+	private double secondMinPrice = 0;
+	
 	public PredictVO(){
 		predictPrice = 0.0;
 		predictROD = 0.0;
+		firstMinPrice = 0.0;
+		secondMinPrice = 0.0;
 	}
 
 	public double getPredictPrice() {
@@ -37,5 +43,20 @@ public class PredictVO implements Serializable{
 		this.predictROD = predictROD;
 	}
 	
+	public double getFirstMinPrice() {
+		return firstMinPrice;
+	}
+
+	public void setFirstMinPrice(double firstMinPrice) {
+		this.firstMinPrice = firstMinPrice;
+	}
+
+	public double getSecondMinPrice() {
+		return secondMinPrice;
+	}
+
+	public void setSecondMinPrice(double secondMinPrice) {
+		this.secondMinPrice = secondMinPrice;
+	}
 	
 }

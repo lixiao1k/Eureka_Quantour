@@ -33,23 +33,28 @@ public class ForecastRODImpl implements ForecastRODInterface{
 	private LocalDate zuizao = LocalDate.of(2005,2,1);
 
 	@Override
-	public PredictVO predict(String stockcode, LocalDate date) throws RemoteException {
+	public PredictVO predict( String stockcode, LocalDate date ) throws RemoteException {
 		// TODO Auto-generated method stub
 		PredictVO predictVO = new PredictVO();
 		SingleStockInfoVO ssi = new SingleStockInfoVO();
 
 		// get before 100 days' data
-		int vLen = 100;
+		int vLen = 115;
 		double[] closes = new double[vLen];
 		LocalDate[] dates = new LocalDate[vLen];
 		LocalDate dateT = date.plusDays(1);
 		int index = vLen-1;
-		while( index>-1 && dateT.compareTo(zuizao)>0 ){
+		double QPrice = 0.0;
+		while( index>-2 && dateT.compareTo(zuizao)>0 ){
 			try{
 				dateT = getValidBeforeDate( dateT );
 				ssi = new SingleStockInfoVO( stock.getSingleStockInfo(stockcode, dateT) );
-				closes[index] = ssi.getClose();
-				dates[index] = ssi.getDate();
+				if( index>-1 ){
+					closes[index] = ssi.getClose();
+					dates[index] = ssi.getDate();
+				}
+				else
+					QPrice = ssi.getClose();
 				index--;
 			}catch ( NullStockIDException e ){
 				e.printStackTrace();
@@ -57,7 +62,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 			}
 		}
 		// fill none in array by random
-		if( index>-1 ){
+		if( index>-2 ){
 			while( index>-1 ){
 				int indexT = index + (int)(Math.random()*( vLen - index ));
 				if( indexT>vLen-1 )
@@ -68,10 +73,34 @@ public class ForecastRODImpl implements ForecastRODInterface{
 					index--;
 				}
 			}
+			int indexT = index + (int)(Math.random()*( vLen - index ));
+			if( indexT>vLen-1 )
+				indexT = vLen-1;
+			QPrice = closes[indexT];
 		}
-
+		
+		double[] RODs = new double[vLen];
+		for( int i=0; i<vLen; i++ ){
+			double ROD = 0.0;
+			if( i==0 )
+				ROD = ( closes[i] - QPrice ) / QPrice;
+			else
+				ROD = ( closes[i] - closes[i-1] ) / closes[i-1];
+			
+			RODs[i] = ROD;
+		}
+		
+		double[] AverageAndVarianceROD = calValue.calTotalityAverageAndVariance( RODs );
+		double ave = AverageAndVarianceROD[0];
+		double var = AverageAndVarianceROD[1];
+		
+		predictVO.setFirstMinPrice(
+				statistic.preMinPriceByRODOf90ZhiXin( ave, var, calValue.getNumOfSample(), closes[vLen-1] ) );
+		predictVO.setSecondMinPrice(
+				statistic.preMinPriceByRODOf99ZhiXin( ave, var, calValue.getNumOfSample(), closes[vLen-1] ) );
+		
 		double ZPrice = closes[vLen-1];
-		double QPrice = closes[vLen-2];
+		QPrice = closes[vLen-2];
 		// length of vector
 		int m = 5;
 		// 取前 k vectors
