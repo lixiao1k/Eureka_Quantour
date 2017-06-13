@@ -26,7 +26,7 @@ import java.util.List;
 //同步线程用来保存用户策略
 // 防止前台卡死
 public class SaveThread extends Thread{
-    private Return stragety;
+    private StrategyCalculate stragety;
 	private IStockSetInterface set = StockSetDataController.getInstance();
 	private IStrategyDataInterface strategy = StrategyDataController.getInstance();
     private String username;
@@ -41,7 +41,7 @@ public class SaveThread extends Thread{
 //        LocalDate now=LocalDate.now();
         LocalDate now=LocalDate.of(2016,1,1);
         LocalDate start=now.minusDays(365);
-        stragety=new Return(stocklistname,start,now,saleVO,strategyConditionVO);
+        stragety=new StrategyCalculate(stocklistname,start,now,saleVO,strategyConditionVO);
 
     }
     //calculate the strategy 
