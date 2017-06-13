@@ -15,7 +15,9 @@ public class testForecastRODImpl {
 		}catch( Exception e ){}
 		System.out.println( predictVO.getPredictPrice() );
 		System.out.println( predictVO.getPredictROD() );
-		System.out.println( predictVO.getFirstMinPrice() );
-		System.out.println( predictVO.getSecondMinPrice() );
+		System.out.println( predictVO.getMinPrice90ZhiXin() );
+		System.out.println( predictVO.getMinPrice99ZhiXin() );
+		System.out.println( predictVO.getMaxPrice90ZhiXin() );
+		System.out.println( predictVO.getMaxPrice99ZhiXin() );
 	}
 }

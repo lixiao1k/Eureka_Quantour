@@ -42,13 +42,38 @@ public class StatisticImpl implements StatisticInterface{
 	@Override
 	public double preMinPriceByRODOf99ZhiXin(double average, double variance, int num, double todayPrice ) {
 		// TODO Auto-generated method stub
-		// alpha = 0.0
+		// alpha = 0.01
 		double zalpha = 2.58;
 		double lower = average - Math.sqrt(variance)*zalpha/Math.sqrt(num);
 		
 		lower = todayPrice * ( 1 + lower );
 		
 		return lower;
+	}
+	
+
+	@Override
+	public double preMaxPriceByRODOf90ZhiXin(double average, double variance, int num, double todayPrice) {
+		// TODO Auto-generated method stub
+		// alpha = 0.1
+		double zalpha = 1.65;
+		double upper = average + Math.sqrt(variance)*zalpha/Math.sqrt(num);
+		
+		upper = todayPrice * ( 1 + upper );
+				
+		return upper;
+	}
+
+	@Override
+	public double preMaxPriceByRODOf99ZhiXin(double average, double variance, int num, double todayPrice) {
+		// TODO Auto-generated method stub
+		// alpha = 0.01
+		double zalpha = 2.58;
+		double upper = average + Math.sqrt(variance)*zalpha/Math.sqrt(num);
+		
+		upper = todayPrice * ( 1 + upper );
+		
+		return upper;
 	}
 
 	@Override
@@ -61,5 +86,6 @@ public class StatisticImpl implements StatisticInterface{
 
 		return w0 + i*d;
 	}
+
 	
 }

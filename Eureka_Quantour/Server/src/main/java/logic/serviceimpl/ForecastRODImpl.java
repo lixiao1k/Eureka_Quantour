@@ -94,10 +94,14 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		double ave = AverageAndVarianceROD[0];
 		double var = AverageAndVarianceROD[1];
 		
-		predictVO.setFirstMinPrice(
+		predictVO.setMinPrice90ZhiXin(
 				statistic.preMinPriceByRODOf90ZhiXin( ave, var, calValue.getNumOfSample(), closes[vLen-1] ) );
-		predictVO.setSecondMinPrice(
+		predictVO.setMinPrice99ZhiXin(
 				statistic.preMinPriceByRODOf99ZhiXin( ave, var, calValue.getNumOfSample(), closes[vLen-1] ) );
+		predictVO.setMaxPrice90ZhiXin(
+				statistic.preMaxPriceByRODOf90ZhiXin( ave, var, calValue.getNumOfSample(), closes[vLen-1] ) );
+		predictVO.setMaxPrice99ZhiXin(
+				statistic.preMaxPriceByRODOf99ZhiXin( ave, var, calValue.getNumOfSample(), closes[vLen-1] ) );
 		
 		double ZPrice = closes[vLen-1];
 		QPrice = closes[vLen-2];
