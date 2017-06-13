@@ -14,10 +14,10 @@
             <Font size="19.0" />
          </font>
       </Label>
-      <Label fx:id="price1" layoutX="45.0" layoutY="67.0" text="明日价格：" />
-      <Label fx:id="dof1" layoutX="45.0" layoutY="103.0" prefHeight="17.0" prefWidth="101.0" text="明日涨跌幅：" />
-      <Label fx:id="price2" layoutX="110.0" layoutY="67.0" prefHeight="17.0" prefWidth="73.0" />
-      <Label fx:id="dof2" layoutX="126.0" layoutY="103.0" prefHeight="17.0" prefWidth="73.0" />
+      <Label fx:id="price1" layoutX="45.0" layoutY="67.0" prefHeight="17.0" prefWidth="108.0" text="明日价格：" />
+      <Label fx:id="dof1" layoutX="45.0" layoutY="103.0" prefHeight="17.0" prefWidth="116.0" text="明日涨跌幅：" />
+      <Label fx:id="price2" layoutX="153.0" layoutY="67.0" prefHeight="17.0" prefWidth="73.0" />
+      <Label fx:id="dof2" layoutX="161.0" layoutY="103.0" prefHeight="17.0" prefWidth="73.0" />
       <Label fx:id="caikuang" layoutX="260.0" layoutY="33.0" prefHeight="24.0" prefWidth="101.0" text="公司财况：">
          <font>
             <Font size="19.0" />

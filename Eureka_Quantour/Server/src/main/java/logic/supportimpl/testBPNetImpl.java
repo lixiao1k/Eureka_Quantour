@@ -18,7 +18,7 @@ public class testBPNetImpl {
 	private static DecimalFormat df = new DecimalFormat("#0.00"); 
 	
 	private static LocalDate zuizao = LocalDate.of(2005,2,1);
-	private static String stockcode = "000938";
+	private static String stockcode = "000001";
 	
 	private static final int characterNum = 5;
 	private static int maxNum = 0;
@@ -31,7 +31,9 @@ public class testBPNetImpl {
 	
 	
 	public static void main( String args[] ){
-		maxNum = new BPNetSupportImpl().getMaxNUm();
+		LocalDate date = LocalDate.of(2009, 5, 1);
+		
+		maxNum = new BPNetSupportImpl().getMaxNum();
 		SingleStockInfoVO ssi = new SingleStockInfoVO();
 		int vLen = 0;
 		
@@ -44,7 +46,7 @@ public class testBPNetImpl {
 	    double[] lowPrice = new double[vLen];
 	    double[] vol = new double[vLen];
 	    	
-		LocalDate dateT = LocalDate.of(2008, 4, 1);
+		LocalDate dateT = date;
 		int index = vLen-1;
 		while( index>-1 && dateT.compareTo(zuizao)>0 ){
 			try{
@@ -83,9 +85,10 @@ public class testBPNetImpl {
 			}catch ( NullDateException e){}
 		}
 		double close = -1;
-		while( close==-1 && dateT.compareTo(zuizao)>0 ){
+		dateT = date;
+		while( close==-1 ){
 			try{
-				dateT = new testBPNetImpl().getValidBeforeDate( dateT );
+				dateT = new testBPNetImpl().getValidLatterDate( dateT );
 				ssi = new SingleStockInfoVO( idata.getSingleStockInfo(stockcode, dateT) );
 				close = ssi.getClose();
 			}catch ( NullStockIDException e ){
@@ -95,12 +98,12 @@ public class testBPNetImpl {
 		
 	    BPNetSupportImpl m = new BPNetSupportImpl();
 	    double[][] dataset = m.bpTrain( closePrice, highPrice, lowPrice, openPrice, vol, QMaxNumDayData );
-	    double[][] target = new double[dataset.length][1];
+	    double[] target = new double[dataset.length];
 	    for( int i=0; i<dataset.length; i++ ){
             if( i<dataset.length-2)
-	    	    target[i][0] = closePrice[i+1];
+	    	    target[i] = closePrice[i+1];
             else
-                target[i][0] = close;
+                target[i] = close;
 	    }
 	    
 	    
@@ -116,9 +119,9 @@ public class testBPNetImpl {
 	    double[] vol2 = new double[vLen];
         
         // get before 100 days' data
-        dateT = LocalDate.of(2008, 4, 1);
-        index = vLen-1;
-        while( index>-1 && dateT.compareTo(zuizao)>0 ){
+        dateT = date;
+        index = 0;
+        while( index<vLen && dateT.compareTo(zuizao)>0 ){
         	try{
         		dateT = new testBPNetImpl().getValidLatterDate( dateT );
         		ssi = new SingleStockInfoVO( idata.getSingleStockInfo(stockcode, dateT) );
@@ -129,7 +132,7 @@ public class testBPNetImpl {
 				lowPrice2[index] =  ssi.getLow();
 				vol2[index] =  (double)ssi.getVolume();
         		
-        		index--;
+        		index++;
         	}catch ( NullStockIDException e ){
         		e.printStackTrace();
         	}catch ( NullDateException e){}
@@ -147,9 +150,9 @@ public class testBPNetImpl {
         
         vLen = maxNum;
 		double[][] QMaxNumDayData2 = new double[maxNum][characterNum];
-		dateT = LocalDate.of(2008, 4, 1);
-		index = vLen-1;
-		while( index>-1 && dateT.compareTo(zuizao)>0 ){
+		dateT = date;
+		index = 0;
+		while( index<vLen && dateT.compareTo(zuizao)>0 ){
 			try{
 				dateT = new testBPNetImpl().getValidBeforeDate( dateT );
 				ssi = new SingleStockInfoVO( idata.getSingleStockInfo(stockcode, dateT) );
@@ -160,7 +163,7 @@ public class testBPNetImpl {
 				QMaxNumDayData2[index][lowIndex] =  ssi.getLow();
 				QMaxNumDayData2[index][volumeIndex] =  (double)ssi.getVolume();
 				
-				index--;
+				index++;
 			}catch ( NullStockIDException e ){
 				e.printStackTrace();
 			}catch ( NullDateException e){}
@@ -180,11 +183,11 @@ public class testBPNetImpl {
 /**********************************************************************************************************/        
         
         
-        BPNetImpl bp = new BPNetImpl( new int[]{6,13,13,1}, 0.15, 0.8 );
+        BPNetImpl bp = new BPNetImpl( new int[]{6,13,1}, 0.15, 0.8 );
         //迭代训练5000次
         for( int n=0; n<5000; n++ )
             for( int i=0; i<dataset.length; i++ )
-                bp.train( dataset[i], target[i] );
+                bp.train( dataset[i], target );
 
 
         //测试数据集
@@ -193,7 +196,7 @@ public class testBPNetImpl {
         for( int i=1; i<dataset2.length; i++ ){
             double[] a = bp.computeOut( dataset2[i] );
             ArrayList<Double> list = new ArrayList<Double>();
-            result[i] = 100*(-Math.log(1/a[0]-1));
+            result[i] = 100*( -Math.log(1/a[0]-1) );
             list.add(result[i]);
             list.add(target2[i]);
             resultList.add(list);
@@ -202,7 +205,7 @@ public class testBPNetImpl {
             for( int j=0; j<dataset2[i].length; j++ )
             	System.out.print( df.format(dataset2[i][j]) + " " );
             System.out.print(" ] : ");
-            System.out.println( df.format(result[i]-target2[i-1]) + "  :  " + df.format(target2[i]-target2[i-1]) );
+            System.out.println( df.format(result[i]) + "  :  " + df.format(target2[i]) );
         }
 		
 	}

@@ -1,9 +1,6 @@
 package logic.supportservice;
 
 public interface BPNetSupportInterface {
-
-	double[] EMV( double[] highPrice, double[] lowPrice, double[] volume, 
-			double[][] QMaxNumDayData );
 	
 	/**
 	 * 
@@ -54,16 +51,6 @@ public interface BPNetSupportInterface {
 	 * @param QMaxNumDayData
 	 */
 	double[] MTM( double[] closePrice, double[][] QMaxNumDayData );
-	
-	/**
-	 * 
-	 * @Description: calculate 量能指标
-	 * @author: hzp
-	 * @date: 2017年6月10日
-	 * @param volume
-	 * @param QMaxNumDayData
-	 */
-	double[] MACD( double[] volume, double[][] QMaxNumDayData );
 	
 	/**
 	 * 

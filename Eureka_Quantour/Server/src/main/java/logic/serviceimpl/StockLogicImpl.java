@@ -573,7 +573,7 @@ public class StockLogicImpl implements StockLogicInterface{
 
 		List<CommentVO> commentVOS=new ArrayList<>();
 		for (CommentPO po:commentPOS){
-			commentVOS.add(new CommentVO(po.getComments(),po.getTime(),po.getCreaterName()));
+			commentVOS.add(new CommentVO(po.getComments(),po.getTime(),po.getCommentUserName()));
 		}
 		StrategyShowVO res=new StrategyShowVO();
 		res.setTimeList(showPO.getTimeList());
