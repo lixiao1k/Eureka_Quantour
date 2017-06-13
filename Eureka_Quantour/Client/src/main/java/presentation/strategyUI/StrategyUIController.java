@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import exception.BeginInvalidException;
+import exception.DateInvalidException;
+import exception.EndInvalidException;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.FlowPane;
@@ -244,7 +247,13 @@ public class StrategyUIController implements Initializable{
 					// TODO Auto-generated catch block
 					Notifications.create().title("网络连接异常").text(e1.toString()).showWarning();
 					e1.printStackTrace();
-				}	
+				} catch (BeginInvalidException e1) {
+					Notifications.create().title("异常").text(e1.toString()).showWarning();
+				} catch (DateInvalidException e1) {
+					Notifications.create().title("异常").text(e1.toString()).showWarning();
+				} catch (EndInvalidException e1) {
+					Notifications.create().title("异常").text(e1.toString()).showWarning();
+				}
 			}
 		}else if(meanRadioButton.isSelected()){
 			if(stockSetComboBox.getValue()!=null){
@@ -345,6 +354,12 @@ public class StrategyUIController implements Initializable{
 					// TODO Auto-generated catch block
 					Notifications.create().title("网络连接异常").text(e1.toString()).show();
 					e1.printStackTrace();
+				} catch (BeginInvalidException e1) {
+					Notifications.create().title("异常").text(e1.toString()).showWarning();
+				} catch (DateInvalidException e1) {
+					Notifications.create().title("异常").text(e1.toString()).showWarning();
+				} catch (EndInvalidException e1) {
+					Notifications.create().title("异常").text(e1.toString()).showWarning();
 				}
 			}
 
@@ -448,6 +463,12 @@ public class StrategyUIController implements Initializable{
 					// TODO Auto-generated catch block
 					Notifications.create().title("网络连接异常").text(e1.toString()).show();
 					e1.printStackTrace();
+				} catch (BeginInvalidException e1) {
+					Notifications.create().title("异常").text(e1.toString()).showWarning();
+				} catch (DateInvalidException e1) {
+					Notifications.create().title("异常").text(e1.toString()).showWarning();
+				} catch (EndInvalidException e1) {
+					Notifications.create().title("异常").text(e1.toString()).showWarning();
 				}
 			}
 
