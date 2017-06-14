@@ -1,6 +1,7 @@
 package logic.supportservice;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public interface PredictInterface {
 
@@ -11,7 +12,7 @@ public interface PredictInterface {
 	 * @param  m          length of vector
 	 * @param  k          number of relevant character
 	 */
-	double KNNPredictPrice( double[] closes, LocalDate[] dates, int m, int k );
+	double KNNPredictPrice( List<Double> closes, List<LocalDate> dates, int m, int k );
 	
 	double SBPredictPrice( double ZPrice, double QPrice );
 	
