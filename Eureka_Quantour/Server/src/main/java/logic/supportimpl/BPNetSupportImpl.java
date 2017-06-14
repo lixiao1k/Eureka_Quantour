@@ -10,6 +10,7 @@ public class BPNetSupportImpl implements BPNetSupportInterface{
 	
 	private CalculateValueInterface calValue = new CalculateValueImpl();
 
+	// 计算EMA最多允许往前推多少天
 	private final int maxNum = 30;
 	
 	private final int openIndex = 0;

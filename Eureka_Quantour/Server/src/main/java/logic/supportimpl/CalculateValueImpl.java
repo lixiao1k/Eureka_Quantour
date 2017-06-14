@@ -6,7 +6,9 @@ import logic.supportservice.CalculateValueInterface;
 
 public class CalculateValueImpl implements CalculateValueInterface{
 
+	// 取样次数
 	private final int numOfSample = 30;
+	// 每个样本容量
 	private final int lenOfSample = 10;
 	
 	@Override

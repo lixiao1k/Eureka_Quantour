@@ -10,25 +10,29 @@ import java.time.LocalDate;
 public interface CalculateValueInterface{
 	
 	/**
-	 * @Description: get number of 随机抽样
+	 * @Description: 获得随机抽样的样本数
 	 */
 	int getNumOfSample();
+	
 
 	/**
 	 * @Description: calculate average of data in array    
 	 */
 	double calAverage( double[] data );
+	
 
 	/**
 	 * @Description: calculate variance of data in array     
 	 */
 	double calVariance( double[] data );
+	
 
 	/**
 	 * @Description: 根据样本均值和方差估计总体均值和方差
 	 * @date: 2017年6月8日
 	 */
 	double[] calTotalityAverageAndVariance( double[] data );
+	
 	
 	/**
 	 * 
@@ -37,6 +41,7 @@ public interface CalculateValueInterface{
 	 * @date: May 23, 2017
 	 */
 	double calCosIncludeAngle( Double[] vector1, Double[] vector2 );
+	
 
 	/**
 	 * 
@@ -45,6 +50,7 @@ public interface CalculateValueInterface{
 	 * @date: May 23, 2017
 	 */
 	double vectorMultiply( Double[] vector1, Double[] vector2 );
+	
 
 	/**
 	 * 
@@ -54,6 +60,7 @@ public interface CalculateValueInterface{
 	 */
 	double vectorModel( Double[] vector );
 	
+	
 	/**
 	 * @Description: calculate len-day EMA
 	 * @author: hzp
@@ -61,9 +68,9 @@ public interface CalculateValueInterface{
 	 * @param Len
 	 */
 	double calEMA( double[] closes, int len );
+	
 
 	/**
-	 * 
 	 * @Description: calculate 差离值
 	 * @author: hzp
 	 * @date: 2017年6月8日
@@ -71,9 +78,9 @@ public interface CalculateValueInterface{
 	 * @param closesLong
 	 */
 	double calDIF( double[] closesShort, double[] closesLong );
+	
 
 	/**
-	 * 
 	 * @Description: calculate DEA
 	 * @author: hzp
 	 * @date: 2017年6月8日
@@ -82,15 +89,15 @@ public interface CalculateValueInterface{
 	 */
 	double calDEA( double[] DIFs, int len );
 	
+	
 	/**
-	 * 
 	 * @Description: 获得改日期后面一个工作日
 	 * @author: hzp
 	 */
 	LocalDate getValidLatterDate( LocalDate date );
 	
-	/**
-	 * 
+	
+	/** 
 	 * @Description: 获得改日期前面一个工作日
 	 * @author: hzp
 	 */
