@@ -2,6 +2,8 @@ package logic.serviceimpl;
 
 import java.rmi.RemoteException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import data.service.IStockDataInterface;
 import data.serviceimpl.StockDataController_2;
@@ -14,8 +16,8 @@ import logic.supportimpl.StatisticImpl;
 import logic.supportservice.CalculateValueInterface;
 import logic.supportservice.PredictInterface;
 import logic.supportservice.StatisticInterface;
+import po.SingleStockInfoPO;
 import vo.PredictVO;
-import vo.SingleStockInfoVO;
 
 /**
  * @Description: 
@@ -36,22 +38,26 @@ public class ForecastRODImpl implements ForecastRODInterface{
 	public PredictVO predict( String stockcode, LocalDate date ) throws RemoteException {
 		// TODO Auto-generated method stub
 		PredictVO predictVO = new PredictVO();
-		SingleStockInfoVO ssi = new SingleStockInfoVO();
+		SingleStockInfoPO ssi = new SingleStockInfoPO();
 
-		// get before 100 days' data
+		// get before 115 days' data
 		int vLen = 115;
-		double[] closes = new double[vLen];
-		LocalDate[] dates = new LocalDate[vLen];
+		
+		List<Double> closes = new ArrayList<>();
+		Double[] closesA = new Double[vLen];
+		List<LocalDate> dates = new ArrayList<>();
+		
 		LocalDate dateT = date.plusDays(1);
 		int index = vLen-1;
 		double QPrice = 0.0;
 		while( index>-2 && dateT.compareTo(zuizao)>0 ){
 			try{
 				dateT = calValue.getValidBeforeDate( dateT );
-				ssi = new SingleStockInfoVO( stock.getSingleStockInfo(stockcode, dateT) );
+				ssi = stock.getSingleStockInfo(stockcode, dateT);
 				if( index>-1 ){
-					closes[index] = ssi.getClose();
-					dates[index] = ssi.getDate();
+					closes.add( ssi.getAftClose() );
+					closesA[index] = ssi.getAftClose();
+					dates.add( ssi.getDate() );
 				}
 				else
 					QPrice = ssi.getClose();
@@ -68,24 +74,25 @@ public class ForecastRODImpl implements ForecastRODInterface{
 				if( indexT>vLen-1 )
 					indexT = vLen-1;
 				if( indexT>index ){
-					closes[index] = closes[indexT];
-					dates[index] = dates[indexT];
+					closes.add( closesA[indexT] );
+					closesA[index] = closesA[indexT];
+					dates.add( dates.get( indexT ) );
 					index--;
 				}
 			}
 			int indexT = index + (int)(Math.random()*( vLen - index ));
 			if( indexT>vLen-1 )
 				indexT = vLen-1;
-			QPrice = closes[indexT];
+			QPrice = closesA[indexT];
 		}
 		
 		double[] RODs = new double[vLen];
 		for( int i=0; i<vLen; i++ ){
 			double ROD = 0.0;
 			if( i==0 )
-				ROD = ( closes[i] - QPrice ) / QPrice;
+				ROD = ( closesA[i] - QPrice ) / QPrice;
 			else
-				ROD = ( closes[i] - closes[i-1] ) / closes[i-1];
+				ROD = ( closesA[i] - closesA[i-1] ) / closesA[i-1];
 			
 			RODs[i] = ROD;
 		}
@@ -95,16 +102,16 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		double var = AverageAndVarianceROD[1];
 		
 		predictVO.setMinPrice90ZhiXin(
-				statistic.preMinPriceByRODOf90ZhiXin( ave, var, calValue.getNumOfSample(), closes[vLen-1] ) );
+				statistic.preMinPriceByRODOf90ZhiXin( ave, var, calValue.getNumOfSample(), closesA[vLen-1] ) );
 		predictVO.setMinPrice99ZhiXin(
-				statistic.preMinPriceByRODOf99ZhiXin( ave, var, calValue.getNumOfSample(), closes[vLen-1] ) );
+				statistic.preMinPriceByRODOf99ZhiXin( ave, var, calValue.getNumOfSample(), closesA[vLen-1] ) );
 		predictVO.setMaxPrice90ZhiXin(
-				statistic.preMaxPriceByRODOf90ZhiXin( ave, var, calValue.getNumOfSample(), closes[vLen-1] ) );
+				statistic.preMaxPriceByRODOf90ZhiXin( ave, var, calValue.getNumOfSample(), closesA[vLen-1] ) );
 		predictVO.setMaxPrice99ZhiXin(
-				statistic.preMaxPriceByRODOf99ZhiXin( ave, var, calValue.getNumOfSample(), closes[vLen-1] ) );
+				statistic.preMaxPriceByRODOf99ZhiXin( ave, var, calValue.getNumOfSample(), closesA[vLen-1] ) );
 		
-		double ZPrice = closes[vLen-1];
-		QPrice = closes[vLen-2];
+		double ZPrice = closesA[vLen-1];
+		QPrice = closesA[vLen-2];
 		// length of vector
 		int m = 5;
 		// 取前 k vectors

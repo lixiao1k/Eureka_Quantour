@@ -57,7 +57,7 @@ public class CalculateValueImpl implements CalculateValueInterface{
 	}
 
 	@Override
-	public double calCosIncludeAngle(double[] vector1, double[] vector2) {
+	public double calCosIncludeAngle( Double[] vector1, Double[] vector2 ) {
 		// TODO Auto-generated method stub
 		if( vector1.length!=vector2.length )
 			return 0;
@@ -68,7 +68,7 @@ public class CalculateValueImpl implements CalculateValueInterface{
 	}
 
 	@Override
-	public double vectorMultiply(double[] vector1, double[] vector2) {
+	public double vectorMultiply( Double[] vector1, Double[] vector2 ) {
 		// TODO Auto-generated method stub
 		if( vector1.length!=vector1.length )
 			return 0;
@@ -80,7 +80,7 @@ public class CalculateValueImpl implements CalculateValueInterface{
 	}
 
 	@Override
-	public double vectorModel(double[] vector) {
+	public double vectorModel( Double[] vector ) {
 		// TODO Auto-generated method stub
 		double sum = 0;
 		for( int i=0; i<vector.length; i++ )
