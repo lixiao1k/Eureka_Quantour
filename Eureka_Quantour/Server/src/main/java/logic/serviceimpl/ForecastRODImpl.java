@@ -55,8 +55,8 @@ public class ForecastRODImpl implements ForecastRODInterface{
 				dateT = calValue.getValidBeforeDate( dateT );
 				ssi = stock.getSingleStockInfo(stockcode, dateT);
 				if( index>-1 ){
-					closes.add( ssi.getAftClose() );
-					closesA[index] = ssi.getAftClose();
+					closes.add( ssi.getClose() );
+					closesA[index] = ssi.getClose();
 					dates.add( ssi.getDate() );
 				}
 				else

@@ -57,6 +57,8 @@ public class StrategyPopUpController implements Initializable{
 			StockLogicInterface stockLogicInterface = remoteHelper.getStockLogic();
 			try {
 				stockLogicInterface.saveStragety(strategyVO, (String)dataController.get("UserName"));
+				Notifications.create().title("成功").text("保存成功").showInformation();
+
 			} catch (RemoteException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -64,9 +66,6 @@ public class StrategyPopUpController implements Initializable{
 				// TODO Auto-generated catch block
 				Notifications.create().title("异常").text(e1.toString()).showWarning();
 			}
-			Notifications.create().title("成功").text("保存成功").showInformation();
-			Stage root =(Stage) name.getScene().getWindow();
-			root.close();
 		}else{
 			Notifications.create().title("错误").text("策略名不能为空").showError();
 		}

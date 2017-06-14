@@ -3,6 +3,8 @@ package logic.supportservice;
 import java.time.LocalDate;
 import java.util.List;
 
+import po.SingleStockInfoPO;
+
 public interface PredictInterface {
 
 	/**
@@ -27,7 +29,9 @@ public interface PredictInterface {
 	 * @param m		length of vector
 	 * @param k		number of relevant character
 	 */
-	double KNNPredictPriceForStrategy( String stockcode, LocalDate date, int len, int m, int k );
+	double KNNPredictPriceForStrategy( String stockcode, LocalDate date, int len, 
+			int m, int k, SingleStockInfoPO next );
 	
-	double KNNPredictRODForStrategy( String stockcode, LocalDate date, int len, int m, int k );
+	double KNNPredictRODForStrategy( String stockcode, LocalDate date, int len, 
+			int m, int k, SingleStockInfoPO next );
 }
