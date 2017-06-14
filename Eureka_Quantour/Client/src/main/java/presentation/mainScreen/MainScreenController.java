@@ -26,6 +26,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import main.Main;
 import presentation.browseStrategyUI.BrowseStrategyController;
 import presentation.marketUI.MarketUIController;
 import presentation.stockSetUI.StockSetUIController;
@@ -216,6 +217,7 @@ public class MainScreenController implements Initializable{
 		Stage root = (Stage) exitButton.getScene().getWindow();
 		try {
 			RemoteHelper.getInstance().getClientLogic().signOut((String) dataController.get("UserName"));
+			Main.pool_thread.stop();
 		} catch (RemoteException e1) {
 			e1.printStackTrace();
 		}

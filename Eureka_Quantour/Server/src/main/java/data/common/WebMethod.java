@@ -102,29 +102,29 @@ public class WebMethod {
 		  
 		 url = new URL(destUrl);
 		 httpUrl = (HttpURLConnection) url.openConnection();
-		 String ua= "Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.1.2)";
-		//防止禁用爬虫
-		if (random(3) == 0) {
-		ua = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)";
-//			addHeader("User-Agent",
-//			"Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.1.2)");
-		} else if (random(3) == 1) {
-		ua = "msnbot/1.1 (+http://search.msn.com/msnbot.htm)";
-//			addHeader("User-Agent",
-//			"Mozilla/5.0 (Windows NT 6.1; rv:6.0.2)Gecko/20100101 Firefox/6.0.2");
-
-		} else {
-//			addHeader("User-Agent","Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.160 Safari/537.22");
-		ua = "Mozilla/5.0 (compatible; Yahoo! Slurp; http://help.yahoo.com/help/us/ysearch/slurp)";
-		}
-		String ip = getRandomIp();
-		httpUrl.setRequestProperty("X-Forwarded-For",ip);
-		httpUrl.setRequestProperty("HTTP_X_FORWARDED_FOR",ip);
-		httpUrl.setRequestProperty("HTTP_CLIENT_IP",ip);
-		httpUrl.setRequestProperty("REMOTE_ADDR",ip);
-		httpUrl.setRequestProperty("User-Agent",ua);
-		httpUrl.setRequestProperty("Accept-Language", "zh-cn,zh;q=0.5");
-		httpUrl.setRequestProperty("Accept-Charset", "GB2312,utf-8;q=0.7,*;q=0.7");
+//		 String ua= "Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.1.2)";
+//		//防止禁用爬虫
+//		if (random(3) == 0) {
+//		ua = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)";
+////			addHeader("User-Agent",
+////			"Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.1.2)");
+//		} else if (random(3) == 1) {
+//		ua = "msnbot/1.1 (+http://search.msn.com/msnbot.htm)";
+////			addHeader("User-Agent",
+////			"Mozilla/5.0 (Windows NT 6.1; rv:6.0.2)Gecko/20100101 Firefox/6.0.2");
+//
+//		} else {
+////			addHeader("User-Agent","Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.160 Safari/537.22");
+//		ua = "Mozilla/5.0 (compatible; Yahoo! Slurp; http://help.yahoo.com/help/us/ysearch/slurp)";
+//		}
+//		String ip = getRandomIp();
+//		httpUrl.setRequestProperty("X-Forwarded-For",ip);
+//		httpUrl.setRequestProperty("HTTP_X_FORWARDED_FOR",ip);
+//		httpUrl.setRequestProperty("HTTP_CLIENT_IP",ip);
+//		httpUrl.setRequestProperty("REMOTE_ADDR",ip);
+//		httpUrl.setRequestProperty("User-Agent",ua);
+//		httpUrl.setRequestProperty("Accept-Language", "zh-cn,zh;q=0.5");
+//		httpUrl.setRequestProperty("Accept-Charset", "GB2312,utf-8;q=0.7,*;q=0.7");
 
 
 		 httpUrl.connect();
