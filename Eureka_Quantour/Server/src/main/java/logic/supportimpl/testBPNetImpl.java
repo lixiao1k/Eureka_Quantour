@@ -2,7 +2,6 @@ package logic.supportimpl;
 
 import java.text.DecimalFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import data.service.IDataInterface;
 import data.serviceimpl.DataInterfaceImpl;
@@ -107,7 +106,10 @@ public class testBPNetImpl {
                 target[i] = close;
 	    }
         
-        
+	   
+/**********************************************************************************************************/        
+
+	    
         vLen = 100;
 		// 创建序列
 	    double[] openPrice2 = new double[vLen];
