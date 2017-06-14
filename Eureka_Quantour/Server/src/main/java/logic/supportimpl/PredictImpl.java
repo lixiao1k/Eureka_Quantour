@@ -175,14 +175,10 @@ public class PredictImpl implements PredictInterface{
 	@Override
 	public double KNNPredictRODForStrategy(String stockcode, LocalDate date, int len, int m, int k) {
 		// TODO Auto-generated method stub
-<<<<<<< HEAD
-		SingleStockInfoVO ssi = new SingleStockInfoVO();
-
 		if( len<=0 || m<=0 || k<=0 || m+k>len )
 			return 0;
-=======
+		
 		SingleStockInfoPO ssi = new SingleStockInfoPO();
->>>>>>> bf21de7162c08a7cd011555d24f5caa93134cedd
 		
 		double QPrice = 0;
 		LocalDate dateT = date.plusDays(1);
