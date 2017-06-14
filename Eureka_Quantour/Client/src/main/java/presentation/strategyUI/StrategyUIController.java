@@ -621,10 +621,14 @@ public class StrategyUIController implements Initializable{
 	//获取策略状态信息
 	public StrategyConditionVO getStrategyConditionVO(){
 		List<Integer> list = new ArrayList<>();
-		int num=0,stocknums;
+		int num=0,stocknums,M;
 		try{
 			num=Integer.parseInt(changableTextField.getText());
 			list.add(num);
+			if(KNNRadioButton.isSelected()){
+				M = Integer.parseInt(holdPeriodTextField.getText());//KNN策略的M值为持有期处获取,K值由num处获取
+				list.add(M);
+			}
 		}catch(NumberFormatException e){
 			Notifications.create().title("错误").text("请输入正整数").showWarning();
 		}
@@ -641,6 +645,9 @@ public class StrategyUIController implements Initializable{
 		int holddays=0;
 		try{
 			holddays = Integer.parseInt(holdPeriodTextField.getText());
+			if(KNNRadioButton.isSelected()){
+				holddays=1;
+			}
 		}catch(NumberFormatException e){
 			Notifications.create().title("错误").text("请输入正整数").showWarning();
 		}
@@ -700,10 +707,15 @@ public class StrategyUIController implements Initializable{
 			meanRadioButton.setSelected(true);
 		}else if(name.equals("平均收盘价")){
 			averageCloseRadioButton.setSelected(true);
+		}else if(name.equals(("KNN"))){
+			KNNRadioButton.setSelected(true);
 		}
 		changableTextField.setText(Integer.toString(changeableStr));
 		numOfStockTextField.setText(Integer.toString(nums));
 		holdPeriodTextField.setText(Integer.toString(tiaocangqi));
+		if(KNNRadioButton.isSelected()){
+			holdPeriodTextField.setText(Integer.toString(conditionVO.getExtra().get(1)));
+		}
 		if(price.equals("收盘价")){
 			closeRadioButton.setSelected(true);
 		}else{
