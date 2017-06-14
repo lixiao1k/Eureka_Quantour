@@ -62,7 +62,7 @@ public class StrategyPopUpController implements Initializable{
 				e1.printStackTrace();
 			} catch (StrategyRepeatException e1) {
 				// TODO Auto-generated catch block
-				Notifications.create().title("异常").text("策略名重复").showWarning();
+				Notifications.create().title("异常").text(e1.toString()).showWarning();
 			}
 			Notifications.create().title("成功").text("保存成功").showInformation();
 			Stage root =(Stage) name.getScene().getWindow();
