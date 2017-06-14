@@ -10,7 +10,7 @@ public interface ForecastRODInterface extends Remote {
 	
 	/**
 	 * 
-	 * @Description: TODO
+	 * @Description: 预测股票明天价格，利用bp神经网络
 	 * @author: hzp
 	 * @date: May 14, 2017
 	 * @param: stockcode : the code of stock

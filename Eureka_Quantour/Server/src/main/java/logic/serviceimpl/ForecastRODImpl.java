@@ -22,7 +22,7 @@ import po.SingleStockInfoPO;
 import vo.PredictVO;
 
 /**
- * @Description: 
+ * @Description: 用于预测股票明天价格
  * @author: hzp 
  * @date: May 13, 2017
  */
@@ -34,8 +34,9 @@ public class ForecastRODImpl implements ForecastRODInterface{
 	
 	private IStockDataInterface stock = StockDataController_2.getInstance();
 
+	// 所有股票有数据的最早的日期
 	private LocalDate zuizao = LocalDate.of(2005,2,1);
-
+	// 需要记录的内容个数：开、收、高、低、交易量
 	private static final int characterNum = 5;
 	
 	@Override
@@ -84,6 +85,27 @@ public class ForecastRODImpl implements ForecastRODInterface{
 			}catch ( NullDateException e){}
 		}
 		
+		// 如果没有数据，直接返回
+		if( index==vLen-1 )
+			return predictVO;
+		
+		// 随意摘取数据补全101
+		while( index>-1 ){
+			int indexT = (int)( Math.random()*(vLen-1-index) ) + index;
+			if( indexT>vLen-1 )
+				indexT = vLen - 1;
+			else if( indexT<=index )
+				indexT = index + 1;
+				 
+			openPrice[index] 	=  openPrice[indexT];
+			highPrice[index] 	=  highPrice[indexT];
+			closePrice[index] 	=  closePrice[indexT];
+			lowPrice[index] 	=  lowPrice[indexT];
+			vol[index] 			=  vol[indexT];
+		}
+		
+/******************************************************/	
+		// get vLen-day data before 101 days
 		vLen = bps.getMaxNum();
 		double[][] QMaxNumDayData = new double[vLen][characterNum];
 		index = vLen-1;
@@ -104,12 +126,29 @@ public class ForecastRODImpl implements ForecastRODInterface{
 			}catch ( NullDateException e){}
 		}
 		
+		while( index>-1 ){
+			int indexT = (int)( Math.random()*(vLen-1-index) ) + index;
+			if( indexT>vLen-1 )
+				indexT = vLen - 1;
+			else if( indexT<=index )
+				indexT = index + 1;
+				 
+			QMaxNumDayData[index][bps.getOpenIndex()] 	=  QMaxNumDayData[indexT][bps.getOpenIndex()];
+			QMaxNumDayData[index][bps.getHighIndex()] 	=  QMaxNumDayData[indexT][bps.getHighIndex()];
+			QMaxNumDayData[index][bps.getCloseIndex()] 	=  QMaxNumDayData[indexT][bps.getCloseIndex()];
+			QMaxNumDayData[index][bps.getLowIndex()] 	=  QMaxNumDayData[indexT][bps.getLowIndex()];
+			QMaxNumDayData[index][bps.getVolumeIndex()]	=  QMaxNumDayData[indexT][bps.getVolumeIndex()];
+		}
+		
+/******************************************************/			
+		// 初始化bp神经网络的输入
 		double[][] dataset = bps.bpTrain( closePrice, highPrice, lowPrice, openPrice, vol, QMaxNumDayData );
 	    
+		// 开始训练和学习
 	    for( int n=0; n<5000; n++ )
             for( int i=0; i<vLen-1; i++ )
                 bp.train( dataset[i], closePrice[i+1] );
-	    
+	    // 预测价格
 	    double[] a = bp.computeOut( dataset[vLen-1] );
 	    double predictPrice = - Math.log( 1/a[0] - 1 ) * 100;
 
@@ -129,6 +168,7 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		
 		double ZPrice = closePrice[closePrice.length-1];
 		
+		// 计算 90 / 99 置信区间的上下限
 		predictVO.setMinPrice90ZhiXin(
 				statistic.preMinPriceByRODOf90ZhiXin( ave, var, calValue.getNumOfSample(), ZPrice ) );
 		predictVO.setMinPrice99ZhiXin(
@@ -139,7 +179,8 @@ public class ForecastRODImpl implements ForecastRODInterface{
 				statistic.preMaxPriceByRODOf99ZhiXin( ave, var, calValue.getNumOfSample(), ZPrice ) );
 
 		double predictROD = (predictPrice - ZPrice) / ZPrice;
-
+		
+		// 如果涨跌幅超过10%，则修改
 		if( predictROD>0.1 || predictROD<-0.1 ){
 			double QPrice = closePrice[closePrice.length-2];
 			double predictPriceT = predict.SBPredictPrice( ZPrice, QPrice );

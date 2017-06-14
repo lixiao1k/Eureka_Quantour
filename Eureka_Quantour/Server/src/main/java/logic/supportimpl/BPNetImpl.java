@@ -129,6 +129,7 @@ public class BPNetImpl implements BPNetInterface{
         updateWeight( tar );
     }
 
+    // 传递函数
     private double transmitFunction( double z ){
         double fenmu = 1 + Math.exp( -z * 0.01 );
         return 1.0 / fenmu;
