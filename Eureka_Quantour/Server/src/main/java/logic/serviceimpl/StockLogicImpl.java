@@ -450,9 +450,9 @@ public class StockLogicImpl implements StockLogicInterface{
 		}
 		if(strategyConditionVO.getName().equals("KNN"))
 		{
-			if(date_length>1095)
+			if(date_length>600)
 			{
-				LocalDate temp=now.minusDays(1095);
+				LocalDate temp=now.minusDays(600);
 				String str="KNN算法开始日期结束日期间隔过大,开始日期至少为"+temp.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 				throw new DateInvalidException(str);
 			}

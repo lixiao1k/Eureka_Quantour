@@ -9,15 +9,23 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 
+import data.common.WebMethod;
 //import data.service.DataThread;
 import data.service.IDataInterface;
 import data.serviceimpl.DataInterfaceImpl;
+import exception.InternetdisconnectException;
 
 public class RemoteHelper {
 	public RemoteHelper(){
 		initService();
 	}
     private void initService(){
+    	try {
+			WebMethod.getInstance().testInternet();
+		} catch (InternetdisconnectException e1) {
+			System.out.println("please check your internet");
+			System.exit(0);
+		}
     	DateRemote dateRemote;
     	try{
     		IDataInterface data=new DataInterfaceImpl();

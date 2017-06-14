@@ -9,6 +9,7 @@ import exception.DisConnectedException;
 
 public class UserPool implements Runnable{
 	private HashMap<String,Integer> user_map;
+	private HashMap<String,Integer> previous;
 	private static int check_time=1000*5;
 	@Override
 	public void run() {
@@ -17,25 +18,32 @@ public class UserPool implements Runnable{
 	public void init()
 	{
 		user_map=new HashMap<String,Integer>();
-		HashMap<String,Integer> previous=new HashMap<String,Integer>();
+		previous=new HashMap<String,Integer>();
 		while(true)
 		{
 			try {
-				Thread.sleep(check_time);
+				Thread.sleep(5000);
 			} catch (InterruptedException e) {
 			}
-			Iterator<Entry<String, Integer>> it=user_map.entrySet().iterator();
-			while(it.hasNext())
+			check();
+		}
+	}
+	public synchronized void check()
+	{
+		Iterator<Entry<String, Integer>> it=user_map.entrySet().iterator();
+		while(it.hasNext())
+		{
+			Entry<String, Integer> entry=it.next();
+			int temp=previous.getOrDefault(entry.getKey(), -1);
+			System.out.println(temp+":"+entry.getValue());
+			if(temp==entry.getValue())
 			{
-				Entry<String, Integer> entry=it.next();
-				int temp=previous.getOrDefault(entry.getKey(), 0);
-				System.out.println(temp+":"+entry.getValue());
-				if(temp==entry.getValue())
-				{
-					logout(entry.getKey());
-				}
+				logout(entry.getKey());
 			}
-			previous=user_map;
+			else
+			{
+				previous.put(entry.getKey(), entry.getValue());
+			}
 		}
 	}
 	public synchronized void register(String userName)
@@ -44,6 +52,7 @@ public class UserPool implements Runnable{
 	}
 	public synchronized void getConn(String userName) throws DisConnectedException
 	{
+		
 		int i = user_map.getOrDefault(userName, -1);
 		if(i==-1)
 		{
