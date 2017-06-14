@@ -251,4 +251,5 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 	{
 		return sli.getLatestCommpanyInfo(time, code);
 	}
+	
 }

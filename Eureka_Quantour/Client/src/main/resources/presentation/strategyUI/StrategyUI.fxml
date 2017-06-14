@@ -18,7 +18,7 @@
       <AnchorPane layoutY="43.0" prefHeight="715.0" prefWidth="305.0" styleClass="left-segment" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
          <children>
             <Button fx:id="makeStrategyButton" layoutX="55.0" layoutY="483.0" mnemonicParsing="false" onAction="#makeStrategy" styleClass="main-button" text="生成策略" />
-            <AnchorPane layoutX="5.5" layoutY="3.5" prefHeight="161.0" prefWidth="298.0" styleClass="top1-segment" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="2.0">
+            <AnchorPane layoutX="3.5" layoutY="5.5" prefHeight="197.0" prefWidth="302.0" styleClass="top1-segment" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="4.0">
                <children>
                   <Label layoutX="27.0" layoutY="14.0" text="策略条件" />
                   <Label layoutX="25.0" layoutY="50.0" text="股票池" />
@@ -29,15 +29,16 @@
                      </toggleGroup>
                   </RadioButton>
                   <RadioButton fx:id="meanRadioButton" layoutX="106.0" layoutY="94.0" mnemonicParsing="false" text="均值" toggleGroup="$strategy" />
-                  <TextField fx:id="changableTextField" layoutX="27.0" layoutY="124.0" prefHeight="23.0" prefWidth="76.0" />
-                  <Label fx:id="changableLabel" layoutX="106.0" layoutY="127.0" prefHeight="17.0" prefWidth="60.0" />
+                  <TextField fx:id="changableTextField" layoutX="25.0" layoutY="157.0" prefHeight="23.0" prefWidth="76.0" />
+                  <Label fx:id="changableLabel" layoutX="106.0" layoutY="162.0" prefHeight="17.0" prefWidth="60.0" />
                   <RadioButton fx:id="averageCloseRadioButton" layoutX="185.0" layoutY="94.0" mnemonicParsing="false" text="平收价" toggleGroup="$strategy" />
+                  <RadioButton fx:id="KNNRadioButton" layoutX="25.0" layoutY="128.0" mnemonicParsing="false" text="KNN" toggleGroup="$strategy" />
                </children>
             </AnchorPane>
-            <AnchorPane layoutX="6.0" layoutY="161.0" prefHeight="212.0" prefWidth="301.0" styleClass="top1-segment" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <AnchorPane layoutX="2.0" layoutY="203.0" prefHeight="213.0" prefWidth="298.0" styleClass="top1-segment" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <children>
                   <Label layoutX="25.0" layoutY="14.0" text="交易条件" />
-                  <Label layoutX="25.0" layoutY="62.0" text="持有期" />
+                  <Label fx:id="changabelLabel1" layoutX="25.0" layoutY="62.0" text="持有期" />
                   <TextField fx:id="holdPeriodTextField" layoutX="74.0" layoutY="59.0" prefHeight="17.0" prefWidth="66.0" />
                   <Label layoutX="25.0" layoutY="102.0" text="价格" />
                   <Label layoutX="25.0" layoutY="143.0" text="股票数" />
@@ -48,7 +49,7 @@
                      </toggleGroup>
                   </RadioButton>
                   <RadioButton fx:id="openRadioButton" layoutX="150.0" layoutY="102.0" mnemonicParsing="false" text="开盘" toggleGroup="$price" />
-                  <Button layoutX="278.0" layoutY="64.0" mnemonicParsing="false" onAction="#print1" prefHeight="17.0" prefWidth="18.0" styleClass="main-button1" text="印" AnchorPane.rightAnchor="0.0" />
+                  <Button layoutX="278.0" layoutY="14.0" mnemonicParsing="false" onAction="#print1" prefHeight="17.0" prefWidth="18.0" styleClass="main-button1" text="印" AnchorPane.rightAnchor="0.0" />
                </children>
             </AnchorPane>
             <Button layoutX="173.0" layoutY="483.0" mnemonicParsing="false" onAction="#saveStrategy" styleClass="main-button" text="保存策略" />

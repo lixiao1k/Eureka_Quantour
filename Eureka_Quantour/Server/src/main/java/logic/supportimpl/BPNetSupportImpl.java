@@ -20,26 +20,34 @@ public class BPNetSupportImpl implements BPNetSupportInterface{
 
     private final int numOfInput = 5;
 	
+    @Override
 	public int getMaxNum(){
 		return maxNum;
 	}
 	
+    @Override
 	public int getNumOfInput(){
 		return numOfInput;
 	}
-	
+
+    @Override
 	public int getOpenIndex(){
 		return openIndex;
 	}
+    
+    @Override
 	public int getHighIndex(){
 		return highIndex;
 	}
+    @Override
 	public int getCloseIndex(){
 		return closeIndex;
 	}
+    @Override
 	public int getLowIndex(){
 		return lowIndex;
 	}
+    @Override
 	public int getVolumeIndex(){
 		return volumeIndex;
 	}
@@ -225,14 +233,12 @@ public class BPNetSupportImpl implements BPNetSupportInterface{
 			list.add( DIF[i] ); 
 			datalist.add( list );
 		}
+		
 		double[][] data = new double[datalist.size()][numOfInput];
-		for( int i=0; i<datalist.size(); i++ ){
-			for( int j=0; j<numOfInput; j++ ){
+		for( int i=0; i<datalist.size(); i++ )
+			for( int j=0; j<numOfInput; j++ )
 				data[i][j] = datalist.get(i).get(j);
-				// System.out.print( df.format(data[i][j])+"  " );
-			}
-			// System.out.println();
-		}
+		
 		return data;
 	}	
 }

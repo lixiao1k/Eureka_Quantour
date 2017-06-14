@@ -18,5 +18,5 @@ public interface ForecastRODInterface extends Remote {
 	 * @return: PredictVO
 	 */
 	public PredictVO predict( String stockcode, LocalDate date ) throws RemoteException;
-	
+
 }
