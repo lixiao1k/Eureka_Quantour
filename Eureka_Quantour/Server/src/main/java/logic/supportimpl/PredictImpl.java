@@ -179,11 +179,12 @@ public class PredictImpl implements PredictInterface{
 					int indexT = index + (int)(Math.random()*( vLen - index ));
 					if( indexT>vLen-1 )
 						indexT = vLen-1;
-					if( indexT>index ){
-						this.closes.add( closes.get(indexT) );
-						this.dates.add( dates.get(indexT) );
-						index--;
-					}
+					else if( indexT<index )
+						indexT = index + 1;
+					
+					this.closes.add( closes.get(indexT) );
+					this.dates.add( dates.get(indexT) );
+					index--;
 				}
 			}
 		}
