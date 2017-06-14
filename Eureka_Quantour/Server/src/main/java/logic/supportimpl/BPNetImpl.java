@@ -5,7 +5,7 @@ import java.util.Random;
 import logic.supportservice.BPNetInterface;
 
 /*
- * BPnet类：这里想建立输入单元为8个，两层隐含层，每个隐含层为13个单元，输出层单元为1的神经网络。
+ * BPnet类：这里想建立输入单元为5个，一层隐含层，隐含层为13个单元，输出层单元为1的神经网络。
  * 首先初始化输入层到隐含层，隐含层之间，以及隐含层到输出层的权重矩阵；
  * 其次利用权重矩阵和输入层分别计算出每个隐含层节点数据
  * 之后利用计算得出的输出层数据与真实值进行比较，并逐层调节权重；
@@ -23,10 +23,10 @@ public class BPNetImpl implements BPNetInterface{
     private double[][][] layer_weight;
     //各层节点权重动量
     private double[][][] layer_weight_delta;
-    //动量系数
-    private double mobp;
     //学习系数
     private double rate;
+    //动量系数
+    private double mobp;
 
     private final int numOfCeng = 3;
     private final int numOfYingCang = 13;
@@ -125,7 +125,7 @@ public class BPNetImpl implements BPNetInterface{
 
     @Override
     public void train( double[] in, double tar ){
-        double[] out = computeOut( in );
+        computeOut( in );
         updateWeight( tar );
     }
 
