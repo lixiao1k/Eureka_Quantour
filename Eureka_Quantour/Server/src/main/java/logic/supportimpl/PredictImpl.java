@@ -182,7 +182,7 @@ public class PredictImpl implements PredictInterface{
 					int indexT = index + (int)(Math.random()*( vLen - index ));
 					if( indexT>vLen-1 )
 						indexT = vLen-1;
-					else if( indexT<index )
+					else if( indexT<=index )
 						indexT = index + 1;
 					
 					closes[index] = closes[indexT];
