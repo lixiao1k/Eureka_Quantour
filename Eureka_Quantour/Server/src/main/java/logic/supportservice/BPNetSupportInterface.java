@@ -2,6 +2,20 @@ package logic.supportservice;
 
 public interface BPNetSupportInterface {
 	
+	int getMaxNum();
+	
+	int getNumOfInput();
+	
+	int getOpenIndex();
+	
+	int getHighIndex();
+	
+	int getCloseIndex();
+	
+	int getLowIndex();
+	
+	int getVolumeIndex();
+	
 	/**
 	 * 
 	 * @Description: len日指数平均指数

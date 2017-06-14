@@ -110,7 +110,7 @@ public class testBPNetImpl {
 /**********************************************************************************************************/        
 
 	    
-        vLen = 100;
+        vLen = 20;
 		// 创建序列
 	    double[] openPrice2 = new double[vLen];
 	    double[] highPrice2 = new double[vLen];
@@ -170,8 +170,8 @@ public class testBPNetImpl {
 		}
 		
 		
-	     m = new BPNetSupportImpl();
-	    double[][] dataset2 = m.bpTrain( closePrice2, highPrice2, lowPrice2, openPrice2, vol2, QMaxNumDayData2 );
+		BPNetSupportImpl m2 = new BPNetSupportImpl();
+	    double[][] dataset2 = m2.bpTrain( closePrice2, highPrice2, lowPrice2, openPrice2, vol2, QMaxNumDayData2 );
 	    double[] target2 = new double[dataset2.length];
 	    for( int i=0; i<dataset2.length; i++ ){
             if( i<dataset2.length-2)
@@ -192,18 +192,16 @@ public class testBPNetImpl {
 
 
         //测试数据集
+//        double[] result = new double[dataset2.length];
+//        for( int i=1; i<dataset2.length; i++ ){
+//            double[] a = bp.computeOut( dataset2[i] );
         double[] result = new double[dataset.length];
         for( int i=1; i<dataset.length; i++ ){
-            double[] a = bp.computeOut( dataset2[i] );
+            double[] a = bp.computeOut( dataset[i] );
             
             result[i] = -Math.log( 1/a[0] - 1 ) * 100;
             
-            System.out.print(" [ ");
-            for( int j=0; j<dataset2[i].length; j++ )
-            	System.out.print( df.format(dataset2[i][j]) + " " );
-            System.out.print(" ] : ");
-//            System.out.println( df.format(result[i]) + "  :  " + df.format(target[i]) );
-            System.out.println( (result[i]-target2[i]) / target2[i] *100);
+            System.out.println( (result[i]-target[i]) / target[i] *100);
             if( i==1 ){
             	long time2 = System.currentTimeMillis();
             	System.out.println("***************************  "+ (time2-time1));

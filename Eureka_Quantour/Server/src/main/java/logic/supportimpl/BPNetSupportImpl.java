@@ -20,26 +20,34 @@ public class BPNetSupportImpl implements BPNetSupportInterface{
 
     private final int numOfInput = 5;
 	
+    @Override
 	public int getMaxNum(){
 		return maxNum;
 	}
 	
+    @Override
 	public int getNumOfInput(){
 		return numOfInput;
 	}
-	
+
+    @Override
 	public int getOpenIndex(){
 		return openIndex;
 	}
+    
+    @Override
 	public int getHighIndex(){
 		return highIndex;
 	}
+    @Override
 	public int getCloseIndex(){
 		return closeIndex;
 	}
+    @Override
 	public int getLowIndex(){
 		return lowIndex;
 	}
+    @Override
 	public int getVolumeIndex(){
 		return volumeIndex;
 	}
