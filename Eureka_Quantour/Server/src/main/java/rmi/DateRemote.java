@@ -131,6 +131,15 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 	public YieldDistributionHistogramDataVO getYieldDistributionHistogramData() throws RemoteException {
 		return sli.getYieldDistributionHistogramData();
 	}
+	/**
+	 * 和服务器获得连接
+	 * @param userName 用户名
+	 * @throws DisConnectedException
+	 */
+	public void getConn(String userName)  throws RemoteException, DisConnectedException
+	{
+		cli.getConn(userName);
+	}
 
 	@Override
 	public void addStockSet(String stockSetName, String username) throws StockSetNameRepeatException, RemoteException {

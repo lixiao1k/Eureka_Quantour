@@ -44,7 +44,7 @@ public class KNNCeLue extends CeLue{
 				{
 					continue;
 				}
-				double value = predict.KNNPredictPriceForStrategy(name, iter, 115, m, formate_day);
+				double value = predict.KNNPredictPriceForStrategy(name, iter, 115, m, formate_day,po2);
 				if(value>0)
 				{
 					mb.add(1, value-po2.getAftClose(), getjiage(po2), getjiage(po1));
