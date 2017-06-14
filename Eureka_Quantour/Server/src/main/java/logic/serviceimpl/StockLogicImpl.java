@@ -459,9 +459,9 @@ public class StockLogicImpl implements StockLogicInterface{
 			{
 				throw new DateInvalidException("KNN算法m值大于30");
 			}
-			if(date_length>1096)
+			if(date_length>650)
 			{
-				LocalDate temp=now.minusDays(1096);
+				LocalDate temp=now.minusDays(650);
 				throw new DateInvalidException("KNN算法开始日期和结束日期间隔过大,开始日期至少为"+temp.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 			}
 		}
@@ -577,21 +577,25 @@ public class StockLogicImpl implements StockLogicInterface{
 		SaleVO saleVO=strategyVO.getSaleVO();
 		if(strategyConditionVO.getNums()==0)
 		{
+			System.out.println("zz1");
 			throw new StrategyRepeatException("股票持仓数不能为0");
 		}
 		if(strategyConditionVO.getName().equals("KNN"))
 		{
 			if(strategyConditionVO.getExtra().get(1)>30)
 			{
+				System.out.println("zz2");
 				throw new StrategyRepeatException("KNN算法m值大于30");
 			}
 		}
 		if(saleVO.getTiaocangqi()>30)
 		{
+			System.out.println("zz3");
 			throw new StrategyRepeatException(strategyConditionVO.getName()+"调仓期大于30");
 		}
 		if(strategyConditionVO.getExtra().get(0)>30)
 		{
+			System.out.println("zz4");
 			throw new StrategyRepeatException(strategyConditionVO.getName()+"参数大于30");
 		}
 		String strategytypename=strategyConditionVO.getName();

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import data.service.IStockDataInterface;
 import data.serviceimpl.StockDataController_2;
+import exception.DateOverException;
 import exception.NullDateException;
 import exception.NullStockIDException;
 import logic.supportservice.CalculateValueInterface;
@@ -134,7 +135,13 @@ public class PredictImpl implements PredictInterface{
 			vLen = len;
 		double[] closes = new double[vLen];
 		LocalDate[] dates = new LocalDate[vLen];
-		LocalDate dateT = date.plusDays(1);
+		LocalDate dateT=zuizao;
+		try {
+			dateT = stock.addDays(date, -1);
+		} catch (DateOverException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		int index = vLen-1;
 		while( index>-1 && dateT.compareTo(zuizao)>0 ){
 			try{

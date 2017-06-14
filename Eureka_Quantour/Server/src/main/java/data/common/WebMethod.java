@@ -22,6 +22,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
+import org.apache.poi.util.StringUtil;
 
 import exception.InternetdisconnectException;
 /**
@@ -85,6 +86,11 @@ public class WebMethod {
   		httpUrl.disconnect();
 		return total;
 	}
+	public static int random(int num)
+	{
+		int i=(int)(Math.random()*3);
+		return i;
+	}
 	public void saveToFile_ByInputStream(String destUrl, String fileName) throws IOException {
 		 int BUFFER_SIZE = 8096;
 		 FileOutputStream fos = null;
@@ -96,9 +102,46 @@ public class WebMethod {
 		  
 		 url = new URL(destUrl);
 		 httpUrl = (HttpURLConnection) url.openConnection();
-		 httpUrl.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
+		 String ua= "Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.1.2)";
+		//防止禁用爬虫
+		if (random(3) == 0) {
+		ua = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)";
+//			addHeader("User-Agent",
+//			"Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.1.2)");
+		} else if (random(3) == 1) {
+		ua = "msnbot/1.1 (+http://search.msn.com/msnbot.htm)";
+//			addHeader("User-Agent",
+//			"Mozilla/5.0 (Windows NT 6.1; rv:6.0.2)Gecko/20100101 Firefox/6.0.2");
+
+		} else {
+//			addHeader("User-Agent","Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.160 Safari/537.22");
+		ua = "Mozilla/5.0 (compatible; Yahoo! Slurp; http://help.yahoo.com/help/us/ysearch/slurp)";
+		}
+		String ip = getRandomIp();
+		httpUrl.setRequestProperty("X-Forwarded-For",ip);
+		httpUrl.setRequestProperty("HTTP_X_FORWARDED_FOR",ip);
+		httpUrl.setRequestProperty("HTTP_CLIENT_IP",ip);
+		httpUrl.setRequestProperty("REMOTE_ADDR",ip);
+		httpUrl.setRequestProperty("User-Agent",ua);
+		httpUrl.setRequestProperty("Accept-Language", "zh-cn,zh;q=0.5");
+		httpUrl.setRequestProperty("Accept-Charset", "GB2312,utf-8;q=0.7,*;q=0.7");
+
+
 		 httpUrl.connect();
+		 try{
 		 bis = new BufferedInputStream(httpUrl.getInputStream());
+		 }catch(IOException e)
+		 {
+			 e.printStackTrace();
+			try {
+				Thread.sleep(60000);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			saveToFile_ByInputStream(destUrl, fileName);
+			return ;
+		 }
 		 File file=new File(fileName);
 		 if(!file.exists()){
 			file.createNewFile();
@@ -323,4 +366,39 @@ public class WebMethod {
   		bis.close();
   		return result;
 	}
+	public static String getRandomIp(){
+
+		//ip范围
+		int[][] range = {{607649792,608174079},//36.56.0.0-36.63.255.255
+		{1038614528,1039007743},//61.232.0.0-61.237.255.255
+		{1783627776,1784676351},//106.80.0.0-106.95.255.255
+		{2035023872,2035154943},//121.76.0.0-121.77.255.255
+		{2078801920,2079064063},//123.232.0.0-123.235.255.255
+		{-1950089216,-1948778497},//139.196.0.0-139.215.255.255
+		{-1425539072,-1425014785},//171.8.0.0-171.15.255.255
+		{-1236271104,-1235419137},//182.80.0.0-182.92.255.255
+		{-770113536,-768606209},//210.25.0.0-210.47.255.255
+		 {-569376768,-564133889}, //222.16.0.0-222.95.255.255
+		};
+
+		int index = random(10);
+		String ip = num2ip(range[index][0]+random(range[index][1]-range[index][0]));
+		return ip;
+		}
+
+		/*
+		 * 将十进制转换成ip地址
+		*/
+		public static String num2ip(int ip) {
+		 int [] b=new int[4] ;
+		 String x ="";
+
+		 b[0] = (int)((ip >> 24) & 0xff);
+		 b[1] = (int)((ip >> 16) & 0xff);
+		 b[2] = (int)((ip >> 8) & 0xff);
+		 b[3] = (int)(ip & 0xff);
+		x=Integer.toString(b[0])+"."+Integer.toString(b[1])+"."+Integer.toString(b[2])+"."+Integer.toString(b[3]);
+
+		 return x; 
+		}
 }
