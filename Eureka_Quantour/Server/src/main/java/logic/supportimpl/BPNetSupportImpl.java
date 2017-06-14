@@ -233,14 +233,12 @@ public class BPNetSupportImpl implements BPNetSupportInterface{
 			list.add( DIF[i] ); 
 			datalist.add( list );
 		}
+		
 		double[][] data = new double[datalist.size()][numOfInput];
-		for( int i=0; i<datalist.size(); i++ ){
-			for( int j=0; j<numOfInput; j++ ){
+		for( int i=0; i<datalist.size(); i++ )
+			for( int j=0; j<numOfInput; j++ )
 				data[i][j] = datalist.get(i).get(j);
-				// System.out.print( df.format(data[i][j])+"  " );
-			}
-			// System.out.println();
-		}
+		
 		return data;
 	}	
 }

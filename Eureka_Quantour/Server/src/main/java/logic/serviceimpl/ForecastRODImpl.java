@@ -44,7 +44,16 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		PredictVO predictVO = new PredictVO();
 		SingleStockInfoPO ssi = new SingleStockInfoPO();
 		BPNetSupportInterface bps = new BPNetSupportImpl();
-		BPNetInterface bp = new BPNetImpl( bps.getNumOfInput(), 0.15, 0.8 );
+		
+		//学习系数
+	    double rate = 0.15;
+	    //动量系数
+	    double mobp = 0.8;
+		BPNetInterface bp = new BPNetImpl( bps.getNumOfInput(), rate, mobp );
+		
+		
+/*********************************************************************************************************/
+
 		
 		// get before 100 + 1 days' data
 		int vLen = 100 + 1;
@@ -53,13 +62,9 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		double[] closePrice = new double[vLen];
 		double[] lowPrice = new double[vLen];
 		double[] vol = new double[vLen];
-
-
-/*********************************************************************************************************/
-
-		// bagin to get data
 		
-		LocalDate dateT = date;
+		// bagin to get data
+		LocalDate dateT = date.plusDays(1);
 
 		int index = vLen-1;
 		while( index>-1 && dateT.compareTo(zuizao)>0 ){
@@ -67,11 +72,11 @@ public class ForecastRODImpl implements ForecastRODInterface{
 				dateT = calValue.getValidBeforeDate( dateT );
 				ssi = stock.getSingleStockInfo(stockcode, dateT);
 				
-				openPrice[index] =  ssi.getOpen() ;
-				highPrice[index] =  ssi.getHigh();
-				closePrice[index] =  ssi.getClose();
-				lowPrice[index] =  ssi.getLow();
-				vol[index] =  (double)ssi.getVolume();
+				openPrice[index] 	=  ssi.getOpen() ;
+				highPrice[index] 	=  ssi.getHigh();
+				closePrice[index] 	=  ssi.getClose();
+				lowPrice[index] 	=  ssi.getLow();
+				vol[index] 			=  (double)ssi.getVolume();
 				
 				index--;
 			}catch ( NullStockIDException e ){
@@ -87,10 +92,10 @@ public class ForecastRODImpl implements ForecastRODInterface{
 				dateT = calValue.getValidBeforeDate( dateT );
 				ssi = stock.getSingleStockInfo(stockcode, dateT);
 				
-				QMaxNumDayData[index][bps.getOpenIndex()] =  ssi.getOpen();
-				QMaxNumDayData[index][bps.getHighIndex()] =  ssi.getHigh();
-				QMaxNumDayData[index][bps.getCloseIndex()] =  ssi.getClose();
-				QMaxNumDayData[index][bps.getLowIndex()] =  ssi.getLow();
+				QMaxNumDayData[index][bps.getOpenIndex()] 	=  ssi.getOpen();
+				QMaxNumDayData[index][bps.getHighIndex()] 	=  ssi.getHigh();
+				QMaxNumDayData[index][bps.getCloseIndex()] 	=  ssi.getClose();
+				QMaxNumDayData[index][bps.getLowIndex()] 	=  ssi.getLow();
 				QMaxNumDayData[index][bps.getVolumeIndex()] =  (double)ssi.getVolume();
 				
 				index--;
@@ -100,16 +105,13 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		}
 		
 		double[][] dataset = bps.bpTrain( closePrice, highPrice, lowPrice, openPrice, vol, QMaxNumDayData );
-	    double[] target = new double[vLen-1];
-	    for( int i=0; i<vLen-1; i++ )
-	    	target[i] = closePrice[i+1];
 	    
 	    for( int n=0; n<5000; n++ )
             for( int i=0; i<vLen-1; i++ )
-                bp.train( dataset[i], target[i] );
+                bp.train( dataset[i], closePrice[i+1] );
 	    
 	    double[] a = bp.computeOut( dataset[vLen-1] );
-	    double predictPrice = -Math.log( 1/a[0] - 1 ) * 100;
+	    double predictPrice = - Math.log( 1/a[0] - 1 ) * 100;
 
 /*********************************************************************************************************/
 		
@@ -126,7 +128,6 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		double var = AverageAndVarianceROD[1];
 		
 		double ZPrice = closePrice[closePrice.length-1];
-		double QPrice = closePrice[closePrice.length-2];
 		
 		predictVO.setMinPrice90ZhiXin(
 				statistic.preMinPriceByRODOf90ZhiXin( ave, var, calValue.getNumOfSample(), ZPrice ) );
@@ -140,8 +141,10 @@ public class ForecastRODImpl implements ForecastRODInterface{
 		double predictROD = (predictPrice - ZPrice) / ZPrice;
 
 		if( predictROD>0.1 || predictROD<-0.1 ){
+			double QPrice = closePrice[closePrice.length-2];
 			double predictPriceT = predict.SBPredictPrice( ZPrice, QPrice );
 			double predictRODT = (predictPriceT - ZPrice) / ZPrice;
+			
 			if( (predictRODT<predictROD && predictROD<-0.1) ||
 				(predictRODT>predictROD && predictROD>0.1) );
 			else{
