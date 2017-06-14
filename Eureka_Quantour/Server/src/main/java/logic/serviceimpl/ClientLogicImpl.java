@@ -12,6 +12,7 @@ import data.serviceimpl.StockDataController_2;
 import data.serviceimpl.StockSetDataController;
 import data.serviceimpl.StrategyDataController;
 import data.serviceimpl.UserDataController;
+import exception.DisConnectedException;
 import exception.LogErrorException;
 import exception.SqlNotConnectedException;
 import exception.UserNameRepeatException;
@@ -43,5 +44,18 @@ public class ClientLogicImpl implements ClientLogicInterface{
 	@Override
 	public void signOut(String username) throws RemoteException {
 		cli.logout(username);
+	}
+	/**
+	 * 和服务器获得连接
+	 * @param userName 用户名
+	 * @throws DisConnectedException
+	 */
+	public void getConn(String userName)  throws RemoteException
+	{
+		try {
+			cli.getConn(userName);
+		} catch (DisConnectedException e) {
+			throw new RemoteException();
+		}
 	}
 }

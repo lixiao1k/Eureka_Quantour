@@ -473,12 +473,21 @@ public class StockInfoFetchByWeb {
 			int min=180;
 			for(String code:list){
 				count++;
-				if(code.equals("000001")){
+				if(code.equals("000737")){
 					flag=true;
 				}
 				if(flag){
 					System.out.println("正在处理第"+count+"个，总共"+i+"个"+"剩余"+(i-count)+"个。");
+					long t1=System.currentTimeMillis();
 					dealSingleInfo_Minutes(code,lt,date);
+					try {
+						Thread.sleep((random(9)+1)*1000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					long t2=System.currentTimeMillis();
+					System.out.println("完成时间"+(t2-t1)+"ms，预估需要"+(i-count)*(t2-t1)/1000+"s。");
 					//check_Minutes(code,date);
 					//check_Minutes(code,date);
 					//check_Minutes(code,date);
@@ -621,8 +630,19 @@ public class StockInfoFetchByWeb {
 				WebMethod.getInstance().saveToFile_ByInputStream(url, path+"Minutes/"+String.format("%04d", sort.get(i)));
 //				int in=FetchPoolManagement.getInstance().getConnection("web", url, path+"Minutes/"+String.format("%04d", sort.get(i)), "InputStream");
 //				FetchPoolManagement.getInstance().startConn("web", in);
+				try {
+					Thread.sleep((random(49)+1)*100);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
+	}
+	public static int random(int num)
+	{
+		int i=(int)(Math.random()*3);
+		return i;
 	}
 	/**
 	 * 汇总某支股票的新增数据到主文件中，并添加索引文件

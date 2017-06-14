@@ -199,7 +199,8 @@ public class StrategyCalculate {
 				time_list.add(iter);
 				basic_rate.add(next_time/this_time);
 				double s_rate=mb.getRate();
-				//System.out.println(s_rate);
+//				System.out.println("--------------------------------------");
+//				System.out.println(s_rate);
 				strategy_rate.add(s_rate);
 				init=init*next_time/this_time;
 				strategy_init=strategy_init*s_rate;
@@ -214,6 +215,9 @@ public class StrategyCalculate {
 					strategy_init=100;
 				}
 				double strategy_celue=(strategy_init-10000)/10000;
+//				System.out.println(rate);
+//				System.out.println(strategy_celue);
+//				System.out.println("--------------------------------------");
 				basic_list.add(rate);
 				strategy_list.add(strategy_celue);
 			}

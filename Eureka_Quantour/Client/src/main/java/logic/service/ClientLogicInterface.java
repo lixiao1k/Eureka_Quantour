@@ -27,4 +27,10 @@ public interface ClientLogicInterface extends Remote{
 
 	public void signOut(String username) throws RemoteException;
 
+	/**
+	 * 和服务器获得连接
+	 * @param userName 用户名
+	 * @throws DisConnectedException
+	 */
+	public void getConn(String userName)  throws RemoteException;
 }

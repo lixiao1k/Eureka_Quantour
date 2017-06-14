@@ -66,11 +66,11 @@ public class test1 {
 			List<Integer> list=new ArrayList<Integer>();
 			list.add(10);
 			list.add(15);
-			StrategyConditionVO scv=new StrategyConditionVO("KNN",list,10);
+			StrategyConditionVO scv=new StrategyConditionVO("KNN",list,30);
 			SaleVO sale=new SaleVO();
 			sale.setNum(100);
 			sale.setTiaocangqi(1);
-			s.setStrategy(scv, sale, LocalDate.of(2016, 8, 10),  LocalDate.of(2017, 6, 13), "HS300", "Lyx123");
+			s.setStrategy(scv, sale, LocalDate.of(2016, 5, 10),  LocalDate.of(2017, 6, 13), "HS300", "Lyx123");
 			long t1=System.currentTimeMillis();
 			YieldChartDataVO temp=s.getYieldChartData();
 			long t2=System.currentTimeMillis();

@@ -66,8 +66,8 @@ public class MarketUIPopupController implements Initializable{
 //					notification.start();
 
 					Notifications.create().title("成功").text("成功将添加至"+stockset).showInformation();
-					Stage stage = (Stage) nameLabel.getScene().getWindow();
-					stage.close();
+//					Stage stage = (Stage) nameLabel.getScene().getWindow();
+//					stage.close();
 				}
 
 			} catch (RemoteException e1) {
@@ -85,8 +85,8 @@ public class MarketUIPopupController implements Initializable{
 
 				Notifications.create().title("成功").text("成功将"+(String)dataController.
 						get("Market_StockNow")+"添加至"+stockset).showInformation();
-				Stage stage = (Stage) nameLabel.getScene().getWindow();
-				stage.close();
+//				Stage stage = (Stage) nameLabel.getScene().getWindow();
+//				stage.close();
 			} catch (RemoteException e1) {
 				// TODO Auto-generated catch block
 				Notifications.create().title("网络连接异常").text(e1.toString()).showWarning();

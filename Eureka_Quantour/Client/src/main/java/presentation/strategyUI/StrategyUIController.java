@@ -498,7 +498,7 @@ public class StrategyUIController implements Initializable{
 		Scene scene = new Scene(popup);
 		Stage stage = new Stage();
 		stage.setScene(scene);
-		stage.initStyle(StageStyle.TRANSPARENT);
+//		stage.initStyle(StageStyle.TRANSPARENT);
 		stage.show();
 	}
 	//获取策略状态信息

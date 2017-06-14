@@ -49,8 +49,8 @@ public class SingleStockUIPopupController implements Initializable{
 						, stockset, (String)dataController.get("UserName"));
 				Notifications.create().title("成功").text("成功将"+(String)dataController.
 						get("SingleStockNow")+"添加至"+stockset).showInformation();
-				Stage stage = (Stage) nameLabel.getScene().getWindow();
-				stage.close();
+//				Stage stage = (Stage) nameLabel.getScene().getWindow();
+//				stage.close();
 			} catch (RemoteException e1) {
 				// TODO Auto-generated catch block
 				Notifications.create().title("网络连接异常").text(e1.toString()).showWarning();

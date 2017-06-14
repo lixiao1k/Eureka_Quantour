@@ -181,7 +181,7 @@ public class SingleStockUIController implements Initializable{
 		Scene scene = new Scene(popUp);
 		Stage stage = new Stage();
 		stage.setScene(scene);
-		stage.initStyle(StageStyle.TRANSPARENT);
+//		stage.initStyle(StageStyle.TRANSPARENT);
 		stage.show();
 	}
 	/*
