@@ -55,9 +55,16 @@ public class VolumeChart{
                 @Override
                 public void changed(ObservableValue<? extends Node> observable, Node oldValue, Node newValue) {
                     if (newValue != null) {
-                        if ( info.getClose()>info.getOpen() ) {
+                        if ( info.getFudu()>0 ) {
                             newValue.getStyleClass().add("barp");
-                        } else  {
+                        } 
+                        else if( info.getFudu()==0 ){
+                        	if( info.getClose()>=info.getOpen() )
+                        		newValue.getStyleClass().add("barp");
+                        	else
+                        		newValue.getStyleClass().add("barm");
+                        }
+                        else{
                             newValue.getStyleClass().add("barm");
                         }
                     }

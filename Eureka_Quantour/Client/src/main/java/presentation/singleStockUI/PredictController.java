@@ -85,11 +85,40 @@ public class PredictController implements Initializable {
 
     @FXML
     Label huanshoulv2;
+
+    @FXML
+    Label CID901;
+
+    @FXML
+    Label CID902;
+
+    @FXML
+    Label CID991;
+
+    @FXML
+    Label CID992;
+
+    @FXML
+    Label CIU901;
+
+    @FXML
+    Label CIU902;
+
+    @FXML
+    Label CIU991;
+
+    @FXML
+    Label CIU992;
+
 //设置预测信息和公司财况
     public void set(PredictVO vo, CompanyInfoVO vo1){
         DecimalFormat decimalFormat = new DecimalFormat("#0.00");
         price2.setText(decimalFormat.format(vo.getPredictPrice()));
         dof2.setText(decimalFormat.format(vo.getPredictROD()*100)+"%");
+        CID902.setText(decimalFormat.format(vo.getMinPrice90ZhiXin()));
+        CID992.setText(decimalFormat.format(vo.getMinPrice99ZhiXin()));
+        CIU902.setText(decimalFormat.format(vo.getMaxPrice90ZhiXin()));
+        CIU992.setText(decimalFormat.format(vo.getMaxPrice99ZhiXin()));
         if(vo.getPredictROD()>0){
             price2.setStyle("-fx-text-fill:#FF0000;"
                     +"-fx-font-size: 18px;");
@@ -151,6 +180,13 @@ public class PredictController implements Initializable {
         setStyle1(shiyinglv2,"#98F5FF");
         setStyle1(shijinlv2,"#98F5FF");
         setStyle1(huanshoulv2,"#98F5FF");
-
+        setStyle1(CID901,"#FF8C00");
+        setStyle1(CID991,"#FF8C00");
+        setStyle1(CIU901,"#FF8C00");
+        setStyle1(CIU991,"#FF8C00");
+        setStyle1(CID902,"#00FF00");
+        setStyle1(CID992,"#00FF00");
+        setStyle1(CIU902,"#FF0000");
+        setStyle1(CIU992,"#FF0000");
     }
 }

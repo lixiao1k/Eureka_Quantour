@@ -102,9 +102,12 @@ public class ComparedChart implements chartService{
 	        	if( j<datas.length && datas[j]!=Integer.MAX_VALUE ){
 	        		serie.getData().add( new XYChart.Data<>(dates[j], datas[j]) );
 	        		String dataFormat = df.format( datas[j] );
-//	        		if( kind==ChartKind.EMA || kind==ChartKind.YIELDCOMPARED)
-	        		if( kind==ChartKind.YIELDCOMPARED)
-	        			dataFormat = nf.format(datas[j]);
+	        		if( kind==ChartKind.EMA || kind==ChartKind.YIELDCOMPARED){
+	        			if( datas[j]<1 )
+	        				dataFormat = nf.format(datas[j]);
+	        			else
+	        				dataFormat = nf.format(datas[j]/100.0);
+	        		}
 	        		else if( datas[j]<1 )
 	        			dataFormat = nf.format(datas[j]);
 
@@ -113,6 +116,8 @@ public class ComparedChart implements chartService{
 	        		else
 	        			dataStrings[j] = name+" : "+dataFormat;
 	        	}
+	        	else
+	        		dataStrings[j] = "";
 
         	}
         	serie.setName(name);
