@@ -11,7 +11,7 @@ import logic.utility.MoneyBuffer;
 public class StrategyFactory {
 	private static StrategyFactory sf=new StrategyFactory();
 	private StrategyService celue;
-	private int formate_day;
+	private List<Integer> parameter;
 	private String name;
 	private HashMap<String,String> code;
 	private List<String> code_list;
@@ -23,10 +23,10 @@ public class StrategyFactory {
 	{
 		return sf;
 	}
-	public void setStrategy(String name,int formate_day,HashMap<String,String> code,List<String> code_list,String type)
+	public void setStrategy(String name,List<Integer> formate_day,HashMap<String,String> code,List<String> code_list,String type)
 	{
 		this.name=name;
-		this.formate_day=formate_day;
+		this.parameter=formate_day;
 		this.code=code;
 		this.code_list=code_list;
 		this.type=type;
@@ -36,13 +36,16 @@ public class StrategyFactory {
 		switch(name)
 		{
 		case "动量策略":
-			celue=new DongliangCeLue(formate_day,now_map,next_map,iter,mb,code,code_list,type);
+			celue=new DongliangCeLue(parameter.get(0),now_map,next_map,iter,mb,code,code_list,type);
 			break;
 		case "均值策略":
-			celue=new JunZhiCeLue(formate_day,now_map,next_map,iter,mb,code,code_list,type);
+			celue=new JunZhiCeLue(parameter.get(0),now_map,next_map,iter,mb,code,code_list,type);
 			break;
 		case "平均收盘价":
-			celue=new PingJunShouPanCeLue(formate_day,now_map,next_map,iter,mb,code,code_list,type);
+			celue=new PingJunShouPanCeLue(parameter.get(0),now_map,next_map,iter,mb,code,code_list,type);
+			break;
+		case "KNN":
+			celue=new KNNCeLue(parameter.get(0),now_map,next_map,iter,mb,code,code_list,type,parameter.get(1));
 			break;
 		}
 		celue.calculate();

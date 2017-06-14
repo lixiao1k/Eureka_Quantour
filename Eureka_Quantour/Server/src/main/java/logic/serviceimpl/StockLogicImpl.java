@@ -3,6 +3,8 @@ package logic.serviceimpl;
 import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 import data.service.ICompanyDataInterface;
@@ -440,6 +442,37 @@ public class StockLogicImpl implements StockLogicInterface{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		int date_length=(int) begin.until(now, ChronoUnit.DAYS);
+		if(date_length<200)
+		{
+			LocalDate temp=now.minusDays(200);
+			String str="开始日期结束日期间隔过小,开始日期至多为"+temp.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+			throw new DateInvalidException(str);
+		}
+		if(strategyConditionVO.getNums()==0)
+		{
+			throw new DateInvalidException("股票持仓数不能为0");
+		}
+		if(strategyConditionVO.getName().equals("KNN"))
+		{
+			if(strategyConditionVO.getExtra().get(1)>30)
+			{
+				throw new DateInvalidException("KNN算法m值大于30");
+			}
+			if(date_length>1096)
+			{
+				LocalDate temp=now.minusDays(1096);
+				throw new DateInvalidException("KNN算法开始日期和结束日期间隔过大,开始日期至少为"+temp.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+			}
+		}
+		if(s.getTiaocangqi()>30)
+		{
+			throw new DateInvalidException(strategyConditionVO.getName()+"调仓期大于30");
+		}
+		if(strategyConditionVO.getExtra().get(0)>30)
+		{
+			throw new DateInvalidException(strategyConditionVO.getName()+"参数大于30");
+		}
 		if (stockSetName.equals("SHA") ||stockSetName.equals("SZA") ||stockSetName.equals("SHB")|| stockSetName.equals("SZB")||stockSetName.equals("CYB")||stockSetName.equals("HS300")
 				||stockSetName.equals("ZXB") )
 			username=null;
@@ -542,6 +575,25 @@ public class StockLogicImpl implements StockLogicInterface{
 	public void saveStragety(StrategyVO strategyVO, String username) throws RemoteException, StrategyRepeatException {
 		StrategyConditionVO strategyConditionVO=strategyVO.getStrategyConditionVO();
 		SaleVO saleVO=strategyVO.getSaleVO();
+		if(strategyConditionVO.getNums()==0)
+		{
+			throw new StrategyRepeatException("股票持仓数不能为0");
+		}
+		if(strategyConditionVO.getName().equals("KNN"))
+		{
+			if(strategyConditionVO.getExtra().get(1)>30)
+			{
+				throw new StrategyRepeatException("KNN算法m值大于30");
+			}
+		}
+		if(saleVO.getTiaocangqi()>30)
+		{
+			throw new StrategyRepeatException(strategyConditionVO.getName()+"调仓期大于30");
+		}
+		if(strategyConditionVO.getExtra().get(0)>30)
+		{
+			throw new StrategyRepeatException(strategyConditionVO.getName()+"参数大于30");
+		}
 		String strategytypename=strategyConditionVO.getName();
 		Boolean publicorprivate=strategyVO.isPublicorprivate();
 		String name=strategyVO.getName();

@@ -133,9 +133,9 @@ public class StockDataController_2 implements IStockDataInterface{
 	 * @throws NullStockIDException 没有该股票时抛出异常
 	 */
 	public LocalDate getMinDay(String stockCode) throws NullStockIDException{
-		transStockCode(stockCode);
+		int i=transStockCode(stockCode);
 		try {
-			return datahelper.getMinDay(parse.supCode(stockCode));
+			return datahelper.getMinDay(parse.supCode(i));
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
@@ -148,9 +148,9 @@ public class StockDataController_2 implements IStockDataInterface{
 	 * @throws NullStockIDException 没有该股票时抛出该异常
 	 */
 	public LocalDate getMaxDay(String stockCode) throws NullStockIDException{
-		transStockCode(stockCode);
+		int i=transStockCode(stockCode);
 		try {
-			return datahelper.getMaxDay(parse.supCode(stockCode));
+			return datahelper.getMaxDay(parse.supCode(i));
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
@@ -242,10 +242,6 @@ public class StockDataController_2 implements IStockDataInterface{
 			}
 		}catch(NumberFormatException e1){
 			try{
-				if(stockCode==null)
-				{
-					throw new NullStockIDException(stockCode);
-				}
 				strCode=translate.trans_nameTocode(stockCode);
 				code=Integer.parseInt(strCode);
 				return code;

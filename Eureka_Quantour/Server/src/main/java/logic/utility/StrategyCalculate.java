@@ -41,7 +41,6 @@ public class StrategyCalculate {
 	
 	private int date_length=0;
 	
-	private int format_day;
 	private int last_day;
 	private int stock_number;
 	
@@ -50,7 +49,6 @@ public class StrategyCalculate {
 		this.begin = begin;
 		this.end = end;
 		this.strategyConditionVO = strategyConditionVO;
-		this.format_day = strategyConditionVO.getExtra().get(0);
 		this.last_day = salevo.getTiaocangqi();
 		this.stock_number = strategyConditionVO.getNums();
 		this.code_list=stockcode;
@@ -139,14 +137,7 @@ public class StrategyCalculate {
     {
     	if(basic_value==null)
     	{
-    		//if(strategyConditionVO.getName().equals("动量策略"))
-    		//{
-    			calculate_strategy1();
-//    		}
-//    		else if(strategyConditionVO.getName().equals("均值策略"))
-//    		{
-//    			calculate_strategy();
-//    		}
+    		calculate_strategy1();
     	}
     	return basic_value;
     }
@@ -154,46 +145,22 @@ public class StrategyCalculate {
     {
     	if(strategy_value==null)
     	{
-    		//if(strategyConditionVO.getName().equals("动量策略"))
-    		//{
-    			calculate_strategy1();
-    		//}
-//    		else if(strategyConditionVO.getName().equals("均值策略"))
-//    		{
-//    			calculate_strategy();
-//    		}
+    		calculate_strategy1();
     	}
     	return strategy_value;
     }
 	public void calculate_strategy1() throws PriceTypeException, NullStockIDException
 	{
-		int type=1;
 		MoneyBuffer mb=null;
 		HashMap<String,String> code=new HashMap<String,String>();
+		List<Integer> para = strategyConditionVO.getExtra();
 		mb=new MoneyBuffer(stock_number,1);
 		for(String name:code_list)
 		{
 			code.put(name, null);
 		}
-//		if(strategyConditionVO.getName().equals("动量策略"))
-//		{
-//			mb=new MoneyBuffer(stock_number,1);
-//		}
-//		else if(strategyConditionVO.getName().equals("均值策略"))
-//		{
-//			type=2;
-//			mb=new MoneyBuffer(stock_number,2);
-//		}
-//		else if(strategyConditionVO.getName().equals("平均收盘价"))
-//		{
-//			type=3;
-//			mb=new MoneyBuffer(stock_number,3);
-//		}
-//		else if(strategyConditionVO.getName().equals("KNN"))
-//		{
-//		}
 		StrategyFactory sf=StrategyFactory.getInstance();
-		sf.setStrategy(strategyConditionVO.getName(), format_day, code, code_list, salevo.getTiaocangjiage());
+		sf.setStrategy(strategyConditionVO.getName(), para, code, code_list, salevo.getTiaocangjiage());
 		
 		List<Double> basic_list=new ArrayList<>();
 		List<Double> strategy_list=new ArrayList<>();
@@ -222,121 +189,6 @@ public class StrategyCalculate {
 				{
 					continue;
 				}
-//				List<HashMap<String,String>> ema_list=null;
-//				if(type==1)
-//				{
-//					try {
-//						before_map=stock.getOneDay_Date(stock.addDays(iter, -format_day), code);
-//					} catch (NullDateException e) {
-//						continue;
-//					}catch(DateOverException e)
-//					{
-//						continue;
-//					}
-//				}
-//				else if(type==2||type==3)
-//				{
-//					ema_list=new ArrayList<HashMap<String,String>>();
-//					try {
-//					for(int i=1;i<format_day;i++)
-//					{				
-//						ema_list.add(stock.getOneDay_Date(stock.addDays(iter, -i), code));
-//					}
-//					} catch (NullDateException e) {
-//						continue;
-//					}catch(DateOverException e)
-//					{
-//						continue;
-//					}
-//				}
-//				for(String name:code_list)
-//				{
-//					String next_info=next_map.getOrDefault(name, "error");
-//					String now_info=now_map.getOrDefault(name, "error");
-//					if(now_info.equals("error")||next_info.equals("error"))
-//					{
-//						continue;
-//					}
-//					SingleStockInfoPO po1=new SingleStockInfoPO(next_info,name,name,iter);
-//					SingleStockInfoPO po2=new SingleStockInfoPO(now_info,name,name,iter);
-//					this_time=this_time+getjiage(po2);
-//					next_time=next_time+getjiage(po1);
-//					if(!canBuy(po2))
-//					{
-//						boolean flag=true;
-//						for(int i=1;i<2;i++)
-//						{
-//							try {
-//								SingleStockInfoPO temp=stock.getSingleStockInfo(name, stock.addDays(iter, -i));
-//								if(canBuy(temp))
-//								{
-//									flag=false;
-//									break;
-//								}
-//							} catch (NullDateException | DateOverException e1) {
-//								break;
-//							}
-//						}
-//						if(flag)
-//						{
-//							continue;
-//						}
-//					}
-//					if(po2.getRate()+9.5<0)
-//					{
-//						continue;
-//					}
-//					if(type==1)
-//					{
-//						String before_info=before_map.getOrDefault(name, "error");
-//						if(before_info.equals("error"))
-//						{
-//							continue;
-//						}
-//						SingleStockInfoPO po3=new SingleStockInfoPO(before_info,name,name,iter);
-//						mb.add(po3.getAftClose(), po2.getAftClose(), getjiage(po2), getjiage(po1));
-//					}
-//					else if(type==2||type==3)
-//					{
-//						double total=po2.getAftClose();
-//						int cc=1;
-//						for(int i=0;i<format_day-1;i++)
-//						{
-//							String t_info=ema_list.get(i).getOrDefault(name, "error");
-//							double num=0.0;
-//							if(t_info.equals("error"))
-//							{
-//							}
-//							else
-//							{
-//								SingleStockInfoPO t_po=new SingleStockInfoPO(t_info,name,name,iter);
-//								num=t_po.getAftClose();
-//								cc++;
-//							}
-//							total=total+num;
-//						}
-//						if(cc==1)
-//						{
-//							continue;
-//						}
-//						else
-//						{
-//
-//							total=total/cc;
-//							//System.out.println(iter+":"+name+":"+getjiage(po2)+":"+getjiage(po1));
-//							if(type==2)
-//							{
-//								mb.add(po2.getAftClose(), total, getjiage(po2), getjiage(po1));
-//							}
-//							else
-//							{
-//								System.out.println("haha");
-//								System.out.println(getjiage(po2) + ":" + getjiage(po1));
-//								mb.add(1.0, total-po2.getAftClose(), getjiage(po2), getjiage(po1));
-//							}
-//						}
-//					}
-//				}
 				now_map=next_map;
 				this_time=sf.getzheci();
 				next_time=sf.getxiaci();
@@ -364,11 +216,6 @@ public class StrategyCalculate {
 				double strategy_celue=(strategy_init-10000)/10000;
 				basic_list.add(rate);
 				strategy_list.add(strategy_celue);
-//				if(strategy_celue-0.0<0.0001)
-//				{
-//					System.out.println("error3");
-//				}
-				//System.out.println(strategy_celue);
 			}
 		} catch (DateOverException e) {
 //			// TODO Auto-generated catch block
@@ -377,12 +224,6 @@ public class StrategyCalculate {
 		setBasic_value(basic_list);
 		setStrategy_value(strategy_list);
 	}
-	private double getjiage(SingleStockInfoPO po) throws PriceTypeException {
-        String type=salevo.getTiaocangjiage();
-        if (type.equals("收盘价")) return po.getAftClose();
-        if (type.equals("开盘价")) return po.getOpen();
-        throw new PriceTypeException();
-    }
 	public LocalDate getBegin() {
 		return begin;
 	}
@@ -443,12 +284,6 @@ public class StrategyCalculate {
 	public void setStrategyConditionVO(StrategyConditionVO strategyConditionVO) {
 		this.strategyConditionVO = strategyConditionVO;
 	}
-	public int getFormat_day() {
-		return format_day;
-	}
-	public void setFormat_day(int format_day) {
-		this.format_day = format_day;
-	}
 	public int getLast_day() {
 		return last_day;
 	}
@@ -460,14 +295,5 @@ public class StrategyCalculate {
 	}
 	public void setStock_number(int stock_number) {
 		this.stock_number = stock_number;
-	}
-	private boolean canBuy(SingleStockInfoPO po2)
-	{
-		boolean flag=true;
-		if(po2.getRate()>9.9)
-		{
-			flag=false;
-		}
-		return flag;
 	}
 }

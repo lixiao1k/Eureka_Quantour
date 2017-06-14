@@ -5,8 +5,14 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import data.service.IStockDataInterface;
+import data.service.IStockSetInterface;
+import data.serviceimpl.StockDataController_2;
+import exception.DateOverException;
 import exception.NullDateException;
 import exception.NullStockIDException;
+import logic.supportimpl.PredictImpl;
+import po.SingleStockInfoPO;
 import vo.CompanyInfoVO;
 import vo.EMAInfoVO;
 import vo.ExponentChartVO;
@@ -22,19 +28,35 @@ public class test1 {
 	}
 //	private test1()
 //	{
-//		ForecastRODImpl s=new ForecastRODImpl();
-//		try {
+//		IStockDataInterface stock=StockDataController_2.getInstance();
+//		PredictImpl s=new PredictImpl();
+//		LocalDate i=LocalDate.of(2017, 2, 10);
 //			long t1=System.currentTimeMillis();
-//			for(int i=0;i<100000;i++)
-//			{
-//				s.predict("000001", LocalDate.of(2017, 5, 17));
+//			try {
+//				SingleStockInfoPO po1=stock.getSingleStockInfo("000001", i);
+//				System.out.println(po1.toString());
+//				
+//			} catch (NullStockIDException | NullDateException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
 //			}
+//			try {
+//				SingleStockInfoPO po2;
+//				try {
+//					po2 = stock.getSingleStockInfo("000001", stock.addDays(i, 1));
+//					System.out.println(po2.toString());
+//				} catch (NullStockIDException | NullDateException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//				
+//			} catch (DateOverException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			System.out.println(s.KNNPredictPriceForStrategy("000001", i, 115,15, 15));
 //			long t2=System.currentTimeMillis();
 //			System.out.println(t2-t1);
-//		} catch (RemoteException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 //	}
 	private test1()
 	{
@@ -43,11 +65,12 @@ public class test1 {
 		try {
 			List<Integer> list=new ArrayList<Integer>();
 			list.add(10);
-			StrategyConditionVO scv=new StrategyConditionVO("动量策略",list,10);
+			list.add(15);
+			StrategyConditionVO scv=new StrategyConditionVO("KNN",list,10);
 			SaleVO sale=new SaleVO();
 			sale.setNum(100);
-			sale.setTiaocangqi(10);
-			s.setStrategy(scv, sale, LocalDate.of(2010, 1, 1),  LocalDate.of(2017, 6, 13), "HS300", "Lyx123");
+			sale.setTiaocangqi(1);
+			s.setStrategy(scv, sale, LocalDate.of(2016, 8, 10),  LocalDate.of(2017, 6, 13), "HS300", "Lyx123");
 			long t1=System.currentTimeMillis();
 			YieldChartDataVO temp=s.getYieldChartData();
 			long t2=System.currentTimeMillis();

@@ -58,10 +58,10 @@ public class Translate {
 		return translate;
 	}
 	public String trans_nameTocode(String name){
-		return nameTocode_pro.getProperty(Parse.getInstance().chkHalf(name),null);
+		return nameTocode_pro.getProperty(Parse.getInstance().chkHalf(name),name);
 	}
 	public String trans_codeToname(String code){
-		return codeToname_pro.getProperty(Parse.getInstance().supCode(code),null);
+		return codeToname_pro.getProperty(Parse.getInstance().supCode(code),code);
 	}
 	public List<String> getAllCode(){
 		List<String> result=new ArrayList<String>();

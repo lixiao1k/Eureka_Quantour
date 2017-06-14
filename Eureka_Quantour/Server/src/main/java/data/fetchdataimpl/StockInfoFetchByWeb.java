@@ -481,8 +481,8 @@ public class StockInfoFetchByWeb {
 					dealSingleInfo_Minutes(code,lt,date);
 					//check_Minutes(code,date);
 					//check_Minutes(code,date);
-					check_Minutes(code,date);
-					getMinInterval(code,date);
+					//check_Minutes(code,date);
+					//getMinInterval(code,date);
 				}
 			}
 		}catch(IOException e){
@@ -618,9 +618,9 @@ public class StockInfoFetchByWeb {
 						+ symbol
 						+ code;
 				System.out.println(decodeDate(date.get(i))+"---------"+code);
-//				WebMethod.getInstance().saveToFile_ByInputStream(url, path+"Minutes/"+String.format("%04d", sort.get(i)));
-				int in=FetchPoolManagement.getInstance().getConnection("web", url, path+"Minutes/"+String.format("%04d", sort.get(i)), "InputStream");
-				FetchPoolManagement.getInstance().startConn("web", in);
+				WebMethod.getInstance().saveToFile_ByInputStream(url, path+"Minutes/"+String.format("%04d", sort.get(i)));
+//				int in=FetchPoolManagement.getInstance().getConnection("web", url, path+"Minutes/"+String.format("%04d", sort.get(i)), "InputStream");
+//				FetchPoolManagement.getInstance().startConn("web", in);
 			}
 		}
 	}
