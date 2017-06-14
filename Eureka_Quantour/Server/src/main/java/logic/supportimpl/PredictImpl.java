@@ -37,7 +37,7 @@ public class PredictImpl implements PredictInterface{
 		// TODO Auto-generated method stub
 		int n = closes.size();
 		
-		if( n<m || closes.size()!=dates.size() )
+		if( n<=m || closes.size()!=dates.size() )
 			return 0.0;
 
 		// length of vector
