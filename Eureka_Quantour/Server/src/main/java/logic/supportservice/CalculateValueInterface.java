@@ -36,7 +36,7 @@ public interface CalculateValueInterface{
 	 * @author: hzp
 	 * @date: May 23, 2017
 	 */
-	double calCosIncludeAngle( double[] vector1, double[] vector2 );
+	double calCosIncludeAngle( Double[] vector1, Double[] vector2 );
 
 	/**
 	 * 
@@ -44,7 +44,7 @@ public interface CalculateValueInterface{
 	 * @author: hzp
 	 * @date: May 23, 2017
 	 */
-	double vectorMultiply( double[] vector1, double[] vector2 );
+	double vectorMultiply( Double[] vector1, Double[] vector2 );
 
 	/**
 	 * 
@@ -52,7 +52,7 @@ public interface CalculateValueInterface{
 	 * @author: hzp
 	 * @date: May 23, 2017
 	 */
-	double vectorModel( double[] vector );
+	double vectorModel( Double[] vector );
 	
 	/**
 	 * @Description: calculate len-day EMA
