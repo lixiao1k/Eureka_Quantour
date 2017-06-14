@@ -70,9 +70,10 @@ public class test1 {
 			SaleVO sale=new SaleVO();
 			sale.setNum(100);
 			sale.setTiaocangqi(1);
-			s.setStrategy(scv, sale, LocalDate.of(2016, 9, 2),  LocalDate.of(2017, 6, 13), "SHA", "Lyx123");
+			s.setStrategy(scv, sale, LocalDate.of(2016, 9, 2),  LocalDate.of(2017, 6, 13), "CYB", "Lyx123");
 			long t1=System.currentTimeMillis();
-			YieldChartDataVO temp=s.getYieldChartData();
+//			YieldChartDataVO temp=s.getYieldChartData();
+			s.getYieldDistributionHistogramData();
 			long t2=System.currentTimeMillis();
 			System.out.println(t2-t1);
 //			for(int i=0;i<5;i++)

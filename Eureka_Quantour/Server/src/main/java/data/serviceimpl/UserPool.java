@@ -35,7 +35,7 @@ public class UserPool implements Runnable{
 		{
 			Entry<String, Integer> entry=it.next();
 			int temp=previous.getOrDefault(entry.getKey(), -1);
-			System.out.println(temp+":"+entry.getValue());
+			//System.out.println(temp+":"+entry.getValue());
 			if(temp==entry.getValue())
 			{
 				logout(entry.getKey());

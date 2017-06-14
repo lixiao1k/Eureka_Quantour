@@ -495,7 +495,6 @@ public class StockLogicImpl implements StockLogicInterface{
 		try {
 			List<Double> jizhunlist=stragety.getBasicReturn();
 			List<Double> celuelist=stragety.getStragetyReturn();
-
 			for (int i=0;i<jizhunlist.size();i++){
 				double hengzhou=Math.rint(jizhunlist.get(i)*20)*5;
 				if (zuhe.get(hengzhou)==null) {

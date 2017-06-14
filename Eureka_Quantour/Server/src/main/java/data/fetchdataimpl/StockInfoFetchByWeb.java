@@ -477,7 +477,7 @@ public class StockInfoFetchByWeb {
 			int min=180;
 			for(String code:list){
 				count++;
-				if(code.equals("002832")){
+				if(code.equals("300207")){
 					flag=true;
 				}
 				if(flag){
