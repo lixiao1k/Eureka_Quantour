@@ -125,7 +125,7 @@ public class StockSetUIController implements Initializable {
 		Scene scene = new Scene(popup);
 		Stage stage = new Stage();
 		stage.setScene(scene);
-		stage.initStyle(StageStyle.TRANSPARENT);
+//		stage.initStyle(StageStyle.TRANSPARENT);
 		stage.show();
 	}
 	

@@ -48,8 +48,8 @@ public class StockSetPopupController implements Initializable{
 				stockLogicInterface.addStockSet(name,(String)dataController.get("UserName"));
 				Notifications.create().text("成功").text("成功创建股池"+name+"!").showInformation();
 				Upcontroller.creatSet(name);
-				Stage root =(Stage) stockSetName.getScene().getWindow();
-				root.close();
+//				Stage root =(Stage) stockSetName.getScene().getWindow();
+//				root.close();
 			} catch (RemoteException e1) {
 				// TODO Auto-generated catch block
 				Notifications.create().title("网络连接异常").text(e1.toString()).showWarning();
@@ -57,7 +57,6 @@ public class StockSetPopupController implements Initializable{
 			} catch (StockSetNameRepeatException e1) {
 				// TODO Auto-generated catch block
 				Notifications.create().title("命名重复").text(e1.toString()).showError();
-				e1.printStackTrace();
 			}
 
 		}else{
