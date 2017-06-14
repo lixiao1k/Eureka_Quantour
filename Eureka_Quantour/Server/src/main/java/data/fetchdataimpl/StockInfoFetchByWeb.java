@@ -481,8 +481,8 @@ public class StockInfoFetchByWeb {
 					dealSingleInfo_Minutes(code,lt,date);
 					//check_Minutes(code,date);
 					//check_Minutes(code,date);
-					check_Minutes(code,date);
-					getMinInterval(code,date);
+					//check_Minutes(code,date);
+					//getMinInterval(code,date);
 				}
 			}
 		}catch(IOException e){

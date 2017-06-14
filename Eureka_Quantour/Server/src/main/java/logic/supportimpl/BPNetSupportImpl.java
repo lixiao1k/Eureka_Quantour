@@ -1,6 +1,5 @@
 package logic.supportimpl;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,8 +10,7 @@ public class BPNetSupportImpl implements BPNetSupportInterface{
 	
 	private CalculateValueInterface calValue = new CalculateValueImpl();
 
-	private DecimalFormat df = new DecimalFormat("#0.000"); 
-	private final int maxNum = 61;
+	private final int maxNum = 30;
 	
 	private final int openIndex = 0;
 	private final int highIndex = 1;
@@ -20,7 +18,7 @@ public class BPNetSupportImpl implements BPNetSupportInterface{
 	private final int lowIndex = 3;
 	private final int volumeIndex = 4;
 
-    private final int numOfInput = 4;
+    private final int numOfInput = 5;
 	
 	public int getMaxNum(){
 		return maxNum;
@@ -48,61 +46,42 @@ public class BPNetSupportImpl implements BPNetSupportInterface{
 
 	
 	@Override
-	public double[] EMA5( double[] closePrice, double[][] QMaxNumDayData ) {
-		int cha = 5; 
+	public double[] EMA( double[] closePrice, double[][] QMaxNumDayData, int len ) {
+		if( len<=0 || len>=maxNum )
+			return new double[0];
+		
+		int cha = len; 
         int QLen = QMaxNumDayData.length;
 
-        double[] EMA5 = new double[closePrice.length];
+        double[] EMA = new double[closePrice.length];
         double[] closes = new double[cha];
         for( int i=0; i<closePrice.length; i++ ){
         	if( i<cha-1 ){
                 for( int k=0; k<cha-i; k++ )
-                    closes[k] = QMaxNumDayData[QLen-1-k][closeIndex];
+                    closes[k] = QMaxNumDayData[QLen-1-(cha-i-1)+k][closeIndex];
                 int j = 0;
                 for( int k=cha-i; k<cha; k++, j++ )
                     closes[k] = closePrice[j];
             }
             else
                for( int k=0; k<cha; k++ )
-                    closes[k] = closePrice[i-k];
+                    closes[cha-1-k] = closePrice[i-k];
                 
-        	EMA5[i] = calValue.calEMA( closes, cha );
+        	EMA[i] = calValue.calEMA( closes, cha );
         }
-        return EMA5;
+        return EMA;
 	}
 
 	
 	@Override
-	public double[] EMA60( double[] closePrice, double[][] QMaxNumDayData) {
-		int cha = 60; 
+	public double[] MA( double[] closePrice, double[][] QMaxNumDayData, int len ) {
+		if( len<=0 || len>=maxNum )
+			return new double[0];
+		
+		int cha = len; 
         int QLen = QMaxNumDayData.length;
 
-        double[] EMA60 = new double[closePrice.length];
-        double[] closes = new double[cha];
-        for( int i=0; i<closePrice.length; i++ ){
-            if( i<cha-1 ){
-                for( int k=0; k<cha-i; k++ )
-                    closes[k] = QMaxNumDayData[QLen-1-k][closeIndex];
-                int j = 0;
-                for( int k=cha-i; k<cha; k++, j++ )
-                    closes[k] = closePrice[j];
-            }
-            else
-               for( int k=0; k<cha; k++ )
-                    closes[k] = closePrice[i-k];
-                
-            EMA60[i] = calValue.calEMA( closes, cha );
-        }
-        return EMA60;
-	}
-
-	
-	@Override
-	public double[] MA5( double[] closePrice, double[][] QMaxNumDayData ) {
-		int cha = 5; 
-        int QLen = QMaxNumDayData.length;
-
-        double[] MA5 = new double[closePrice.length];
+        double[] MA = new double[closePrice.length];
         double sum = 0;
         for( int i=0; i<closePrice.length; i++ ){
             sum = 0;
@@ -117,35 +96,9 @@ public class BPNetSupportImpl implements BPNetSupportInterface{
                for( int k=0; k<cha; k++ )
                     sum += closePrice[i-k];
                 
-            MA5[i] = sum / cha;
+            MA[i] = sum / cha;
         }
-        return MA5;
-	}
-
-	
-	@Override
-	public double[] MA60( double[] closePrice, double[][] QMaxNumDayData) {
-		int cha = 60; 
-        int QLen = QMaxNumDayData.length;
-
-        double[] MA60 = new double[closePrice.length];
-        double sum = 0;
-        for( int i=0; i<closePrice.length; i++ ){
-            sum = 0;
-            if( i<cha-1 ){
-                for( int k=0; k<cha-i; k++ )
-                    sum += QMaxNumDayData[QLen-1-k][closeIndex];
-                int j = 0;
-                for( int k=cha-i; k<cha; k++, j++ )
-                    sum += closePrice[j];
-            }
-            else
-               for( int k=0; k<cha; k++ )
-                    sum += closePrice[i-k];
-                
-            MA60[i] = sum / cha;
-        }
-        return MA60;
+        return MA;
 	}
 
 	
@@ -197,8 +150,10 @@ public class BPNetSupportImpl implements BPNetSupportInterface{
 		double[] YM = new double[length+addNum];
         for( int i=0; i<length; i++ ){
             if( i<addNum )
-                YM[i] = ( QMaxNumDayData[QLen-addNum+i][highIndex] + QMaxNumDayData[QLen-addNum+i][lowIndex]
-                    + QMaxNumDayData[QLen-addNum+i][openIndex] + QMaxNumDayData[QLen-addNum+i][closeIndex] ) / 4;
+                YM[i] = ( QMaxNumDayData[QLen-addNum+i][highIndex] 
+                		+ QMaxNumDayData[QLen-addNum+i][lowIndex]
+                		+ QMaxNumDayData[QLen-addNum+i][openIndex] 
+                		+ QMaxNumDayData[QLen-addNum+i][closeIndex] ) / 4;
             else
                 YM[i] = ( highPrice[i-addNum] + lowPrice[i-addNum]
                  + openPrice[i-addNum] + closePrice[i-addNum] ) / 4;
@@ -249,29 +204,25 @@ public class BPNetSupportImpl implements BPNetSupportInterface{
 	@Override
 	public double[][] bpTrain( double[] closePrice, double[] highPrice, double[] lowPrice,
 			double[] openPrice, double[] vol, double[][] QMaxNumDayData ){
-		double[] EMA5 = EMA5( closePrice, QMaxNumDayData );
-		double[] EMA60 = EMA60( closePrice, QMaxNumDayData );
+		
+		double[] EMA12 = EMA( closePrice, QMaxNumDayData, 12 );
+		double[] EMA26 = EMA( closePrice, QMaxNumDayData, 26 );
 		double[] MTM = MTM( closePrice, QMaxNumDayData );
 		double[] CR5 = CR5( closePrice, highPrice, lowPrice, openPrice, QMaxNumDayData );
+		double[] DIF = new double[EMA12.length];
+		for( int i=0; i<DIF.length; i++ )
+			DIF[i] = EMA12[i] - EMA26[i];
 		
-		int length = EMA60.length;
-        
-        double[] closes = new double[length];
-        for( int i=0; i<length; i++ ){
-            if( i==0 )
-                closes[i] = QMaxNumDayData[QMaxNumDayData.length-1][closeIndex];
-            else
-                closes[i] = closePrice[i-1];
-        }
+		int length = EMA26.length;
 		
 		List<ArrayList<Double>> datalist = new ArrayList<ArrayList<Double>>();
 		for( int i=0; i<length; i++ ){
 			ArrayList<Double> list = new ArrayList<Double>();
-			list.add( EMA5[i] );
-			list.add( EMA60[i] );
+			list.add( EMA12[i] );
+			list.add( EMA26[i] );
 			list.add( MTM[i] );
-			// list.add( CR5[i] );
-            list.add( closes[i] ); 
+			list.add( CR5[i] );
+			list.add( DIF[i] ); 
 			datalist.add( list );
 		}
 		double[][] data = new double[datalist.size()][numOfInput];

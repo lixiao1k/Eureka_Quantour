@@ -4,43 +4,23 @@ public interface BPNetSupportInterface {
 	
 	/**
 	 * 
-	 * @Description: 5日指数平均指数
+	 * @Description: len日指数平均指数
 	 * @author: hzp
 	 * @date: 2017年6月8日
 	 * @param closePrice
 	 * @param QMaxNumDayData
 	 */
-	double[] EMA5( double[] closePrice, double[][] QMaxNumDayData );
+	double[] EMA( double[] closePrice, double[][] QMaxNumDayData, int len );
 	
 	/**
 	 * 
-	 * @Description: 60日指数平均指数
+	 * @Description: len日平均指数
 	 * @author: hzp
 	 * @date: 2017年6月8日
 	 * @param closePrice
 	 * @param QMaxNumDayData
 	 */
-	double[] EMA60( double[] closePrice, double[][] QMaxNumDayData );
-	
-	/**
-	 * 
-	 * @Description: 5日平均指数
-	 * @author: hzp
-	 * @date: 2017年6月8日
-	 * @param closePrice
-	 * @param QMaxNumDayData
-	 */
-	double[] MA5( double[] closePrice, double[][] QMaxNumDayData );
-	
-	/**
-	 * 
-	 * @Description: 60日平均指数
-	 * @author: hzp
-	 * @date: 2017年6月8日
-	 * @param closePrice
-	 * @param QMaxNumDayData
-	 */
-	double[] MA60( double[] closePrice, double[][] QMaxNumDayData );
+	double[] MA( double[] closePrice, double[][] QMaxNumDayData, int len );
 	
 	/**
 	 * 

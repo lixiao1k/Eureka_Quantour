@@ -55,7 +55,7 @@ public class UserDataHelperImpl_DBO implements IUserDataHelper{
 			int status=rs.getInt(3);
 			if(status==1)
 			{
-				throw new LogErrorException();
+				throw new LogErrorException("该用户已登录");
 			}
 			String pw=rs.getString(2);
 			if(!pw.equals(password)){

@@ -2,8 +2,7 @@ package logic.supportimpl;
 
 import java.text.DecimalFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
 
 import data.service.IDataInterface;
 import data.serviceimpl.DataInterfaceImpl;
@@ -31,7 +30,9 @@ public class testBPNetImpl {
 	
 	
 	public static void main( String args[] ){
-		LocalDate date = LocalDate.of(2009, 5, 1);
+		long time1 = System.currentTimeMillis();
+		
+		LocalDate date = LocalDate.of(2012, 5, 1);
 		
 		maxNum = new BPNetSupportImpl().getMaxNum();
 		SingleStockInfoVO ssi = new SingleStockInfoVO();
@@ -105,86 +106,13 @@ public class testBPNetImpl {
             else
                 target[i] = close;
 	    }
-	    
-	    
-/*********************************************************************************************************/	    
-	    
-	    
-	    vLen = 100;
-	    //创建序列
-	    double[] openPrice2 = new double[vLen];
-	    double[] highPrice2 = new double[vLen];
-	    double[] closePrice2 = new double[vLen];
-	    double[] lowPrice2 = new double[vLen];
-	    double[] vol2 = new double[vLen];
-        
-        // get before 100 days' data
-        dateT = date;
-        index = 0;
-        while( index<vLen && dateT.compareTo(zuizao)>0 ){
-        	try{
-        		dateT = new testBPNetImpl().getValidLatterDate( dateT );
-        		ssi = new SingleStockInfoVO( idata.getSingleStockInfo(stockcode, dateT) );
-        		
-        		openPrice2[index] =  ssi.getOpen() ;
-				highPrice2[index] =  ssi.getHigh();
-				closePrice2[index] =  ssi.getClose();
-				lowPrice2[index] =  ssi.getLow();
-				vol2[index] =  (double)ssi.getVolume();
-        		
-        		index++;
-        	}catch ( NullStockIDException e ){
-        		e.printStackTrace();
-        	}catch ( NullDateException e){}
-        }
-        close = -1;
-        while( close==-1 && dateT.compareTo(zuizao)>0 ){
-            try{
-                dateT = new testBPNetImpl().getValidLatterDate( dateT );
-                ssi = new SingleStockInfoVO( idata.getSingleStockInfo(stockcode, dateT) );
-                close = ssi.getClose();
-            }catch ( NullStockIDException e ){
-                e.printStackTrace();
-            }catch ( NullDateException e){}
-        }
-        
-        vLen = maxNum;
-		double[][] QMaxNumDayData2 = new double[maxNum][characterNum];
-		dateT = date;
-		index = 0;
-		while( index<vLen && dateT.compareTo(zuizao)>0 ){
-			try{
-				dateT = new testBPNetImpl().getValidBeforeDate( dateT );
-				ssi = new SingleStockInfoVO( idata.getSingleStockInfo(stockcode, dateT) );
-				
-				QMaxNumDayData2[index][openIndex] =  ssi.getOpen();
-				QMaxNumDayData2[index][highIndex] =  ssi.getHigh();
-				QMaxNumDayData2[index][closeIndex] =  ssi.getClose();
-				QMaxNumDayData2[index][lowIndex] =  ssi.getLow();
-				QMaxNumDayData2[index][volumeIndex] =  (double)ssi.getVolume();
-				
-				index++;
-			}catch ( NullStockIDException e ){
-				e.printStackTrace();
-			}catch ( NullDateException e){}
-		}
-        
-        BPNetSupportImpl m2 = new BPNetSupportImpl();
-        double[][] dataset2 = m2.bpTrain( closePrice2, highPrice2, lowPrice2, openPrice2, vol2, QMaxNumDayData2 );
-        double[] target2 = new double[dataset2.length];
-        for( int i=0; i<dataset2.length; i++ ){
-            if( i<dataset2.length-2 )
-        	    target2[i] = closePrice2[i+1];
-            else
-                target2[i] = close;
-        }
         
         
 /**********************************************************************************************************/        
         
         
         BPNetImpl bp = new BPNetImpl( 
-        		new int[]{ new BPNetSupportImpl().getNumOfInput(), 13, 1 }, 0.15, 0.8 );
+        		new BPNetSupportImpl().getNumOfInput(), 0.15, 0.8 );
         //迭代训练5000次
         for( int n=0; n<5000; n++ )
             for( int i=0; i<dataset.length; i++ )
@@ -192,23 +120,23 @@ public class testBPNetImpl {
 
 
         //测试数据集
-        double[] result = new double[dataset2.length];
-        List<ArrayList<Double>> resultList = new ArrayList<ArrayList<Double>>();
-        for( int i=1; i<dataset2.length; i++ ){
-            double[] a = bp.computeOut( dataset2[i] );
-            ArrayList<Double> list = new ArrayList<Double>();
-            result[i] = 100*( -Math.log(1/a[0]-1) );
-            list.add(result[i]);
-            list.add(target2[i]);
-            resultList.add(list);
+        double[] result = new double[dataset.length];
+        for( int i=1; i<dataset.length; i++ ){
+            double[] a = bp.computeOut( dataset[i] );
+            
+            result[i] = -Math.log( 1/a[0] - 1 ) * 100;
             
             System.out.print(" [ ");
-            for( int j=0; j<dataset2[i].length; j++ )
-            	System.out.print( df.format(dataset2[i][j]) + " " );
+            for( int j=0; j<dataset[i].length; j++ )
+            	System.out.print( df.format(dataset[i][j]) + " " );
             System.out.print(" ] : ");
-            System.out.println( df.format(result[i]) + "  :  " + df.format(target2[i]) );
+//            System.out.println( df.format(result[i]) + "  :  " + df.format(target[i]) );
+            System.out.println( (result[i]-target[i]) / target[i] *100);
+            if( i==1 ){
+            	long time2 = System.currentTimeMillis();
+            	System.out.println("***************************  "+ (time2-time1));
+            }       	
         }
-		
 	}
 	
 

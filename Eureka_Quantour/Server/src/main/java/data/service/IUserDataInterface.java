@@ -1,5 +1,6 @@
 package data.service;
 
+import exception.DisConnectedException;
 import exception.LogErrorException;
 import exception.SqlNotConnectedException;
 import exception.UserNameRepeatException;
@@ -26,4 +27,10 @@ public interface IUserDataInterface {
 	 * @throws SqlNotConnectedException 
 	 */
 	public void signInCheck(String username,String password) throws LogErrorException, SqlNotConnectedException;
+	/**
+	 * 和服务器获得连接
+	 * @param userName 用户名
+	 * @throws DisConnectedException
+	 */
+	public void getConn(String userName) throws DisConnectedException;
 }

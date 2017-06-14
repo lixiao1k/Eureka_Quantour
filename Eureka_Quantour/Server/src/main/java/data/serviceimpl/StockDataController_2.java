@@ -133,9 +133,9 @@ public class StockDataController_2 implements IStockDataInterface{
 	 * @throws NullStockIDException 没有该股票时抛出异常
 	 */
 	public LocalDate getMinDay(String stockCode) throws NullStockIDException{
-		transStockCode(stockCode);
+		int i=transStockCode(stockCode);
 		try {
-			return datahelper.getMinDay(parse.supCode(stockCode));
+			return datahelper.getMinDay(parse.supCode(i));
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
@@ -148,9 +148,9 @@ public class StockDataController_2 implements IStockDataInterface{
 	 * @throws NullStockIDException 没有该股票时抛出该异常
 	 */
 	public LocalDate getMaxDay(String stockCode) throws NullStockIDException{
-		transStockCode(stockCode);
+		int i=transStockCode(stockCode);
 		try {
-			return datahelper.getMaxDay(parse.supCode(stockCode));
+			return datahelper.getMaxDay(parse.supCode(i));
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
@@ -192,7 +192,12 @@ public class StockDataController_2 implements IStockDataInterface{
 		} catch (StockHaltingException e) {
 			throw new NullDateException(cal);
 		}
-		return new SingleStockInfoPO(result,name,strCode,date);
+		SingleStockInfoPO po=new SingleStockInfoPO(result,name,strCode,date);
+		if(po.getClose()==0.0||po.getOpen()==0.0||po.getHigh()==0.0||po.getLow()==0.0)
+		{
+			throw new NullDateException(cal);
+		}
+		return po;
 	}
 	/**
 	 * 获取某一天起之后last个交易日之后的天数

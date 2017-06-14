@@ -49,6 +49,10 @@ public class StrategyDataHelperImpl_DBO implements IStrategyDataHelper{
 			}
 			else{
 				sum=sum+po.getParameter().get(0);
+				if(po.getParameter().size()==2)
+				{
+					sum=sum+","+po.getParameter().get(1);
+				}
 			}
 			pstmt.setString(5, sum);
 			pstmt.setInt(6, po.getPurchasenum());
@@ -80,7 +84,11 @@ public class StrategyDataHelperImpl_DBO implements IStrategyDataHelper{
 				if(sharp.equals("blank")){
 				}
 				else{
-					temp.add(Integer.valueOf(sharp));
+					String[] array=sharp.split(",");
+					for(int i=0;i<array.length;i++)
+					{
+						temp.add(Integer.valueOf(array[i]));
+					}
 				}
 				int purchase=rs.getInt(6);
 				int tiaocang=rs.getInt(7);

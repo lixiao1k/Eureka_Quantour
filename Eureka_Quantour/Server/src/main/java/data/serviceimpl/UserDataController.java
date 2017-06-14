@@ -10,6 +10,7 @@ import data.datahelperimpl_ByDataBase.UserDataHelperImpl_DBO;
 import data.datahelperservice.IUserDataHelper;
 import data.service.ICompanyDataInterface;
 import data.service.IUserDataInterface;
+import exception.DisConnectedException;
 import exception.LogErrorException;
 import exception.SqlNotConnectedException;
 import exception.UserNameRepeatException;
@@ -24,9 +25,13 @@ public class UserDataController implements IUserDataInterface
 	private IUserDataHelper userdatahelper_DBO;
 	private IUserDataHelper userdatahelper_FILE;
 	private static UserDataController userdata;
+	private UserPool userpool;
 	private UserDataController(){
 		userdatahelper_DBO=UserDataHelperImpl_DBO.getInstance();
 		userdatahelper_FILE=UserDataHelperImpl.getInstance();
+		userpool=new UserPool();
+		Thread t=new Thread(userpool);
+		t.start();
 	}
 	public static UserDataController getInstance(){
 		if(userdata==null) userdata=new UserDataController();
@@ -61,7 +66,12 @@ public class UserDataController implements IUserDataInterface
 		}
 		password=EncoderByMd5(password);
 		userdatahelper_DBO.login(username, password);
+		userpool.register(username);
 		System.out.println("---------------------登录成功-----------------------\n  username:" +username+"    password:"+password);
+	}
+	public void getConn(String userName) throws DisConnectedException
+	{
+		userpool.getConn(userName);
 	}
 	/**
 	 * 登出账号。
@@ -70,6 +80,7 @@ public class UserDataController implements IUserDataInterface
 	 */
 	public void logout(String username){
 		userdatahelper_DBO.logout(username);
+		userpool.logout(username);
 	}
 	
 	
