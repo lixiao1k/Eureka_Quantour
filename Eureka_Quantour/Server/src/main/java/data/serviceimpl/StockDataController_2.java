@@ -3,6 +3,7 @@ package data.serviceimpl;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 
@@ -190,12 +191,34 @@ public class StockDataController_2 implements IStockDataInterface{
 		try {
 			result=datahelper.getSingleInfo(cal, strCode);
 		} catch (StockHaltingException e) {
-			throw new NullDateException(cal);
+			String str="";
+			LocalDate max=getMaxDay(strCode);
+			if(date.isAfter(max))
+			{
+				str="该股票最后一个交易日日期为"+Parse.getInstance().getIntDate(max.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+			}
+			LocalDate min=getMinDay(strCode);
+			if(date.isBefore(min))
+			{
+				str="该股票最早一个交易日日期为"+Parse.getInstance().getIntDate(max.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+			}			
+			throw new NullDateException(cal,str);
 		}
 		SingleStockInfoPO po=new SingleStockInfoPO(result,name,strCode,date);
 		if(po.getClose()==0.0||po.getOpen()==0.0||po.getHigh()==0.0||po.getLow()==0.0)
 		{
-			throw new NullDateException(cal);
+			String str="";
+			LocalDate max=getMaxDay(strCode);
+			if(date.isAfter(max))
+			{
+				str="该股票最后一个交易日日期为"+Parse.getInstance().getIntDate(max.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+			}
+			LocalDate min=getMinDay(strCode);
+			if(date.isBefore(min))
+			{
+				str="该股票最早一个交易日日期为"+Parse.getInstance().getIntDate(max.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+			}			
+			throw new NullDateException(cal,str);
 		}
 		return po;
 	}

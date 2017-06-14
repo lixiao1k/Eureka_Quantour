@@ -14,6 +14,7 @@ public class NullDateException extends Exception{
 	 * 
 	 */
 	private int cal;
+	private String str;
 	/**
 	 * 
 	 */
@@ -21,9 +22,14 @@ public class NullDateException extends Exception{
 	public NullDateException(int _cal){
 		super();
 		this.cal=_cal;
+		str="";
 	}
-	
+	public NullDateException(int _cal,String str){
+		super();
+		this.cal=_cal;
+		this.str=str;
+	}
 	public String toString(){
-		return "搜索不到日期为"+cal+"的信息";
+		return "搜索不到日期为"+cal+"的信息."+str;
 	}
 }

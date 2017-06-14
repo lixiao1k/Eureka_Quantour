@@ -33,8 +33,8 @@ public class Utility {
 
         LocalDate start= idi.getExponentMinDay(name);
         LocalDate jieshu= idi.getExponentMaxDay(name);
-        if (end.compareTo(start)<0)throw new EndInvalidException();
-        if (begin.compareTo(jieshu)>0)throw new EndInvalidException();
+        if (end.compareTo(start)<0)throw new EndInvalidException(start);
+        if (begin.compareTo(jieshu)>0)throw new BeginInvalidException(jieshu);
         if (begin.compareTo(end)>0)
             throw new DateInvalidException();
     }
@@ -43,8 +43,8 @@ public class Utility {
 
         LocalDate start= idi.getMinDay(stockcode);
         LocalDate jieshu= idi.getMaxDay(stockcode);
-        if (end.compareTo(start)<0)throw new EndInvalidException();
-        if (begin.compareTo(jieshu)>0)throw new EndInvalidException();
+        if (end.compareTo(start)<0)throw new EndInvalidException(start);
+        if (begin.compareTo(jieshu)>0)throw new BeginInvalidException(jieshu);
         if (begin.compareTo(end)>0)
             throw new DateInvalidException();
     }
