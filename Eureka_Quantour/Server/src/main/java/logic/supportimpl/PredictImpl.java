@@ -154,19 +154,22 @@ public class PredictImpl implements PredictInterface{
 
 		SingleStockInfoPO ssi = new SingleStockInfoPO();
 		LocalDate dateT = date.plusDays(1);
-
+		
 		if( this.closes.size()==0 ){
 			// get before 100 days' data
 			int vLen = 115;
 			if( len>10 && len<1000 )
 				vLen = len;
 			int index = vLen-1;
+			
+			double[] closes = new double[vLen];
+			LocalDate[] dates = new LocalDate[vLen];
 			while( index>-1 && dateT.compareTo(zuizao)>0 ){
 				try{
 					dateT = calValue.getValidBeforeDate( dateT );
 					ssi = stock.getSingleStockInfo(stockcode, dateT);
-					this.closes.add( ssi.getAftClose() );
-					this.dates.add( ssi.getDate() );
+					closes[index] = ssi.getAftClose();
+					dates[index] = ssi.getDate();
 					index--;
 				}catch ( NullStockIDException e ){
 					e.printStackTrace();
@@ -182,10 +185,14 @@ public class PredictImpl implements PredictInterface{
 					else if( indexT<index )
 						indexT = index + 1;
 					
-					this.closes.add( closes.get(indexT) );
-					this.dates.add( dates.get(indexT) );
+					closes[index] = closes[indexT];
+					dates[index] = dates[indexT];
 					index--;
 				}
+			}
+			for( int i=0; i<vLen; i++ ){
+				this.closes.add( closes[i] );
+				this.dates.add( dates[i] );
 			}
 		}
 		else{
