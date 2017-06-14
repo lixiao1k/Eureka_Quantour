@@ -23,6 +23,13 @@ public class FileMethod {
 	public void dealdir(File file){
 		File[] filelist=file.listFiles();
 		for(File i:filelist){
+			if(i.isDirectory())
+			{
+				for(File j:i.listFiles())
+				{
+					j.delete();
+				}
+			}
 			i.delete();
 		}
 	}

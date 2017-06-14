@@ -10,6 +10,7 @@ public class SaleVO implements Serializable {
 
     private int tiaocangqi=10;
     // 调仓期
+    //knn策略下应该将调仓期改为1，且恒定不变
 
     private String tiaocangjiage="收盘价";
     // 调仓价格

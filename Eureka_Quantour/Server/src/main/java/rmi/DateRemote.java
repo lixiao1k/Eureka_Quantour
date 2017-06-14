@@ -136,7 +136,7 @@ public class DateRemote extends UnicastRemoteObject implements ClientLogicInterf
 	 * @param userName 用户名
 	 * @throws DisConnectedException
 	 */
-	public void getConn(String userName)  throws RemoteException, DisConnectedException
+	public void getConn(String userName)  throws RemoteException
 	{
 		cli.getConn(userName);
 	}

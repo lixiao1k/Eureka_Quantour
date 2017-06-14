@@ -193,7 +193,6 @@ public class PredictImpl implements PredictInterface{
 			this.closes.add( next.getAftClose() );
 			this.dates.add( next.getDate() );
 		}
-		
 		double predictPrice = KNNPredictPrice( closes, dates, m, k );
 		
 		return predictPrice;

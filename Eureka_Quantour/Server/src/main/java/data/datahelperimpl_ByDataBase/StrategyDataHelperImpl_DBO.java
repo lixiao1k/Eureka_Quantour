@@ -65,7 +65,6 @@ public class StrategyDataHelperImpl_DBO implements IStrategyDataHelper{
 		}catch (SQLException e) {
 			//e.printStackTrace();
 			ConnectionPoolManager.getInstance().close("quantour", conn);
-			System.out.println("haha");
 			throw new StrategyRepeatException();
 		}
 	}
