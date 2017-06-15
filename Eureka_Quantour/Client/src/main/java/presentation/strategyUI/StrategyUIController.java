@@ -747,8 +747,8 @@ public class StrategyUIController implements Initializable{
 					changableLabel.setText("几日平均");
 					changabelLabel1.setText("持有期");
 				}else if(newValue.getUserData().equals("KNN")){
-					changableLabel.setText("K");
-					changabelLabel1.setText("M");
+					changableLabel.setText("相关组数");
+					changabelLabel1.setText("相似长");
 				}
 			}
 		});

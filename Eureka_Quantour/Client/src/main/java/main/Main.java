@@ -13,14 +13,20 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import presentation.loginUI.UserPool;
 import rmi.RemoteHelper;
 
 public class Main extends Application{
 	private static RemoteHelper rmic;
+	public static UserPool pool;
+	public static Thread pool_thread;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
+		pool=new UserPool();
+		pool_thread=new Thread(pool);
+		pool_thread.start();
 		Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("presentation/loginUI/Login.fxml"));
 		Scene scene = new Scene(root);
 		primaryStage.setScene(scene);

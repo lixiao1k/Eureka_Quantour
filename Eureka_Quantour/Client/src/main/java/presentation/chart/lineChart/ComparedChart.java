@@ -39,7 +39,7 @@ public class ComparedChart implements chartService{
 	private ListToArrayService listToArray = new ListToArray();
 	private CommonSetService commonSet = new CommonSet();
 	
-	private DecimalFormat df = new DecimalFormat("0.00");
+	private DecimalFormat df = new DecimalFormat("#0.00");
 	private NumberFormat nf = NumberFormat.getPercentInstance();
 	
 	private AnchorPane pane = new AnchorPane();
@@ -97,19 +97,24 @@ public class ComparedChart implements chartService{
             String name = "";
             if( i<dataName.size() )
         		name = dataName.get(i);
+            
+            boolean ifNoMul100 = false;
+            for( int j=0; j<datas.length && !ifNoMul100; j++ )
+            	if( datas[j]>1 )
+            		ifNoMul100 = true;
         	
         	for(int j=0; j<date.length; j++){
 	        	if( j<datas.length && datas[j]!=Integer.MAX_VALUE ){
 	        		serie.getData().add( new XYChart.Data<>(dates[j], datas[j]) );
 	        		String dataFormat = df.format( datas[j] );
-	        		if( kind==ChartKind.EMA || kind==ChartKind.YIELDCOMPARED){
-	        			if( datas[j]<1 )
-	        				dataFormat = nf.format(datas[j]);
+	        		if( kind==ChartKind.YIELDCOMPARED){
+	        			if( !ifNoMul100 )
+	        				dataFormat = df.format(datas[j]*100.0) + "%";
 	        			else
-	        				dataFormat = nf.format(datas[j]/100.0);
+	        				dataFormat = df.format(datas[j]) + "%";
 	        		}
 	        		else if( datas[j]<1 )
-	        			dataFormat = nf.format(datas[j]);
+	        			dataFormat = df.format(datas[j]);
 
 	        		if( dataStrings[j]!=null )
 	        			dataStrings[j] += "/"+name+" : "+dataFormat;

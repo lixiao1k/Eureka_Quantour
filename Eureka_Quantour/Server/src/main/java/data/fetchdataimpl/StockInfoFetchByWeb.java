@@ -430,12 +430,16 @@ public class StockInfoFetchByWeb {
 						pstmt.setString(7, result[5]);
 						pstmt.setString(8, result[6]);
 						pstmt.setString(9, result[7]);
-						pstmt.executeUpdate();
+						pstmt.addBatch();
 					}catch (SQLException e) {
 						//System.out.println(result[7]);
 						//e.printStackTrace();
 						//System.exit(0);
 					}
+				}
+				try{
+				pstmt.executeBatch();
+				}catch (SQLException e) {
 				}
 				br.close();
 				pstmt.close();
@@ -473,21 +477,22 @@ public class StockInfoFetchByWeb {
 			int min=180;
 			for(String code:list){
 				count++;
-				if(code.equals("000753")){
+				if(code.equals("300493")){
 					flag=true;
 				}
 				if(flag){
 					System.out.println("正在处理第"+count+"个，总共"+i+"个"+"剩余"+(i-count)+"个。");
 					long t1=System.currentTimeMillis();
 					dealSingleInfo_Minutes(code,lt,date);
+					long t2=System.currentTimeMillis();
+					System.out.println("完成时间"+(t2-t1)+"ms，预估需要"+(i-count)*((t2-t1)+2000)/1000+"s。");
 					try {
-						Thread.sleep((random(9)+1)*1000);
+						Thread.sleep(1500+random(10)*100);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					long t2=System.currentTimeMillis();
-					System.out.println("完成时间"+(t2-t1)+"ms，预估需要"+(i-count)*(t2-t1)/1000+"s。");
+					
 					//check_Minutes(code,date);
 					//check_Minutes(code,date);
 					//check_Minutes(code,date);
@@ -607,7 +612,7 @@ public class StockInfoFetchByWeb {
 			sort.add(r);
 			date.add(datesort.get(r));
 		}
-		FileMethod.getInstance().dealdir(new File(path+"Minutes"));
+		//FileMethod.getInstance().dealdir(new File(path+"Minutes"));
 		FileMethod.getInstance().makepath(path+"Minutes");
 		br.close();
 		if(lt.compareTo(old)>0){
@@ -616,7 +621,7 @@ public class StockInfoFetchByWeb {
 			OutputStream out=new FileOutputStream(path+"config.properties");
 			pro.store(out, "update lastUpdate_Minutes");
 			out.close();
-			for(int i=date.size()>=10?date.size()-10:0;i<date.size();i++){
+			for(int i=date.size()>=1?date.size()-1:0;i<date.size();i++){
 				String symbol="sh";
 				if(code.charAt(0)=='0'||code.charAt(0)=='2'||code.charAt(0)=='3'){
 					symbol="sz";
@@ -630,12 +635,12 @@ public class StockInfoFetchByWeb {
 				WebMethod.getInstance().saveToFile_ByInputStream(url, path+"Minutes/"+String.format("%04d", sort.get(i)));
 //				int in=FetchPoolManagement.getInstance().getConnection("web", url, path+"Minutes/"+String.format("%04d", sort.get(i)), "InputStream");
 //				FetchPoolManagement.getInstance().startConn("web", in);
-				try {
-					Thread.sleep((random(49)+1)*100);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+//				try {
+//					Thread.sleep((random(49)+1)*100);
+//				} catch (InterruptedException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
 			}
 		}
 	}

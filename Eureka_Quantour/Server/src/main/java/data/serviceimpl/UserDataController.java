@@ -3,6 +3,7 @@ package data.serviceimpl;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
+import java.sql.SQLException;
 
 import data.database.DataBaseOperation;
 import data.datahelperimpl.UserDataHelperImpl;
@@ -63,6 +64,10 @@ public class UserDataController implements IUserDataInterface
 		if(conn==null)
 		{
 			throw new SqlNotConnectedException();
+		}
+		try {
+			conn.close();
+		} catch (SQLException e) {
 		}
 		password=EncoderByMd5(password);
 		userdatahelper_DBO.login(username, password);

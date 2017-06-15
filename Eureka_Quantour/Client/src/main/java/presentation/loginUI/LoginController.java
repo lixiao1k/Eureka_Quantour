@@ -7,6 +7,7 @@ import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 
 import javax.management.Notification;
+import javax.swing.JOptionPane;
 
 import javafx.event.EventHandler;
 import javafx.stage.StageStyle;
@@ -29,6 +30,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import logic.service.ClientLogicInterface;
+import main.Main;
 import rmi.RemoteHelper;
 
 public class LoginController implements Initializable{
@@ -45,6 +47,8 @@ public class LoginController implements Initializable{
 	ImageView logoImageView;
 	
 	private DataContorller dataController;
+	
+	private UserPool pool;
 	
 	@FXML
 	protected void logUp(ActionEvent e){
@@ -77,6 +81,7 @@ public class LoginController implements Initializable{
 		try {
 			clientLogicInterface.signIn(username,password);
 	        dataController.upDate("UserName", username);
+	        Main.pool.setName(username);
 			Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("presentation/mainScreen/MainScreen.fxml"));
 			Notifications.create().title("登录提示").text("登录成功！").showInformation();
 			Scene scene = new Scene(root);
@@ -91,6 +96,7 @@ public class LoginController implements Initializable{
 					ClientLogicInterface clientLogicInterface1 = remoteHelper.getClientLogic();
 					try {
 						clientLogicInterface.signOut((String)dataController.get("UserName"));
+						Main.pool_thread.stop();
 					} catch (RemoteException e1) {
 						e1.printStackTrace();
 					}
@@ -98,7 +104,6 @@ public class LoginController implements Initializable{
 			});
 			Stage stagenow = (Stage) usernameTextField.getScene().getWindow();
 			stagenow.close();
-
 		} catch (LogErrorException e1) {
 //			 TODO Auto-generated catch block
 			Notifications.create().title("登录异常").text(e1.toString()).showError();
@@ -116,5 +121,4 @@ public class LoginController implements Initializable{
 		Image image = new Image(getClass().getResourceAsStream("Title.png"));
 		logoImageView.setImage(image);
 	}
-
 }
