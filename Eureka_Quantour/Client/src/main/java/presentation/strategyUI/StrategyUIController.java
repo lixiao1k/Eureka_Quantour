@@ -487,6 +487,7 @@ public class StrategyUIController implements Initializable{
 
 
 		}else{
+
 			if(stockSetComboBox.getValue()!=null){
 				stockSet = stockSetComboBox.getValue();
 			}else{
@@ -552,6 +553,7 @@ public class StrategyUIController implements Initializable{
 				Notifications.create().title("输入异常").text("请输入K值").showWarning();
 			}
 			if(flag){
+
 
 				List<Integer> KNNlist =new ArrayList<>();
 

@@ -107,24 +107,21 @@ public class StatisticsUIController implements Initializable {
 					marketComboBox.getValue());
 			initialAllPane(marketInfoVO);
 
-			if(marketComboBox.getValue().equals("HS300")){
-				Notifications.create().title("异常").text("暂时无沪深300大盘指数").showWarning();
-			}else{
-				LocalDate end = (LocalDate)dataController.get("SystemTime");
-				LocalDate begin = end.minusDays(200);
-				try {
-					ExponentChartVO vo = stockLogicInterface.getExponentChart(marketComboBox.getValue(),begin,end);
-					System.out.println(vo);
-					List<SingleStockInfoVO> klinelist = vo.getList();
-					List<EMAInfoVO> emalist = vo.getEma();
-					initKLinePane(klinelist);
-					intiEMAPane(emalist);
+			LocalDate end = (LocalDate)dataController.get("SystemTime");
+			LocalDate begin = end.minusDays(200);
+			try {
+				ExponentChartVO vo = stockLogicInterface.getExponentChart(marketComboBox.getValue(),begin,end);
+				System.out.println(vo);
+				List<SingleStockInfoVO> klinelist = vo.getList();
+				List<EMAInfoVO> emalist = vo.getEma();
+				initKLinePane(klinelist);
+				intiEMAPane(emalist);
 
-				} catch (NullStockIDException e1) {
-					e1.printStackTrace();
-				}
-
+			} catch (NullStockIDException e1) {
+				e1.printStackTrace();
 			}
+
+
 
 
 		} catch (RemoteException e1) {

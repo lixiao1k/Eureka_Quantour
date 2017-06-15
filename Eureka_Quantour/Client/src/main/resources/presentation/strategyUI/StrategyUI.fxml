@@ -30,7 +30,7 @@
                   </RadioButton>
                   <RadioButton fx:id="meanRadioButton" layoutX="106.0" layoutY="94.0" mnemonicParsing="false" text="均值" toggleGroup="$strategy" />
                   <TextField fx:id="changableTextField" layoutX="25.0" layoutY="157.0" prefHeight="23.0" prefWidth="76.0" />
-                  <Label fx:id="changableLabel" layoutX="106.0" layoutY="162.0" prefHeight="17.0" prefWidth="60.0" />
+                  <Label fx:id="changableLabel" layoutX="106.0" layoutY="162.0" />
                   <RadioButton fx:id="averageCloseRadioButton" layoutX="185.0" layoutY="94.0" mnemonicParsing="false" text="平收价" toggleGroup="$strategy" />
                   <RadioButton fx:id="KNNRadioButton" layoutX="25.0" layoutY="128.0" mnemonicParsing="false" text="KNN" toggleGroup="$strategy" />
                </children>

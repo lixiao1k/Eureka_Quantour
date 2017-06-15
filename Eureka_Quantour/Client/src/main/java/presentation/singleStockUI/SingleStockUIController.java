@@ -160,7 +160,7 @@ public class SingleStockUIController implements Initializable{
 			emaChartAnchorPane.getChildren().add(pane);
 		}
 		if(timeSharingVO!=null){
-			chartService service = new TimeShareChart(timeSharingVO.getMinute_data(),timeSharingVO.getLast_close(),3);
+			chartService service = new TimeShareChart(timeSharingVO.getMinute_data(),timeSharingVO.getLast_close(),5);
 			Pane pane = service.getchart(758,320,true);
 			kChartAnchorPane.getChildren().clear();
 			kChartAnchorPane.getChildren().add(pane);

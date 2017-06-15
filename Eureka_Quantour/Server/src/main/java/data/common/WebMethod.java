@@ -45,7 +45,7 @@ public class WebMethod {
 	public  void testInternet() throws InternetdisconnectException{
 		URL url = null;
 		try {
-		url = new URL("http://baicu.com/");
+		url = new URL("http://www.baidu.com/");
 		InputStream in = url.openStream();//打开到此 URL 的连接并返回一个用于从该连接读入的 InputStream
 			System.out.println("连接正常");
 		in.close();//关闭此输入流并释放与该流关联的所有系统资源。

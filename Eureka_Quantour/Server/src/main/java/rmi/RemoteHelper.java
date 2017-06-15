@@ -11,6 +11,7 @@ import java.rmi.registry.LocateRegistry;
 
 import data.common.WebMethod;
 //import data.service.DataThread;
+import data.common.WebMethod;
 import data.service.IDataInterface;
 import data.serviceimpl.DataInterfaceImpl;
 import exception.InternetdisconnectException;
@@ -27,7 +28,13 @@ public class RemoteHelper {
 			System.exit(0);
 		}
     	DateRemote dateRemote;
-    	try{
+		try {
+			WebMethod.getInstance().testInternet();
+		} catch (InternetdisconnectException e) {
+			System.exit(0);
+		}
+
+		try{
     		IDataInterface data=new DataInterfaceImpl();
     		dateRemote = new DateRemote();
     		LocateRegistry.createRegistry(8888);
@@ -40,5 +47,5 @@ public class RemoteHelper {
 			// TODO: handle exception
     		e.printStackTrace();
 		}
-    }
+	}
 }
