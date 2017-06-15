@@ -530,8 +530,6 @@ public class StockLogicImpl implements StockLogicInterface{
 			e.printStackTrace();
 		}
 
-
-
 		return null;
 	}
 

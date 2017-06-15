@@ -8,8 +8,11 @@ import java.rmi.AlreadyBoundException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 import data.common.WebMethod;
+import data.database.DataBaseOperation;
 //import data.service.DataThread;
 import data.service.IDataInterface;
 import data.serviceimpl.DataInterfaceImpl;
@@ -25,6 +28,24 @@ public class RemoteHelper {
 		} catch (InternetdisconnectException e1) {
 			System.out.println("please check your internet");
 			System.exit(0);
+		}
+    	Connection conn=null;
+		conn=DataBaseOperation.getInstance().getConn(conn);
+		boolean flag=true;
+		if(conn==null)
+		{
+			flag=false;
+		}
+		if(!flag)
+		{
+			System.out.println("连接不上数据库，请检查网络后再试");
+			System.exit(0);
+		}
+		try {
+			conn.close();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			//e1.printStackTrace();
 		}
     	DateRemote dateRemote;
     	try{

@@ -37,11 +37,11 @@ public class DataBaseOperation {
     	    } catch (ClassNotFoundException e) {
     	        e.printStackTrace();
     	    } catch (SQLException e) {
-    	        e.printStackTrace();
+    	      //  e.printStackTrace();
     	    }
     	    return conn;
     	} catch (IOException e) {
-    		e.printStackTrace();
+    	//	e.printStackTrace();
     	}
 	    return null;
 	}

@@ -31,14 +31,14 @@ public class UserPool implements Runnable{
 			}
 			else
 			{
+				
 				try {
 					cl.getConn(username);
 				} catch (RemoteException e) {
 					JOptionPane.showMessageDialog(null, "网络异常", "网络断开，程序即将关闭！", JOptionPane.ERROR_MESSAGE); 
 					try {
-						Thread.sleep(3000);
+						Thread.sleep(2000);
 					} catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 					System.exit(0);
