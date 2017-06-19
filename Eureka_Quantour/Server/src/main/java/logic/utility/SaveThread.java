@@ -38,8 +38,7 @@ public class SaveThread extends Thread{
         this.username=username;
         this.name=name;
         List<String> stocklistname=set.getStockSetInfo("HS300",null);
-//        LocalDate now=LocalDate.now();
-        LocalDate now=LocalDate.of(2016,1,1);
+        LocalDate now=LocalDate.now().minusDays(1);
         LocalDate start=now.minusDays(365);
         stragety=new StrategyCalculate(stocklistname,start,now,saleVO,strategyConditionVO);
 
