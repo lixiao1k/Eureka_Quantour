@@ -55,6 +55,7 @@ public class ClientLogicImpl implements ClientLogicInterface{
 		try {
 			cli.getConn(userName);
 		} catch (DisConnectedException e) {
+			System.out.println(e.toString());
 			throw new RemoteException();
 		}
 	}
