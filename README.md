@@ -6,41 +6,41 @@ SoftWare Engineering and Computing Volume III
 
 ## How it look
 
-<img src="Products/images/1.jpg">
+<img src="Products/images/1.jp2">
 
-<img src="Products/images/2.jpg">
+<img src="Products/images/2.jp2">
 
-<img src="Products/images/3.jpg">
+<img src="Products/images/3.jp2">
 
-<img src="Products/images/4.jpg">
+<img src="Products/images/4.jp2">
 
-<img src="Products/images/5.jpg">
+<img src="Products/images/5.jp2">
 
-<img src="Products/images/6.jpg">
+<img src="Products/images/6.jp2">
 
-<img src="Products/images/7.jpg">
+<img src="Products/images/7.jp2">
 
-<img src="Products/images/8.jpg">
+<img src="Products/images/8.jp2">
 
-<img src="Products/images/9.jpg">
+<img src="Products/images/9.jp2">
 
-<img src="Products/images/10.jpg">
+<img src="Products/images/10.jp2">
 
-<img src="Products/images/11.jpg">
+<img src="Products/images/11.jp2">
 
-<img src="Products/images/12.jpg">
+<img src="Products/images/12.jp2">
 
-<img src="Products/images/13.jpg">
+<img src="Products/images/13.jp2">
 
-<img src="Products/images/14.jpg">
+<img src="Products/images/14.jp2">
 
 ### Process Mark
 
-<img src="Products/images/15.jpg">
+<img src="Products/images/15.jp2">
 
-<img src="Products/images/16.jpg">
+<img src="Products/images/16.jp2">
 
-<img src="Products/images/17.jpg">
+<img src="Products/images/17.jp2">
 
 ### Created by
 
